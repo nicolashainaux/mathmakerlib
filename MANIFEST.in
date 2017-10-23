@@ -1,0 +1,15 @@
+include *.rst
+include *.md
+include *.txt
+include .flake8
+include MANIFEST.in
+include tox.ini
+include LICENSE
+recursive-include tests *.py
+include pytest.ini
+recursive-include docs *.png
+recursive-include docs *.py
+recursive-include docs *.rst
+recursive-include docs Makefile
+recursive-include docs *.dia
+prune docs/_build

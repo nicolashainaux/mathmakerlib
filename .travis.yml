@@ -1,0 +1,16 @@
+sudo: required
+dist: trusty
+language: python
+python:
+    - "3.6"
+cache:
+    - pip3
+before_install:
+  - sudo apt-get -qq update
+install:
+    - "pip3 install coverage"
+    - "pip3 install coveralls"
+script:
+    - "coverage run --source=mathmakerlib setup.py test"
+after_success:
+    coveralls

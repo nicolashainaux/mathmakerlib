@@ -1,0 +1,14 @@
+.git/
+docs/_build/
+*.egg/
+.tox/
+*.pyc
+build/
+dist/
+*.egg-info/
+*~
+*.bak
+htmlcov/
+.cache/
+outfiles/
+__pycache__/
