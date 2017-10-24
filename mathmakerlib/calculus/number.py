@@ -290,7 +290,6 @@ def move_fracdigits_to(n, from_nb=None):
         if not is_integer(j):
             numbers_copy[i] = j * 10
             return move_fracdigits_to(n / 10, from_nb=numbers_copy)
-    return [n, ] + [i for i in from_nb]
 
 
 def remove_fracdigits_from(number, to=None):
