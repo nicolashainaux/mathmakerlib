@@ -100,7 +100,7 @@ def test_is_natural():
         is_natural('-1.0')
 
 
-def test_move_digits_to():
+def test_move_fracdigits_to():
     """Check move_digits_to() in different cases."""
     with pytest.raises(TypeError):
         move_fracdigits_to(14)
@@ -112,6 +112,8 @@ def test_move_digits_to():
         move_fracdigits_to(14, [7, '5'])
     with pytest.raises(TypeError):
         move_fracdigits_to('14', [7, 5])
+    with pytest.raises(TypeError):
+        move_fracdigits_to(14, ['a', Decimal('0.5')])
     assert move_fracdigits_to(14, [7, 5]) == [14, 7, 5]
     assert move_fracdigits_to(14, [Decimal('0.7'), 5]) \
         == [Decimal('1.4'), Decimal(7), 5]
@@ -119,8 +121,8 @@ def test_move_digits_to():
         == [Decimal('0.14'), Decimal(7), Decimal(5)]
 
 
-def test_remove_digits_from():
-    """Check remove_digits_from() in different cases."""
+def test_remove_fracdigits_from():
+    """Check remove_fracdigits_from() in different cases."""
     with pytest.raises(TypeError):
         remove_fracdigits_from('14', to=[])
     with pytest.raises(TypeError):
@@ -131,6 +133,10 @@ def test_remove_digits_from():
         remove_fracdigits_from(Decimal('1.4'), to=[])
     with pytest.raises(ValueError):
         remove_fracdigits_from(Decimal('1.4'), to=[10, 20, 30])
+    with pytest.raises(TypeError):
+        remove_fracdigits_from(Decimal('14'), to=[10, 20, 30])
+    with pytest.raises(TypeError):
+        remove_fracdigits_from(Decimal('1.4'), to=10)
     assert remove_fracdigits_from(Decimal('1.4'), to=[10, 20, 36]) ==\
         [Decimal('14'), 10, 20, Decimal('3.6')]
 
@@ -324,3 +330,6 @@ def test_split():
     assert all(-6 <= r <= -1 for r in result)
     result = Number('4.3').split(dig=1)
     assert all([Number(r).fracdigits_nb() == 2 for r in result])
+    assert Number(14).split(operation='difference', return_all=True) \
+        == [(15, 1), (16, 2), (17, 3), (18, 4,), (19, 5), (20, 6), (21, 7),
+            (22, 8), (23, 9), (24, 10), (25, 11), (26, 12), (27, 13)]
