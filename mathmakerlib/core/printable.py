@@ -27,9 +27,8 @@ class Printable(object, metaclass=ABCMeta):
     @abstractmethod
     def print(self, start_expr=True, variant='latex'):
         """
-        Return the LaTeX string of the object.
+        Return the LaTeX (or user input version) string of the object.
         """
-        pass
 
     @property
     def printed(self):
