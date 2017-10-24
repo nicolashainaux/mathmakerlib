@@ -25,7 +25,7 @@ import os
 from setuptools import setup, find_packages, Command
 from setuptools.command.test import test as TestCommand
 
-from mathmakerlib import __version__, __software_name__, __licence__
+from mathmakerlib import __version__, __lib_name__, __licence__
 from mathmakerlib import __author__, __author_email__, __url__
 
 
@@ -95,7 +95,7 @@ class Tox(TestCommand):
 
 
 setup(
-    name=__software_name__,
+    name=__lib_name__,
     version=__version__,
     url=__url__,
     license=__licence__,
