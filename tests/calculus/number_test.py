@@ -19,6 +19,7 @@
 # along with Mathmaker Lib; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
+import locale
 import pytest
 from decimal import Decimal, ROUND_HALF_UP
 
@@ -27,6 +28,30 @@ from mathmakerlib.calculus.number import is_number, is_integer, is_natural
 from mathmakerlib.calculus.number import move_fracdigits_to
 from mathmakerlib.calculus.number import remove_fracdigits_from
 from mathmakerlib.calculus.number import fix_fracdigits
+
+
+def test__repr__():
+    """Check __repr__ is correct."""
+    assert repr(Number('8.6')) == 'Number(\'8.6\')'
+
+
+def test_print_errors():
+    """Check exceptions raised by self.print()."""
+    with pytest.raises(ValueError) as excinfo:
+        Number('8.6').print(variant='undefined')
+    assert str(excinfo.value) == 'variant must belong to [\'latex\', ' \
+        '\'user_input\']; got \'undefined\' instead.'
+
+
+def test_print():
+    """Check printing is correct."""
+    assert Number('8.6').printed == '8.6'
+    locale.setlocale(locale.LC_ALL, 'fr_FR.UTF-8')
+    assert locale.str(Decimal('8.6')) == '8,6'
+    assert Number('8.6').printed == '8,6'
+    assert Number('8.6').uiprinted == '8.6'
+    locale.setlocale(locale.LC_ALL, 'en_US.UTF-8')
+    assert Number('8.6').print(start_expr=False) == '+8.6'
 
 
 def test_is_number():

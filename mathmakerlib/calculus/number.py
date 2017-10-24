@@ -20,9 +20,12 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 import copy
+import locale
 import random
 import warnings
 from decimal import Decimal, ROUND_DOWN, ROUND_HALF_UP
+
+from mathmakerlib.core.printable import Printable
 
 
 def is_number(n):
@@ -48,11 +51,25 @@ def is_natural(n):
     return is_integer(n) and n >= 0
 
 
-class Number(Decimal):
+class Number(Decimal, Printable):
     """Extend Decimal with a bunch of useful methods."""
 
     def __repr__(self):
         return repr(Decimal(str(self))).replace('Decimal', 'Number')
+
+    def print(self, start_expr=True, variant='latex'):
+        extra_sign = ''
+        if not start_expr and self >= 0:
+            extra_sign = '+'
+        if variant == 'latex':
+            self_str = locale.str(self)
+        elif variant == 'user_input':
+            self_str = str(self)
+        else:
+            raise ValueError('variant must belong to [\'latex\', '
+                             '\'user_input\']; got \'{}\' instead.'
+                             .format(variant))
+        return extra_sign + self_str
 
     def standardized(self):
         """Turn 8.0 to 8 and 1E+1 to 10"""

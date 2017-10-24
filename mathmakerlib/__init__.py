@@ -19,7 +19,7 @@
 # along with Mathmaker Lib; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-from . import calculus
+from . import core, calculus
 
 __version_info__ = (0, 0, 1)
 __dev__ = 0
@@ -47,4 +47,4 @@ __info__ = '{lib_name} {r}\nLicense: {l}\n{c} {contact}'\
                    r=__release__, l=__licence__, c=__copyright__,
                    contact=__contact__)
 
-__all__ = ['calculus', ]
+__all__ = ['core', 'calculus', ]
