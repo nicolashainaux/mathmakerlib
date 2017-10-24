@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/nicolashainaux/mathmakerlib.svg?branch=master)](https://travis-ci.org/nicolashainaux/mathmakerlib)
+[![Coveralls branch](https://img.shields.io/coveralls/nicolashainaux/mathmakerlib/master.svg?maxAge=2592000)](https://coveralls.io/github/nicolashainaux/mathmakerlib)
+
 Overview
 ========
 
