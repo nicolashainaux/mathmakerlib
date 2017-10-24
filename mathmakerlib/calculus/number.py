@@ -281,12 +281,12 @@ def move_fracdigits_to(n, from_nb=None):
     if not is_number(n):
         raise TypeError('The first argument must be a number.')
     n = Decimal(str(n))
+    # If any element of from_nb is not a number, is_integer() will raise
+    # an exception.
     if all([is_integer(i) for i in from_nb]):
         return [n, ] + [i for i in from_nb]
     numbers_copy = copy.deepcopy(from_nb)
     for i, j in enumerate(from_nb):
-        if not is_number(j):
-            raise TypeError('Each variable of the list must be a number.')
         if not is_integer(j):
             numbers_copy[i] = j * 10
             return move_fracdigits_to(n / 10, from_nb=numbers_copy)

@@ -112,8 +112,10 @@ def test_move_fracdigits_to():
         move_fracdigits_to(14, [7, '5'])
     with pytest.raises(TypeError):
         move_fracdigits_to('14', [7, 5])
-    with pytest.raises(TypeError):
+    with pytest.raises(TypeError) as excinfo:
         move_fracdigits_to(14, ['a', Decimal('0.5')])
+    assert str(excinfo.value).startswith('Expected a number, either float, '
+                                         'int or Decimal')
     assert move_fracdigits_to(14, [7, 5]) == [14, 7, 5]
     assert move_fracdigits_to(14, [Decimal('0.7'), 5]) \
         == [Decimal('1.4'), Decimal(7), 5]
