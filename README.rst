@@ -1,4 +1,4 @@
-|PyPI1| |PyPI2| |PyPI3| |Build Status| |Coveralls branch| |Documentation Status1| |Maintenance|
+|PyPI1| |PyPI2| |PyPI3| |Build Status| |Coveralls branch| |AppVeyor Build Status| |Documentation Status1| |Maintenance|
 
 |PyPI4|
 
