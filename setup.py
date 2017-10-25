@@ -107,7 +107,7 @@ setup(
     author_email=__author_email__,
     description='Mathmaker Lib offers lualatex-printable mathematical '
     'objects.',
-    long_description=read('README.md', 'CHANGELOG.rst'),
+    long_description=read('README.rst', 'CHANGELOG.rst', 'CONTRIBUTORS.rst'),
     packages=find_packages(exclude=['tests', 'docs']),
     include_package_data=True,
     platforms='any',
