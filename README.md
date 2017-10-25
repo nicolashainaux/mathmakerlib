@@ -6,10 +6,7 @@ Overview
 
 Mathmaker Lib offers lualatex-printable mathematical objects.
 
-Quickstart
-==========
-
-Yet to complete.
+[See documentation here](http://mathmaker-lib.readthedocs.io/)
 
 Additional informations
 -----------------------
