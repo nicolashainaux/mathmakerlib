@@ -19,6 +19,12 @@
 # along with Mathmaker Lib; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
+import sys
 import locale
 
-locale.setlocale(locale.LC_ALL, 'en_US.UTF-8')
+LOCALE_US = 'en_US.UTF-8'
+
+if sys.platform.startswith('win'):
+    LOCALE_US = 'en-US'
+
+locale.setlocale(locale.LC_ALL, LOCALE_US)
