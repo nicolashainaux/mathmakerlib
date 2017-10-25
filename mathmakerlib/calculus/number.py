@@ -165,7 +165,7 @@ class Number(Decimal, Printable):
         :param overlap: tells how many decimal places in common the terms a
                         and b should have when splitting as a sum.
                         Values of overlap >= 2 are not handled yet
-        :type overlap: int (only 0 is handled yet)
+        :type overlap: int (only 0 or 1 are handled yet)
         :param return_all: if True, then all possibilities are returned, as a
                            list.
         :type return_all: bool
