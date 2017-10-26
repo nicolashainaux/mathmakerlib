@@ -119,11 +119,10 @@ setup(
         'Natural Language :: English',
         'License :: OSI Approved :: ' + __licence__,
         'Topic :: Education :: Computer Aided Instruction (CAI)',
-        'Environment :: Web Environment',
         'Environment :: Console',
         'Intended Audience :: Education',
-        'Operating System :: Unix',
+        'Operating System :: Microsoft :: Windows',
         'Operating System :: POSIX :: Linux',
-        'Operating System :: POSIX :: BSD'],
+        'Operating System :: POSIX :: BSD :: FreeBSD'],
     extras_require={'testing': ['pytest']}
 )

@@ -1,13 +1,13 @@
 Start Working
 -------------
 
-.. warning::
+.. note::
 
  ``python 3.6`` as least, and ``git`` are required.
 
 Install mathmakerlib in dev mode in a venv:
 
-* Ubuntu::
+* Linux::
 
     $ cd to/your/dev/directory/
     $ python3 -m venv dev0

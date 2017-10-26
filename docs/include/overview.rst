@@ -13,6 +13,8 @@ Quickstart
 Install
 -------
 
+OS requirement: Linux, FreeBSD or Windows.
+
 The required python version to use Mathmaker Lib is python>=3.6.
 You'll need to install it if it's not already on your system.
 
