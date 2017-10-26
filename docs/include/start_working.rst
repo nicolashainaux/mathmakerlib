@@ -30,6 +30,22 @@ Install mathmakerlib in dev mode in a venv:
     [dev0] $ git clone https://github.com/nicolashainaux/mathmakerlib.git
     [dev0] $ python3 setup.py develop
 
+Here's how to start a virtual environment on Windows 10 PowerShell: hit the Windows key + X to open a PowerShell with admin rights, then:
+
+* Windows 10::
+
+    PS C:\Windows\system32> cd ../..
+    PS C:\> cd .\Users\username\
+    PS C:\Users\username> Set-ExecutionPolicy -ExecutionPolicy RemoteSigned
+    ...
+    PS C:\Users\username\venv> & 'C:\Program Files\Python36\python.exe' -m venv dev0
+    PS C:\Users\username\venv> .\dev0\Scripts\Activate.ps1
+    (dev0) PS C:\Users\username\venv>
+
+then pip install the dependencies, clone the git repo and run ``setup.py`` with develop option.
+
+
+
 The tests are stored under ``tests/``.
 
 Run the tests:
