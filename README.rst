@@ -8,6 +8,8 @@ Overview
 
 Mathmaker Lib offers lualatex-printable mathematical objects.
 
+`Repo is here <https://github.com/nicolashainaux/mathmakerlib>`__
+
 `See documentation here <http://mathmaker-lib.readthedocs.io/>`__
 
 Contact: nh dot techn (hosted by gmail dot com)
