@@ -23,7 +23,7 @@ from . import core, calculus
 
 __version_info__ = (0, 1, 0)
 __dev__ = 0
-__patch_nb__ = 1
+__patch_nb__ = 0
 __version__ = '.'.join(str(c) for c in __version_info__)
 dev_addendum = '' if __dev__ == 0 else '.dev' + str(__dev__)
 patch_addendum = '' if __patch_nb__ == 0 else '-' + str(__patch_nb__)
