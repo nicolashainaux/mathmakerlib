@@ -24,7 +24,7 @@ import locale
 import pytest
 from decimal import Decimal, ROUND_HALF_UP
 
-from mathmakerlib.calculus.number import Number
+from mathmakerlib.calculus.number import Number, Sign
 from mathmakerlib.calculus.number import is_number, is_integer, is_natural
 from mathmakerlib.calculus.number import move_fracdigits_to
 from mathmakerlib.calculus.number import remove_fracdigits_from
@@ -34,20 +34,47 @@ LOCALE_US = 'en-US' if sys.platform.startswith('win') else 'en_US.UTF-8'
 LOCALE_FR = 'fr-FR' if sys.platform.startswith('win') else 'fr_FR.UTF-8'
 
 
+def test_sign():
+    """Check the Sign class"""
+    p = Sign('+')
+    n = Sign('-')
+    assert repr(p) == 'Sign(+)'
+    assert repr(Sign(n)) == 'Sign(-)'
+    assert p.printed == '+'
+    assert Sign(Number(-7)).printed == '-'
+    assert Sign(Number('9.4')).printed == '+'
+    with pytest.raises(ValueError) as excinfo:
+        Sign('-4')
+    assert str(excinfo.value) == 'o must be \'+\', \'-\' or a Number.'
+    assert repr(p * p) == 'Sign(+)'
+    assert repr(n * n) == 'Sign(+)'
+    assert repr(n * p) == 'Sign(-)'
+    assert repr(p * n) == 'Sign(-)'
+    assert p * Number(4) == Number(4)
+    assert n * Number(4) == Number(-4)
+    assert Number(4) * p == Number(4)
+    assert Number(-4) * n == Number(4)
+    assert p.evaluate() == Number(1)
+    assert n.evaluate() == Number(-1)
+    with pytest.raises(TypeError) as excinfo:
+        Sign('-') * '+'
+    assert str(excinfo.value) == 'Cannot multiply a Sign by a <class \'str\'>.'
+
+
 def test__repr__():
     """Check __repr__ is correct."""
     assert repr(Number('8.6')) == 'Number(\'8.6\')'
 
 
-def test_print_errors():
-    """Check exceptions raised by self.print()."""
+def test_imprint_errors():
+    """Check exceptions raised by self.imprint()."""
     with pytest.raises(ValueError) as excinfo:
-        Number('8.6').print(variant='undefined')
+        Number('8.6').imprint(variant='undefined')
     assert str(excinfo.value) == 'variant must belong to [\'latex\', ' \
         '\'user_input\']; got \'undefined\' instead.'
 
 
-def test_print():
+def test_imprint():
     """Check printing is correct."""
     assert Number('8.6').printed == '8.6'
     locale.setlocale(locale.LC_ALL, LOCALE_FR)
@@ -55,7 +82,7 @@ def test_print():
     assert Number('8.6').printed == '8,6'
     assert Number('8.6').uiprinted == '8.6'
     locale.setlocale(locale.LC_ALL, LOCALE_US)
-    assert Number('8.6').print(start_expr=False) == '+8.6'
+    assert Number('8.6').imprint(start_expr=False) == '+8.6'
 
 
 def test_is_number():

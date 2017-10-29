@@ -26,6 +26,7 @@ import warnings
 from decimal import Decimal, ROUND_DOWN, ROUND_HALF_UP
 
 from mathmakerlib.core.printable import Printable
+from mathmakerlib.core.evaluable import Evaluable
 
 
 def is_number(n):
@@ -51,13 +52,71 @@ def is_natural(n):
     return is_integer(n) and n >= 0
 
 
-class Number(Decimal, Printable):
+class Sign(Printable, Evaluable):
+
+    def __init__(self, o):
+        self._sign = '+'
+        self.sign = o
+
+    def __repr__(self):
+        return 'Sign({})'.format(self.sign)
+
+    def imprint(self, start_expr=True, variant='latex'):
+        return self.sign
+
+    @property
+    def sign(self):
+        return self._sign
+
+    @sign.setter
+    def sign(self, o):
+        if o in ['+', '-']:
+            self._sign = o
+        elif isinstance(o, Sign):
+            self._sign = o._sign
+        elif isinstance(o, Number):
+            if o >= 0:
+                self._sign = '+'
+            else:
+                self._sign = '-'
+        else:
+            raise ValueError('o must be \'+\', \'-\' or a Number.')
+
+    def __mul__(self, o):
+        if isinstance(o, Sign):
+            if self.sign == o.sign:
+                return Sign('+')
+            else:
+                return Sign('-')
+        elif isinstance(o, Number):
+            if self.sign == '+':
+                return o
+            else:
+                return -o
+        else:
+            raise TypeError('Cannot multiply a Sign by a {}.'
+                            .format(str(type(o))))
+
+    def __rmul__(self, o):
+        return self.__mul__(o)
+
+    def evaluate(self, **kwargs):
+        if self.sign == '+':
+            return Number(1)
+        else:
+            return Number(-1)
+
+
+class Number(Decimal, Printable, Evaluable):
     """Extend Decimal with a bunch of useful methods."""
+
+    def evaluate(self, **kwargs):
+        return self
 
     def __repr__(self):
         return repr(Decimal(str(self))).replace('Decimal', 'Number')
 
-    def print(self, start_expr=True, variant='latex'):
+    def imprint(self, start_expr=True, variant='latex'):
         extra_sign = ''
         if not start_expr and self >= 0:
             extra_sign = '+'

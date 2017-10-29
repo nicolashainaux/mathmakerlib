@@ -22,24 +22,10 @@
 from abc import ABCMeta, abstractmethod
 
 
-class Printable(object, metaclass=ABCMeta):
+class Evaluable(object, metaclass=ABCMeta):
 
     @abstractmethod
-    def imprint(self, start_expr=True, variant='latex'):
+    def evaluate(self, **kwargs):
         """
-        Return the LaTeX (or user input version) string of the object.
+        Return a Number or Fraction equal to self.
         """
-
-    @property
-    def printed(self):
-        """
-        self.printed is same as self.imprint(start_expr=True, variant='latex').
-        """
-        return self.imprint(start_expr=True, variant='latex')
-
-    @property
-    def uiprinted(self):
-        """
-        Shortcut for self.imprint(start_expr=True, variant='user_input').
-        """
-        return self.imprint(start_expr=True, variant='user_input')
