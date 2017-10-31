@@ -66,6 +66,80 @@ def test__repr__():
     assert repr(Number('8.6')) == 'Number(\'8.6\')'
 
 
+def test_operators():
+    """Check +, -, ×, ÷ etc."""
+    assert isinstance(Number(4) + Number(4), Number)
+    assert isinstance(4 + Number(4), Number)
+    assert isinstance(Number(4) + 4, Number)
+    assert isinstance(Number(4) - Number(4), Number)
+    assert isinstance(4 - Number(4), Number)
+    assert isinstance(Number(4) - 4, Number)
+    assert isinstance(Number(4) * Number(4), Number)
+    assert isinstance(4 * Number(4), Number)
+    assert isinstance(Number(4) * 4, Number)
+    assert isinstance(Number(4) / Number(4), Number)
+    assert isinstance(4 / Number(4), Number)
+    assert isinstance(Number(4) / 4, Number)
+    assert isinstance(Number(4) // Number(4), Number)
+    assert isinstance(4 // Number(4), Number)
+    assert isinstance(Number(4) // 4, Number)
+    assert isinstance(Number(4) % Number(4), Number)
+    assert isinstance(4 % Number(4), Number)
+    assert isinstance(Number(4) % 4, Number)
+    assert divmod(Number(42), Number(15)) == (Number('2'), Number('12'))
+    assert isinstance(divmod(Number(42), Number(15))[0], Number)
+    assert isinstance(divmod(Number(42), Number(15))[1], Number)
+    assert divmod(42, Number(15)) == (Number('2'), Number('12'))
+    assert isinstance(divmod(42, Number(15))[0], Number)
+    assert isinstance(divmod(42, Number(15))[1], Number)
+    assert divmod(Number(42), 15) == (Number('2'), Number('12'))
+    assert isinstance(divmod(Number(42), 15)[0], Number)
+    assert isinstance(divmod(Number(42), 15)[1], Number)
+    assert isinstance(pow(Number(4), Number(4)), Number)
+    assert isinstance(pow(4, Number(4)), Number)
+    assert isinstance(pow(Number(4), 4), Number)
+    assert isinstance(Number(4) ** Number(4), Number)
+    assert isinstance(4 ** Number(4), Number)
+    assert isinstance(Number(4) ** 4, Number)
+    n = Number(4)
+    n += Number(1)
+    assert isinstance(n, Number)
+    n -= Number(1)
+    assert isinstance(n, Number)
+    n *= Number(4)
+    assert isinstance(n, Number)
+    n /= Number(4)
+    assert isinstance(n, Number)
+    n = Number(256)
+    n //= Number(4)
+    assert isinstance(n, Number)
+    n = Number(256)
+    n %= Number(3)
+    assert isinstance(n, Number)
+    n **= Number(4)
+    assert isinstance(n, Number)
+    n = Number(4)
+    n += 1
+    assert isinstance(n, Number)
+    n -= 1
+    assert isinstance(n, Number)
+    n *= 4
+    assert isinstance(n, Number)
+    n /= 4
+    assert isinstance(n, Number)
+    n = Number(256)
+    n //= 4
+    assert isinstance(n, Number)
+    n = Number(256)
+    n %= 3
+    assert isinstance(n, Number)
+    n **= 4
+    assert isinstance(n, Number)
+    assert isinstance(-n, Number)
+    assert isinstance(+n, Number)
+    assert isinstance(abs(n), Number)
+
+
 def test_imprint_errors():
     """Check exceptions raised by self.imprint()."""
     with pytest.raises(ValueError) as excinfo:

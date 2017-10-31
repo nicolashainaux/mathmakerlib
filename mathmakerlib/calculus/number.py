@@ -110,8 +110,96 @@ class Sign(Printable, Evaluable):
 class Number(Decimal, Printable, Evaluable):
     """Extend Decimal with a bunch of useful methods."""
 
-    def evaluate(self, **kwargs):
-        return self
+    def __add__(self, other, context=None):
+        if isinstance(other, Sign):
+            raise TypeError('Cannot add a Sign and a Number')
+        return Number(Decimal(self).__add__(other))
+
+    def __radd__(self, other, context=None):
+        if isinstance(other, Sign):
+            raise TypeError('Cannot add a Sign and a Number')
+        return Number(Decimal(self).__radd__(other))
+
+    def __sub__(self, other, context=None):
+        if isinstance(other, Sign):
+            raise TypeError('Cannot subtrate a Sign and a Number')
+        return Number(Decimal(self).__sub__(other))
+
+    def __rsub__(self, other, context=None):
+        if isinstance(other, Sign):
+            raise TypeError('Cannot subtrate a Sign and a Number')
+        return Number(Decimal(self).__rsub__(other))
+
+    def __mul__(self, other, context=None):
+        if isinstance(other, Sign):
+            other = other.evaluate()
+        return Number(Decimal(self).__mul__(other))
+
+    def __rmul__(self, other, context=None):
+        if isinstance(other, Sign):
+            other = other.evaluate()
+        return Number(Decimal(self).__rmul__(other))
+
+    def __truediv__(self, other, context=None):
+        if isinstance(other, Sign):
+            other = other.evaluate()
+        return Number(Decimal(self).__truediv__(other))
+
+    def __rtruediv__(self, other, context=None):
+        if isinstance(other, Sign):
+            other = other.evaluate()
+        return Number(Decimal(self).__rtruediv__(other))
+
+    def __floordiv__(self, other, context=None):
+        if isinstance(other, Sign):
+            other = other.evaluate()
+        return Number(Decimal(self).__floordiv__(other))
+
+    def __rfloordiv__(self, other, context=None):
+        if isinstance(other, Sign):
+            other = other.evaluate()
+        return Number(Decimal(self).__rfloordiv__(other))
+
+    def __mod__(self, other, context=None):
+        if isinstance(other, Sign):
+            other = other.evaluate()
+        return Number(Decimal(self).__mod__(other))
+
+    def __rmod__(self, other, context=None):
+        if isinstance(other, Sign):
+            other = other.evaluate()
+        return Number(Decimal(self).__rmod__(other))
+
+    def __divmod__(self, other, context=None):
+        if isinstance(other, Sign):
+            other = other.evaluate()
+        r = Decimal(self).__divmod__(other)
+        return (Number(r[0]), Number(r[1]))
+
+    def __rdivmod__(self, other, context=None):
+        if isinstance(other, Sign):
+            other = other.evaluate()
+        r = Decimal(self).__rdivmod__(other)
+        return (Number(r[0]), Number(r[1]))
+
+    def __pow__(self, other, context=None):
+        if isinstance(other, Sign):
+            other = other.evaluate()
+        return Number(Decimal(self).__pow__(other))
+
+    def __rpow__(self, other, context=None):
+        if isinstance(other, Sign):
+            other = other.evaluate()
+        return Number(Decimal(self).__rpow__(other))
+
+    def __neg__(self):
+        return Number(-Decimal(self))
+
+    def __pos__(self):
+        return Number(+Decimal(self))
+
+    def __abs__(self):
+        return Number(abs(Decimal(self)))
 
     def __repr__(self):
         return repr(Decimal(str(self))).replace('Decimal', 'Number')
@@ -129,6 +217,9 @@ class Number(Decimal, Printable, Evaluable):
                              '\'user_input\']; got \'{}\' instead.'
                              .format(variant))
         return extra_sign + self_str
+
+    def evaluate(self, **kwargs):
+        return self
 
     def standardized(self):
         """Turn 8.0 to 8 and 1E+1 to 10"""
