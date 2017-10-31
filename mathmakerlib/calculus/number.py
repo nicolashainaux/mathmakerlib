@@ -71,7 +71,7 @@ class Sign(Printable, Evaluable):
             raise TypeError('Cannot compare a Sign to {}.'
                             .format(str(type(other))))
 
-    def __neq__(self, other):
+    def __ne__(self, other):
         if isinstance(other, Sign):
             return self.sign != other.sign
         elif other in ['+', '-']:
