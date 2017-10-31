@@ -34,10 +34,29 @@ LOCALE_US = 'en-US' if sys.platform.startswith('win') else 'en_US.UTF-8'
 LOCALE_FR = 'fr-FR' if sys.platform.startswith('win') else 'fr_FR.UTF-8'
 
 
+def test_Sign_errors():
+    """Check the Sign class exceptions."""
+    with pytest.raises(ValueError) as excinfo:
+        Sign('-4')
+    assert str(excinfo.value) == 'o must be \'+\', \'-\' or a Number.'
+    with pytest.raises(TypeError) as excinfo:
+        Sign('+') == 8
+    assert str(excinfo.value) == 'Cannot compare a Sign to <class \'int\'>.'
+    with pytest.raises(TypeError) as excinfo:
+        Sign('+') != 8
+    assert str(excinfo.value) == 'Cannot compare a Sign to <class \'int\'>.'
+    with pytest.raises(TypeError) as excinfo:
+        Sign('-') * '+'
+    assert str(excinfo.value) == 'Cannot multiply a Sign by a <class \'str\'>.'
+
+
 def test_Sign():
     """Check the Sign class"""
     assert Sign('+') == '+'
     assert Sign('-') == '-'
+    assert Sign('+') == Sign('+')
+    assert Sign('+') != Sign('-')
+    assert Sign('+') != '-'
     p = Sign('+')
     n = Sign('-')
     assert repr(p) == 'Sign(+)'
@@ -45,9 +64,6 @@ def test_Sign():
     assert p.printed == '+'
     assert Sign(Number(-7)).printed == '-'
     assert Sign(Number('9.4')).printed == '+'
-    with pytest.raises(ValueError) as excinfo:
-        Sign('-4')
-    assert str(excinfo.value) == 'o must be \'+\', \'-\' or a Number.'
     assert repr(p * p) == 'Sign(+)'
     assert repr(n * n) == 'Sign(+)'
     assert repr(n * p) == 'Sign(-)'
@@ -58,9 +74,6 @@ def test_Sign():
     assert Number(-4) * n == Number(4)
     assert p.evaluate() == Number(1)
     assert n.evaluate() == Number(-1)
-    with pytest.raises(TypeError) as excinfo:
-        Sign('-') * '+'
-    assert str(excinfo.value) == 'Cannot multiply a Sign by a <class \'str\'>.'
 
 
 def test__repr__():
@@ -82,6 +95,9 @@ def test_operators_errors():
     with pytest.raises(TypeError) as excinfo:
         Sign('+') - Number(4)
     assert str(excinfo.value) == 'Cannot subtract a Sign and a Number'
+    with pytest.raises(TypeError) as excinfo:
+        8 * Sign('-')
+    assert str(excinfo.value) == 'Cannot multiply a Sign by a <class \'int\'>.'
 
 
 def test_operators():
@@ -156,6 +172,10 @@ def test_operators():
     assert isinstance(-n, Number)
     assert isinstance(+n, Number)
     assert isinstance(abs(n), Number)
+    assert Number(4) / Sign('-') == -4
+    assert Sign('-') / Number(4) == Number('-0.25')
+    assert Number(4) // Sign('-') == -4
+    assert Sign('-') // Number(4) == Number('0')
 
 
 def test_imprint_errors():
@@ -164,6 +184,11 @@ def test_imprint_errors():
         Number('8.6').imprint(variant='undefined')
     assert str(excinfo.value) == 'variant must belong to [\'latex\', ' \
         '\'user_input\']; got \'undefined\' instead.'
+
+
+def test_evaluate():
+    """Check evaluate() is correct."""
+    assert Number(4).evaluate() == Number(4)
 
 
 def test_imprint():

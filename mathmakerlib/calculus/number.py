@@ -180,18 +180,12 @@ class Number(Decimal, Signed, Printable, Evaluable):
         return Number(Decimal(self).__rfloordiv__(other))
 
     def __mod__(self, other, context=None):
-        if isinstance(other, Sign):
-            other = other.evaluate()
         return Number(Decimal(self).__mod__(other))
 
     def __rmod__(self, other, context=None):
-        if isinstance(other, Sign):
-            other = other.evaluate()
         return Number(Decimal(self).__rmod__(other))
 
     def __divmod__(self, other, context=None):
-        if isinstance(other, Sign):
-            other = other.evaluate()
         r = Decimal(self).__divmod__(other)
         return (Number(r[0]), Number(r[1]))
 
@@ -202,13 +196,9 @@ class Number(Decimal, Signed, Printable, Evaluable):
         return (Number(r[0]), Number(r[1]))
 
     def __pow__(self, other, context=None):
-        if isinstance(other, Sign):
-            other = other.evaluate()
         return Number(Decimal(self).__pow__(other))
 
     def __rpow__(self, other, context=None):
-        if isinstance(other, Sign):
-            other = other.evaluate()
         return Number(Decimal(self).__rpow__(other))
 
     def __neg__(self):
