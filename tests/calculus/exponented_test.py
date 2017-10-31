@@ -42,3 +42,7 @@ def test_exponented():
     assert Exponented(Number(3)).printed == '3'
     assert Exponented(Number(3), exponent=Number(2)).printed == '3^{2}'
     assert Exponented(Number(-3), exponent=Number(2)).printed == '(-3)^{2}'
+    assert Exponented(Number(3),
+                      exponent=Exponented(Number(6),
+                                          exponent=Number(2)))\
+        .printed == '3^{6^{2}}'
