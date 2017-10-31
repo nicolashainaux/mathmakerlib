@@ -21,7 +21,7 @@
 
 from . import core, calculus
 
-__version_info__ = (0, 1, 0)
+__version_info__ = (0, 2, 0)
 __dev__ = 0
 __patch_nb__ = 0
 __version__ = '.'.join(str(c) for c in __version_info__)
@@ -41,9 +41,9 @@ __contact__ = '{author} <{author_email}>'\
 __licence_info__ = '{lib_ref} is free software. Its license is '\
                    '{lib_license}.'
 __url_info__ = 'Further details on {lib_website}'
-__info__ = '{lib_name} {r}\nLicense: {l}\n{c} {contact}'\
+__info__ = '{lib_name} {r}\nLicense: {li}\n{c} {contact}'\
            .format(lib_name=__lib_name__,
-                   r=__release__, l=__licence__, c=__copyright__,
+                   r=__release__, li=__licence__, c=__copyright__,
                    contact=__contact__)
 
 __all__ = ['core', 'calculus', ]
