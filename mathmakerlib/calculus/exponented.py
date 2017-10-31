@@ -40,8 +40,9 @@ class Exponented(Printable):
     @content.setter
     def content(self, content):
         if not isinstance(content, Printable):
-            raise TypeError('The content of an Exponent must be a Printable'
-                            'object.')
+            raise TypeError('The content of an Exponented must be a Printable '
+                            'object. Got {} instead.'
+                            .format(str(type(content))))
         self._content = copy.deepcopy(content)
 
     @property
@@ -51,8 +52,9 @@ class Exponented(Printable):
     @exponent.setter
     def exponent(self, exponent):
         if not (exponent is None or isinstance(exponent, Printable)):
-            raise TypeError('The exponent of an Exponent must be either None '
-                            'or a Printable object.')
+            raise TypeError('The exponent of an Exponented must be either '
+                            'None or a Printable object. Got {} instead.'
+                            .format(str(type(exponent))))
         self._exponent = copy.deepcopy(exponent)
 
     def imprint(self, start_expr=True, variant='latex'):

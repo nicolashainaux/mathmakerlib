@@ -19,12 +19,26 @@
 # along with Mathmaker Lib; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
+import pytest
+
 from mathmakerlib.calculus.exponented import Exponented
 from mathmakerlib.calculus.number import Number
 
 
+def test_exponented_errors():
+    """Check initialization exceptions."""
+    with pytest.raises(TypeError) as excinfo:
+        Exponented('No Printable')
+    assert str(excinfo.value) == 'The content of an Exponented must be a ' \
+        'Printable object. Got <class \'str\'> instead.'
+    with pytest.raises(TypeError) as excinfo:
+        Exponented(Number(3), exponent='No Printable')
+    assert str(excinfo.value) == 'The exponent of an Exponented must be ' \
+        'either None or a Printable object. Got <class \'str\'> instead.'
+
+
 def test_exponented():
-    """Check initialization"""
+    """Check initialization."""
     assert Exponented(Number(3)).printed == '3'
     assert Exponented(Number(3), exponent=Number(2)).printed == '3^{2}'
     assert Exponented(Number(-3), exponent=Number(2)).printed == '(-3)^{2}'

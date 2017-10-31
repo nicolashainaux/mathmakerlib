@@ -68,6 +68,22 @@ def test__repr__():
     assert repr(Number('8.6')) == 'Number(\'8.6\')'
 
 
+def test_operators_errors():
+    """Check operators exceptions."""
+    with pytest.raises(TypeError) as excinfo:
+        Number(4) + Sign('+')
+    assert str(excinfo.value) == 'Cannot add a Sign and a Number'
+    with pytest.raises(TypeError) as excinfo:
+        Sign('+') + Number(4)
+    assert str(excinfo.value) == 'Cannot add a Sign and a Number'
+    with pytest.raises(TypeError) as excinfo:
+        Number(4) - Sign('+')
+    assert str(excinfo.value) == 'Cannot subtract a Sign and a Number'
+    with pytest.raises(TypeError) as excinfo:
+        Sign('+') - Number(4)
+    assert str(excinfo.value) == 'Cannot subtract a Sign and a Number'
+
+
 def test_operators():
     """Check +, -, ×, ÷ etc."""
     assert isinstance(Number(4) + Number(4), Number)

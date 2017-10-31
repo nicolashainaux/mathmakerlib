@@ -141,12 +141,12 @@ class Number(Decimal, Signed, Printable, Evaluable):
 
     def __sub__(self, other, context=None):
         if isinstance(other, Sign):
-            raise TypeError('Cannot subtrate a Sign and a Number')
+            raise TypeError('Cannot subtract a Sign and a Number')
         return Number(Decimal(self).__sub__(other))
 
     def __rsub__(self, other, context=None):
         if isinstance(other, Sign):
-            raise TypeError('Cannot subtrate a Sign and a Number')
+            raise TypeError('Cannot subtract a Sign and a Number')
         return Number(Decimal(self).__rsub__(other))
 
     def __mul__(self, other, context=None):
