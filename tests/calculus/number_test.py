@@ -34,8 +34,10 @@ LOCALE_US = 'en-US' if sys.platform.startswith('win') else 'en_US.UTF-8'
 LOCALE_FR = 'fr-FR' if sys.platform.startswith('win') else 'fr_FR.UTF-8'
 
 
-def test_sign():
+def test_Sign():
     """Check the Sign class"""
+    assert Sign('+') == '+'
+    assert Sign('-') == '-'
     p = Sign('+')
     n = Sign('-')
     assert repr(p) == 'Sign(+)'
@@ -157,6 +159,12 @@ def test_imprint():
     assert Number('8.6').uiprinted == '8.6'
     locale.setlocale(locale.LC_ALL, LOCALE_US)
     assert Number('8.6').imprint(start_expr=False) == '+8.6'
+
+
+def test_sign():
+    """Check Number.sign is correct."""
+    assert Number(4).sign == '+'
+    assert Number(-6).sign == '-'
 
 
 def test_is_number():

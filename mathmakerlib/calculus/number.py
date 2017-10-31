@@ -25,6 +25,7 @@ import random
 import warnings
 from decimal import Decimal, ROUND_DOWN, ROUND_HALF_UP
 
+from mathmakerlib.core.signed import Signed
 from mathmakerlib.core.printable import Printable
 from mathmakerlib.core.evaluable import Evaluable
 
@@ -61,6 +62,24 @@ class Sign(Printable, Evaluable):
     def __repr__(self):
         return 'Sign({})'.format(self.sign)
 
+    def __eq__(self, other):
+        if isinstance(other, Sign):
+            return self.sign == other.sign
+        elif other in ['+', '-']:
+            return self.sign == other
+        else:
+            raise TypeError('Cannot compare a Sign to {}.'
+                            .format(str(type(other))))
+
+    def __neq__(self, other):
+        if isinstance(other, Sign):
+            return self.sign != other.sign
+        elif other in ['+', '-']:
+            return self.sign != other
+        else:
+            raise TypeError('Cannot compare a Sign to {}.'
+                            .format(str(type(other))))
+
     def imprint(self, start_expr=True, variant='latex'):
         return self.sign
 
@@ -70,7 +89,7 @@ class Sign(Printable, Evaluable):
 
     @sign.setter
     def sign(self, o):
-        if o in ['+', '-']:
+        if o is '+' or o is '-':
             self._sign = o
         elif isinstance(o, Sign):
             self._sign = o._sign
@@ -107,7 +126,7 @@ class Sign(Printable, Evaluable):
             return Number(-1)
 
 
-class Number(Decimal, Printable, Evaluable):
+class Number(Decimal, Signed, Printable, Evaluable):
     """Extend Decimal with a bunch of useful methods."""
 
     def __add__(self, other, context=None):
@@ -220,6 +239,13 @@ class Number(Decimal, Printable, Evaluable):
 
     def evaluate(self, **kwargs):
         return self
+
+    @property
+    def sign(self):
+        if self < 0:
+            return Sign('-')
+        else:
+            return Sign('+')
 
     def standardized(self):
         """Turn 8.0 to 8 and 1E+1 to 10"""
