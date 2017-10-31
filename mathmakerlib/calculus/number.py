@@ -155,8 +155,6 @@ class Number(Decimal, Signed, Printable, Evaluable):
         return Number(Decimal(self).__mul__(other))
 
     def __rmul__(self, other, context=None):
-        if isinstance(other, Sign):
-            other = other.evaluate()
         return Number(Decimal(self).__rmul__(other))
 
     def __truediv__(self, other, context=None):
@@ -190,8 +188,6 @@ class Number(Decimal, Signed, Printable, Evaluable):
         return (Number(r[0]), Number(r[1]))
 
     def __rdivmod__(self, other, context=None):
-        if isinstance(other, Sign):
-            other = other.evaluate()
         r = Decimal(self).__rdivmod__(other)
         return (Number(r[0]), Number(r[1]))
 
