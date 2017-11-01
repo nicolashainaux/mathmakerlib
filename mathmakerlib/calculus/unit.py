@@ -65,4 +65,16 @@ class Unit(Exponented):
             raise TypeError('content must be a str or a Unit. Got {} instead.'
                             .format(str(type(content))))
 
-    # def __eq__(self, other):
+    def __eq__(self, other):
+        if not isinstance(other, Unit):
+            return False
+        else:
+            return (self.content == other.content
+                    and self.exponent == other.exponent)
+
+    def __ne__(self, other):
+        if not isinstance(other, Unit):
+            return True
+        else:
+            return not (self.content == other.content
+                        and self.exponent == other.exponent)

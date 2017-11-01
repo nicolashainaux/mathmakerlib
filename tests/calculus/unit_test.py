@@ -47,3 +47,10 @@ def test_Unit():
     assert Unit(u, exponent=Number(3)).printed == 'cm^{3}'
     u = Unit('cm', exponent=Number(2))
     assert Unit(u).printed == 'cm^{2}'
+    v = Unit('cm', exponent=Number(2))
+    assert u == v
+    w = Unit(v, exponent=Number(3))
+    assert v != w
+    w = Unit(v, exponent=Number(2))
+    assert v == w
+    assert u != 6
