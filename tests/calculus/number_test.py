@@ -196,8 +196,8 @@ def test_multiplications_errors():
         Number(6, unit=Unit('cm', exponent=Number(2))) \
             * Number(6, unit=Unit('dm', exponent=Number(3)))
     assert str(excinfo.value) == 'Cannot yet handle a ' \
-                                 'multiplication of Number(\'6 cm^{2}\') ' \
-                                 'by Number(\'6 dm^{3}\').'
+                                 'multiplication of Number(\'6 cm^2\') ' \
+                                 'by Number(\'6 dm^3\').'
 
 
 def test_multiplications():
@@ -257,8 +257,8 @@ def test_divisions_errors():
         Number(6, unit=Unit('cm', exponent=Number(2))) \
             / Number(6, unit=Unit('dm', exponent=Number(3)))
     assert str(excinfo.value) == 'Cannot yet handle a ' \
-                                 'division of Number(\'6 cm^{2}\') ' \
-                                 'by Number(\'6 dm^{3}\').'
+                                 'division of Number(\'6 cm^2\') ' \
+                                 'by Number(\'6 dm^3\').'
 
 
 def test_divisions():

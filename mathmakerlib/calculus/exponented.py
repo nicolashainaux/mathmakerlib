@@ -72,8 +72,12 @@ class Exponented(Printable):
             if isinstance(self.content, Signed) and self.content.sign == '-':
                 open_brace = '('
                 close_brace = ')'
+            open_curly = '{'
+            close_curly = '}'
+            if variant == 'user_input':
+                open_curly = close_curly = ''
             return open_brace \
                 + self.content.imprint(start_expr=start_expr, variant=variant)\
-                + close_brace + '^{' \
+                + close_brace + '^' + open_curly \
                 + self.exponent.imprint(start_expr=True, variant=variant) \
-                + '}'
+                + close_curly

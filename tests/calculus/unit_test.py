@@ -56,6 +56,12 @@ def test_Unit():
     assert u != 6
 
 
+def test_printing():
+    """Check printing."""
+    assert Unit('cm', exponent=Number(2)).uiprinted == 'cm^2'
+    assert Unit('cm', exponent=Number(2)).printed == 'cm^{2}'
+
+
 def test_repr():
     """Check __repr__."""
     assert repr(Unit('cm')) == 'Unit(\'cm\')'
