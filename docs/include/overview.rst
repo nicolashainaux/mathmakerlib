@@ -36,6 +36,30 @@ Basic use
     False
     >>> Number('0.001').is_power_of_10()
     True
+    >>>
+
+You can also play with units. Basic operations are available:
+
+::
+
+    >>> n = Number(4, unit='cm')
+    >>> n
+    Number('4 cm')
+    >>> str(n)
+    '4 cm'
+    >>> n.unit
+    Unit('cm')
+    >>> n.printed
+    '\\SI{4}{cm}'
+    >>> n + Number(6, unit='kg')
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in <module>
+      File "/home/nico/dev/mathmaker/mathmakerlib/mathmakerlib/calculus/number.py", line 177, in __add__
+        other_unit))
+    ValueError: Cannot add two Numbers having different Units (cm and kg).
+    >>> n * Number(6, unit='cm')
+    Number('24 cm^2')
+    >>>
 
 
 Contribute
