@@ -136,8 +136,7 @@ class Number(Decimal, Signed, Printable, Evaluable):
             unit = copy.deepcopy(value.unit)
         self = super().__new__(cls, value=value, context=context)
         self._unit = None
-        if unit is not None:
-            self.unit = unit
+        self.unit = unit
         return self
 
     def __eq__(self, other):

@@ -63,6 +63,8 @@ def test_Number_equality():
     assert Number(4, unit='cm') != 4
     assert Number(4) != Decimal(5)
     assert Number(4, unit='cm') != Decimal(4)
+    assert Number(4, unit='cm') != Number(5, unit='cm')
+    assert Number(4, unit='cm') != Number(4, unit='dm')
 
 
 def test_Sign_errors():
@@ -320,6 +322,9 @@ def test_divisions():
     n = Number(7, unit='cm')
     p = Number(4, unit=Unit('cm', exponent=Number(2)))
     assert n / p == Number('1.75', unit=Unit('cm', exponent=Number(-1)))
+    n = 7
+    p = Number(4, unit=Unit('cm', exponent=Number(2)))
+    assert n / p == Number('1.75', unit=Unit('cm', exponent=Number(-2)))
     n = Number(7, unit='cm')
     p = 4
     assert n / p == Number('1.75', unit='cm')
@@ -352,6 +357,7 @@ def test_imprint():
     assert Number('8.6').imprint(start_expr=False) == '+8.6'
     n = Number('9', unit='cm')
     assert n.printed == r'\SI{9}{cm}'
+    assert n.uiprinted == '9 cm'
 
 
 def test_sign():
