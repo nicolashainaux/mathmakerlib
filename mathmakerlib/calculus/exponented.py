@@ -33,6 +33,13 @@ class Exponented(Printable):
         self._exponent = None
         self.exponent = exponent
 
+    def __repr__(self):
+        if self.exponent is None:
+            return 'Exponented({})'.format(repr(self.content))
+        else:
+            return 'Exponented({}^{})'.format(repr(self.content),
+                                              repr(self.exponent))
+
     @property
     def content(self):
         return self._content

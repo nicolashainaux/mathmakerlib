@@ -37,6 +37,13 @@ def test_exponented_errors():
         'either None or a Printable object. Got <class \'str\'> instead.'
 
 
+def test_repr():
+    """Check __repr__."""
+    assert repr(Exponented(Number(3))) == 'Exponented(Number(\'3\'))'
+    assert repr(Exponented(Number(3), exponent=Number(4))) \
+        == 'Exponented(Number(\'3\')^Number(\'4\'))'
+
+
 def test_exponented():
     """Check initialization."""
     assert Exponented(Number(3)).printed == '3'

@@ -54,3 +54,9 @@ def test_Unit():
     w = Unit(v, exponent=Number(2))
     assert v == w
     assert u != 6
+
+
+def test_repr():
+    """Check __repr__."""
+    assert repr(Unit('cm')) == 'Unit(\'cm\')'
+    assert repr(Unit('cm', exponent=Number(2))) == 'Unit(\'cm\'^Number(\'2\'))'

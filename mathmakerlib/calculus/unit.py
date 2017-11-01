@@ -65,6 +65,9 @@ class Unit(Exponented):
             raise TypeError('content must be a str or a Unit. Got {} instead.'
                             .format(str(type(content))))
 
+    def __repr__(self):
+        return super().__repr__().replace('Exponented', 'Unit')
+
     def __eq__(self, other):
         if not isinstance(other, Unit):
             return False
