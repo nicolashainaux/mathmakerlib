@@ -346,7 +346,7 @@ def test_evaluate():
     assert Number(4).evaluate() == Number(4)
 
 
-def test_imprint():
+def test_printing():
     """Check printing is correct."""
     assert Number('8.6').printed == '8.6'
     locale.setlocale(locale.LC_ALL, LOCALE_FR)
@@ -358,6 +358,9 @@ def test_imprint():
     n = Number('9', unit='cm')
     assert n.printed == r'\SI{9}{cm}'
     assert n.uiprinted == '9 cm'
+    assert str(n) == '9 cm'
+    n = Number('9')
+    assert str(n) == '9'
 
 
 def test_sign():

@@ -317,8 +317,16 @@ class Number(Decimal, Signed, Printable, Evaluable):
     def __abs__(self):
         return Number(abs(Decimal(self)), unit=copy.deepcopy(self.unit))
 
+    def __str__(self):
+        basic_str = Decimal.__str__(self)
+        if self.unit is None:
+            return basic_str
+        else:
+            return basic_str + ' ' + self.unit.printed
+
     def __repr__(self):
-        basic_repr = repr(Decimal(str(self))).replace('Decimal', 'Number')
+        basic_repr = repr(Decimal(Decimal.__str__(self))).replace('Decimal',
+                                                                  'Number')
         if self.unit is None:
             return basic_repr
         else:
@@ -348,9 +356,9 @@ class Number(Decimal, Signed, Printable, Evaluable):
         if not start_expr and self >= 0:
             extra_sign = '+'
         if variant == 'latex':
-            self_str = locale.str(self)
+            self_str = locale.str(Decimal(self))
         elif variant == 'user_input':
-            self_str = str(self)
+            self_str = Decimal.__str__(self)
         else:
             raise ValueError('variant must belong to [\'latex\', '
                              '\'user_input\']; got \'{}\' instead.'
@@ -359,8 +367,8 @@ class Number(Decimal, Signed, Printable, Evaluable):
             return extra_sign + self_str
         else:
             if variant == 'latex':
-                return extra_sign + r'\SI{' + str(abs(self)) + '}' \
-                    '{' + self.unit.printed + '}'
+                return extra_sign + r'\SI{' + Decimal.__str__(abs(self)) \
+                    + '}{' + self.unit.printed + '}'
             else:  # 'user_input'
                 return extra_sign + self_str + ' ' + self.unit.printed
 
