@@ -28,6 +28,7 @@ from decimal import Decimal, ROUND_DOWN, ROUND_HALF_UP
 from mathmakerlib.core.signed import Signed
 from mathmakerlib.core.printable import Printable
 from mathmakerlib.core.evaluable import Evaluable
+from mathmakerlib.calculus.unit import Unit
 
 
 def is_number(n):
@@ -127,43 +128,158 @@ class Sign(Printable, Evaluable):
 class Number(Decimal, Signed, Printable, Evaluable):
     """Extend Decimal with a bunch of useful methods."""
 
+    # To keep immutability of Decimal, use __new__ not __init__
+    def __new__(cls, value='0', context=None, unit=None):
+        if isinstance(value, Sign):
+            value = value.evaluate()
+        if isinstance(value, Number) and unit is None:
+            unit = copy.deepcopy(value.unit)
+        self = super().__new__(cls, value=value, context=context)
+        self._unit = None
+        if unit is not None:
+            self.unit = unit
+        return self
+
+    def __eq__(self, other):
+        if self.unit is None:
+            return Decimal(self) == other
+        else:
+            if not isinstance(other, Number):
+                return False
+            else:
+                return (Decimal(self) == Decimal(other)
+                        and self.unit == other.unit)
+
+    def __ne__(self, other):
+        if self.unit is None:
+            return Decimal(self) != other
+        else:
+            if not isinstance(other, Number):
+                return True
+            else:
+                return not (Decimal(self) == Decimal(other)
+                            and self.unit == other.unit)
+
     def __add__(self, other, context=None):
         if isinstance(other, Sign):
             raise TypeError('Cannot add a Sign and a Number')
-        return Number(Decimal(self).__add__(other))
+        if not isinstance(other, Number):
+            other = Number(other)
+        if self.unit == other.unit:
+            return Number(Decimal(self).__add__(other), unit=self.unit)
+        else:
+            if hasattr(other, 'unit') and other.unit is not None:
+                other_unit = other.unit.printed
+            else:
+                other_unit = str(None)
+            raise ValueError('Cannot add two Numbers having different '
+                             'Units ({} and {}).'
+                             .format(self.unit.printed,
+                                     other_unit))
 
     def __radd__(self, other, context=None):
-        if isinstance(other, Sign):
-            raise TypeError('Cannot add a Sign and a Number')
-        return Number(Decimal(self).__radd__(other))
+        return self.__add__(other, context=context)
 
     def __sub__(self, other, context=None):
         if isinstance(other, Sign):
             raise TypeError('Cannot subtract a Sign and a Number')
-        return Number(Decimal(self).__sub__(other))
+        if not isinstance(other, Number):
+            other = Number(other)
+        if self.unit == other.unit:
+            return Number(Decimal(self).__sub__(other), unit=self.unit)
+        else:
+            if hasattr(other, 'unit') and other.unit is not None:
+                other_unit = other.unit.printed
+            else:
+                other_unit = str(None)
+            raise ValueError('Cannot subtract two Numbers having different '
+                             'Units ({} and {}).'
+                             .format(self.unit.printed,
+                                     other_unit))
 
     def __rsub__(self, other, context=None):
-        if isinstance(other, Sign):
-            raise TypeError('Cannot subtract a Sign and a Number')
-        return Number(Decimal(self).__rsub__(other))
+        return -self.__sub__(other, context=context)
 
     def __mul__(self, other, context=None):
         if isinstance(other, Sign):
             other = other.evaluate()
-        return Number(Decimal(self).__mul__(other))
+        other = Number(other)
+        u = None
+        if self.unit is None:
+            u = copy.deepcopy(other.unit)
+        elif other.unit is None:
+            u = copy.deepcopy(self.unit)
+        elif self.unit.content == other.unit.content:
+            if self.unit.exponent is None:
+                se = Number(1)
+            else:
+                se = Number(self.unit.exponent)
+            if other.unit.exponent is None:
+                oe = Number(1)
+            else:
+                oe = Number(other.unit.exponent)
+            u = Unit(self.unit.content, exponent=se + oe)
+        else:
+            if self.unit.exponent is None or self.unit.exponent == Number(1):
+                u = Unit(self.unit.content + '.' + other.unit.content,
+                         exponent=other.unit.exponent)
+            elif (other.unit.exponent is None
+                  or other.unit.exponent == Number(1)):
+                u = Unit(other.unit.content + '.' + self.unit.content,
+                         exponent=self.unit.exponent)
+            else:
+                raise NotImplementedError('Cannot yet handle a '
+                                          'multiplication of {} by {}.'
+                                          .format(repr(self), repr(other)))
+        return Number(Decimal(self).__mul__(other),
+                      unit=u)
 
     def __rmul__(self, other, context=None):
-        return Number(Decimal(self).__rmul__(other))
+        return self.__mul__(other, context=context)
 
     def __truediv__(self, other, context=None):
         if isinstance(other, Sign):
             other = other.evaluate()
-        return Number(Decimal(self).__truediv__(other))
+        other = Number(other)
+        u = None
+        if self.unit is None and other.unit is None:
+            u = None
+        elif self.unit is None:
+            u = copy.deepcopy(other.unit)
+            if u.exponent is None:
+                u.exponent = -Number(1)
+            else:
+                u.exponent = -u.exponent
+        elif other.unit is None:
+            u = copy.deepcopy(self.unit)
+        elif self.unit.content == other.unit.content:
+            if self.unit.exponent is None:
+                se = Number(1)
+            else:
+                se = Number(self.unit.exponent)
+            if other.unit.exponent is None:
+                oe = Number(1)
+            else:
+                oe = Number(other.unit.exponent)
+            if se == oe:
+                u = None
+            elif se - oe == Number(1):
+                u = Unit(self.unit.content, exponent=None)
+            else:
+                u = Unit(self.unit.content, exponent=se - oe)
+        else:
+            if ((self.unit.exponent is None or self.unit.exponent == Number(1))
+                and (other.unit.exponent is None
+                     or other.unit.exponent == Number(1))):
+                u = Unit(self.unit.content + '/' + other.unit.content)
+            else:
+                raise NotImplementedError('Cannot yet handle a '
+                                          'division of {} by {}.'
+                                          .format(repr(self), repr(other)))
+        return Number(Decimal(self).__truediv__(other), unit=u)
 
     def __rtruediv__(self, other, context=None):
-        if isinstance(other, Sign):
-            other = other.evaluate()
-        return Number(Decimal(self).__rtruediv__(other))
+        return Number.__truediv__(Number(other), self, context=context)
 
     def __floordiv__(self, other, context=None):
         if isinstance(other, Sign):
@@ -171,9 +287,7 @@ class Number(Decimal, Signed, Printable, Evaluable):
         return Number(Decimal(self).__floordiv__(other))
 
     def __rfloordiv__(self, other, context=None):
-        if isinstance(other, Sign):
-            other = other.evaluate()
-        return Number(Decimal(self).__rfloordiv__(other))
+        return Number.__floordiv__(Number(other), self, context=context)
 
     def __mod__(self, other, context=None):
         return Number(Decimal(self).__mod__(other))
@@ -196,16 +310,39 @@ class Number(Decimal, Signed, Printable, Evaluable):
         return Number(Decimal(self).__rpow__(other))
 
     def __neg__(self):
-        return Number(-Decimal(self))
+        return Number(-Decimal(self), unit=copy.deepcopy(self.unit))
 
     def __pos__(self):
-        return Number(+Decimal(self))
+        return Number(+Decimal(self), unit=copy.deepcopy(self.unit))
 
     def __abs__(self):
-        return Number(abs(Decimal(self)))
+        return Number(abs(Decimal(self)), unit=copy.deepcopy(self.unit))
 
     def __repr__(self):
-        return repr(Decimal(str(self))).replace('Decimal', 'Number')
+        basic_repr = repr(Decimal(str(self))).replace('Decimal', 'Number')
+        if self.unit is None:
+            return basic_repr
+        else:
+            return basic_repr.replace("')", " {}')"
+                                            .format(self.unit.uiprinted))
+
+    @property
+    def unit(self):
+        return self._unit
+
+    @unit.setter
+    def unit(self, u):
+        if u is None:
+            self._unit = None
+        else:
+            self._unit = Unit(u)
+
+    @property
+    def sign(self):
+        if self < 0:
+            return Sign('-')
+        else:
+            return Sign('+')
 
     def imprint(self, start_expr=True, variant='latex'):
         extra_sign = ''
@@ -219,17 +356,17 @@ class Number(Decimal, Signed, Printable, Evaluable):
             raise ValueError('variant must belong to [\'latex\', '
                              '\'user_input\']; got \'{}\' instead.'
                              .format(variant))
-        return extra_sign + self_str
+        if self.unit is None:
+            return extra_sign + self_str
+        else:
+            if variant == 'latex':
+                return extra_sign + r'\SI{' + str(abs(self)) + '}' \
+                    '{' + self.unit.printed + '}'
+            else:  # 'user_input'
+                return extra_sign + self_str + ' ' + self.unit.printed
 
     def evaluate(self, **kwargs):
         return self
-
-    @property
-    def sign(self):
-        if self < 0:
-            return Sign('-')
-        else:
-            return Sign('+')
 
     def standardized(self):
         """Turn 8.0 to 8 and 1E+1 to 10"""

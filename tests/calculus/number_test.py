@@ -24,6 +24,10 @@ import locale
 import pytest
 from decimal import Decimal, ROUND_HALF_UP
 
+from mathmakerlib.core.signed import Signed
+from mathmakerlib.core.printable import Printable
+from mathmakerlib.core.evaluable import Evaluable
+from mathmakerlib.calculus.unit import Unit
 from mathmakerlib.calculus.number import Number, Sign
 from mathmakerlib.calculus.number import is_number, is_integer, is_natural
 from mathmakerlib.calculus.number import move_fracdigits_to
@@ -32,6 +36,33 @@ from mathmakerlib.calculus.number import fix_fracdigits
 
 LOCALE_US = 'en-US' if sys.platform.startswith('win') else 'en_US.UTF-8'
 LOCALE_FR = 'fr-FR' if sys.platform.startswith('win') else 'fr_FR.UTF-8'
+
+
+def test_Number_inheritance():
+    """Check Number is instance of..."""
+    assert isinstance(Number(4), Decimal)
+    assert isinstance(Number(4), Signed)
+    assert isinstance(Number(4), Printable)
+    assert isinstance(Number(4), Evaluable)
+
+
+def test_Number_instanciation():
+    """Check Number instanciations."""
+    assert Number(Number(4)).unit is None
+    assert Number(Number(4, unit='cm')).unit == Unit('cm')
+    assert Number(Number(4), unit='cm').unit == Unit('cm')
+    assert Number(Number(4, unit='dm'), unit='cm').unit == Unit('cm')
+    assert Number(4, unit='cm').unit == Unit('cm')
+
+
+def test_Number_equality():
+    """Check Number __eq__ and __ne__."""
+    assert Number(4) == Decimal(4)
+    assert Number(4) == 4
+    assert not (Number(4, unit='cm') == 4)
+    assert Number(4, unit='cm') != 4
+    assert Number(4) != Decimal(5)
+    assert Number(4, unit='cm') != Decimal(4)
 
 
 def test_Sign_errors():
@@ -75,38 +106,161 @@ def test_Sign():
 def test__repr__():
     """Check __repr__ is correct."""
     assert repr(Number('8.6')) == 'Number(\'8.6\')'
+    assert repr(Number('8.6', unit='cm')) == 'Number(\'8.6 cm\')'
 
 
-def test_operators_errors():
-    """Check operators exceptions."""
+def test_additions_errors():
+    """Check additions exceptions."""
     with pytest.raises(TypeError) as excinfo:
         Number(4) + Sign('+')
     assert str(excinfo.value) == 'Cannot add a Sign and a Number'
+
     with pytest.raises(TypeError) as excinfo:
         Sign('+') + Number(4)
     assert str(excinfo.value) == 'Cannot add a Sign and a Number'
+
+    with pytest.raises(ValueError) as excinfo:
+        Number(4, unit='cm') + Number(4)
+    assert str(excinfo.value) == 'Cannot add two Numbers having different ' \
+        'Units (cm and None).'
+
+    with pytest.raises(ValueError) as excinfo:
+        Number(4, unit='cm') + Number(4, unit='dm')
+    assert str(excinfo.value) == 'Cannot add two Numbers having different ' \
+        'Units (cm and dm).'
+
+
+def test_additions():
+    """Check __add__, __radd__, __iadd__, __abs__, __pos__."""
+    assert isinstance(Number(4) + Number(4), Number)
+    assert isinstance(4 + Number(4), Number)
+    assert isinstance(Number(4) + 4, Number)
+    n = Number(4)
+    n += Number(1)
+    assert isinstance(n, Number)
+    n += 1
+    assert isinstance(n, Number)
+    assert isinstance(abs(n), Number)
+    assert isinstance(+n, Number)
+    assert Number(7, unit='cm') + Number(8, unit='cm') == Number(15, unit='cm')
+    n = Number(-5, unit='cm')
+    assert +n == n
+    assert -n == Number(5, unit='cm')
+    assert abs(n) == Number(5, unit='cm')
+
+
+def test_subtractions_errors():
+    """Check subtractions exceptions."""
     with pytest.raises(TypeError) as excinfo:
         Number(4) - Sign('+')
     assert str(excinfo.value) == 'Cannot subtract a Sign and a Number'
+
     with pytest.raises(TypeError) as excinfo:
         Sign('+') - Number(4)
     assert str(excinfo.value) == 'Cannot subtract a Sign and a Number'
+
+    with pytest.raises(ValueError) as excinfo:
+        Number(4, unit='cm') - Number(4)
+    assert str(excinfo.value) == 'Cannot subtract two Numbers having ' \
+        'different Units (cm and None).'
+
+    with pytest.raises(ValueError) as excinfo:
+        Number(4, unit='cm') - Number(4, unit='dm')
+    assert str(excinfo.value) == 'Cannot subtract two Numbers having ' \
+        'different Units (cm and dm).'
+
+
+def test_subtractions():
+    """Check __sub__, __rsub__, __isub__, __neg__."""
+    assert isinstance(Number(4) - Number(4), Number)
+    assert isinstance(4 - Number(4), Number)
+    assert isinstance(Number(4) - 4, Number)
+    n = Number(4)
+    n -= Number(1)
+    assert isinstance(n, Number)
+    n -= 1
+    assert isinstance(n, Number)
+    assert isinstance(-n, Number)
+    assert Number(9, unit='cm') - Number(3, unit='cm') == Number(6, unit='cm')
+
+
+def test_multiplications_errors():
+    """Check subtractions exceptions."""
     with pytest.raises(TypeError) as excinfo:
         8 * Sign('-')
     assert str(excinfo.value) == 'Cannot multiply a Sign by a <class \'int\'>.'
 
+    with pytest.raises(NotImplementedError) as excinfo:
+        Number(6, unit=Unit('cm', exponent=Number(2))) \
+            * Number(6, unit=Unit('dm', exponent=Number(3)))
+    assert str(excinfo.value) == 'Cannot yet handle a ' \
+                                 'multiplication of Number(\'6 cm^{2}\') ' \
+                                 'by Number(\'6 dm^{3}\').'
 
-def test_operators():
-    """Check +, -, ×, ÷ etc."""
-    assert isinstance(Number(4) + Number(4), Number)
-    assert isinstance(4 + Number(4), Number)
-    assert isinstance(Number(4) + 4, Number)
-    assert isinstance(Number(4) - Number(4), Number)
-    assert isinstance(4 - Number(4), Number)
-    assert isinstance(Number(4) - 4, Number)
+
+def test_multiplications():
+    """Check __mul__, __rmul__, __imul__."""
     assert isinstance(Number(4) * Number(4), Number)
     assert isinstance(4 * Number(4), Number)
     assert isinstance(Number(4) * 4, Number)
+    n = Number(4)
+    n *= Number(4)
+    n *= 4
+    assert isinstance(n, Number)
+    n = Number(6, unit='cm')
+    p = Number(7)
+    assert n * p == Number(42, unit='cm')
+    n = Number(6)
+    p = Number(7, unit='cm')
+    assert n * p == Number(42, unit='cm')
+    n = Number(6, unit='cm')
+    p = Number(7, unit='cm')
+    assert n * p == Number(42, unit=Unit('cm', exponent=Number(2)))
+    n = Number(6, unit='cm')
+    p = Number(7, unit=Unit('cm', exponent=Number(2)))
+    assert n * p == Number(42, unit=Unit('cm', exponent=Number(3)))
+    n = Number(6, unit=Unit('cm', exponent=Number(2)))
+    p = Number(7, unit='cm')
+    assert n * p == Number(42, unit=Unit('cm', exponent=Number(3)))
+    n = Number(6, unit='W')
+    p = Number(7, unit='h')
+    assert n * p == Number(42, unit=Unit('W.h'))
+    n = Number(6, unit='cm')
+    p = Number(7, unit=Unit('h', exponent=Number(2)))
+    assert n * p == Number(42, unit=Unit('cm.h', exponent=Number(2)))
+    assert (n * p).printed == r'\SI{42}{cm.h^{2}}'
+    n = Number(6, unit=Unit('cm', exponent=Number(2)))
+    p = Number(7, unit='h')
+    assert n * p == Number(42, unit=Unit('h.cm', exponent=Number(2)))
+
+
+def test_power():
+    """Check __pow__, __rpow__, __ipow__."""
+    assert isinstance(pow(Number(4), Number(4)), Number)
+    assert isinstance(pow(4, Number(4)), Number)
+    assert isinstance(pow(Number(4), 4), Number)
+    assert isinstance(Number(4) ** Number(4), Number)
+    assert isinstance(4 ** Number(4), Number)
+    assert isinstance(Number(4) ** 4, Number)
+    n = Number(4)
+    n **= Number(4)
+    assert isinstance(n, Number)
+    n **= 4
+    assert isinstance(n, Number)
+
+
+def test_divisions_errors():
+    """Check divisions exceptions."""
+    with pytest.raises(NotImplementedError) as excinfo:
+        Number(6, unit=Unit('cm', exponent=Number(2))) \
+            / Number(6, unit=Unit('dm', exponent=Number(3)))
+    assert str(excinfo.value) == 'Cannot yet handle a ' \
+                                 'division of Number(\'6 cm^{2}\') ' \
+                                 'by Number(\'6 dm^{3}\').'
+
+
+def test_divisions():
+    """Check __truediv__, __floordiv__, __mod__, __divmod__ + their __r*__."""
     assert isinstance(Number(4) / Number(4), Number)
     assert isinstance(4 / Number(4), Number)
     assert isinstance(Number(4) / 4, Number)
@@ -125,18 +279,7 @@ def test_operators():
     assert divmod(Number(42), 15) == (Number('2'), Number('12'))
     assert isinstance(divmod(Number(42), 15)[0], Number)
     assert isinstance(divmod(Number(42), 15)[1], Number)
-    assert isinstance(pow(Number(4), Number(4)), Number)
-    assert isinstance(pow(4, Number(4)), Number)
-    assert isinstance(pow(Number(4), 4), Number)
-    assert isinstance(Number(4) ** Number(4), Number)
-    assert isinstance(4 ** Number(4), Number)
-    assert isinstance(Number(4) ** 4, Number)
     n = Number(4)
-    n += Number(1)
-    assert isinstance(n, Number)
-    n -= Number(1)
-    assert isinstance(n, Number)
-    n *= Number(4)
     assert isinstance(n, Number)
     n /= Number(4)
     assert isinstance(n, Number)
@@ -146,15 +289,7 @@ def test_operators():
     n = Number(256)
     n %= Number(3)
     assert isinstance(n, Number)
-    n **= Number(4)
-    assert isinstance(n, Number)
     n = Number(4)
-    n += 1
-    assert isinstance(n, Number)
-    n -= 1
-    assert isinstance(n, Number)
-    n *= 4
-    assert isinstance(n, Number)
     n /= 4
     assert isinstance(n, Number)
     n = Number(256)
@@ -163,15 +298,34 @@ def test_operators():
     n = Number(256)
     n %= 3
     assert isinstance(n, Number)
-    n **= 4
-    assert isinstance(n, Number)
-    assert isinstance(-n, Number)
-    assert isinstance(+n, Number)
-    assert isinstance(abs(n), Number)
     assert Number(4) / Sign('-') == -4
     assert Sign('-') / Number(4) == Number('-0.25')
     assert Number(4) // Sign('-') == -4
     assert Sign('-') // Number(4) == Number('0')
+    n = Number(7, unit='cm')
+    p = Number(4)
+    assert n / p == Number('1.75', unit='cm')
+    n = Number(7)
+    p = Number(4, unit='cm')
+    assert n / p == Number('1.75', unit=Unit('cm', exponent=Number(-1)))
+    n = Number(7, unit='cm')
+    p = Number(4, unit='cm')
+    assert n / p == Number('1.75')
+    n = Number(7, unit='km')
+    p = Number(4, unit='h')
+    assert n / p == Number('1.75', unit='km/h')
+    n = Number(7, unit=Unit('cm', exponent=Number(2)))
+    p = Number(4, unit='cm')
+    assert n / p == Number('1.75', unit='cm')
+    n = Number(7, unit='cm')
+    p = Number(4, unit=Unit('cm', exponent=Number(2)))
+    assert n / p == Number('1.75', unit=Unit('cm', exponent=Number(-1)))
+    n = Number(7, unit='cm')
+    p = 4
+    assert n / p == Number('1.75', unit='cm')
+    n = 7
+    p = Number(4, unit='cm')
+    assert n / p == Number('1.75', unit=Unit('cm', exponent=Number(-1)))
 
 
 def test_imprint_errors():
@@ -196,6 +350,8 @@ def test_imprint():
     assert Number('8.6').uiprinted == '8.6'
     locale.setlocale(locale.LC_ALL, LOCALE_US)
     assert Number('8.6').imprint(start_expr=False) == '+8.6'
+    n = Number('9', unit='cm')
+    assert n.printed == r'\SI{9}{cm}'
 
 
 def test_sign():
