@@ -19,11 +19,31 @@
 # along with Mathmaker Lib; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
+import pytest
+
 from mathmakerlib.calculus.unit import Unit
 from mathmakerlib.calculus.number import Number
 
 
+def test_Unit_errors():
+    """Check the Unit class exceptions."""
+    with pytest.raises(TypeError) as excinfo:
+        Unit(6)
+    assert str(excinfo.value) == 'content must be a str or a Unit. ' \
+        'Got <class \'int\'> instead.'
+    with pytest.raises(TypeError) as excinfo:
+        Unit('cm', exponent=2)
+    assert str(excinfo.value) == 'The exponent of an Exponented must be ' \
+        'either None or a Printable object. Got <class \'int\'> instead.'
+
+
 def test_Unit():
-    """Check the Word class"""
+    """Check the Unit class."""
     assert Unit('cm').printed == 'cm'
     assert Unit('cm', exponent=Number(2)).printed == 'cm^{2}'
+    u = Unit('cm')
+    assert Unit(u).printed == 'cm'
+    assert Unit(u, exponent=Number(2)).printed == 'cm^{2}'
+    assert Unit(u, exponent=Number(3)).printed == 'cm^{3}'
+    u = Unit('cm', exponent=Number(2))
+    assert Unit(u).printed == 'cm^{2}'

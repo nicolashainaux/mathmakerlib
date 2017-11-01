@@ -19,6 +19,8 @@
 # along with Mathmaker Lib; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
+import copy
+
 from mathmakerlib.core.word import Word
 from mathmakerlib.calculus.exponented import Exponented
 
@@ -49,4 +51,18 @@ UNIT_KINDS = {'length': COMMON_LENGTH_UNITS,
 class Unit(Exponented):
 
     def __init__(self, content, exponent=None):
-        Exponented.__init__(self, Word(content), exponent=exponent)
+        if isinstance(content, str):
+            Exponented.__init__(self, Word(content),
+                                exponent=copy.deepcopy(exponent))
+        elif isinstance(content, Unit):
+            if exponent is None:
+                Exponented.__init__(self, copy.deepcopy(content.content),
+                                    exponent=copy.deepcopy(content.exponent))
+            else:
+                Exponented.__init__(self, copy.deepcopy(content.content),
+                                    exponent=copy.deepcopy(exponent))
+        else:
+            raise TypeError('content must be a str or a Unit. Got {} instead.'
+                            .format(str(type(content))))
+
+    # def __eq__(self, other):
