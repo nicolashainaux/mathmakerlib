@@ -40,6 +40,12 @@ class Exponented(Printable):
             return 'Exponented({}^{})'.format(repr(self.content),
                                               repr(self.exponent))
 
+    def __str__(self):
+        if self.exponent is not None:
+            return str(self.content) + '^' + str(self.exponent)
+        else:
+            return str(self.content)
+
     @property
     def content(self):
         return self._content

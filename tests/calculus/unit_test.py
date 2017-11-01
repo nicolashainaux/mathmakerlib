@@ -60,6 +60,8 @@ def test_printing():
     """Check printing."""
     assert Unit('cm', exponent=Number(2)).uiprinted == 'cm^2'
     assert Unit('cm', exponent=Number(2)).printed == 'cm^{2}'
+    assert str(Unit('cm')) == 'cm'
+    assert str(Unit('cm', exponent=Number(2))) == 'cm^2'
 
 
 def test_repr():
