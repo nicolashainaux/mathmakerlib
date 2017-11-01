@@ -68,8 +68,7 @@ class Sign(Printable, Evaluable):
         elif other in ['+', '-']:
             return self.sign == other
         else:
-            raise TypeError('Cannot compare a Sign to {}.'
-                            .format(str(type(other))))
+            return False
 
     def __ne__(self, other):
         if isinstance(other, Sign):
@@ -77,8 +76,7 @@ class Sign(Printable, Evaluable):
         elif other in ['+', '-']:
             return self.sign != other
         else:
-            raise TypeError('Cannot compare a Sign to {}.'
-                            .format(str(type(other))))
+            return True
 
     def imprint(self, start_expr=True, variant='latex'):
         return self.sign

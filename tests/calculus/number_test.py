@@ -40,12 +40,6 @@ def test_Sign_errors():
         Sign('-4')
     assert str(excinfo.value) == 'o must be \'+\', \'-\' or a Number.'
     with pytest.raises(TypeError) as excinfo:
-        Sign('+') == 8
-    assert str(excinfo.value) == 'Cannot compare a Sign to <class \'int\'>.'
-    with pytest.raises(TypeError) as excinfo:
-        Sign('+') != 8
-    assert str(excinfo.value) == 'Cannot compare a Sign to <class \'int\'>.'
-    with pytest.raises(TypeError) as excinfo:
         Sign('-') * '+'
     assert str(excinfo.value) == 'Cannot multiply a Sign by a <class \'str\'>.'
 
@@ -57,6 +51,8 @@ def test_Sign():
     assert Sign('+') == Sign('+')
     assert Sign('+') != Sign('-')
     assert Sign('+') != '-'
+    assert not (Sign('+') == 8)
+    assert Sign('+') != 8
     p = Sign('+')
     n = Sign('-')
     assert repr(p) == 'Sign(+)'
