@@ -21,8 +21,16 @@
 
 import pytest
 
-from mathmakerlib.calculus.unit import Unit
+from mathmakerlib.calculus.unit import Unit, physical_quantity
 from mathmakerlib.calculus.number import Number
+
+
+def test_physical_quantity():
+    """Check physical_quantity()"""
+    assert physical_quantity('mm') == 'length'
+    assert physical_quantity('hL') == 'capacity'
+    assert physical_quantity('pg') == 'mass'
+    assert physical_quantity('undefined') is None
 
 
 def test_Unit_errors():

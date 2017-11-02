@@ -48,6 +48,19 @@ UNIT_KINDS = {'length': COMMON_LENGTH_UNITS,
               'currency': CURRENCY_UNITS}
 
 
+def physical_quantity(u):
+    """
+    Return the physical quantity matching the given unit.
+
+    :parem u: the unit
+    :type u: str or Unit
+    """
+    for pq in PHYSICAL_QUANTITIES:
+        if u in PHYSICAL_QUANTITIES[pq]:
+            return pq
+    return None
+
+
 class Unit(Exponented):
 
     def __init__(self, content, exponent=None):
