@@ -1,6 +1,11 @@
 Changelog
 =========
 
+Version 0.2.1 (2017-11-02)
+--------------------------
+
+* Bring back Numbers' hashability.
+
 Version 0.2 (2017-11-01)
 ------------------------
 

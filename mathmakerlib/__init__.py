@@ -21,7 +21,7 @@
 
 from . import core, calculus
 
-__version_info__ = (0, 2, 0)
+__version_info__ = (0, 2, 1)
 __dev__ = 0
 __patch_nb__ = 0
 __version__ = '.'.join(str(c) for c in __version_info__)
