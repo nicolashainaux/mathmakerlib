@@ -1,6 +1,11 @@
 Changelog
 =========
 
+Version 0.2.2 (2017-11-02)
+--------------------------
+
+* Add physical_quantity() in unit module.
+
 Version 0.2.1 (2017-11-02)
 --------------------------
 
