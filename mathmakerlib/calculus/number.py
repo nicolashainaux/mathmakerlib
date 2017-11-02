@@ -139,6 +139,9 @@ class Number(Decimal, Signed, Printable, Evaluable):
         self.unit = unit
         return self
 
+    def __hash__(self):
+        return hash(Decimal(self))
+
     def __eq__(self, other):
         if self.unit is None:
             return Decimal(self) == other

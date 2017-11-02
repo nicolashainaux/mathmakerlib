@@ -67,6 +67,13 @@ def test_Number_equality():
     assert Number(4, unit='cm') != Number(4, unit='dm')
 
 
+def test_Number_hashability():
+    """Check Number is hashable."""
+    hash(Number(7))
+    hash(Number('8.5'))
+    hash(Number('8.5', unit='cm'))
+
+
 def test_Sign_errors():
     """Check the Sign class exceptions."""
     with pytest.raises(ValueError) as excinfo:
