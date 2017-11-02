@@ -25,6 +25,7 @@ import random
 import warnings
 from decimal import Decimal, ROUND_DOWN, ROUND_HALF_UP
 
+from mathmakerlib import pkg_required
 from mathmakerlib.core.signed import Signed
 from mathmakerlib.core.printable import Printable
 from mathmakerlib.core.evaluable import Evaluable
@@ -370,6 +371,7 @@ class Number(Decimal, Signed, Printable, Evaluable):
             return extra_sign + self_str
         else:
             if variant == 'latex':
+                pkg_required.siunitx = True
                 return extra_sign + r'\SI{' + Decimal.__str__(abs(self)) \
                     + '}{' + self.unit.printed + '}'
             else:  # 'user_input'

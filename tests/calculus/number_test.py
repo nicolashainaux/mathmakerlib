@@ -24,6 +24,7 @@ import locale
 import pytest
 from decimal import Decimal, ROUND_HALF_UP
 
+from mathmakerlib import pkg_required
 from mathmakerlib.core.signed import Signed
 from mathmakerlib.core.printable import Printable
 from mathmakerlib.core.evaluable import Evaluable
@@ -340,7 +341,7 @@ def test_divisions():
     assert n / p == Number('1.75', unit=Unit('cm', exponent=Number(-1)))
 
 
-def test_imprint_errors():
+def test_printing_errors():
     """Check exceptions raised by self.imprint()."""
     with pytest.raises(ValueError) as excinfo:
         Number('8.6').imprint(variant='undefined')
@@ -362,8 +363,10 @@ def test_printing():
     assert Number('8.6').uiprinted == '8.6'
     locale.setlocale(locale.LC_ALL, LOCALE_US)
     assert Number('8.6').imprint(start_expr=False) == '+8.6'
+    pkg_required.siunitx = False
     n = Number('9', unit='cm')
     assert n.printed == r'\SI{9}{cm}'
+    assert pkg_required.siunitx
     assert n.uiprinted == '9 cm'
     assert str(n) == '9 cm'
     n = Number('9')
