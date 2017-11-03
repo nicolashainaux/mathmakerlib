@@ -33,8 +33,13 @@ class Drawable(object, metaclass=ABCMeta):
         pkg_required.tikz = True
         return r"""
 \begin{{tikzpicture}}{header}
+% Definitions
 {definition}
+
+% Drawing
 {drawing}
+
+% Labels
 {label}
 \end{{tikzpicture}}
 """.format(header=self.tikz_header(**kwargs),
