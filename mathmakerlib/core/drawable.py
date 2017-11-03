@@ -26,9 +26,13 @@ from mathmakerlib import pkg_required
 
 class Drawable(object, metaclass=ABCMeta):
 
-    def draw(self, **kwargs):
+    def draw(self):
         """
         Return the LaTeX (tikz) string of the object.
+
+        The drawing must be made based on the object's properties, no extra
+        argument is required. First, setup the object (at initialization, or
+        modify it later), once it's ready, draw it.
         """
         pkg_required.tikz = True
         return r"""
@@ -42,12 +46,12 @@ class Drawable(object, metaclass=ABCMeta):
 % Labels
 {label}
 \end{{tikzpicture}}
-""".format(header=self.tikz_header(**kwargs),
-           definition=self.tikz_definition(**kwargs),
-           drawing=self.tikz_draw(**kwargs),
-           label=self.tikz_label(**kwargs))
+""".format(header=self.tikz_header(),
+           definition=self.tikz_definition(),
+           drawing=self.tikz_draw(),
+           label=self.tikz_label())
 
-    def tikz_header(self, **kwargs):
+    def tikz_header(self):
         r"""
         Can be overriden to defined some setup here.
 
@@ -57,15 +61,15 @@ class Drawable(object, metaclass=ABCMeta):
         return ''
 
     @abstractmethod
-    def tikz_definition(self, **kwargs):
+    def tikz_definition(self):
         """Return the necessary definitions (e. g. Points)."""
 
     @abstractmethod
-    def tikz_draw(self, **kwargs):
+    def tikz_draw(self):
         """Return the command to actually draw the object."""
 
     @abstractmethod
-    def tikz_label(self, **kwargs):
+    def tikz_label(self):
         """Return the command to write the object's label."""
 
     @property

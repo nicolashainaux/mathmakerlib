@@ -64,18 +64,6 @@ def test_drawing():
 \draw (A) node[below] {A};
 \end{tikzpicture}
 """
-    assert p.draw(label_position='above') == r"""
-\begin{tikzpicture}
-% Definitions
-\coordinate (A) at (0,0);
-
-% Drawing
-\draw (A) node {$\times$};
-
-% Labels
-\draw (A) node[above] {A};
-\end{tikzpicture}
-"""
     p.label_position = None
     assert p.drawn == r"""
 \begin{tikzpicture}

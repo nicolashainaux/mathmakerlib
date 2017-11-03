@@ -127,27 +127,24 @@ class Point(Drawable):
         else:
             self._label_position = str(other)
 
-    def tikz_definition(self, **kwargs):
+    def tikz_definition(self):
         """Return the Point definition."""
         return r'\coordinate ({}) at ({},{});'\
             .format(self.name, self.x, self.y)
 
-    def tikz_draw(self, **kwargs):
+    def tikz_draw(self):
         """Return the command to actually draw the Point."""
         return r'\draw ({}) node {};'\
             .format(self.name, '{' + self.shape + '}')
 
-    def tikz_label(self, label_position=None, **kwargs):
+    def tikz_label(self):
         """Return the command to write the Point's label."""
         if self.label is None:
             return ''
         else:
-            if label_position is None:
-                if self.label_position is None:
-                    label_position = ''
-                else:
-                    label_position = '[' + self.label_position + ']'
+            if self.label_position is None:
+                label_position = ''
             else:
-                label_position = '[' + label_position + ']'
+                label_position = '[' + self.label_position + ']'
             return r'\draw ({}) node{} {};'\
                 .format(self.label, label_position, '{' + self.label + '}')
