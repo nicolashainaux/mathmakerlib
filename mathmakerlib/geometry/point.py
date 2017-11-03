@@ -101,17 +101,6 @@ class Point(Drawable):
         self._shape = str(other)
 
     @property
-    def label(self):
-        return self._label
-
-    @label.setter
-    def label(self, other):
-        if other in ['', None]:
-            self._label = None
-        else:
-            self._label = str(other)
-
-    @property
     def label_position(self):
         return self._label_position
 

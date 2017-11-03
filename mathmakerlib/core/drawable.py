@@ -78,5 +78,8 @@ class Drawable(object, metaclass=ABCMeta):
         return self._label
 
     @label.setter
-    def label(self, L):
-        self._label = str(L)
+    def label(self, other):
+        if other in ['', None]:
+            self._label = None
+        else:
+            self._label = str(other)
