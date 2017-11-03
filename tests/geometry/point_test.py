@@ -27,7 +27,11 @@ def test_instanciation():
     p = Point('A', 0, 0)
     assert Point(p) == p
     assert p.x == p.y == 0
+    assert p.name == 'A'
     assert p.label == 'A'
+    p = Point('A', 0, 0, label='?')
+    assert p.name == 'A'
+    assert p.label == '?'
 
 
 def test_repr():
@@ -46,23 +50,64 @@ def test_drawing():
     p = Point('A', 0, 0)
     assert p.drawn == r"""
 \begin{tikzpicture}
+% Definitions
 \coordinate (A) at (0,0);
+
+% Drawing
 \draw (A) node {$\times$};
+
+% Labels
 \draw (A) node[below] {A};
 \end{tikzpicture}
 """
     assert p.draw(label_position='above') == r"""
 \begin{tikzpicture}
+% Definitions
 \coordinate (A) at (0,0);
+
+% Drawing
 \draw (A) node {$\times$};
+
+% Labels
 \draw (A) node[above] {A};
 \end{tikzpicture}
 """
     p.label_position = None
     assert p.drawn == r"""
 \begin{tikzpicture}
+% Definitions
 \coordinate (A) at (0,0);
+
+% Drawing
 \draw (A) node {$\times$};
+
+% Labels
 \draw (A) node {A};
+\end{tikzpicture}
+"""
+    p.label = ''
+    assert p.drawn == r"""
+\begin{tikzpicture}
+% Definitions
+\coordinate (A) at (0,0);
+
+% Drawing
+\draw (A) node {$\times$};
+
+% Labels
+
+\end{tikzpicture}
+"""
+    p.label = None
+    assert p.drawn == r"""
+\begin{tikzpicture}
+% Definitions
+\coordinate (A) at (0,0);
+
+% Drawing
+\draw (A) node {$\times$};
+
+% Labels
+
 \end{tikzpicture}
 """
