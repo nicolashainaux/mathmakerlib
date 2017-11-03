@@ -41,8 +41,12 @@ def test_repr():
 
 def test_equality():
     """Check __eq__ and __ne__ are correct."""
-    assert Point('A', 0, 0) == Point('A', 0, 0, shape=r'$\bullet$')
-    assert Point('A', 0, 0) != Point('B', 0, 0)
+    p = Point('A', 0, 0)
+    assert p != 'A'
+    assert not(p == 0)
+    assert p == Point('A', 0, 0, shape=r'$\bullet$')
+    assert p != Point('B', 0, 0)
+    assert p == Point('A', 0, 0, label='?')
 
 
 def test_drawing():

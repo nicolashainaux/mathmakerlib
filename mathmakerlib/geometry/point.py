@@ -61,12 +61,18 @@ class Point(Drawable):
         return 'Point {}({}; {})'.format(self.name, self.x, self.y)
 
     def __eq__(self, other):
-        return all([self.x == other.x, self.y == other.y,
-                    self.label == other.label])
+        if isinstance(other, Point):
+            return all([self.x == other.x, self.y == other.y,
+                        self.name == other.name])
+        else:
+            return False
 
     def __ne__(self, other):
-        return any([self.x != other.x, self.y != other.y,
-                    self.label != other.label])
+        if isinstance(other, Point):
+            return any([self.x != other.x, self.y != other.y,
+                        self.name != other.name])
+        else:
+            return True
 
     @property
     def name(self):
