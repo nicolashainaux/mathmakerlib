@@ -36,6 +36,16 @@ class Point(Drawable):
         :type x: anything that can be turned to a Number
         :param y: the Point's ordinate
         :type y: anything that can be turned to a Number
+        :param shape: the symbol that will be drawn at the Point's position.
+        Default value is '$\times$', what draws a cross.
+        :type shape: str
+        :param label: what will be placed near the Point. The default value
+        will set the Point's name as label. It may be practical to set label
+        at None (or '') to draw no label at all.
+        :type label: None or str
+        :param label_position: if any label is to be drawn, this is where to
+        draw it. Available values are TikZ's ones ('above', 'below left'...).
+        :type label_position: str
         """
         if isinstance(p, Point):
             Point.__init__(self, p=p.name, x=p.x, y=p.y, shape=p.shape,
