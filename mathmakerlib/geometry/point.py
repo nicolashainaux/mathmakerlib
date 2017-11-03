@@ -26,11 +26,11 @@ from mathmakerlib.calculus.number import Number
 class Point(Drawable):
 
     def __init__(self, p=None, x=None, y=None, shape=r'$\times$',
-                 label_position='below'):
+                 label='default', label_position='below'):
         """
         Initialize Point
 
-        :param p: either the Point's label (e.g. 'A') or another Point to copy
+        :param p: either the Point's name (e.g. 'A') or another Point to copy
         :type p: str
         :param x: the Point's abscissa
         :type x: anything that can be turned to a Number
@@ -38,22 +38,27 @@ class Point(Drawable):
         :type y: anything that can be turned to a Number
         """
         if isinstance(p, Point):
-            Point.__init__(self, p=p.label, x=p.x, y=p.y, shape=p.shape,
-                           label_position=p.label_position)
+            Point.__init__(self, p=p.name, x=p.x, y=p.y, shape=p.shape,
+                           label=p.label, label_position=p.label_position)
         else:
-            self._label = None
+            self._name = None
             self._x = None
             self._y = None
             self._shape = None
+            self._label = None
             self._label_position = None
-            self.label = p
+            self.name = p
             self.x = x
             self.y = y
             self.shape = shape
+            if label == 'default':
+                self.label = self.name
+            else:
+                self.label = label
             self.label_position = label_position
 
     def __repr__(self):
-        return 'Point {}({}; {})'.format(self.label, self.x, self.y)
+        return 'Point {}({}; {})'.format(self.name, self.x, self.y)
 
     def __eq__(self, other):
         return all([self.x == other.x, self.y == other.y,
@@ -62,6 +67,14 @@ class Point(Drawable):
     def __ne__(self, other):
         return any([self.x != other.x, self.y != other.y,
                     self.label != other.label])
+
+    @property
+    def name(self):
+        return self._name
+
+    @name.setter
+    def name(self, other):
+        self._name = str(other)
 
     @property
     def x(self):
@@ -88,6 +101,17 @@ class Point(Drawable):
         self._shape = str(other)
 
     @property
+    def label(self):
+        return self._label
+
+    @label.setter
+    def label(self, other):
+        if other in ['', None]:
+            self._label = None
+        else:
+            self._label = str(other)
+
+    @property
     def label_position(self):
         return self._label_position
 
@@ -101,21 +125,24 @@ class Point(Drawable):
     def tikz_definition(self, **kwargs):
         """Return the Point definition."""
         return r'\coordinate ({}) at ({},{});'\
-            .format(self.label, self.x, self.y)
+            .format(self.name, self.x, self.y)
 
     def tikz_draw(self, **kwargs):
         """Return the command to actually draw the Point."""
         return r'\draw ({}) node {};'\
-            .format(self.label, '{' + self.shape + '}')
+            .format(self.name, '{' + self.shape + '}')
 
     def tikz_label(self, label_position=None, **kwargs):
         """Return the command to write the Point's label."""
-        if label_position is None:
-            if self.label_position is None:
-                label_position = ''
-            else:
-                label_position = '[' + self.label_position + ']'
+        if self.label is None:
+            return ''
         else:
-            label_position = '[' + label_position + ']'
-        return r'\draw ({}) node{} {};'\
-            .format(self.label, label_position, '{' + self.label + '}')
+            if label_position is None:
+                if self.label_position is None:
+                    label_position = ''
+                else:
+                    label_position = '[' + self.label_position + ']'
+            else:
+                label_position = '[' + label_position + ']'
+            return r'\draw ({}) node{} {};'\
+                .format(self.label, label_position, '{' + self.label + '}')
