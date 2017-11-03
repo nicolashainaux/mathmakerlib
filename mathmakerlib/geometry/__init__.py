@@ -18,9 +18,3 @@
 # You should have received a copy of the GNU General Public License
 # along with Mathmaker Lib; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-
-
-def init():
-    global tikz, siunitx
-
-    tikz = siunitx = False
