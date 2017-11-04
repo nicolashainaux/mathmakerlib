@@ -337,6 +337,9 @@ class Number(Decimal, Signed, Printable, Evaluable):
             return basic_repr.replace("')", " {}')"
                                             .format(self.unit.uiprinted))
 
+    def sqrt(self):
+        return Number(Decimal(self).sqrt())
+
     @property
     def unit(self):
         return self._unit

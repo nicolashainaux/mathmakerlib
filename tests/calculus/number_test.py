@@ -119,6 +119,11 @@ def test__repr__():
     assert repr(Number('8.6', unit='cm')) == 'Number(\'8.6 cm\')'
 
 
+def test_sqrt():
+    """Check sqrt() is correct."""
+    assert Number(2).sqrt().rounded(Decimal('0.0001')) == Number('1.4142')
+
+
 def test_additions_errors():
     """Check additions exceptions."""
     with pytest.raises(TypeError) as excinfo:
