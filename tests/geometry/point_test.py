@@ -40,13 +40,14 @@ def test_repr():
 
 
 def test_equality():
-    """Check __eq__ and __ne__ are correct."""
+    """Check __eq__, __ne__, coordinates are correct."""
     p = Point('A', 0, 0)
     assert p != 'A'
     assert not(p == 0)
     assert p == Point('A', 0, 0, shape=r'$\bullet$')
     assert p != Point('B', 0, 0)
     assert p == Point('A', 0, 0, label='?')
+    assert p.coordinates == Point('B', 0, 0).coordinates
 
 
 def test_drawing():

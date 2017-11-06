@@ -109,6 +109,10 @@ class Point(Drawable):
         self._y = Number(other)
 
     @property
+    def coordinates(self):
+        return (self._x, self._y)
+
+    @property
     def shape(self):
         return self._shape
 
