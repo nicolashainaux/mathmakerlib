@@ -34,39 +34,85 @@ class Drawable(object, metaclass=ABCMeta):
         argument is required. First, setup the object (at initialization, or
         modify it later), once it's ready, draw it.
         """
+        import sys
         pkg_required.tikz = True
+        picture_format = {'header': self.tikz_header(),
+                          'declaring_comment': self.tikz_declaring_comment(),
+                          'declarations': self.tikz_declarations(),
+                          'labeling_comment': self.tikz_labeling_comment(),
+                          'labels': self.tikz_label()}
+        drawing_section = ''
+        for (i, (c, d)) in enumerate(zip(self.tikz_drawing_comment(),
+                                         self.tikz_draw())):
+            sys.stderr.write('\n1st step: {}\n'
+                             .format('{{drawing_comment{}}}\n{{drawing{}}}\n'
+                                     .format(i, i)))
+            drawing_section += ('{{drawing_comment{}}}\n{{drawing{}}}\n'
+                                .format(i, i))\
+                .format(**{'drawing_comment{}'.format(i): c,
+                           'drawing{}'.format(i): d})
+        picture_format.update({'drawing_section': drawing_section})
+        sys.stderr.write('\nfmt= {}\n'.format(picture_format))
         return r"""
 \begin{{tikzpicture}}{header}
-% Definitions
-{definition}
+{declaring_comment}
+{declarations}
 
-% Drawing
-{drawing}
-
-% Labels
-{label}
+{drawing_section}
+{labeling_comment}
+{labels}
 \end{{tikzpicture}}
-""".format(header=self.tikz_header(),
-           definition=self.tikz_definition(),
-           drawing=self.tikz_draw(),
-           label=self.tikz_label())
+""".format(**picture_format)
 
     def tikz_header(self):
         r"""
-        Can be overriden to defined some setup here.
+        Can be overriden to define some setup here.
 
         Take care, if you actually override it, to start with a \n, to avoid
         starting displaying it right after the \begin.
         """
         return ''
 
+    def tikz_declaring_comment(self):
+        """
+        Default declaring comment, '% Declare Points'.
+
+        :rtype: str
+        """
+        return '% Declare Points'
+
     @abstractmethod
-    def tikz_definition(self):
-        """Return the necessary definitions (e. g. Points)."""
+    def tikz_declarations(self):
+        """
+        Return the necessary declarations (e.g. Points declarations).
+
+        :rtype: str
+        """
+
+    @abstractmethod
+    def tikz_drawing_comment(self):
+        """
+        Return the comments matching each drawing category.
+
+        :rtype: list
+        """
 
     @abstractmethod
     def tikz_draw(self):
-        """Return the command to actually draw the object."""
+        """
+        Return the commands to actually draw the object.
+
+        They should be grouped in categories (the Points, the Segments etc.).
+        Caution, this method must return a list (containing one string per
+        category). tikz_drawing_comment() must return a list containing as many
+        elements as this one.
+
+        :rtype: list
+        """
+
+    def tikz_labeling_comment(self):
+        """Default labeling comment, '% Label Points'."""
+        return '% Label Points'
 
     @abstractmethod
     def tikz_label(self):

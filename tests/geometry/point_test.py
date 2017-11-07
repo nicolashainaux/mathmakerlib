@@ -55,52 +55,52 @@ def test_drawing():
     p = Point('A', 0, 0)
     assert p.drawn == r"""
 \begin{tikzpicture}
-% Definitions
+% Declare Point
 \coordinate (A) at (0,0);
 
-% Drawing
+% Draw Point
 \draw (A) node {$\times$};
 
-% Labels
+% Label Point
 \draw (A) node[below] {A};
 \end{tikzpicture}
 """
     p.label_position = None
     assert p.drawn == r"""
 \begin{tikzpicture}
-% Definitions
+% Declare Point
 \coordinate (A) at (0,0);
 
-% Drawing
+% Draw Point
 \draw (A) node {$\times$};
 
-% Labels
+% Label Point
 \draw (A) node {A};
 \end{tikzpicture}
 """
     p.label = ''
     assert p.drawn == r"""
 \begin{tikzpicture}
-% Definitions
+% Declare Point
 \coordinate (A) at (0,0);
 
-% Drawing
+% Draw Point
 \draw (A) node {$\times$};
 
-% Labels
+% Label Point
 
 \end{tikzpicture}
 """
     p.label = None
     assert p.drawn == r"""
 \begin{tikzpicture}
-% Definitions
+% Declare Point
 \coordinate (A) at (0,0);
 
-% Drawing
+% Draw Point
 \draw (A) node {$\times$};
 
-% Labels
+% Label Point
 
 \end{tikzpicture}
 """

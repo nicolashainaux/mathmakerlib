@@ -22,6 +22,15 @@
 from mathmakerlib.core.drawable import Drawable
 from mathmakerlib.calculus.number import Number
 
+OPPOSITE_LABEL_POSITIONS = {'right': 'left',
+                            'above right': 'below left',
+                            'above': 'below',
+                            'above left': 'below right',
+                            'left': 'right',
+                            'below left': 'above right',
+                            'below': 'above',
+                            'below right': 'above left'}
+
 
 class Point(Drawable):
 
@@ -131,15 +140,35 @@ class Point(Drawable):
         else:
             self._label_position = str(other)
 
-    def tikz_definition(self):
-        """Return the Point definition."""
+    def tikz_declaring_comment(self):
+        """
+        Replace plural by singular in the declaring comment.
+
+        :rtype: str
+        """
+        return '% Declare Point'
+
+    def tikz_declarations(self):
+        """Return the Point declaration."""
         return r'\coordinate ({}) at ({},{});'\
             .format(self.name, self.x, self.y)
 
+    def tikz_drawing_comment(self):
+        """Return the comment preceding the Point's drawing."""
+        return ['% Draw Point']
+
     def tikz_draw(self):
         """Return the command to actually draw the Point."""
-        return r'\draw ({}) node {};'\
-            .format(self.name, '{' + self.shape + '}')
+        return [r'\draw ({}) node {};'.format(self.name,
+                                              '{' + self.shape + '}')]
+
+    def tikz_labeling_comment(self):
+        """
+        Replace plural by singular in the labeling comment.
+
+        :rtype: str
+        """
+        return '% Label Point'
 
     def tikz_label(self):
         """Return the command to write the Point's label."""
