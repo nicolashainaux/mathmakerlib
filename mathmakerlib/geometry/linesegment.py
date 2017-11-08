@@ -19,10 +19,9 @@
 # along with Mathmaker Lib; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-import math
 import copy
 
-from mathmakerlib.core.drawable import Drawable
+from mathmakerlib.geometry.pointspair import PointsPair
 from mathmakerlib.calculus.number import Number
 from mathmakerlib.geometry.point import Point, OPPOSITE_LABEL_POSITIONS
 
@@ -31,7 +30,7 @@ THICKNESS_VALUES = [None, 'thin', 'very thin', 'ultra thin', 'thick',
 LABEL_MASK_VALUES = [None, ' ', '?']
 
 
-class LineSegment(Drawable):
+class LineSegment(PointsPair):
 
     def __init__(self, *points, thickness='thick', label=None, label_mask=None,
                  label_position='anticlockwise',
@@ -77,8 +76,7 @@ class LineSegment(Drawable):
                 raise ValueError('Cannot instantiate a LineSegment if both '
                                  'endpoints have the same coordinates: '
                                  '({}; {}).'.format(points[0].x, points[0].y))
-            self._endpoints = [copy.deepcopy(points[0]),
-                               copy.deepcopy(points[1])]
+            self._points = [copy.deepcopy(points[0]), copy.deepcopy(points[1])]
             self._label = None
             self._thickness = None
             self._label_mask = None
@@ -90,8 +88,7 @@ class LineSegment(Drawable):
             self.thickness = thickness
             self.draw_endpoints = draw_endpoints
             self.label_endpoints = label_endpoints
-            self._deltax = self.endpoints[1].x - self.endpoints[0].x
-            self._deltay = self.endpoints[1].y - self.endpoints[0].y
+            PointsPair.__init__(self)
             s = self.slope
             if (Number('337.5') <= s <= Number('360')
                 or Number('0') <= s < Number('22.5')):
@@ -148,14 +145,6 @@ class LineSegment(Drawable):
             return True
 
     @property
-    def deltax(self):
-        return self._deltax
-
-    @property
-    def deltay(self):
-        return self._deltay
-
-    @property
     def draw_endpoints(self):
         return self._draw_endpoints
 
@@ -169,7 +158,7 @@ class LineSegment(Drawable):
 
     @property
     def endpoints(self):
-        return self._endpoints
+        return self._points
 
     # @property
     # def name(self):
@@ -206,27 +195,6 @@ class LineSegment(Drawable):
     @label_position.setter
     def label_position(self, value):
         self._label_position = str(value)
-
-    @property
-    def length(self):
-        """LineSegment's length."""
-        return Number(self.deltax ** 2 + self.deltay ** 2).sqrt()
-
-    # The automatic naming of the midpoint is a problem.
-    # It will require to add a mean to generate new points names automatically.
-    # With same convention as in geogebra for instance: A, B, C... A_1, B_1,...
-    # @property
-    # def midpoint(self):
-    #     """LineSegment's midpoint."""
-    #     return Point('M',
-    #                  (self.endpoints[0].x + self.endpoints[1].x) / 2,
-    #                  (self.endpoints[0].y + self.endpoints[1].y) / 2)
-
-    @property
-    def slope(self):
-        """LineSegment's slope."""
-        theta = Number(str(math.degrees(math.acos(self.deltax / self.length))))
-        return theta if self.deltay >= 0 else Number('360') - theta
 
     def tikz_declarations(self):
         """Return the LineSegment's Points' declarations."""
