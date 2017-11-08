@@ -24,35 +24,34 @@ from mathmakerlib.geometry.point import Point
 
 def test_instanciation():
     """Check Point's instanciation."""
-    p = Point('A', 0, 0)
-    assert Point(p) == p
+    p = Point(0, 0, 'A')
     assert p.x == p.y == 0
     assert p.name == 'A'
     assert p.label == 'A'
-    p = Point('A', 0, 0, label='?')
+    p = Point(0, 0, 'A', label='?')
     assert p.name == 'A'
     assert p.label == '?'
 
 
 def test_repr():
     """Check __repr__ is correct."""
-    assert repr(Point('A', 0, 0)) == 'Point A(0; 0)'
+    assert repr(Point(0, 0, 'A')) == 'Point A(0; 0)'
 
 
 def test_equality():
     """Check __eq__, __ne__, coordinates are correct."""
-    p = Point('A', 0, 0)
+    p = Point(0, 0, 'A')
     assert p != 'A'
     assert not(p == 0)
-    assert p == Point('A', 0, 0, shape=r'$\bullet$')
-    assert p != Point('B', 0, 0)
-    assert p == Point('A', 0, 0, label='?')
-    assert p.coordinates == Point('B', 0, 0).coordinates
+    assert p == Point(0, 0, 'A', shape=r'$\bullet$')
+    assert p != Point(0, 0, 'B')
+    assert p == Point(0, 0, 'A', label='?')
+    assert p.coordinates == Point(0, 0, 'B').coordinates
 
 
 def test_drawing():
     """Check drawing is correct."""
-    p = Point('A', 0, 0)
+    p = Point(0, 0, 'A')
     assert p.drawn == r"""
 \begin{tikzpicture}
 % Declare Point
