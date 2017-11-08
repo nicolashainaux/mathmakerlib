@@ -29,27 +29,27 @@ from mathmakerlib.geometry.linesegment import LineSegment
 
 @pytest.fixture()
 def A():
-    return Point('A', 0, 0)
+    return Point(0, 0, 'A')
 
 
 @pytest.fixture()
 def B():
-    return Point('B', 1, 1)
+    return Point(1, 1, 'B')
 
 
 @pytest.fixture()
 def C():
-    return Point('C', 2, 2)
+    return Point(2, 2, 'C')
 
 
 @pytest.fixture()
 def D():
-    return Point('D', 4, 0)
+    return Point(4, 0, 'D')
 
 
 @pytest.fixture()
 def E():
-    return Point('E', 1, 0)
+    return Point(1, 0, 'E')
 
 
 def test_instanciation_errors(A, B):
@@ -62,29 +62,26 @@ def test_instanciation_errors(A, B):
         LineSegment(A, lambda x: 2 * x)
     assert str(excinfo.value) == 'Both arguments should be Points, got a ' \
         '<class \'function\'> as second argument instead.'
-    with pytest.raises(ValueError) as excinfo:
+    with pytest.raises(TypeError) as excinfo:
         LineSegment(A, B, '4 cm')
-    assert str(excinfo.value) == 'One LineSegment, or two Points are ' \
-        'required to create a LineSegment. Got 3 objects instead.'
+    assert str(excinfo.value) == 'Two Points are ' \
+        'required to create a LineSegment. Got 3 object(s) instead.'
     with pytest.raises(TypeError) as excinfo:
         LineSegment(A, label='4 cm')
-    assert str(excinfo.value) == 'If only one argument is provided, it must ' \
-        'be another LineSegment. Got a <class \'tuple\'> instead.'
+    assert str(excinfo.value) == 'Two Points are ' \
+        'required to create a LineSegment. Got 1 object(s) instead.'
     with pytest.raises(ValueError) as excinfo:
         LineSegment(B, B)
     assert str(excinfo.value) == 'Cannot instantiate a LineSegment if both ' \
         'endpoints have the same coordinates: (1; 1).'
-    s = LineSegment(A, B)
-    with pytest.warns(UserWarning) as record:
-        LineSegment(s, label='4 cm')
-    assert len(record) == 1
-    assert str(record[0].message) == 'LineSegment copy: ignoring parameter ' \
-        '(label or thickness).'
-    with pytest.warns(UserWarning) as record:
-        LineSegment(s, thickness='thin')
-    assert len(record) == 1
-    assert str(record[0].message) == 'LineSegment copy: ignoring parameter ' \
-        '(label or thickness).'
+    with pytest.raises(ValueError) as excinfo:
+        LineSegment(A, B, draw_endpoints='undefined')
+    assert str(excinfo.value) == 'draw_endpoints must be True or False; ' \
+        'got \'undefined\' instead.'
+    with pytest.raises(ValueError) as excinfo:
+        LineSegment(A, B, label_endpoints='undefined')
+    assert str(excinfo.value) == 'label_endpoints must be True or False; ' \
+        'got \'undefined\' instead.'
 
 
 def test_instanciation(A, B):
@@ -94,11 +91,6 @@ def test_instanciation(A, B):
     assert s.label is None
     assert s.endpoints[0] == A
     assert s.endpoints[1] == B
-    t = LineSegment(s)
-    assert t.thickness == 'thick'
-    assert t.label is None
-    assert t.endpoints[0] == A
-    assert t.endpoints[1] == B
 
 
 def test_some_setters(A, B):
@@ -109,12 +101,10 @@ def test_some_setters(A, B):
     assert str(excinfo.value).startswith('Cannot use \'undefined\' as '
                                          'thickness for a LineSegment. '
                                          'Available values are in: ')
-    s.thickness = ''
-    assert s.thickness is None
     with pytest.raises(ValueError) as excinfo:
         s.label_mask = 'undefined'
     assert str(excinfo.value).startswith('label_mask must be in '
-                                         '[None, \'\', \'?\']; '
+                                         '[None, \' \', \'?\']; '
                                          'got \'undefined\' instead.')
     s.label_mask = '?'
     assert s.label_mask == '?'
@@ -129,7 +119,7 @@ def test_repr(A, B):
 def test_equality(A, B, C):
     """Check __eq__ and __ne__ are correct."""
     s = LineSegment(A, B)
-    t = LineSegment(s)
+    t = LineSegment(A, B)
     assert s == t
     assert s != 'AB'
     assert not (s == 9)
@@ -155,7 +145,7 @@ def test_slope(A, B, D):
     assert s.slope == Number('45')
     s = LineSegment(B, A)
     assert s.slope == Number('225')
-    s = LineSegment(A, Point('B', 0, 1))
+    s = LineSegment(A, Point(0, 1, 'B'))
     assert s.slope == Number('90')
 
 
@@ -219,7 +209,7 @@ def test_drawing_without_linesegment_labels(A, E):
 
 \end{tikzpicture}
 """
-    ls = LineSegment(A, Point('E', Number(1), Number(1)))
+    ls = LineSegment(A, Point(Number(1), Number(1), 'E'))
     assert ls.drawn == r"""
 \begin{tikzpicture}
 % Declare Points
@@ -238,7 +228,7 @@ def test_drawing_without_linesegment_labels(A, E):
 \draw (E) node[above right] {E};
 \end{tikzpicture}
 """
-    ls = LineSegment(A, Point('E', Number(0), Number(1)))
+    ls = LineSegment(A, Point(Number(0), Number(1), 'E'))
     assert ls.drawn == r"""
 \begin{tikzpicture}
 % Declare Points
@@ -257,7 +247,7 @@ def test_drawing_without_linesegment_labels(A, E):
 \draw (E) node[above] {E};
 \end{tikzpicture}
 """
-    ls = LineSegment(A, Point('E', Number(-1), Number(1)))
+    ls = LineSegment(A, Point(Number(-1), Number(1), 'E'))
     assert ls.drawn == r"""
 \begin{tikzpicture}
 % Declare Points
@@ -276,7 +266,7 @@ def test_drawing_without_linesegment_labels(A, E):
 \draw (E) node[above left] {E};
 \end{tikzpicture}
 """
-    ls = LineSegment(A, Point('E', Number(-1), Number(0)))
+    ls = LineSegment(A, Point(Number(-1), Number(0), 'E'))
     assert ls.drawn == r"""
 \begin{tikzpicture}
 % Declare Points
@@ -295,7 +285,7 @@ def test_drawing_without_linesegment_labels(A, E):
 \draw (E) node[left] {E};
 \end{tikzpicture}
 """
-    ls = LineSegment(A, Point('E', Number(-1), Number(-1)))
+    ls = LineSegment(A, Point(Number(-1), Number(-1), 'E'))
     assert ls.drawn == r"""
 \begin{tikzpicture}
 % Declare Points
@@ -314,7 +304,7 @@ def test_drawing_without_linesegment_labels(A, E):
 \draw (E) node[below left] {E};
 \end{tikzpicture}
 """
-    ls = LineSegment(A, Point('E', Number(0), Number(-1)))
+    ls = LineSegment(A, Point(Number(0), Number(-1), 'E'))
     assert ls.drawn == r"""
 \begin{tikzpicture}
 % Declare Points
@@ -333,7 +323,7 @@ def test_drawing_without_linesegment_labels(A, E):
 \draw (E) node[below] {E};
 \end{tikzpicture}
 """
-    ls = LineSegment(A, Point('E', Number(1), Number(-1)))
+    ls = LineSegment(A, Point(Number(1), Number(-1), 'E'))
     assert ls.drawn == r"""
 \begin{tikzpicture}
 % Declare Points

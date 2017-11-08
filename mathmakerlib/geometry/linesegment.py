@@ -20,20 +20,20 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 import math
-import warnings
+import copy
 
 from mathmakerlib.core.drawable import Drawable
 from mathmakerlib.calculus.number import Number
 from mathmakerlib.geometry.point import Point, OPPOSITE_LABEL_POSITIONS
 
-THICKNESS_VALUES = [None, '', 'thin', 'very thin', 'ultra thin', 'thick',
+THICKNESS_VALUES = [None, 'thin', 'very thin', 'ultra thin', 'thick',
                     'very thick', 'ultra thick']
-LABEL_MASK_VALUES = [None, '', '?']
+LABEL_MASK_VALUES = [None, ' ', '?']
 
 
 class LineSegment(Drawable):
 
-    def __init__(self, *points, thickness=None, label=None, label_mask=None,
+    def __init__(self, *points, thickness='thick', label=None, label_mask=None,
                  label_position='anticlockwise',
                  draw_endpoints=True, label_endpoints=True):
         """
@@ -45,11 +45,11 @@ class LineSegment(Drawable):
         TikZ's ones.
         :type thickness: str
         :param label: what will be written along the LineSegment, about its
-        middle. The default value will leave the label blank.
+        middle. A None value will disable the LineSegment's labeling.
         :type label: None or str
-        :param label_mask: if not None, hide the label with nothing or with a
-        '?'
-        :type label_mask: None or '' or '?'
+        :param label_mask: if not None (default), hide the label with ' '
+        or '?'
+        :type label_mask: None or str (' ' or '?')
         :param label_position: tells where to put the LineSegment's label.
         Can be a value used by TikZ or 'clockwise' or 'anticlockwise'.
         'anticlockwise' (default) will automatically set the label_position to
@@ -64,21 +64,7 @@ class LineSegment(Drawable):
         Defaults to True.
         :type label_endpoints: bool
         """
-        if len(points) == 1:
-            if not isinstance(points[0], LineSegment):
-                raise TypeError('If only one argument is provided, it must '
-                                'be another LineSegment. Got a {} instead.'
-                                .format(type(points)))
-            if label is not None or thickness is not None:
-                warnings.warn('LineSegment copy: ignoring parameter (label '
-                              'or thickness).')
-            ls = points[0]
-            LineSegment.__init__(self, ls.endpoints[0], ls.endpoints[1],
-                                 label=ls.label, thickness=ls.thickness,
-                                 label_mask=ls.label_mask,
-                                 draw_endpoints=ls.draw_endpoints,
-                                 label_endpoints=ls.label_endpoints)
-        elif len(points) == 2:
+        if len(points) == 2:
             if not isinstance(points[0], Point):
                 raise TypeError('Both arguments should be Points, got a {} '
                                 'as first argument instead.'
@@ -91,7 +77,8 @@ class LineSegment(Drawable):
                 raise ValueError('Cannot instantiate a LineSegment if both '
                                  'endpoints have the same coordinates: '
                                  '({}; {}).'.format(points[0].x, points[0].y))
-            self._endpoints = [Point(points[0]), Point(points[1])]
+            self._endpoints = [copy.deepcopy(points[0]),
+                               copy.deepcopy(points[1])]
             self._label = None
             self._thickness = None
             self._label_mask = None
@@ -100,8 +87,6 @@ class LineSegment(Drawable):
             self._label_endpoints = None
             self.label = label
             self.label_mask = label_mask
-            if thickness is None:
-                thickness = 'thick'
             self.thickness = thickness
             self.draw_endpoints = draw_endpoints
             self.label_endpoints = label_endpoints
@@ -140,9 +125,9 @@ class LineSegment(Drawable):
             else:
                 self.label_position = label_position
         else:
-            raise ValueError('One LineSegment, or two Points are required to '
-                             'create a LineSegment. Got {} objects instead.'
-                             .format(len(points)))
+            raise TypeError('Two Points are required to create a '
+                            'LineSegment. Got {} object(s) instead.'
+                            .format(len(points)))
 
     def __repr__(self):
         return 'LineSegment({}, {})'.format(repr(self.endpoints[0]),
@@ -296,8 +281,6 @@ class LineSegment(Drawable):
     @thickness.setter
     def thickness(self, value):
         if value in THICKNESS_VALUES:
-            if value == '':
-                value = None
             self._thickness = value
         else:
             raise ValueError('Cannot use \'{}\' as thickness for a '
