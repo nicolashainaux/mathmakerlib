@@ -20,7 +20,7 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 from mathmakerlib.core.drawable import Drawable
-from mathmakerlib.calculus.number import Number
+from mathmakerlib.calculus.number import Number, is_number
 
 OPPOSITE_LABEL_POSITIONS = {'right': 'left',
                             'above right': 'below left',
@@ -105,7 +105,11 @@ class Point(Drawable):
 
     @x.setter
     def x(self, other):
-        self._x = Number(other)
+        if is_number(other):
+            self._x = Number(other)
+        else:
+            raise TypeError('Expected a number as abscissa, got \'{}\' '
+                            'instead.'.format(other))
 
     @property
     def y(self):
@@ -113,7 +117,11 @@ class Point(Drawable):
 
     @y.setter
     def y(self, other):
-        self._y = Number(other)
+        if is_number(other):
+            self._y = Number(other)
+        else:
+            raise TypeError('Expected a number as ordinate, got \'{}\' '
+                            'instead.'.format(other))
 
     @property
     def coordinates(self):

@@ -19,7 +19,21 @@
 # along with Mathmaker Lib; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
+import pytest
+
 from mathmakerlib.geometry.point import Point
+
+
+def test_instanciation_errors():
+    """Check Point's instanciation exceptions."""
+    with pytest.raises(TypeError) as excinfo:
+        Point('A', 0, 0)
+    assert str(excinfo.value) == 'Expected a number as abscissa, ' \
+        'got \'A\' instead.'
+    with pytest.raises(TypeError) as excinfo:
+        Point(0, 'A', 0)
+    assert str(excinfo.value) == 'Expected a number as ordinate, ' \
+        'got \'A\' instead.'
 
 
 def test_instanciation():
