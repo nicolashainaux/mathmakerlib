@@ -460,3 +460,43 @@ def test_drawing_with_linesegment_labels(A, B, E):
 \draw (A) node[left] {A};
 \end{tikzpicture}
 """
+    ls = LineSegment(E, A, label='4 cm', thickness=None,
+                     label_position='clockwise')
+    assert ls.drawn == r"""
+\begin{tikzpicture}
+% Declare Points
+\coordinate (E) at (1,0);
+\coordinate (A) at (0,0);
+
+% Draw Points
+\draw (E) node {$\times$};
+\draw (A) node {$\times$};
+
+% Draw LineSegment
+\draw (E) -- (A) node[midway, below, sloped] {4 cm};
+
+% Label Points
+\draw (E) node[right] {E};
+\draw (A) node[left] {A};
+\end{tikzpicture}
+"""
+    ls = LineSegment(E, A, label='4 cm', label_position='clockwise',
+                     label_mask='?')
+    assert ls.drawn == r"""
+\begin{tikzpicture}
+% Declare Points
+\coordinate (E) at (1,0);
+\coordinate (A) at (0,0);
+
+% Draw Points
+\draw (E) node {$\times$};
+\draw (A) node {$\times$};
+
+% Draw LineSegment
+\draw[thick] (E) -- (A) node[midway, below, sloped] {?};
+
+% Label Points
+\draw (E) node[right] {E};
+\draw (A) node[left] {A};
+\end{tikzpicture}
+"""
