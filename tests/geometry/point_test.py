@@ -49,6 +49,7 @@ def test_instanciation():
 
 def test_automatic_naming():
     """Check automatic naming of Points."""
+    Point.reset_names()
     Point(0, 0, 'A')
     q = Point(1, 1)
     assert q.name == 'B'

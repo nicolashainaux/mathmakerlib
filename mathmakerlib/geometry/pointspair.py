@@ -23,6 +23,7 @@ import math
 from abc import ABCMeta
 
 from mathmakerlib.core.drawable import Drawable
+from mathmakerlib.geometry.point import Point
 from mathmakerlib.calculus.number import Number
 
 
@@ -49,15 +50,11 @@ class PointsPair(Drawable, metaclass=ABCMeta):
         """Length between the two Points."""
         return Number(self.deltax ** 2 + self.deltay ** 2).sqrt()
 
-    # The automatic naming of the midpoint is a problem.
-    # It will require to add a mean to generate new points names automatically.
-    # With same convention as in geogebra for instance: A, B, C... A_1, B_1,...
-    # @property
-    # def midpoint(self):
-    #     """PointsPair's midpoint."""
-    #     return Point('M',
-    #                  (self.points[0].x + self.points[1].x) / 2,
-    #                  (self.points[0].y + self.points[1].y) / 2)
+    def midpoint(self, name='automatic'):
+        """PointsPair's midpoint."""
+        return Point((self.points[0].x + self.points[1].x) / 2,
+                     (self.points[0].y + self.points[1].y) / 2,
+                     name=name)
 
     @property
     def slope(self):

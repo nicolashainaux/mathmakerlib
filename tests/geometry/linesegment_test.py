@@ -149,10 +149,13 @@ def test_slope(A, B, D):
     assert s.slope == Number('90')
 
 
-# def test_midpoint(A, B):
-#     """Check midpoint is correct."""
-#     s = LineSegment(A, B)
-#     assert s.midpoint == Point('M', Number('0.5'), Number('0.5'))
+def test_midpoint():
+    """Check midpoint is correct."""
+    Point.reset_names()
+    s = LineSegment(Point(0, 0, 'A'), Point(1, 1, 'B'))
+    assert s.midpoint() == Point(Number('0.5'), Number('0.5'), 'C')
+    s = LineSegment(Point(0, 0, 'A'), Point(1, 1, 'B'))
+    assert s.midpoint(name='M') == Point(Number('0.5'), Number('0.5'), 'M')
 
 
 def test_drawing_without_linesegment_labels(A, E):
