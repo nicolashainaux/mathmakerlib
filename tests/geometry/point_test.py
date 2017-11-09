@@ -47,6 +47,35 @@ def test_instanciation():
     assert p.label == '?'
 
 
+def test_automatic_naming():
+    """Check automatic naming of Points."""
+    Point(0, 0, 'A')
+    q = Point(1, 1)
+    assert q.name == 'B'
+    Point.reset_names()
+    q = Point(1, 1)
+    assert q.name == 'A'
+    q = Point(1, 1, 'C')
+    q = Point(1, 1)
+    assert q.name == 'B'
+    q = Point(1, 1)
+    assert q.name == 'D'
+    for _ in range(23):
+        q = Point(1, 1)
+    assert q.name == 'A$_1$'
+    for _ in range(26):
+        q = Point(1, 1)
+    assert q.name == 'A$_2$'
+    Point.reset_names()
+    p = Point(1, 1)  # 'A'
+    q = Point(1, 1)  # 'B'
+    p.name = 'C'  # 'A' is free
+    q = Point(1, 1)
+    assert q.name == 'A'
+    q = Point(1, 1)
+    assert q.name == 'D'
+
+
 def test_repr():
     """Check __repr__ is correct."""
     assert repr(Point(0, 0, 'A')) == 'Point A(0; 0)'

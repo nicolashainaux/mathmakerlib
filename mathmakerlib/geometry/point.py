@@ -19,6 +19,8 @@
 # along with Mathmaker Lib; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
+import string
+
 from mathmakerlib.core.drawable import Drawable
 from mathmakerlib.calculus.number import Number, is_number
 
@@ -32,9 +34,26 @@ OPPOSITE_LABEL_POSITIONS = {'right': 'left',
                             'below right': 'above left'}
 
 
+def auto_name():
+    if not Point.available_names:
+        Point.names_layer += 1
+        Point.available_names = [_ + '$_{}$'.format(str(Point.names_layer))
+                                 for _ in string.ascii_uppercase][::-1]
+    n = Point.available_names.pop()
+    if n not in Point.names_in_use:
+        Point.names_in_use.append(n)
+        return n
+    else:
+        return auto_name()
+
+
 class Point(Drawable):
 
-    def __init__(self, x=None, y=None, name='default', shape=r'$\times$',
+    available_names = [_ for _ in string.ascii_uppercase][::-1]
+    names_in_use = []
+    names_layer = 0
+
+    def __init__(self, x=None, y=None, name='automatic', shape=r'$\times$',
                  label='default', label_position='below'):
         r"""
         Initialize Point
@@ -62,8 +81,6 @@ class Point(Drawable):
         self._shape = None
         self._label = None
         self._label_position = None
-        if name == 'default':
-            name = 'A'  # temporary
         self.name = name
         self.x = x
         self.y = y
@@ -91,13 +108,26 @@ class Point(Drawable):
         else:
             return True
 
+    def reset_names():
+        Point.available_names = [_ for _ in string.ascii_uppercase][::-1]
+        Point.names_in_use = []
+        Point.names_layer = 0
+
     @property
     def name(self):
         return self._name
 
     @name.setter
     def name(self, other):
-        self._name = str(other)
+        if other == 'automatic':
+            self._name = auto_name()
+        else:
+            if str(other) not in Point.names_in_use:
+                Point.names_in_use.append(str(other))
+            if self.name in Point.names_in_use:
+                Point.available_names.append(self.name)
+                Point.names_in_use.remove(self.name)
+            self._name = str(other)
 
     @property
     def x(self):
