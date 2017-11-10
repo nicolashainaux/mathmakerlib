@@ -528,3 +528,32 @@ def test_drawing_with_linesegment_labels(A, B, E):
 \draw (A) node[left] {A};
 \end{tikzpicture}
 """
+
+
+def test_scaled_linesegment(A, E):
+    """Check drawing is correct."""
+    ls = LineSegment(A, E)
+    assert ls.scale == 1
+    ls.scale = 2
+    assert ls.scale == 2
+    assert ls.drawn == r"""
+\begin{tikzpicture}[scale=2]
+% Declare Points
+\coordinate (A) at (0,0);
+\coordinate (E) at (1,0);
+
+% Draw Points
+\draw (A) node {$\times$};
+\draw (E) node {$\times$};
+
+% Draw Line Segment
+\draw[thick] (A) -- (E);
+
+% Label Points
+\draw (A) node[left] {A};
+\draw (E) node[right] {E};
+\end{tikzpicture}
+"""
+    with pytest.raises(TypeError) as excinfo:
+        ls.scale = '2'
+    assert str(excinfo.value) == 'The scale must be a number.'

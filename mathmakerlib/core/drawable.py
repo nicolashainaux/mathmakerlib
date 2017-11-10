@@ -22,6 +22,7 @@
 from abc import ABCMeta, abstractmethod
 
 from mathmakerlib import pkg_required
+from mathmakerlib.calculus.number import is_number
 
 
 class Drawable(object, metaclass=ABCMeta):
@@ -34,7 +35,6 @@ class Drawable(object, metaclass=ABCMeta):
         argument is required. First, setup the object (at initialization, or
         modify it later), once it's ready, draw it.
         """
-        import sys
         pkg_required.tikz = True
         picture_format = {'header': self.tikz_header(),
                           'declaring_comment': self.tikz_declaring_comment(),
@@ -44,17 +44,21 @@ class Drawable(object, metaclass=ABCMeta):
         drawing_section = ''
         for (i, (c, d)) in enumerate(zip(self.tikz_drawing_comment(),
                                          self.tikz_draw())):
-            sys.stderr.write('\n1st step: {}\n'
-                             .format('{{drawing_comment{}}}\n{{drawing{}}}\n'
-                                     .format(i, i)))
             drawing_section += ('{{drawing_comment{}}}\n{{drawing{}}}\n'
                                 .format(i, i))\
                 .format(**{'drawing_comment{}'.format(i): c,
                            'drawing{}'.format(i): d})
         picture_format.update({'drawing_section': drawing_section})
-        sys.stderr.write('\nfmt= {}\n'.format(picture_format))
+        # Prepare possible picture's options
+        scale_option = ''
+        if self.scale != 1:
+            scale_option = 'scale={}'.format(self.scale)
+        pic_options = ', '.join([scale_option])
+        if pic_options:
+            pic_options = '[{}]'.format(pic_options)
+        picture_format.update({'pic_options': pic_options})
         return r"""
-\begin{{tikzpicture}}{header}
+\begin{{tikzpicture}}{pic_options}{header}
 {declaring_comment}
 {declarations}
 
@@ -133,3 +137,19 @@ class Drawable(object, metaclass=ABCMeta):
             self._label = None
         else:
             self._label = str(other)
+
+    @property
+    def scale(self):
+        if not hasattr(self, '_scale'):
+            return 1
+        else:
+            return self._scale
+
+    @scale.setter
+    def scale(self, other):
+        if not is_number(other):
+            raise TypeError('The scale must be a number.')
+        if not hasattr(self, '_scale'):
+            setattr(self, '_scale', other)
+        else:
+            self._scale = other
