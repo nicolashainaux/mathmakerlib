@@ -61,3 +61,26 @@ class PointsPair(Drawable, metaclass=ABCMeta):
         """Slope of the pair of Points."""
         theta = Number(str(math.degrees(math.acos(self.deltax / self.length))))
         return theta if self.deltay >= 0 else Number('360') - theta
+
+    def dividing_points(self, n=None, prefix='a'):
+        """
+        Create the list of Points that divide the PointsPair in n parts.
+
+        :param n: the number of parts (so it will create n - 1 points)
+        n must be greater or equal to 1
+        :type n: int
+        """
+        if type(n) is not int:
+            raise TypeError('n must be an int')
+        if not n >= 1:
+            raise ValueError('n must be greater or equal to 1')
+        x0 = self.points[0].x
+        x1 = self.points[1].x
+        xstep = (x1 - x0) / n
+        x_list = [x0 + (i + 1) * xstep for i in range(n - 1)]
+        y0 = self.points[0].y
+        y1 = self.points[1].y
+        ystep = (y1 - y0) / n
+        y_list = [y0 + (i + 1) * ystep for i in range(n - 1)]
+        return [Point(x, y, prefix + str(i + 1))
+                for i, (x, y) in enumerate(zip(x_list, y_list))]

@@ -121,6 +121,7 @@ class LineSegment(PointsPair):
                     self.label_position = 'below'
             else:
                 self.label_position = label_position
+            self._comment_designation = 'Line Segment'
         else:
             raise TypeError('Two Points are required to create a '
                             'LineSegment. Got {} object(s) instead.'
@@ -204,22 +205,26 @@ class LineSegment(PointsPair):
 
     def tikz_drawing_comment(self):
         """Return the comments preceding the LineSegment's drawings."""
+        ls_draw_comment = '% Draw {}'.format(self._comment_designation)
         if self.draw_endpoints:
-            return ['% Draw Points', '% Draw LineSegment']
+            return ['% Draw Points', ls_draw_comment]
         else:
-            return ['% Draw LineSegment']
+            return [ls_draw_comment]
 
-    def tikz_draw(self):
-        """Return the command to actually draw the LineSegment."""
-        output = []
+    def _tikz_draw_endpoints(self):
         if self.draw_endpoints:
-            output.append('{}\n{}\n'
-                          .format(self.endpoints[0].tikz_draw()[0],
-                                  self.endpoints[1].tikz_draw()[0]))
-        if self.thickness is None:
-            thickness = ''
+            return ['{}\n{}\n'.format(self.endpoints[0].tikz_draw()[0],
+                                      self.endpoints[1].tikz_draw()[0])]
         else:
-            thickness = '[{}]'.format(self.thickness)
+            return []
+
+    def _tikz_thickness(self):
+        if self.thickness is None:
+            return ''
+        else:
+            return '[{}]'.format(self.thickness)
+
+    def _tikz_ls_label(self):
         lslabel = ''
         if self.label_mask is None:
             if self.label is not None:
@@ -228,6 +233,13 @@ class LineSegment(PointsPair):
         else:
             lslabel = ' node[midway, {}, sloped] {}'\
                 .format(self.label_position, '{' + self.label_mask + '}')
+        return lslabel
+
+    def tikz_draw(self):
+        """Return the command to actually draw the LineSegment."""
+        output = self._tikz_draw_endpoints()
+        thickness = self._tikz_thickness()
+        lslabel = self._tikz_ls_label()
         output.append(r'\draw{} ({}) -- ({}){};'.format(thickness,
                                                         self.endpoints[0].name,
                                                         self.endpoints[1].name,

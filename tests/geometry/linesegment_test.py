@@ -158,6 +158,31 @@ def test_midpoint():
     assert s.midpoint(name='M') == Point(Number('0.5'), Number('0.5'), 'M')
 
 
+def test_dividing_points():
+    """Check Points dividing LineSegment."""
+    AB = LineSegment(Point(0, 0, 'A'), Point(5, 0, 'B'))
+    p = AB.dividing_points(n=4)
+    assert p == [Point(Number('1.25'), 0, 'a1'),
+                 Point(Number('2.5'), 0, 'a2'),
+                 Point(Number('3.75'), 0, 'a3')]
+    AB = LineSegment(Point(0, 0, 'A'), Point(0, 5, 'B'))
+    p = AB.dividing_points(n=4)
+    assert p == [Point(0, Number('1.25'), 'a1'),
+                 Point(0, Number('2.5'), 'a2'),
+                 Point(0, Number('3.75'), 'a3')]
+    AB = LineSegment(Point(0, 0, 'A'), Point(5, 5, 'B'))
+    p = AB.dividing_points(n=4)
+    assert p == [Point(Number('1.25'), Number('1.25'), 'a1'),
+                 Point(Number('2.5'), Number('2.5'), 'a2'),
+                 Point(Number('3.75'), Number('3.75'), 'a3')]
+    p = AB.dividing_points(n=1)
+    assert p == []
+    with pytest.raises(TypeError):
+        p = AB.dividing_points(n='4')
+    with pytest.raises(ValueError):
+        p = AB.dividing_points(n=0)
+
+
 def test_drawing_without_linesegment_labels(A, E):
     """Check drawing is correct."""
     ls = LineSegment(A, E)
@@ -171,7 +196,7 @@ def test_drawing_without_linesegment_labels(A, E):
 \draw (A) node {$\times$};
 \draw (E) node {$\times$};
 
-% Draw LineSegment
+% Draw Line Segment
 \draw[thick] (A) -- (E);
 
 % Label Points
@@ -186,7 +211,7 @@ def test_drawing_without_linesegment_labels(A, E):
 \coordinate (A) at (0,0);
 \coordinate (E) at (1,0);
 
-% Draw LineSegment
+% Draw Line Segment
 \draw[thick] (A) -- (E);
 
 % Label Points
@@ -205,7 +230,7 @@ def test_drawing_without_linesegment_labels(A, E):
 \draw (A) node {$\times$};
 \draw (E) node {$\times$};
 
-% Draw LineSegment
+% Draw Line Segment
 \draw[thick] (A) -- (E);
 
 % Label Points
@@ -223,7 +248,7 @@ def test_drawing_without_linesegment_labels(A, E):
 \draw (A) node {$\times$};
 \draw (E) node {$\times$};
 
-% Draw LineSegment
+% Draw Line Segment
 \draw[thick] (A) -- (E);
 
 % Label Points
@@ -242,7 +267,7 @@ def test_drawing_without_linesegment_labels(A, E):
 \draw (A) node {$\times$};
 \draw (E) node {$\times$};
 
-% Draw LineSegment
+% Draw Line Segment
 \draw[thick] (A) -- (E);
 
 % Label Points
@@ -261,7 +286,7 @@ def test_drawing_without_linesegment_labels(A, E):
 \draw (A) node {$\times$};
 \draw (E) node {$\times$};
 
-% Draw LineSegment
+% Draw Line Segment
 \draw[thick] (A) -- (E);
 
 % Label Points
@@ -280,7 +305,7 @@ def test_drawing_without_linesegment_labels(A, E):
 \draw (A) node {$\times$};
 \draw (E) node {$\times$};
 
-% Draw LineSegment
+% Draw Line Segment
 \draw[thick] (A) -- (E);
 
 % Label Points
@@ -299,7 +324,7 @@ def test_drawing_without_linesegment_labels(A, E):
 \draw (A) node {$\times$};
 \draw (E) node {$\times$};
 
-% Draw LineSegment
+% Draw Line Segment
 \draw[thick] (A) -- (E);
 
 % Label Points
@@ -318,7 +343,7 @@ def test_drawing_without_linesegment_labels(A, E):
 \draw (A) node {$\times$};
 \draw (E) node {$\times$};
 
-% Draw LineSegment
+% Draw Line Segment
 \draw[thick] (A) -- (E);
 
 % Label Points
@@ -337,7 +362,7 @@ def test_drawing_without_linesegment_labels(A, E):
 \draw (A) node {$\times$};
 \draw (E) node {$\times$};
 
-% Draw LineSegment
+% Draw Line Segment
 \draw[thick] (A) -- (E);
 
 % Label Points
@@ -360,7 +385,7 @@ def test_drawing_with_linesegment_labels(A, B, E):
 \draw (A) node {$\times$};
 \draw (E) node {$\times$};
 
-% Draw LineSegment
+% Draw Line Segment
 \draw[thick] (A) -- (E) node[midway, below, sloped] {4 cm};
 
 % Label Points
@@ -379,7 +404,7 @@ def test_drawing_with_linesegment_labels(A, B, E):
 \draw (A) node {$\times$};
 \draw (E) node {$\times$};
 
-% Draw LineSegment
+% Draw Line Segment
 \draw[thick] (A) -- (E) node[midway, above, sloped] {4 cm};
 
 % Label Points
@@ -398,7 +423,7 @@ def test_drawing_with_linesegment_labels(A, B, E):
 \draw (E) node {$\times$};
 \draw (A) node {$\times$};
 
-% Draw LineSegment
+% Draw Line Segment
 \draw[thick] (E) -- (A) node[midway, above, sloped] {4 cm};
 
 % Label Points
@@ -417,7 +442,7 @@ def test_drawing_with_linesegment_labels(A, B, E):
 \draw (E) node {$\times$};
 \draw (B) node {$\times$};
 
-% Draw LineSegment
+% Draw Line Segment
 \draw[thick] (E) -- (B) node[midway, above, sloped] {4 cm};
 
 % Label Points
@@ -436,7 +461,7 @@ def test_drawing_with_linesegment_labels(A, B, E):
 \draw (A) node {$\times$};
 \draw (E) node {$\times$};
 
-% Draw LineSegment
+% Draw Line Segment
 \draw[thick] (A) -- (E) node[midway, above, sloped] {4 cm};
 
 % Label Points
@@ -455,7 +480,7 @@ def test_drawing_with_linesegment_labels(A, B, E):
 \draw (E) node {$\times$};
 \draw (A) node {$\times$};
 
-% Draw LineSegment
+% Draw Line Segment
 \draw[thick] (E) -- (A) node[midway, below, sloped] {4 cm};
 
 % Label Points
@@ -475,7 +500,7 @@ def test_drawing_with_linesegment_labels(A, B, E):
 \draw (E) node {$\times$};
 \draw (A) node {$\times$};
 
-% Draw LineSegment
+% Draw Line Segment
 \draw (E) -- (A) node[midway, below, sloped] {4 cm};
 
 % Label Points
@@ -495,7 +520,7 @@ def test_drawing_with_linesegment_labels(A, B, E):
 \draw (E) node {$\times$};
 \draw (A) node {$\times$};
 
-% Draw LineSegment
+% Draw Line Segment
 \draw[thick] (E) -- (A) node[midway, below, sloped] {?};
 
 % Label Points
