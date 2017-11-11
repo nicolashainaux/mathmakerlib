@@ -21,6 +21,8 @@
 
 
 def init():
-    global tikz, siunitx
+    global tikz, siunitx, xcolor, xcolor_options
 
-    tikz = siunitx = False
+    tikz = siunitx = xcolor = False
+
+    xcolor_options = []

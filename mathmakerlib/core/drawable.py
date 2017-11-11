@@ -21,7 +21,7 @@
 
 from abc import ABCMeta, abstractmethod
 
-from mathmakerlib import pkg_required
+from mathmakerlib import pkg_required, colors_names
 from mathmakerlib.calculus.number import is_number
 
 
@@ -153,3 +153,30 @@ class Drawable(object, metaclass=ABCMeta):
             setattr(self, '_scale', other)
         else:
             self._scale = other
+
+    @property
+    def color(self):
+        if not hasattr(self, '_color'):
+            return None
+        else:
+            return self._color
+
+    @color.setter
+    def color(self, value):
+        if value in colors_names.LATEX or value in colors_names.XCOLOR_BASE:
+            # Base LaTeX colors do not need to be explicitely loaded.
+            # As tikz package already loads xcolor base names, it's not
+            # necessary to explicitely load them neither.
+            pass
+        elif value in colors_names.XCOLOR_DVIPSNAMES:
+            pkg_required.xcolor = True
+            if 'dvipsnames' not in pkg_required.xcolor_options:
+                pkg_required.xcolor_options.append('dvipsnames')
+        else:
+            raise ValueError('Unknown color name: {}. Only colors from '
+                             'xcolor\'s dvipsnames are yet supported.'
+                             .format(value))
+        if not hasattr(self, '_color'):
+            setattr(self, '_color', value)
+        else:
+            self._color = value
