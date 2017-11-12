@@ -24,7 +24,7 @@ from abc import ABCMeta
 
 from mathmakerlib.core.drawable import Drawable
 from mathmakerlib.geometry.point import Point
-from mathmakerlib.calculus.number import Number
+from mathmakerlib.calculus.number import Number, is_number, is_integer
 
 
 class PointsPair(Drawable, metaclass=ABCMeta):
@@ -70,17 +70,17 @@ class PointsPair(Drawable, metaclass=ABCMeta):
         n must be greater or equal to 1
         :type n: int
         """
-        if type(n) is not int:
-            raise TypeError('n must be an int')
+        if not is_number(n) and is_integer(n):
+            raise TypeError('n must be an integer')
         if not n >= 1:
             raise ValueError('n must be greater or equal to 1')
         x0 = self.points[0].x
         x1 = self.points[1].x
         xstep = (x1 - x0) / n
-        x_list = [x0 + (i + 1) * xstep for i in range(n - 1)]
+        x_list = [x0 + (i + 1) * xstep for i in range(int(n - 1))]
         y0 = self.points[0].y
         y1 = self.points[1].y
         ystep = (y1 - y0) / n
-        y_list = [y0 + (i + 1) * ystep for i in range(n - 1)]
+        y_list = [y0 + (i + 1) * ystep for i in range(int(n - 1))]
         return [Point(x, y, prefix + str(i + 1))
                 for i, (x, y) in enumerate(zip(x_list, y_list))]
