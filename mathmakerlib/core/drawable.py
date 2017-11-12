@@ -94,22 +94,22 @@ class Drawable(object, metaclass=ABCMeta):
         """
 
     @abstractmethod
-    def _tikz_draw_options_list(self):
+    def _tikz_draw_options(self):
         """
         The list of possible options for draw command.
 
         :rtype: list
         """
 
-    def tikz_draw_options(self, options_list=None):
+    def tikz_options_list(self, options_list):
         """
         Return '[opt1, opt2,...]' or '' (if all options are None).
 
         :rtype: str
         """
         options = []
-        if options_list is None:
-            options_list = self._tikz_draw_options_list()
+        if options_list == 'draw':
+            options_list = self._tikz_draw_options()
         for o in options_list:
             if o is not None:
                 options.append(o)

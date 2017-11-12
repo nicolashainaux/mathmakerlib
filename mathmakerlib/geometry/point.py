@@ -195,12 +195,12 @@ class Point(Drawable):
         """Return the comment preceding the Point's drawing."""
         return ['% Draw Point']
 
-    def _tikz_draw_options_list(self):
+    def _tikz_draw_options(self):
         return [self.color]
 
     def tikz_draw(self):
         """Return the command to actually draw the Point."""
-        return [r'\draw{} ({}) node {};'.format(self.tikz_draw_options(),
+        return [r'\draw{} ({}) node {};'.format(self.tikz_options_list('draw'),
                                                 self.name,
                                                 '{' + self.shape + '}')]
 

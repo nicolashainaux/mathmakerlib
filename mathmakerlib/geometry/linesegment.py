@@ -213,7 +213,7 @@ class LineSegment(PointsPair):
         else:
             return [ls_draw_comment]
 
-    def _tikz_draw_options_list(self):
+    def _tikz_draw_options(self):
         return [self.thickness, self.color]
 
     def _tikz_draw_endpoints(self):
@@ -238,7 +238,7 @@ class LineSegment(PointsPair):
         """Return the command to actually draw the LineSegment."""
         output = self._tikz_draw_endpoints()
         output.append(r'\draw{} ({}) -- ({}){};'
-                      .format(self.tikz_draw_options(),
+                      .format(self.tikz_options_list('draw'),
                               self.endpoints[0].name,
                               self.endpoints[1].name,
                               self._tikz_ls_label()))
