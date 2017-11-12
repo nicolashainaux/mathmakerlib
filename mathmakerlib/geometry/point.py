@@ -54,7 +54,7 @@ class Point(Drawable):
     names_layer = 0
 
     def __init__(self, x=None, y=None, name='automatic', shape=r'$\times$',
-                 label='default', label_position='below'):
+                 label='default', label_position='below', color=None):
         r"""
         Initialize Point
         :param x: the Point's abscissa
@@ -90,6 +90,8 @@ class Point(Drawable):
         else:
             self.label = label
         self.label_position = label_position
+        if color is not None:
+            self.color = color
 
     def __repr__(self):
         return 'Point {}({}; {})'.format(self.name, self.x, self.y)
@@ -193,10 +195,14 @@ class Point(Drawable):
         """Return the comment preceding the Point's drawing."""
         return ['% Draw Point']
 
+    def _tikz_draw_options_list(self):
+        return [self.color]
+
     def tikz_draw(self):
         """Return the command to actually draw the Point."""
-        return [r'\draw ({}) node {};'.format(self.name,
-                                              '{' + self.shape + '}')]
+        return [r'\draw{} ({}) node {};'.format(self.tikz_draw_options(),
+                                                self.name,
+                                                '{' + self.shape + '}')]
 
     def tikz_labeling_comment(self):
         """

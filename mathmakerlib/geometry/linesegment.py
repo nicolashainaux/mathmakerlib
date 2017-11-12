@@ -34,7 +34,7 @@ class LineSegment(PointsPair):
 
     def __init__(self, *points, thickness='thick', label=None, label_mask=None,
                  label_position='anticlockwise',
-                 draw_endpoints=True, label_endpoints=True):
+                 draw_endpoints=True, label_endpoints=True, color=None):
         """
         Initialize LineSegment
 
@@ -121,6 +121,8 @@ class LineSegment(PointsPair):
                     self.label_position = 'below'
             else:
                 self.label_position = label_position
+            if color is not None:
+                self.color = color
             self._comment_designation = 'Line Segment'
         else:
             raise TypeError('Two Points are required to create a '
@@ -211,18 +213,15 @@ class LineSegment(PointsPair):
         else:
             return [ls_draw_comment]
 
+    def _tikz_draw_options_list(self):
+        return [self.thickness, self.color]
+
     def _tikz_draw_endpoints(self):
         if self.draw_endpoints:
             return ['{}\n{}\n'.format(self.endpoints[0].tikz_draw()[0],
                                       self.endpoints[1].tikz_draw()[0])]
         else:
             return []
-
-    def _tikz_thickness(self):
-        if self.thickness is None:
-            return ''
-        else:
-            return '[{}]'.format(self.thickness)
 
     def _tikz_ls_label(self):
         lslabel = ''
@@ -238,12 +237,11 @@ class LineSegment(PointsPair):
     def tikz_draw(self):
         """Return the command to actually draw the LineSegment."""
         output = self._tikz_draw_endpoints()
-        thickness = self._tikz_thickness()
-        lslabel = self._tikz_ls_label()
-        output.append(r'\draw{} ({}) -- ({}){};'.format(thickness,
-                                                        self.endpoints[0].name,
-                                                        self.endpoints[1].name,
-                                                        lslabel))
+        output.append(r'\draw{} ({}) -- ({}){};'
+                      .format(self.tikz_draw_options(),
+                              self.endpoints[0].name,
+                              self.endpoints[1].name,
+                              self._tikz_ls_label()))
         return output
 
     def tikz_label(self):

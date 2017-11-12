@@ -94,6 +94,31 @@ class Drawable(object, metaclass=ABCMeta):
         """
 
     @abstractmethod
+    def _tikz_draw_options_list(self):
+        """
+        The list of possible options for draw command.
+
+        :rtype: list
+        """
+
+    def tikz_draw_options(self, options_list=None):
+        """
+        Return '[opt1, opt2,...]' or '' (if all options are None).
+
+        :rtype: str
+        """
+        options = []
+        if options_list is None:
+            options_list = self._tikz_draw_options_list()
+        for o in options_list:
+            if o is not None:
+                options.append(o)
+        if options:
+            return '[{}]'.format(', '.join(options))
+        else:
+            return ''
+
+    @abstractmethod
     def tikz_drawing_comment(self):
         """
         Return the comments matching each drawing category.
@@ -163,19 +188,7 @@ class Drawable(object, metaclass=ABCMeta):
 
     @color.setter
     def color(self, value):
-        if value in colors_names.LATEX or value in colors_names.XCOLOR_BASE:
-            # Base LaTeX colors do not need to be explicitely loaded.
-            # As tikz package already loads xcolor base names, it's not
-            # necessary to explicitely load them neither.
-            pass
-        elif value in colors_names.XCOLOR_DVIPSNAMES:
-            pkg_required.xcolor = True
-            if 'dvipsnames' not in pkg_required.xcolor_options:
-                pkg_required.xcolor_options.append('dvipsnames')
-        else:
-            raise ValueError('Unknown color name: {}. Only colors from '
-                             'xcolor\'s dvipsnames are yet supported.'
-                             .format(value))
+        colors_names.check(value)
         if not hasattr(self, '_color'):
             setattr(self, '_color', value)
         else:
