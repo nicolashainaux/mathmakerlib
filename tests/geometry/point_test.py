@@ -108,6 +108,20 @@ def test_drawing():
 \draw (A) node[below] {A};
 \end{tikzpicture}
 """
+    p = Point(0, 0, 'A', color='pink')
+    assert p.drawn == r"""
+\begin{tikzpicture}
+% Declare Point
+\coordinate (A) at (0,0);
+
+% Draw Point
+\draw[pink] (A) node {$\times$};
+
+% Label Point
+\draw (A) node[below] {A};
+\end{tikzpicture}
+"""
+    p = Point(0, 0, 'A')
     p.label_position = None
     assert p.drawn == r"""
 \begin{tikzpicture}

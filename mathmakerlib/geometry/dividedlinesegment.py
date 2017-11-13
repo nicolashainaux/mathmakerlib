@@ -31,7 +31,7 @@ class DividedLineSegment(LineSegment):
     def __init__(self, *points, thickness='ultra thick', label=None,
                  label_mask=None,
                  label_position='anticlockwise',
-                 draw_endpoints=True, label_endpoints=False,
+                 draw_endpoints=True, label_endpoints=False, color=None,
                  n=None, inner_points_shape='|',
                  endpoints_shape_as_inner_points=True,
                  fill=0, fillcolor='LimeGreen'):
@@ -47,7 +47,8 @@ class DividedLineSegment(LineSegment):
                              label_mask=label_mask,
                              label_position=label_position,
                              draw_endpoints=draw_endpoints,
-                             label_endpoints=label_endpoints)
+                             label_endpoints=label_endpoints,
+                             color=color)
         self.n = n
         self.fill = fill
         self.inner_points_shape = inner_points_shape

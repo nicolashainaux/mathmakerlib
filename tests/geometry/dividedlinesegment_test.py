@@ -64,7 +64,7 @@ def test_repr(A, B):
 
 def test_drawing(A, B):
     """Check drawing is correct."""
-    ls = DividedLineSegment(A, B, n=5, fill=3, fillcolor='LimeGreen')
+    ls = DividedLineSegment(A, B, n=5, fill=3, fillcolor='pink')
     assert ls.drawn == r"""
 \begin{tikzpicture}
 % Declare Points
@@ -74,7 +74,7 @@ def test_drawing(A, B):
 
 % Draw Divided Line Segment
 \draw[ultra thick] (A) -- (B);
-\draw[ultra thick, LimeGreen] (A) -- (a3);
+\draw[ultra thick, pink] (A) -- (a3);
 \draw[ultra thick, opacity=0] (A) -- (B) """\
 r"""node[opacity=1, pos=0, sloped] {|} """\
                        r"""node[opacity=1, pos=0.2, sloped] {|} """\

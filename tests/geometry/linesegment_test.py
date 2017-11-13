@@ -158,6 +158,14 @@ def test_midpoint():
     assert s.midpoint(name='M') == Point(Number('0.5'), Number('0.5'), 'M')
 
 
+def test_dividing_points_errors(A, B):
+    """Check LineSegment's instanciation exceptions."""
+    AB = LineSegment(Point(0, 0, 'A'), Point(5, 0, 'B'))
+    with pytest.raises(TypeError) as excinfo:
+        AB.dividing_points(n=7.5)
+    assert str(excinfo.value) == 'n must be an integer'
+
+
 def test_dividing_points():
     """Check Points dividing LineSegment."""
     AB = LineSegment(Point(0, 0, 'A'), Point(5, 0, 'B'))
@@ -198,6 +206,25 @@ def test_drawing_without_linesegment_labels(A, E):
 
 % Draw Line Segment
 \draw[thick] (A) -- (E);
+
+% Label Points
+\draw (A) node[left] {A};
+\draw (E) node[right] {E};
+\end{tikzpicture}
+"""
+    ls = LineSegment(A, E, color='Apricot')
+    assert ls.drawn == r"""
+\begin{tikzpicture}
+% Declare Points
+\coordinate (A) at (0,0);
+\coordinate (E) at (1,0);
+
+% Draw Points
+\draw (A) node {$\times$};
+\draw (E) node {$\times$};
+
+% Draw Line Segment
+\draw[thick, Apricot] (A) -- (E);
 
 % Label Points
 \draw (A) node[left] {A};

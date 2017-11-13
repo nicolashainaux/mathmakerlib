@@ -174,10 +174,7 @@ class Drawable(object, metaclass=ABCMeta):
     def scale(self, other):
         if not is_number(other):
             raise TypeError('The scale must be a number.')
-        if not hasattr(self, '_scale'):
-            setattr(self, '_scale', other)
-        else:
-            self._scale = other
+        setattr(self, '_scale', other)
 
     @property
     def color(self):
@@ -189,7 +186,4 @@ class Drawable(object, metaclass=ABCMeta):
     @color.setter
     def color(self, value):
         colors_names.check(value)
-        if not hasattr(self, '_color'):
-            setattr(self, '_color', value)
-        else:
-            self._color = value
+        setattr(self, '_color', value)

@@ -70,7 +70,7 @@ class PointsPair(Drawable, metaclass=ABCMeta):
         n must be greater or equal to 1
         :type n: int
         """
-        if not is_number(n) and is_integer(n):
+        if not (is_number(n) and is_integer(n)):
             raise TypeError('n must be an integer')
         if not n >= 1:
             raise ValueError('n must be greater or equal to 1')
