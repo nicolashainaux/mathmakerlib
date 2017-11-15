@@ -18,3 +18,10 @@
 # You should have received a copy of the GNU General Public License
 # along with Mathmaker Lib; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+from .point import Point
+from .pointspair import PointsPair
+from .linesegment import LineSegment
+from .dividedlinesegment import DividedLineSegment
+
+__all__ = ['Point', 'PointsPair', 'LineSegment', 'DividedLineSegment']

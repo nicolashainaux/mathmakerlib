@@ -27,7 +27,7 @@ Basic use
 
 ::
 
-    >>> from mathmakerlib.calculus.number import Number
+    >>> from mathmakerlib.calculus import Number
     >>> Number('5.807')
     Number('5.807')
     >>> Number('5.807').atomized()
