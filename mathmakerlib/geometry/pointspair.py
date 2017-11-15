@@ -24,7 +24,8 @@ from abc import ABCMeta
 
 from mathmakerlib.core.drawable import Drawable
 from mathmakerlib.geometry.point import Point
-from mathmakerlib.calculus.number import Number, is_number, is_integer
+from mathmakerlib.calculus.number import Number
+from mathmakerlib.calculus.tools import is_number, is_integer
 
 
 class PointsPair(Drawable, metaclass=ABCMeta):

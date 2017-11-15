@@ -22,7 +22,8 @@
 from decimal import Decimal
 
 from mathmakerlib import colors_names
-from mathmakerlib.calculus.number import is_number, is_integer, Number
+from mathmakerlib.calculus.tools import is_number, is_integer
+from mathmakerlib.calculus.number import Number
 from mathmakerlib.geometry.linesegment import LineSegment
 
 

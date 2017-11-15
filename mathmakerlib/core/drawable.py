@@ -22,7 +22,7 @@
 from abc import ABCMeta, abstractmethod
 
 from mathmakerlib import pkg_required, colors_names
-from mathmakerlib.calculus.number import is_number
+from mathmakerlib.calculus.tools import is_number
 
 
 class Drawable(object, metaclass=ABCMeta):

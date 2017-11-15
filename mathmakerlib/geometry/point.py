@@ -22,7 +22,8 @@
 import string
 
 from mathmakerlib.core.drawable import Drawable
-from mathmakerlib.calculus.number import Number, is_number
+from mathmakerlib.calculus.number import Number
+from mathmakerlib.calculus.tools import is_number
 
 OPPOSITE_LABEL_POSITIONS = {'right': 'left',
                             'above right': 'below left',
@@ -34,7 +35,7 @@ OPPOSITE_LABEL_POSITIONS = {'right': 'left',
                             'below right': 'above left'}
 
 
-def auto_name():
+def _auto_name():
     if not Point.available_names:
         Point.names_layer += 1
         Point.available_names = [_ + '$_{}$'.format(str(Point.names_layer))
@@ -44,7 +45,7 @@ def auto_name():
         Point.names_in_use.append(n)
         return n
     else:
-        return auto_name()
+        return _auto_name()
 
 
 class Point(Drawable):
@@ -122,7 +123,7 @@ class Point(Drawable):
     @name.setter
     def name(self, other):
         if other == 'automatic':
-            self._name = auto_name()
+            self._name = _auto_name()
         else:
             if str(other) not in Point.names_in_use:
                 Point.names_in_use.append(str(other))

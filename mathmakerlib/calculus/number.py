@@ -26,33 +26,11 @@ import warnings
 from decimal import Decimal, ROUND_DOWN, ROUND_HALF_UP
 
 from mathmakerlib import pkg_required
+from mathmakerlib.calculus.tools import is_number, is_integer
 from mathmakerlib.core.signed import Signed
 from mathmakerlib.core.printable import Printable
 from mathmakerlib.core.evaluable import Evaluable
 from mathmakerlib.calculus.unit import Unit
-
-
-def is_number(n):
-    """Check if n is a number."""
-    return isinstance(n, (float, int, Decimal))
-
-
-def is_integer(n):
-    """Check if number n is an integer."""
-    if isinstance(n, int):
-        return True
-    elif isinstance(n, float):
-        return n.is_integer()
-    elif isinstance(n, Decimal):
-        return n % 1 == 0
-    else:
-        raise TypeError('Expected a number, either float, int or Decimal,'
-                        'got {} instead.'.format(str(type(n))))
-
-
-def is_natural(n):
-    """Check if number n is a natural number."""
-    return is_integer(n) and n >= 0
 
 
 class Sign(Printable, Evaluable):
