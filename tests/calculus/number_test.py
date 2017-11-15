@@ -88,6 +88,7 @@ def test_Sign():
     assert Sign('+') == Sign('+')
     assert Sign('+') != Sign('-')
     assert Sign('+') != '-'
+    assert Sign('+') in ['+', '-']
     assert not (Sign('+') == 8)
     assert Sign('+') != 8
     p = Sign('+')
