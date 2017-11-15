@@ -21,8 +21,7 @@
 
 import pytest
 
-from mathmakerlib.geometry.point import Point
-from mathmakerlib.geometry.dividedlinesegment import DividedLineSegment
+from mathmakerlib.geometry import Point, DividedLineSegment
 
 
 @pytest.fixture()

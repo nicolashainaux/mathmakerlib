@@ -21,8 +21,7 @@
 
 import pytest
 
-from mathmakerlib.calculus.unit import Unit, physical_quantity
-from mathmakerlib.calculus.number import Number
+from mathmakerlib.calculus import Unit, physical_quantity, Number
 
 
 def test_physical_quantity():

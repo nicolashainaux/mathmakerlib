@@ -21,8 +21,7 @@
 
 import pytest
 
-from mathmakerlib.calculus.exponented import Exponented
-from mathmakerlib.calculus.number import Number
+from mathmakerlib.calculus import Number, Exponented
 
 
 def test_exponented_errors():

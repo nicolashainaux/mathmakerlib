@@ -25,15 +25,11 @@ import pytest
 from decimal import Decimal, ROUND_HALF_UP
 
 from mathmakerlib import pkg_required
-from mathmakerlib.core.signed import Signed
-from mathmakerlib.core.printable import Printable
-from mathmakerlib.core.evaluable import Evaluable
-from mathmakerlib.calculus.unit import Unit
-from mathmakerlib.calculus.number import Number, Sign
-from mathmakerlib.calculus.number import is_number, is_integer, is_natural
-from mathmakerlib.calculus.number import move_fracdigits_to
-from mathmakerlib.calculus.number import remove_fracdigits_from
-from mathmakerlib.calculus.number import fix_fracdigits
+from mathmakerlib.core import Signed, Printable, Evaluable
+from mathmakerlib.calculus import is_integer, Unit, Number, Sign
+from mathmakerlib.calculus import move_fracdigits_to
+from mathmakerlib.calculus import remove_fracdigits_from
+from mathmakerlib.calculus import fix_fracdigits
 
 LOCALE_US = 'en-US' if sys.platform.startswith('win') else 'en_US.UTF-8'
 LOCALE_FR = 'fr-FR' if sys.platform.startswith('win') else 'fr_FR.UTF-8'
@@ -384,108 +380,6 @@ def test_sign():
     assert Number(-6).sign == '-'
 
 
-def test_is_number():
-    """Check numbers are correctly identified."""
-    assert is_number(104)
-    assert is_number(1.0)
-    assert is_number(4 + 9.0 ** 3)
-    assert is_number(Decimal('4'))
-    assert not is_number('4')
-    assert not is_number([1])
-
-
-def test_is_integer():
-    """Check integers are correctly identified."""
-    assert is_integer(9)
-    assert is_integer(-9)
-    assert is_integer(10 + 59 // 7)
-    assert is_integer(1.0)
-    assert is_integer(-1.0)
-    assert is_integer(Decimal('1.0'))
-    assert is_integer(Decimal('-1.0'))
-    assert not is_integer(Decimal('1.01'))
-    assert not is_integer(Decimal('-1.01'))
-    with pytest.raises(TypeError):
-        is_integer('1.0')
-    with pytest.raises(TypeError):
-        is_integer('-1.0')
-
-
-def test_is_natural():
-    """Check naturals are correctly identified."""
-    assert is_natural(0)
-    assert is_natural(-0)
-    assert is_natural(9)
-    assert not is_natural(-9)
-    assert is_natural(10 + 59 // 7)
-    assert is_natural(1.0)
-    assert not is_natural(-1.0)
-    assert is_natural(Decimal('1.0'))
-    assert not is_natural(Decimal('-1.0'))
-    assert not is_natural(Decimal('1.01'))
-    assert not is_natural(Decimal('-1.01'))
-    with pytest.raises(TypeError):
-        is_natural('1.0')
-    with pytest.raises(TypeError):
-        is_natural('-1.0')
-
-
-def test_move_fracdigits_to():
-    """Check move_digits_to() in different cases."""
-    with pytest.raises(TypeError):
-        move_fracdigits_to(14)
-    with pytest.raises(TypeError):
-        move_fracdigits_to(14, (7, 5))
-    with pytest.raises(TypeError):
-        move_fracdigits_to(14, {7: 'a', 6: 'b'})
-    with pytest.raises(TypeError):
-        move_fracdigits_to(14, [7, '5'])
-    with pytest.raises(TypeError):
-        move_fracdigits_to('14', [7, 5])
-    with pytest.raises(TypeError) as excinfo:
-        move_fracdigits_to(14, ['a', Decimal('0.5')])
-    assert str(excinfo.value).startswith('Expected a number, either float, '
-                                         'int or Decimal')
-    assert move_fracdigits_to(14, [7, 5]) == [14, 7, 5]
-    assert move_fracdigits_to(14, [Decimal('0.7'), 5]) \
-        == [Decimal('1.4'), Decimal(7), 5]
-    assert move_fracdigits_to(14, [Decimal('0.7'), Decimal('0.5')]) \
-        == [Decimal('0.14'), Decimal(7), Decimal(5)]
-
-
-def test_remove_fracdigits_from():
-    """Check remove_fracdigits_from() in different cases."""
-    with pytest.raises(TypeError):
-        remove_fracdigits_from('14', to=[])
-    with pytest.raises(TypeError):
-        remove_fracdigits_from(14)
-    with pytest.raises(TypeError):
-        remove_fracdigits_from(1.4)
-    with pytest.raises(ValueError):
-        remove_fracdigits_from(Decimal('1.4'), to=[])
-    with pytest.raises(ValueError):
-        remove_fracdigits_from(Decimal('1.4'), to=[10, 20, 30])
-    with pytest.raises(TypeError):
-        remove_fracdigits_from(Decimal('14'), to=[10, 20, 30])
-    with pytest.raises(TypeError):
-        remove_fracdigits_from(Decimal('1.4'), to=10)
-    assert remove_fracdigits_from(Decimal('1.4'), to=[10, 20, 36]) ==\
-        [Decimal('14'), 10, 20, Decimal('3.6')]
-
-
-def test_fix_digits():
-    """Check fix_digits() in different cases."""
-    n1, n2 = fix_fracdigits(Decimal('0.6'), Decimal('2'))
-    assert n1 == Decimal('6')
-    assert n2 == Decimal('0.2')
-    n1, n2 = fix_fracdigits(Decimal('0.6'), Decimal('10'))
-    assert n1 == Decimal('6')
-    assert not is_integer(n2)
-    n1, n2, n3 = fix_fracdigits(Decimal('0.6'), Decimal('10'), Decimal('100'))
-    assert n1 == Decimal('6')
-    assert not is_integer(n2) or not is_integer(n3)
-
-
 def test_rounded():
     """Check rounding is good."""
     assert Number(4.2).rounded(0) == 4
@@ -665,3 +559,59 @@ def test_split():
     assert Number(14).split(operation='difference', return_all=True) \
         == [(15, 1), (16, 2), (17, 3), (18, 4,), (19, 5), (20, 6), (21, 7),
             (22, 8), (23, 9), (24, 10), (25, 11), (26, 12), (27, 13)]
+
+
+def test_move_fracdigits_to():
+    """Check move_digits_to() in different cases."""
+    with pytest.raises(TypeError):
+        move_fracdigits_to(14)
+    with pytest.raises(TypeError):
+        move_fracdigits_to(14, (7, 5))
+    with pytest.raises(TypeError):
+        move_fracdigits_to(14, {7: 'a', 6: 'b'})
+    with pytest.raises(TypeError):
+        move_fracdigits_to(14, [7, '5'])
+    with pytest.raises(TypeError):
+        move_fracdigits_to('14', [7, 5])
+    with pytest.raises(TypeError) as excinfo:
+        move_fracdigits_to(14, ['a', Decimal('0.5')])
+    assert str(excinfo.value).startswith('Expected a number, either float, '
+                                         'int or Decimal')
+    assert move_fracdigits_to(14, [7, 5]) == [14, 7, 5]
+    assert move_fracdigits_to(14, [Decimal('0.7'), 5]) \
+        == [Decimal('1.4'), Decimal(7), 5]
+    assert move_fracdigits_to(14, [Decimal('0.7'), Decimal('0.5')]) \
+        == [Decimal('0.14'), Decimal(7), Decimal(5)]
+
+
+def test_remove_fracdigits_from():
+    """Check remove_fracdigits_from() in different cases."""
+    with pytest.raises(TypeError):
+        remove_fracdigits_from('14', to=[])
+    with pytest.raises(TypeError):
+        remove_fracdigits_from(14)
+    with pytest.raises(TypeError):
+        remove_fracdigits_from(1.4)
+    with pytest.raises(ValueError):
+        remove_fracdigits_from(Decimal('1.4'), to=[])
+    with pytest.raises(ValueError):
+        remove_fracdigits_from(Decimal('1.4'), to=[10, 20, 30])
+    with pytest.raises(TypeError):
+        remove_fracdigits_from(Decimal('14'), to=[10, 20, 30])
+    with pytest.raises(TypeError):
+        remove_fracdigits_from(Decimal('1.4'), to=10)
+    assert remove_fracdigits_from(Decimal('1.4'), to=[10, 20, 36]) ==\
+        [Decimal('14'), 10, 20, Decimal('3.6')]
+
+
+def test_fix_digits():
+    """Check fix_digits() in different cases."""
+    n1, n2 = fix_fracdigits(Decimal('0.6'), Decimal('2'))
+    assert n1 == Decimal('6')
+    assert n2 == Decimal('0.2')
+    n1, n2 = fix_fracdigits(Decimal('0.6'), Decimal('10'))
+    assert n1 == Decimal('6')
+    assert not is_integer(n2)
+    n1, n2, n3 = fix_fracdigits(Decimal('0.6'), Decimal('10'), Decimal('100'))
+    assert n1 == Decimal('6')
+    assert not is_integer(n2) or not is_integer(n3)

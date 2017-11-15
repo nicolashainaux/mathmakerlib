@@ -22,8 +22,7 @@
 import pytest
 
 from mathmakerlib import pkg_required
-from mathmakerlib.geometry.point import Point
-from mathmakerlib.geometry.linesegment import LineSegment
+from mathmakerlib.geometry import Point, LineSegment
 
 
 @pytest.fixture()

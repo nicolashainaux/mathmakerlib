@@ -21,7 +21,7 @@
 
 import pytest
 
-from mathmakerlib.geometry.point import Point
+from mathmakerlib.geometry import Point
 
 
 def test_instanciation_errors():

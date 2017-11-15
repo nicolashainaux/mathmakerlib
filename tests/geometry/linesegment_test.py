@@ -22,9 +22,8 @@
 import pytest
 from decimal import Decimal
 
-from mathmakerlib.calculus.number import Number
-from mathmakerlib.geometry.point import Point
-from mathmakerlib.geometry.linesegment import LineSegment
+from mathmakerlib.calculus import Number
+from mathmakerlib.geometry import Point, LineSegment
 
 
 @pytest.fixture()
