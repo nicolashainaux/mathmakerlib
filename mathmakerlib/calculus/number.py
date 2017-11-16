@@ -42,6 +42,9 @@ class Sign(Printable, Evaluable):
     def __repr__(self):
         return 'Sign({})'.format(self.sign)
 
+    def __str__(self):
+        return self.sign
+
     def __eq__(self, other):
         if isinstance(other, Sign):
             return self.sign == other.sign
