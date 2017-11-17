@@ -61,6 +61,60 @@ You can also play with units. Basic operations are available:
     Number('24 cm^2')
     >>>
 
+Basic geometric shapes can also be created:
+
+::
+
+    >>> from mathmakerlib.geometry import Point, LineSegment
+    >>> ls = LineSegment(Point(0, 0, 'A'), Point(4, 0, 'B'), label='4 cm')
+    >>> ls.drawn
+    \begin{tikzpicture}
+    % Declare Points
+    \coordinate (A) at (0,0);
+    \coordinate (B) at (4,0);
+
+    % Draw Points
+    \draw (A) node {$\times$};
+    \draw (B) node {$\times$};
+
+    % Draw Line Segment
+    \draw[thick] (A) -- (B) node[midway, below, sloped] {4 cm};
+
+    % Label Points
+    \draw (A) node[left] {A};
+    \draw (B) node[right] {B};
+    \end{tikzpicture}
+    >>>
+
+Once compiled (here using Ubuntu font):
+
+.. image:: pics/simple_linesegment.png
+
+::
+
+    >>> from mathmakerlib.geometry import Point, DividedLineSegment
+    >>> A = Point(0, 0, 'A')
+    >>> B = Point(10, 0, 'B')
+    >>> ls = DividedLineSegment(A, B, n=5, fill=3, fillcolor='Cerulean')
+    >>> ls.drawn
+    \begin{tikzpicture}
+    % Declare Points
+    \coordinate (A) at (0,0);
+    \coordinate (B) at (10,0);
+    \coordinate (a3) at (6,0);
+
+    % Draw Divided Line Segment
+    \draw[ultra thick] (A) -- (B);
+    \draw[ultra thick, Cerulean] (A) -- (a3);
+    \draw[ultra thick, opacity=0] (A) -- (B) node[opacity=1, pos=0, sloped] {|} node[opacity=1, pos=0.2, sloped] {|} node[opacity=1, pos=0.4, sloped] {|} node[opacity=1, pos=0.6, sloped] {|} node[opacity=1, pos=0.8, sloped] {|} node[opacity=1, pos=1, sloped] {|};
+
+    % Label Points
+
+    \end{tikzpicture}
+
+Once compiled (here using Ubuntu font):
+
+.. image:: pics/dividedlinesegment.png
 
 Contribute
 ==========
