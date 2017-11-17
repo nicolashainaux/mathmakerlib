@@ -21,7 +21,7 @@
 
 from abc import ABCMeta, abstractmethod
 
-from mathmakerlib import pkg_required, colors_names
+from mathmakerlib import requires_pkg, colors_names
 from mathmakerlib.calculus.tools import is_number
 
 
@@ -35,7 +35,7 @@ class Drawable(object, metaclass=ABCMeta):
         argument is required. First, setup the object (at initialization, or
         modify it later), once it's ready, draw it.
         """
-        pkg_required.tikz = True
+        requires_pkg.tikz = True
         picture_format = {'header': self.tikz_header(),
                           'declaring_comment': self.tikz_declaring_comment(),
                           'declarations': self.tikz_declarations(),

@@ -21,7 +21,7 @@
 
 import pytest
 
-from mathmakerlib import pkg_required
+from mathmakerlib import requires_pkg
 from mathmakerlib.geometry import Point, LineSegment
 
 
@@ -67,20 +67,20 @@ def test_scale(A, E):
 def test_colors():
     """Check colors setting and usage."""
     p = Point(0, 0, 'A')
-    pkg_required.xcolor_options = []
-    pkg_required.xcolor = False
+    requires_pkg.xcolor_options = []
+    requires_pkg.xcolor = False
     p.color = 'blue'
-    assert not pkg_required.xcolor
-    assert 'dvipsnames' not in pkg_required.xcolor_options
+    assert not requires_pkg.xcolor
+    assert 'dvipsnames' not in requires_pkg.xcolor_options
     with pytest.raises(ValueError) as excinfo:
         p.color = 'UndefinedBlueOrange'
     assert str(excinfo.value) == 'Unknown color name: UndefinedBlueOrange. ' \
         'Only colors from xcolor\'s dvipsnames are yet supported.'
-    assert not pkg_required.xcolor
-    assert 'dvipsnames' not in pkg_required.xcolor_options
+    assert not requires_pkg.xcolor
+    assert 'dvipsnames' not in requires_pkg.xcolor_options
     p.color = 'Apricot'
-    assert pkg_required.xcolor
-    assert 'dvipsnames' in pkg_required.xcolor_options
+    assert requires_pkg.xcolor
+    assert 'dvipsnames' in requires_pkg.xcolor_options
     assert p.drawn == r"""
 \begin{tikzpicture}
 % Declare Point

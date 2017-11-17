@@ -24,7 +24,7 @@ import locale
 import pytest
 from decimal import Decimal, ROUND_HALF_UP
 
-from mathmakerlib import pkg_required
+from mathmakerlib import requires_pkg
 from mathmakerlib.core import Signed, Printable, Evaluable
 from mathmakerlib.calculus import is_integer, Unit, Number, Sign
 from mathmakerlib.calculus import move_fracdigits_to
@@ -365,10 +365,10 @@ def test_printing():
     assert Number('8.6').uiprinted == '8.6'
     locale.setlocale(locale.LC_ALL, LOCALE_US)
     assert Number('8.6').imprint(start_expr=False) == '+8.6'
-    pkg_required.siunitx = False
+    requires_pkg.siunitx = False
     n = Number('9', unit='cm')
     assert n.printed == r'\SI{9}{cm}'
-    assert pkg_required.siunitx
+    assert requires_pkg.siunitx
     assert n.uiprinted == '9 cm'
     assert str(n) == '9 cm'
     n = Number('9')
