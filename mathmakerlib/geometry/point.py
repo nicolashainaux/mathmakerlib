@@ -21,7 +21,7 @@
 
 import string
 
-from mathmakerlib.core.drawable import Drawable
+from mathmakerlib.core.drawable import Drawable, check_scale
 from mathmakerlib.calculus.number import Number
 from mathmakerlib.calculus.tools import is_number
 
@@ -55,7 +55,8 @@ class Point(Drawable):
     names_layer = 0
 
     def __init__(self, x=None, y=None, name='automatic', shape=r'$\times$',
-                 label='default', label_position='below', color=None):
+                 label='default', label_position='below', color=None,
+                 shape_scale=Number('0.67')):
         r"""
         Initialize Point
         :param x: the Point's abscissa
@@ -93,6 +94,7 @@ class Point(Drawable):
         self.label_position = label_position
         if color is not None:
             self.color = color
+        self.shape_scale = shape_scale
 
     def __repr__(self):
         return 'Point {}({}; {})'.format(self.name, self.x, self.y)
@@ -169,6 +171,15 @@ class Point(Drawable):
         self._shape = str(other)
 
     @property
+    def shape_scale(self):
+        return self._shape_scale
+
+    @shape_scale.setter
+    def shape_scale(self, value):
+        check_scale(value, 'Point\'s shape')
+        self._shape_scale = Number(value)
+
+    @property
     def label_position(self):
         return self._label_position
 
@@ -201,9 +212,14 @@ class Point(Drawable):
 
     def tikz_draw(self):
         """Return the command to actually draw the Point."""
-        return [r'\draw{} ({}) node {};'.format(self.tikz_options_list('draw'),
-                                                self.name,
-                                                '{' + self.shape + '}')]
+        sh_scale = ''
+        if self.shape_scale != 1:
+            sh_scale = '[scale={}]'.format(self.shape_scale)
+        return [r'\draw{} ({}) node{} {};'
+                .format(self.tikz_options_list('draw'),
+                        self.name,
+                        sh_scale,
+                        '{' + self.shape + '}')]
 
     def tikz_labeling_comment(self):
         """

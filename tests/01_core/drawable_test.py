@@ -48,8 +48,8 @@ def test_scale(A, E):
 \coordinate (E) at (1,0);
 
 % Draw Points
-\draw (A) node {$\times$};
-\draw (E) node {$\times$};
+\draw (A) node[scale=0.67] {$\times$};
+\draw (E) node[scale=0.67] {$\times$};
 
 % Draw Line Segment
 \draw[thick] (A) -- (E);
@@ -87,7 +87,7 @@ def test_colors():
 \coordinate (A) at (0,0);
 
 % Draw Point
-\draw[Apricot] (A) node {$\times$};
+\draw[Apricot] (A) node[scale=0.67] {$\times$};
 
 % Label Point
 \draw (A) node[below] {A};
@@ -108,8 +108,8 @@ def test_baseline(A, E):
 \coordinate (E) at (1,0);
 
 % Draw Points
-\draw (A) node {$\times$};
-\draw (E) node {$\times$};
+\draw (A) node[scale=0.67] {$\times$};
+\draw (E) node[scale=0.67] {$\times$};
 
 % Draw Line Segment
 \draw[thick] (A) -- (E);
@@ -127,8 +127,8 @@ def test_baseline(A, E):
 \coordinate (E) at (1,0);
 
 % Draw Points
-\draw (A) node {$\times$};
-\draw (E) node {$\times$};
+\draw (A) node[scale=0.67] {$\times$};
+\draw (E) node[scale=0.67] {$\times$};
 
 % Draw Line Segment
 \draw[thick] (A) -- (E);

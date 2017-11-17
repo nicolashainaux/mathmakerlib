@@ -102,7 +102,7 @@ def test_drawing():
 \coordinate (A) at (0,0);
 
 % Draw Point
-\draw (A) node {$\times$};
+\draw (A) node[scale=0.67] {$\times$};
 
 % Label Point
 \draw (A) node[below] {A};
@@ -115,7 +115,7 @@ def test_drawing():
 \coordinate (A) at (0,0);
 
 % Draw Point
-\draw[pink] (A) node {$\times$};
+\draw[pink] (A) node[scale=0.67] {$\times$};
 
 % Label Point
 \draw (A) node[below] {A};
@@ -129,7 +129,7 @@ def test_drawing():
 \coordinate (A) at (0,0);
 
 % Draw Point
-\draw (A) node {$\times$};
+\draw (A) node[scale=0.67] {$\times$};
 
 % Label Point
 \draw (A) node {A};
@@ -142,7 +142,7 @@ def test_drawing():
 \coordinate (A) at (0,0);
 
 % Draw Point
-\draw (A) node {$\times$};
+\draw (A) node[scale=0.67] {$\times$};
 
 % Label Point
 
@@ -155,7 +155,7 @@ def test_drawing():
 \coordinate (A) at (0,0);
 
 % Draw Point
-\draw (A) node {$\times$};
+\draw (A) node[scale=0.67] {$\times$};
 
 % Label Point
 

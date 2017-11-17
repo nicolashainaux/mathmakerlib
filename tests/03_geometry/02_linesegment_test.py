@@ -209,8 +209,8 @@ def test_drawing_without_linesegment_labels(A, E):
 \coordinate (E) at (1,0);
 
 % Draw Points
-\draw (A) node {$\times$};
-\draw (E) node {$\times$};
+\draw (A) node[scale=0.67] {$\times$};
+\draw (E) node[scale=0.67] {$\times$};
 
 % Draw Line Segment
 \draw[thick] (A) -- (E);
@@ -228,8 +228,8 @@ def test_drawing_without_linesegment_labels(A, E):
 \coordinate (E) at (1,0);
 
 % Draw Points
-\draw (A) node {$\times$};
-\draw (E) node {$\times$};
+\draw (A) node[scale=0.67] {$\times$};
+\draw (E) node[scale=0.67] {$\times$};
 
 % Draw Line Segment
 \draw[thick, Apricot] (A) -- (E);
@@ -262,8 +262,8 @@ def test_drawing_without_linesegment_labels(A, E):
 \coordinate (E) at (1,0);
 
 % Draw Points
-\draw (A) node {$\times$};
-\draw (E) node {$\times$};
+\draw (A) node[scale=0.67] {$\times$};
+\draw (E) node[scale=0.67] {$\times$};
 
 % Draw Line Segment
 \draw[thick] (A) -- (E);
@@ -280,8 +280,8 @@ def test_drawing_without_linesegment_labels(A, E):
 \coordinate (E) at (1,1);
 
 % Draw Points
-\draw (A) node {$\times$};
-\draw (E) node {$\times$};
+\draw (A) node[scale=0.67] {$\times$};
+\draw (E) node[scale=0.67] {$\times$};
 
 % Draw Line Segment
 \draw[thick] (A) -- (E);
@@ -299,8 +299,8 @@ def test_drawing_without_linesegment_labels(A, E):
 \coordinate (E) at (0,1);
 
 % Draw Points
-\draw (A) node {$\times$};
-\draw (E) node {$\times$};
+\draw (A) node[scale=0.67] {$\times$};
+\draw (E) node[scale=0.67] {$\times$};
 
 % Draw Line Segment
 \draw[thick] (A) -- (E);
@@ -318,8 +318,8 @@ def test_drawing_without_linesegment_labels(A, E):
 \coordinate (E) at (-1,1);
 
 % Draw Points
-\draw (A) node {$\times$};
-\draw (E) node {$\times$};
+\draw (A) node[scale=0.67] {$\times$};
+\draw (E) node[scale=0.67] {$\times$};
 
 % Draw Line Segment
 \draw[thick] (A) -- (E);
@@ -337,8 +337,8 @@ def test_drawing_without_linesegment_labels(A, E):
 \coordinate (E) at (-1,0);
 
 % Draw Points
-\draw (A) node {$\times$};
-\draw (E) node {$\times$};
+\draw (A) node[scale=0.67] {$\times$};
+\draw (E) node[scale=0.67] {$\times$};
 
 % Draw Line Segment
 \draw[thick] (A) -- (E);
@@ -356,8 +356,8 @@ def test_drawing_without_linesegment_labels(A, E):
 \coordinate (E) at (-1,-1);
 
 % Draw Points
-\draw (A) node {$\times$};
-\draw (E) node {$\times$};
+\draw (A) node[scale=0.67] {$\times$};
+\draw (E) node[scale=0.67] {$\times$};
 
 % Draw Line Segment
 \draw[thick] (A) -- (E);
@@ -375,8 +375,8 @@ def test_drawing_without_linesegment_labels(A, E):
 \coordinate (E) at (0,-1);
 
 % Draw Points
-\draw (A) node {$\times$};
-\draw (E) node {$\times$};
+\draw (A) node[scale=0.67] {$\times$};
+\draw (E) node[scale=0.67] {$\times$};
 
 % Draw Line Segment
 \draw[thick] (A) -- (E);
@@ -394,8 +394,8 @@ def test_drawing_without_linesegment_labels(A, E):
 \coordinate (E) at (1,-1);
 
 % Draw Points
-\draw (A) node {$\times$};
-\draw (E) node {$\times$};
+\draw (A) node[scale=0.67] {$\times$};
+\draw (E) node[scale=0.67] {$\times$};
 
 % Draw Line Segment
 \draw[thick] (A) -- (E);
@@ -417,8 +417,8 @@ def test_drawing_with_linesegment_labels(A, B, E):
 \coordinate (E) at (1,0);
 
 % Draw Points
-\draw (A) node {$\times$};
-\draw (E) node {$\times$};
+\draw (A) node[scale=0.67] {$\times$};
+\draw (E) node[scale=0.67] {$\times$};
 
 % Draw Line Segment
 \draw[thick] (A) -- (E) node[midway, below, sloped] {4 cm};
@@ -436,8 +436,8 @@ def test_drawing_with_linesegment_labels(A, B, E):
 \coordinate (E) at (1,0);
 
 % Draw Points
-\draw (A) node {$\times$};
-\draw (E) node {$\times$};
+\draw (A) node[scale=0.67] {$\times$};
+\draw (E) node[scale=0.67] {$\times$};
 
 % Draw Line Segment
 \draw[thick] (A) -- (E) node[midway, above, sloped] {4 cm};
@@ -455,8 +455,8 @@ def test_drawing_with_linesegment_labels(A, B, E):
 \coordinate (A) at (0,0);
 
 % Draw Points
-\draw (E) node {$\times$};
-\draw (A) node {$\times$};
+\draw (E) node[scale=0.67] {$\times$};
+\draw (A) node[scale=0.67] {$\times$};
 
 % Draw Line Segment
 \draw[thick] (E) -- (A) node[midway, above, sloped] {4 cm};
@@ -474,8 +474,8 @@ def test_drawing_with_linesegment_labels(A, B, E):
 \coordinate (B) at (1,1);
 
 % Draw Points
-\draw (E) node {$\times$};
-\draw (B) node {$\times$};
+\draw (E) node[scale=0.67] {$\times$};
+\draw (B) node[scale=0.67] {$\times$};
 
 % Draw Line Segment
 \draw[thick] (E) -- (B) node[midway, above, sloped] {4 cm};
@@ -493,8 +493,8 @@ def test_drawing_with_linesegment_labels(A, B, E):
 \coordinate (E) at (1,0);
 
 % Draw Points
-\draw (A) node {$\times$};
-\draw (E) node {$\times$};
+\draw (A) node[scale=0.67] {$\times$};
+\draw (E) node[scale=0.67] {$\times$};
 
 % Draw Line Segment
 \draw[thick] (A) -- (E) node[midway, above, sloped] {4 cm};
@@ -512,8 +512,8 @@ def test_drawing_with_linesegment_labels(A, B, E):
 \coordinate (A) at (0,0);
 
 % Draw Points
-\draw (E) node {$\times$};
-\draw (A) node {$\times$};
+\draw (E) node[scale=0.67] {$\times$};
+\draw (A) node[scale=0.67] {$\times$};
 
 % Draw Line Segment
 \draw[thick] (E) -- (A) node[midway, below, sloped] {4 cm};
@@ -532,8 +532,8 @@ def test_drawing_with_linesegment_labels(A, B, E):
 \coordinate (A) at (0,0);
 
 % Draw Points
-\draw (E) node {$\times$};
-\draw (A) node {$\times$};
+\draw (E) node[scale=0.67] {$\times$};
+\draw (A) node[scale=0.67] {$\times$};
 
 % Draw Line Segment
 \draw (E) -- (A) node[midway, below, sloped] {4 cm};
@@ -552,8 +552,8 @@ def test_drawing_with_linesegment_labels(A, B, E):
 \coordinate (A) at (0,0);
 
 % Draw Points
-\draw (E) node {$\times$};
-\draw (A) node {$\times$};
+\draw (E) node[scale=0.67] {$\times$};
+\draw (A) node[scale=0.67] {$\times$};
 
 % Draw Line Segment
 \draw[thick] (E) -- (A) node[midway, below, sloped] {?};
@@ -575,8 +575,8 @@ def test_drawing_marked_linesegment(A, F):
 \coordinate (F) at (4,0);
 
 % Draw Points
-\draw (A) node {$\times$};
-\draw (F) node {$\times$};
+\draw (A) node[scale=0.67] {$\times$};
+\draw (F) node[scale=0.67] {$\times$};
 
 % Draw Line Segment
 \draw[thick] (A) -- (F) node[midway, sloped, scale=0.67] {//};
@@ -594,8 +594,8 @@ def test_drawing_marked_linesegment(A, F):
 \coordinate (F) at (4,0);
 
 % Draw Points
-\draw (A) node {$\times$};
-\draw (F) node {$\times$};
+\draw (A) node[scale=0.67] {$\times$};
+\draw (F) node[scale=0.67] {$\times$};
 
 % Draw Line Segment
 \draw[thick] (A) -- (F) node[midway, below, sloped] {4 cm} """
