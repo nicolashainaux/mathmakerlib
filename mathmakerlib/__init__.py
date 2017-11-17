@@ -26,7 +26,7 @@ __all__ = ['requires_pkg', 'colors_names', 'exceptions', 'calculus', 'core',
            'geometry']
 
 __version_info__ = (0, 3, 0)
-__dev__ = 6
+__dev__ = 0
 __patch_nb__ = 0
 __version__ = '.'.join(str(c) for c in __version_info__)
 dev_addendum = '' if __dev__ == 0 else '.dev' + str(__dev__)
