@@ -23,6 +23,7 @@ import copy
 
 from mathmakerlib.geometry.pointspair import PointsPair
 from mathmakerlib.calculus.number import Number
+from mathmakerlib.calculus.tools import is_number
 from mathmakerlib.geometry.point import Point, OPPOSITE_LABEL_POSITIONS
 
 THICKNESS_VALUES = [None, 'thin', 'very thin', 'ultra thin', 'thick',
@@ -34,7 +35,8 @@ class LineSegment(PointsPair):
 
     def __init__(self, *points, thickness='thick', label=None, label_mask=None,
                  label_position='anticlockwise',
-                 draw_endpoints=True, label_endpoints=True, color=None):
+                 draw_endpoints=True, label_endpoints=True, color=None,
+                 mark=None, mark_scale=Number('0.67')):
         """
         Initialize LineSegment
 
@@ -62,6 +64,10 @@ class LineSegment(PointsPair):
         :param label_endpoints: whether or not label the endpoints.
         Defaults to True.
         :type label_endpoints: bool
+        :param mark: the mark to print on the line segment
+        :type mark: str
+        :param mark_scale: the scale (size) of the mark. Defaults to 0.67
+        :type mark_scale: any number
         """
         if len(points) == 2:
             if not isinstance(points[0], Point):
@@ -88,6 +94,8 @@ class LineSegment(PointsPair):
             self.thickness = thickness
             self.draw_endpoints = draw_endpoints
             self.label_endpoints = label_endpoints
+            self.mark = mark
+            self.mark_scale = mark_scale
             PointsPair.__init__(self)
             s = self.slope
             if (Number('337.5') <= s <= Number('360')
@@ -192,6 +200,29 @@ class LineSegment(PointsPair):
                              .format(LABEL_MASK_VALUES, value))
 
     @property
+    def mark(self):
+        return self._mark
+
+    @mark.setter
+    def mark(self, value):
+        if value is not None:
+            self._mark = str(value)
+        else:
+            self._mark = None
+
+    @property
+    def mark_scale(self):
+        return self._mark_scale
+
+    @mark_scale.setter
+    def mark_scale(self, value):
+        if is_number(value):
+            self._mark_scale = Number(value)
+        else:
+            raise TypeError('The mark\'s scale must be a number, got {} '
+                            'instead'.format(type(value)))
+
+    @property
     def label_position(self):
         return self._label_position
 
@@ -237,11 +268,16 @@ class LineSegment(PointsPair):
     def tikz_draw(self):
         """Return the command to actually draw the LineSegment."""
         output = self._tikz_draw_endpoints()
-        output.append(r'\draw{} ({}) -- ({}){};'
+        tikz_mark = ''
+        if self.mark is not None:
+            tikz_mark = ' node[midway, sloped, scale={}] {}'\
+                .format(self.mark_scale, '{' + self.mark + '}')
+        output.append(r'\draw{} ({}) -- ({}){}{};'
                       .format(self.tikz_options_list('draw'),
                               self.endpoints[0].name,
                               self.endpoints[1].name,
-                              self._tikz_ls_label()))
+                              self._tikz_ls_label(),
+                              tikz_mark))
         return output
 
     def tikz_label(self):

@@ -51,6 +51,11 @@ def E():
     return Point(1, 0, 'E')
 
 
+@pytest.fixture()
+def F():
+    return Point(4, 0, 'F')
+
+
 def test_instanciation_errors(A, B):
     """Check LineSegment's instanciation exceptions."""
     with pytest.raises(TypeError) as excinfo:
@@ -107,6 +112,10 @@ def test_some_setters(A, B):
                                          'got \'undefined\' instead.')
     s.label_mask = '?'
     assert s.label_mask == '?'
+    with pytest.raises(TypeError) as excinfo:
+        s.mark_scale = 'undefined'
+    assert str(excinfo.value).startswith('The mark\'s scale must be a '
+                                         'number, got <class \'str\'> instead')
 
 
 def test_repr(A, B):
@@ -554,3 +563,46 @@ def test_drawing_with_linesegment_labels(A, B, E):
 \draw (A) node[left] {A};
 \end{tikzpicture}
 """
+
+
+def test_drawing_marked_linesegment(A, F):
+    """Check drawing is correct."""
+    ls = LineSegment(A, F, mark='//')
+    assert ls.drawn == r"""
+\begin{tikzpicture}
+% Declare Points
+\coordinate (A) at (0,0);
+\coordinate (F) at (4,0);
+
+% Draw Points
+\draw (A) node {$\times$};
+\draw (F) node {$\times$};
+
+% Draw Line Segment
+\draw[thick] (A) -- (F) node[midway, sloped, scale=0.67] {//};
+
+% Label Points
+\draw (A) node[left] {A};
+\draw (F) node[right] {F};
+\end{tikzpicture}
+"""
+    ls.label = '4 cm'
+    assert ls.drawn == (r"""
+\begin{tikzpicture}
+% Declare Points
+\coordinate (A) at (0,0);
+\coordinate (F) at (4,0);
+
+% Draw Points
+\draw (A) node {$\times$};
+\draw (F) node {$\times$};
+
+% Draw Line Segment
+\draw[thick] (A) -- (F) node[midway, below, sloped] {4 cm} """
+                        r"""node[midway, sloped, scale=0.67] {//};
+
+% Label Points
+\draw (A) node[left] {A};
+\draw (F) node[right] {F};
+\end{tikzpicture}
+""")
