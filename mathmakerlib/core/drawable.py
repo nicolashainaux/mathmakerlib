@@ -53,7 +53,13 @@ class Drawable(object, metaclass=ABCMeta):
         scale_option = ''
         if self.scale != 1:
             scale_option = 'scale={}'.format(self.scale)
-        pic_options = ', '.join([scale_option])
+        baseline_option = ''
+        if self.baseline is not None:
+            baseline_option = 'baseline={}'.format(self.baseline)
+        pic_options_list = [_
+                            for _ in [baseline_option, scale_option]
+                            if _ != '']
+        pic_options = ', '.join(pic_options_list)
         if pic_options:
             pic_options = '[{}]'.format(pic_options)
         picture_format.update({'pic_options': pic_options})
@@ -175,6 +181,17 @@ class Drawable(object, metaclass=ABCMeta):
         if not is_number(other):
             raise TypeError('The scale must be a number.')
         setattr(self, '_scale', other)
+
+    @property
+    def baseline(self):
+        if not hasattr(self, '_baseline'):
+            return None
+        else:
+            return self._baseline
+
+    @baseline.setter
+    def baseline(self, value):
+        setattr(self, '_baseline', str(value))
 
     @property
     def color(self):

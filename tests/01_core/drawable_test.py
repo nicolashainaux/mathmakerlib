@@ -93,3 +93,48 @@ def test_colors():
 \draw (A) node[below] {A};
 \end{tikzpicture}
 """
+
+
+def test_baseline(A, E):
+    """Check baseline setting and usage."""
+    ls = LineSegment(A, E)
+    assert ls.baseline is None
+    ls.baseline = '4pt'
+    assert ls.baseline == '4pt'
+    assert ls.drawn == r"""
+\begin{tikzpicture}[baseline=4pt]
+% Declare Points
+\coordinate (A) at (0,0);
+\coordinate (E) at (1,0);
+
+% Draw Points
+\draw (A) node {$\times$};
+\draw (E) node {$\times$};
+
+% Draw Line Segment
+\draw[thick] (A) -- (E);
+
+% Label Points
+\draw (A) node[left] {A};
+\draw (E) node[right] {E};
+\end{tikzpicture}
+"""
+    ls.scale = 2
+    assert ls.drawn == r"""
+\begin{tikzpicture}[baseline=4pt, scale=2]
+% Declare Points
+\coordinate (A) at (0,0);
+\coordinate (E) at (1,0);
+
+% Draw Points
+\draw (A) node {$\times$};
+\draw (E) node {$\times$};
+
+% Draw Line Segment
+\draw[thick] (A) -- (E);
+
+% Label Points
+\draw (A) node[left] {A};
+\draw (E) node[right] {E};
+\end{tikzpicture}
+"""
