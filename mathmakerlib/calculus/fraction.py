@@ -19,8 +19,10 @@
 # along with Mathmaker Lib; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
+from math import gcd
+
 from mathmakerlib.calculus.number import Sign, Number
-from mathmakerlib.calculus.tools import is_number, is_integer, gcd
+from mathmakerlib.calculus.tools import is_number, is_integer
 from mathmakerlib.calculus.tools import prime_factors
 from mathmakerlib.core.signed import Signed
 from mathmakerlib.core.printable import Printable
@@ -113,11 +115,11 @@ class Fraction(Signed, Printable):  # Evaluable
     #     pass
 
     def is_reducible(self):
-        return gcd(self.numerator, self.denominator) > 1
+        return gcd(int(self.numerator), int(self.denominator)) > 1
 
     def reduced(self):
         """Completely reduced Fraction (may return an integer number)."""
-        g = gcd(self.numerator, self.denominator)
+        g = gcd(int(self.numerator), int(self.denominator))
         return Fraction(self.sign, self.numerator / g, self.denominator / g)
 
     def reduced_by(self, n):
@@ -150,7 +152,8 @@ class Fraction(Signed, Printable):  # Evaluable
         if not self.is_reducible():
             raise StopFractionReduction(self)
         # lowest prime common divisor
-        lpcd = prime_factors(gcd(self.numerator, self.denominator))[0]
+        lpcd = prime_factors(gcd(int(self.numerator),
+                                 int(self.denominator)))[0]
         if self.denominator / lpcd == 1:
             return self.sign * self.numerator / lpcd
         return Fraction(self.sign,

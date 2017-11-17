@@ -45,20 +45,6 @@ def is_natural(n):
     return is_integer(n) and n >= 0
 
 
-def gcd(n1, n2):
-    if not (is_number(n1) and is_integer(n1)):
-        raise TypeError('Expected integers, got {} as first value instead.'
-                        .format(type(n1)))
-    if not (is_number(n2) and is_integer(n2)):
-        raise TypeError('Expected integers, got {} as second value instead.'
-                        .format(type(n2)))
-    if n2 == 0:
-        raise ValueError('Second value must be different from 0.')
-    if n1 % n2 == 0:
-        return abs(n2)
-    return gcd(n2, n1 % n2)
-
-
 def prime_factors(n):
     """
     Return all the prime factors of a positive integer

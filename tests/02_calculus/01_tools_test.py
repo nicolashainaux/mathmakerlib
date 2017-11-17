@@ -23,7 +23,7 @@ import pytest
 from decimal import Decimal
 
 from mathmakerlib.calculus import is_number, is_integer, is_natural
-from mathmakerlib.calculus import gcd, prime_factors
+from mathmakerlib.calculus import prime_factors
 
 
 def test_is_number():
@@ -70,23 +70,6 @@ def test_is_natural():
         is_natural('1.0')
     with pytest.raises(TypeError):
         is_natural('-1.0')
-
-
-def test_gcd():
-    """Check gcd() works correctly."""
-    with pytest.raises(TypeError) as excinfo:
-        gcd('a', 6)
-    assert str(excinfo.value) == 'Expected integers, got <class \'str\'> as ' \
-        'first value instead.'
-    with pytest.raises(TypeError) as excinfo:
-        gcd(6, 9.6)
-    assert str(excinfo.value) == 'Expected integers, got <class \'float\'> ' \
-        'as second value instead.'
-    with pytest.raises(ValueError) as excinfo:
-        gcd(6, 0)
-    assert str(excinfo.value) == 'Second value must be different from 0.'
-    assert gcd(12, 18) == 6
-    assert gcd(17, 23) == 1
 
 
 def test_prime_factors():
