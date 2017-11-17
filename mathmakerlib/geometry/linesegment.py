@@ -21,9 +21,9 @@
 
 import copy
 
+from mathmakerlib.core.drawable import check_scale
 from mathmakerlib.geometry.pointspair import PointsPair
 from mathmakerlib.calculus.number import Number
-from mathmakerlib.calculus.tools import is_number
 from mathmakerlib.geometry.point import Point, OPPOSITE_LABEL_POSITIONS
 
 THICKNESS_VALUES = [None, 'thin', 'very thin', 'ultra thin', 'thick',
@@ -216,11 +216,8 @@ class LineSegment(PointsPair):
 
     @mark_scale.setter
     def mark_scale(self, value):
-        if is_number(value):
-            self._mark_scale = Number(value)
-        else:
-            raise TypeError('The mark\'s scale must be a number, got {} '
-                            'instead'.format(type(value)))
+        check_scale(value, 'LineSegment\'s mark')
+        self._mark_scale = Number(value)
 
     @property
     def label_position(self):

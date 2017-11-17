@@ -25,6 +25,12 @@ from mathmakerlib import requires_pkg, colors_names
 from mathmakerlib.calculus.tools import is_number
 
 
+def check_scale(value, source_name):
+    if not is_number(value):
+        raise TypeError('The {}\'s scale must be a number.'
+                        .format(source_name))
+
+
 class Drawable(object, metaclass=ABCMeta):
 
     def draw(self):
@@ -177,10 +183,9 @@ class Drawable(object, metaclass=ABCMeta):
             return self._scale
 
     @scale.setter
-    def scale(self, other):
-        if not is_number(other):
-            raise TypeError('The scale must be a number.')
-        setattr(self, '_scale', other)
+    def scale(self, value):
+        check_scale(value, 'picture')
+        setattr(self, '_scale', value)
 
     @property
     def baseline(self):

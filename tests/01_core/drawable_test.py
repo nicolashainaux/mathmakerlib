@@ -61,7 +61,7 @@ def test_scale(A, E):
 """
     with pytest.raises(TypeError) as excinfo:
         ls.scale = '2'
-    assert str(excinfo.value) == 'The scale must be a number.'
+    assert str(excinfo.value) == 'The picture\'s scale must be a number.'
 
 
 def test_colors():

@@ -114,8 +114,8 @@ def test_some_setters(A, B):
     assert s.label_mask == '?'
     with pytest.raises(TypeError) as excinfo:
         s.mark_scale = 'undefined'
-    assert str(excinfo.value).startswith('The mark\'s scale must be a '
-                                         'number, got <class \'str\'> instead')
+    assert str(excinfo.value).startswith('The LineSegment\'s mark\'s scale '
+                                         'must be a number.')
 
 
 def test_repr(A, B):
