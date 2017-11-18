@@ -20,6 +20,7 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 import string
+from math import cos, sin, radians
 
 from mathmakerlib.core.drawable import Drawable, check_scale
 from mathmakerlib.calculus.number import Number
@@ -189,6 +190,43 @@ class Point(Drawable):
             self._label_position = None
         else:
             self._label_position = str(other)
+
+    def rotate(self, center, angle, rename='auto'):
+        """
+        Return a Point rotated around center of the provided angle.
+
+        :param center: the center of the rotation
+        :type center: Point
+        :param angle: the angle of the rotation
+        :type angle: a number
+        :param rename: if set to 'auto', will name the rotated Point after the
+        original, adding a ' (like A.rotate(...) creates a Point A'). If set
+        to None, keep the original name. Otherwise, the provided str will be
+        used as the rotated Point's name.
+        :type rename: None or str
+        :rtype: Point
+        """
+        if not isinstance(center, Point):
+            raise TypeError('Expected a Point as rotation center, got {} '
+                            'instead.'.format(type(center)))
+        if not is_number(angle):
+            raise TypeError('Expected a number as rotation angle, got {} '
+                            'instead.'.format(type(angle)))
+        deltax = self.x - center.x
+        deltay = self.y - center.y
+        rx = (deltax * Number(str(cos(radians(angle))))
+              - deltay * Number(str(sin(radians(angle))))
+              + center.x).rounded(Number('1.000'))
+        ry = (deltax * Number(str(sin(radians(angle))))
+              + deltay * Number(str(cos(radians(angle))))
+              + center.y).rounded(Number('1.000'))
+        if rename is None:
+            rname = self.name
+        elif rename == 'auto':
+            rname = self.name + "'"
+        else:
+            rname = rename
+        return Point(rx, ry, rname)
 
     def tikz_declaring_comment(self):
         """

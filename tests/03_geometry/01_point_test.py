@@ -21,6 +21,7 @@
 
 import pytest
 
+from mathmakerlib.calculus import Number
 from mathmakerlib.geometry import Point
 
 
@@ -91,6 +92,27 @@ def test_equality():
     assert p != Point(0, 0, 'B')
     assert p == Point(0, 0, 'A', label='?')
     assert p.coordinates == Point(0, 0, 'B').coordinates
+
+
+def test_rotation():
+    """Check rotating."""
+    pointO = Point(0, 0, 'O')
+    pointA = Point(1, 0, 'A')
+    with pytest.raises(TypeError) as excinfo:
+        pointA.rotate('O', Number(30))
+    assert str(excinfo.value) == 'Expected a Point as rotation center, '\
+        'got <class \'str\'> instead.'
+    with pytest.raises(TypeError) as excinfo:
+        pointA.rotate(pointO, 'a')
+    assert str(excinfo.value) == 'Expected a number as rotation angle, '\
+        'got <class \'str\'> instead.'
+    assert pointO.rotate(pointA, Number(90)) == Point(1, -1, "O'")
+    assert pointA.rotate(pointO, Number(90)) == Point(0, 1, "A'")
+    assert pointA.rotate(pointO, Number(90), rename=None) == Point(0, 1, 'A')
+    assert pointA.rotate(pointO, Number(90), rename='B') == Point(0, 1, 'B')
+    assert pointA.rotate(pointO, Number(30)) == Point(Number('0.866'),
+                                                      Number('0.5'),
+                                                      "A'")
 
 
 def test_drawing():
