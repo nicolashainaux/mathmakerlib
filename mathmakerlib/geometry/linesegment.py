@@ -262,19 +262,25 @@ class LineSegment(PointsPair):
                 .format(self.label_position, '{' + self.label_mask + '}')
         return lslabel
 
+    def _tikz_ls_mark(self):
+        if self.mark is not None:
+            return ' node[midway, sloped, scale={}] {}'\
+                .format(self.mark_scale, '{' + self.mark + '}')
+        else:
+            return ''
+
+    def tikz_draw_section(self):
+        return '-- ({}){}{}'.format(self.endpoints[1].name,
+                                    self._tikz_ls_label(),
+                                    self._tikz_ls_mark())
+
     def tikz_draw(self):
         """Return the command to actually draw the LineSegment."""
         output = self._tikz_draw_endpoints()
-        tikz_mark = ''
-        if self.mark is not None:
-            tikz_mark = ' node[midway, sloped, scale={}] {}'\
-                .format(self.mark_scale, '{' + self.mark + '}')
-        output.append(r'\draw{} ({}) -- ({}){}{};'
+        output.append(r'\draw{} ({}) {};'
                       .format(self.tikz_options_list('draw'),
                               self.endpoints[0].name,
-                              self.endpoints[1].name,
-                              self._tikz_ls_label(),
-                              tikz_mark))
+                              self.tikz_draw_section()))
         return output
 
     def tikz_label(self):
