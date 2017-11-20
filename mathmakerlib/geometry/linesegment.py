@@ -19,19 +19,18 @@
 # along with Mathmaker Lib; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-import copy
-
-from mathmakerlib.core.drawable import check_scale
+from mathmakerlib.core.drawable import check_scale, Drawable
+from mathmakerlib.core.drawable import tikz_approx_position
 from mathmakerlib.geometry.pointspair import PointsPair
 from mathmakerlib.calculus.number import Number
-from mathmakerlib.geometry.point import Point, OPPOSITE_LABEL_POSITIONS
+from mathmakerlib.geometry.point import OPPOSITE_LABEL_POSITIONS
 
 THICKNESS_VALUES = [None, 'thin', 'very thin', 'ultra thin', 'thick',
                     'very thick', 'ultra thick']
 LABEL_MASK_VALUES = [None, ' ', '?']
 
 
-class LineSegment(PointsPair):
+class LineSegment(Drawable, PointsPair):
 
     def __init__(self, *points, thickness='thick', label=None, label_mask=None,
                  label_position='anticlockwise',
@@ -69,73 +68,42 @@ class LineSegment(PointsPair):
         :param mark_scale: the scale (size) of the mark. Defaults to 0.67
         :type mark_scale: any number
         """
-        if len(points) == 2:
-            if not isinstance(points[0], Point):
-                raise TypeError('Both arguments should be Points, got a {} '
-                                'as first argument instead.'
-                                .format(type(points[0])))
-            if not isinstance(points[1], Point):
-                raise TypeError('Both arguments should be Points, got a {} '
-                                'as second argument instead.'
-                                .format(type(points[1])))
-            if points[0].coordinates == points[1].coordinates:
-                raise ValueError('Cannot instantiate a LineSegment if both '
-                                 'endpoints have the same coordinates: '
-                                 '({}; {}).'.format(points[0].x, points[0].y))
-            self._points = [copy.deepcopy(points[0]), copy.deepcopy(points[1])]
-            self._label = None
-            self._thickness = None
-            self._label_mask = None
-            self._label_position = None
-            self._draw_endpoints = None
-            self._label_endpoints = None
-            self.label = label
-            self.label_mask = label_mask
-            self.thickness = thickness
-            self.draw_endpoints = draw_endpoints
-            self.label_endpoints = label_endpoints
-            self.mark = mark
-            self.mark_scale = mark_scale
-            PointsPair.__init__(self)
-            s = self.slope
-            if (Number('337.5') <= s <= Number('360')
-                or Number('0') <= s < Number('22.5')):
-                self.endpoints[1].label_position = 'right'
-            elif Number('22.5') <= s < Number('67.5'):
-                self.endpoints[1].label_position = 'above right'
-            elif Number('67.5') <= s < Number('112.5'):
-                self.endpoints[1].label_position = 'above'
-            elif Number('112.5') <= s < Number('157.5'):
-                self.endpoints[1].label_position = 'above left'
-            elif Number('157.5') <= s < Number('202.5'):
-                self.endpoints[1].label_position = 'left'
-            elif Number('202.5') <= s < Number('247.5'):
-                self.endpoints[1].label_position = 'below left'
-            elif Number('247.5') <= s < Number('292.5'):
-                self.endpoints[1].label_position = 'below'
-            elif Number('292.5') <= s < Number('337.5'):
-                self.endpoints[1].label_position = 'below right'
-            self.endpoints[0].label_position = \
-                OPPOSITE_LABEL_POSITIONS[self.endpoints[1].label_position]
-            if label_position == 'anticlockwise':
-                if self.deltax > 0:
-                    self.label_position = 'below'
-                else:
-                    self.label_position = 'above'
-            elif label_position == 'clockwise':
-                if self.deltax > 0:
-                    self.label_position = 'above'
-                else:
-                    self.label_position = 'below'
-            else:
-                self.label_position = label_position
-            if color is not None:
-                self.color = color
-            self._comment_designation = 'Line Segment'
-        else:
+        if len(points) != 2:
             raise TypeError('Two Points are required to create a '
                             'LineSegment. Got {} object(s) instead.'
                             .format(len(points)))
+        PointsPair.__init__(self, *points)
+        self._label = None
+        self._thickness = None
+        self._label_mask = None
+        self._label_position = None
+        self._draw_endpoints = None
+        self._label_endpoints = None
+        self.label = label
+        self.label_mask = label_mask
+        self.thickness = thickness
+        self.draw_endpoints = draw_endpoints
+        self.label_endpoints = label_endpoints
+        self.mark = mark
+        self.mark_scale = mark_scale
+        self.endpoints[1].label_position = tikz_approx_position(self.slope)
+        self.endpoints[0].label_position = \
+            OPPOSITE_LABEL_POSITIONS[self.endpoints[1].label_position]
+        if label_position == 'anticlockwise':
+            if self.deltax > 0:
+                self.label_position = 'below'
+            else:
+                self.label_position = 'above'
+        elif label_position == 'clockwise':
+            if self.deltax > 0:
+                self.label_position = 'above'
+            else:
+                self.label_position = 'below'
+        else:
+            self.label_position = label_position
+        if color is not None:
+            self.color = color
+        self._comment_designation = 'Line Segment'
 
     def __repr__(self):
         return 'LineSegment({}, {})'.format(repr(self.endpoints[0]),

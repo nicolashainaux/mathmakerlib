@@ -23,12 +23,33 @@ from abc import ABCMeta, abstractmethod
 
 from mathmakerlib import requires_pkg, colors_names
 from mathmakerlib.calculus.tools import is_number
+from mathmakerlib.calculus.number import Number
 
 
 def check_scale(value, source_name):
     if not is_number(value):
         raise TypeError('The {}\'s scale must be a number.'
                         .format(source_name))
+
+
+def tikz_approx_position(slope):
+    if (Number('337.5') <= slope <= Number('360')
+        or Number('0') <= slope < Number('22.5')):
+        return 'right'
+    elif Number('22.5') <= slope < Number('67.5'):
+        return 'above right'
+    elif Number('67.5') <= slope < Number('112.5'):
+        return 'above'
+    elif Number('112.5') <= slope < Number('157.5'):
+        return 'above left'
+    elif Number('157.5') <= slope < Number('202.5'):
+        return 'left'
+    elif Number('202.5') <= slope < Number('247.5'):
+        return 'below left'
+    elif Number('247.5') <= slope < Number('292.5'):
+        return 'below'
+    elif Number('292.5') <= slope < Number('337.5'):
+        return 'below right'
 
 
 class Drawable(object, metaclass=ABCMeta):

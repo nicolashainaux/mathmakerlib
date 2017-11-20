@@ -20,17 +20,34 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 import math
-from abc import ABCMeta
+from copy import deepcopy
 
-from mathmakerlib.core.drawable import Drawable
 from mathmakerlib.geometry.point import Point
 from mathmakerlib.calculus.number import Number
 from mathmakerlib.calculus.tools import is_number, is_integer
 
 
-class PointsPair(Drawable, metaclass=ABCMeta):
+class PointsPair(object):
+    """
+    A pair of Points. Gather methods common to LineSegment, Line, Vector.
 
-    def __init__(self):
+    This class won't ever need to get Drawable, but can be instanciated.
+    """
+
+    def __init__(self, point1, point2):
+        if not isinstance(point1, Point):
+            raise TypeError('Both arguments should be Points, got a {} '
+                            'as first argument instead.'
+                            .format(type(point1)))
+        if not isinstance(point2, Point):
+            raise TypeError('Both arguments should be Points, got a {} '
+                            'as second argument instead.'
+                            .format(type(point2)))
+        if point1.coordinates == point2.coordinates:
+            raise ValueError('Cannot instantiate any PointsPair if both '
+                             'endpoints have the same coordinates: '
+                             '({}; {}).'.format(point1.x, point1.y))
+        self._points = [deepcopy(point1), deepcopy(point2)]
         self._deltax = self.points[1].x - self.points[0].x
         self._deltay = self.points[1].y - self.points[0].y
 
