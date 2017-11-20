@@ -19,11 +19,11 @@
 # along with Mathmaker Lib; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
+from decimal import Decimal
 from abc import ABCMeta, abstractmethod
 
 from mathmakerlib import requires_pkg, colors_names
 from mathmakerlib.calculus.tools import is_number
-from mathmakerlib.calculus.number import Number
 
 
 def check_scale(value, source_name):
@@ -33,22 +33,22 @@ def check_scale(value, source_name):
 
 
 def tikz_approx_position(slope):
-    if (Number('337.5') <= slope <= Number('360')
-        or Number('0') <= slope < Number('22.5')):
+    if (Decimal('337.5') <= slope <= Decimal('360')
+        or Decimal('0') <= slope < Decimal('22.5')):
         return 'right'
-    elif Number('22.5') <= slope < Number('67.5'):
+    elif Decimal('22.5') <= slope < Decimal('67.5'):
         return 'above right'
-    elif Number('67.5') <= slope < Number('112.5'):
+    elif Decimal('67.5') <= slope < Decimal('112.5'):
         return 'above'
-    elif Number('112.5') <= slope < Number('157.5'):
+    elif Decimal('112.5') <= slope < Decimal('157.5'):
         return 'above left'
-    elif Number('157.5') <= slope < Number('202.5'):
+    elif Decimal('157.5') <= slope < Decimal('202.5'):
         return 'left'
-    elif Number('202.5') <= slope < Number('247.5'):
+    elif Decimal('202.5') <= slope < Decimal('247.5'):
         return 'below left'
-    elif Number('247.5') <= slope < Number('292.5'):
+    elif Decimal('247.5') <= slope < Decimal('292.5'):
         return 'below'
-    elif Number('292.5') <= slope < Number('337.5'):
+    elif Decimal('292.5') <= slope < Decimal('337.5'):
         return 'below right'
 
 
