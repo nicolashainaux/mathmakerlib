@@ -87,7 +87,7 @@ class Colored(object, metaclass=ABCMeta):
         setattr(self, '_color', value)
 
 
-class Thick(object, metaclass=ABCMeta):
+class HasThickness(object, metaclass=ABCMeta):
     @property
     def thickness(self):
         if not hasattr(self, '_thickness'):
