@@ -19,7 +19,7 @@
 # along with Mathmaker Lib; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-from mathmakerlib.core.drawable import check_scale, Drawable
+from mathmakerlib.core.drawable import check_scale, Drawable, Thick
 from mathmakerlib.core.drawable import tikz_approx_position
 from mathmakerlib.geometry.pointspair import PointsPair
 from mathmakerlib.calculus.number import Number
@@ -28,7 +28,7 @@ from mathmakerlib.geometry.point import OPPOSITE_LABEL_POSITIONS
 LABEL_MASK_VALUES = [None, ' ', '?']
 
 
-class LineSegment(Drawable, PointsPair):
+class LineSegment(Drawable, Thick, PointsPair):
 
     def __init__(self, *points, thickness='thick', label=None, label_mask=None,
                  label_position='anticlockwise',

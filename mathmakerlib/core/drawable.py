@@ -104,7 +104,7 @@ class Thick(object, metaclass=ABCMeta):
                              .format(str(value), str(THICKNESS_VALUES)))
 
 
-class Drawable(Colored, Thick, metaclass=ABCMeta):
+class Drawable(Colored, metaclass=ABCMeta):
 
     def draw(self):
         """
