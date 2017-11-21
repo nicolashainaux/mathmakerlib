@@ -22,9 +22,9 @@
 import sys
 import locale
 
-from mathmakerlib import requires_pkg
+from mathmakerlib import requires
 
-requires_pkg.init()
+requires.init()
 
 LOCALE_US = 'en_US.UTF-8'
 

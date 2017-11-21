@@ -19,7 +19,7 @@
 # along with Mathmaker Lib; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-from mathmakerlib import requires_pkg
+from mathmakerlib import requires
 
 LATEX = ['white', 'black', 'red', 'green', 'blue', 'cyan', 'magenta', 'yellow']
 
@@ -51,9 +51,9 @@ def check(value):
         # necessary to explicitely load them neither.
         pass
     elif value in XCOLOR_DVIPSNAMES:
-        requires_pkg.xcolor = True
-        if 'dvipsnames' not in requires_pkg.xcolor_options:
-            requires_pkg.xcolor_options.append('dvipsnames')
+        requires.package['xcolor'] = True
+        if 'dvipsnames' not in requires.options['xcolor']:
+            requires.options['xcolor'].append('dvipsnames')
     else:
         raise ValueError('Unknown color name: {}. Only colors from '
                          'xcolor\'s dvipsnames are yet supported.'

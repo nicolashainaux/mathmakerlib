@@ -21,8 +21,9 @@
 
 
 def init():
-    global tikz, siunitx, xcolor, xcolor_options
+    global package, options
 
-    tikz = siunitx = xcolor = False
+    package = {name: False
+               for name in ['tikz', 'siunitx', 'xcolor']}
 
-    xcolor_options = []
+    options = {'xcolor': []}

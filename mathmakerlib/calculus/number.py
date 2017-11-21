@@ -25,7 +25,7 @@ import random
 import warnings
 from decimal import Decimal, ROUND_DOWN, ROUND_HALF_UP
 
-from mathmakerlib import requires_pkg
+from mathmakerlib import requires
 from mathmakerlib.calculus.tools import is_number, is_integer
 from mathmakerlib.core.signed import Signed
 from mathmakerlib.core.printable import Printable
@@ -355,7 +355,7 @@ class Number(Decimal, Signed, Printable, Evaluable):
             return extra_sign + self_str
         else:
             if variant == 'latex':
-                requires_pkg.siunitx = True
+                requires.package['siunitx'] = True
                 return extra_sign + r'\SI{' + Decimal.__str__(abs(self)) \
                     + '}{' + self.unit.printed + '}'
             else:  # 'user_input'

@@ -22,7 +22,7 @@
 from decimal import Decimal
 from abc import ABCMeta, abstractmethod
 
-from mathmakerlib import requires_pkg, colors_names
+from mathmakerlib import requires, colors_names
 from mathmakerlib.calculus.tools import is_number
 
 
@@ -76,7 +76,7 @@ class Drawable(Colored, metaclass=ABCMeta):
         argument is required. First, setup the object (at initialization, or
         modify it later), once it's ready, draw it.
         """
-        requires_pkg.tikz = True
+        requires.package['tikz'] = True
         picture_format = {'header': self.tikz_header(),
                           'declaring_comment': self.tikz_declaring_comment(),
                           'declarations': self.tikz_declarations(),
