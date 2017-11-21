@@ -45,7 +45,7 @@ XCOLOR_DVIPSNAMES = ['Apricot', 'Aquamarine', 'Bittersweet', 'Black', 'Blue',
 
 
 def check(value):
-    if value in LATEX or value in XCOLOR_BASE:
+    if value is None or value in LATEX or value in XCOLOR_BASE:
         # Base LaTeX colors do not need to be explicitely loaded.
         # As tikz package already loads xcolor base names, it's not
         # necessary to explicitely load them neither.
