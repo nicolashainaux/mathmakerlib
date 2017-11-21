@@ -21,7 +21,7 @@
 
 from decimal import Decimal
 
-from mathmakerlib import colors_names
+from mathmakerlib.core.drawable import check_color
 from mathmakerlib.calculus.tools import is_number, is_integer
 from mathmakerlib.calculus.number import Number
 from mathmakerlib.geometry.linesegment import LineSegment
@@ -103,7 +103,7 @@ class DividedLineSegment(LineSegment):
 
     @fillcolor.setter
     def fillcolor(self, value):
-        colors_names.check(value)
+        check_color(value)
         self._fillcolor = value
 
     @property

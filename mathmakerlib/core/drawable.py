@@ -26,6 +26,23 @@ from mathmakerlib import requires, colors_names
 from mathmakerlib.calculus.tools import is_number
 
 
+def check_color(value):
+    if (value is None or value in colors_names.LATEX
+        or value in colors_names.XCOLOR_BASE):
+        # Base LaTeX colors do not need to be explicitely loaded.
+        # As tikz package already loads xcolor base names, it's not
+        # necessary to explicitely load them neither.
+        pass
+    elif value in colors_names.XCOLOR_DVIPSNAMES:
+        requires.package['xcolor'] = True
+        if 'dvipsnames' not in requires.options['xcolor']:
+            requires.options['xcolor'].append('dvipsnames')
+    else:
+        raise ValueError('Unknown color name: {}. Only colors from '
+                         'xcolor\'s dvipsnames are yet supported.'
+                         .format(value))
+
+
 def check_scale(value, source_name):
     if not is_number(value):
         raise TypeError('The {}\'s scale must be a number.'
@@ -62,7 +79,7 @@ class Colored(object, metaclass=ABCMeta):
 
     @color.setter
     def color(self, value):
-        colors_names.check(value)
+        check_color(value)
         setattr(self, '_color', value)
 
 
