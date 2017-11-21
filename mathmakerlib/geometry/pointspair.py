@@ -51,6 +51,17 @@ class PointsPair(object):
         self._deltax = self.points[1].x - self.points[0].x
         self._deltay = self.points[1].y - self.points[0].y
 
+    def same_as(self, other):
+        """Test geometric equality."""
+        return (self.points[0].coordinates[0].rounded(Number('0.001'))
+                == other.points[0].coordinates[0].rounded(Number('0.001'))
+                and self.points[0].coordinates[1].rounded(Number('0.001'))
+                == other.points[0].coordinates[1].rounded(Number('0.001'))
+                and self.points[1].coordinates[0].rounded(Number('0.001'))
+                == other.points[1].coordinates[0].rounded(Number('0.001'))
+                and self.points[1].coordinates[1].rounded(Number('0.001'))
+                == other.points[1].coordinates[1].rounded(Number('0.001')))
+
     @property
     def points(self):
         return self._points
