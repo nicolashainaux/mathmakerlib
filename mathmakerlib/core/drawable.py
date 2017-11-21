@@ -52,7 +52,21 @@ def tikz_approx_position(slope):
         return 'below right'
 
 
-class Drawable(object, metaclass=ABCMeta):
+class Colored(object, metaclass=ABCMeta):
+    @property
+    def color(self):
+        if not hasattr(self, '_color'):
+            return None
+        else:
+            return self._color
+
+    @color.setter
+    def color(self, value):
+        colors_names.check(value)
+        setattr(self, '_color', value)
+
+
+class Drawable(Colored, metaclass=ABCMeta):
 
     def draw(self):
         """
@@ -218,15 +232,3 @@ class Drawable(object, metaclass=ABCMeta):
     @baseline.setter
     def baseline(self, value):
         setattr(self, '_baseline', str(value))
-
-    @property
-    def color(self):
-        if not hasattr(self, '_color'):
-            return None
-        else:
-            return self._color
-
-    @color.setter
-    def color(self, value):
-        colors_names.check(value)
-        setattr(self, '_color', value)
