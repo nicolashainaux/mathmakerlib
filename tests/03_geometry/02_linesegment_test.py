@@ -22,6 +22,7 @@
 import pytest
 from decimal import Decimal
 
+from mathmakerlib.core.drawable import THICKNESS_VALUES
 from mathmakerlib.calculus import Number
 from mathmakerlib.geometry import Point, LineSegment
 
@@ -102,9 +103,8 @@ def test_some_setters(A, B):
     s = LineSegment(A, B)
     with pytest.raises(ValueError) as excinfo:
         s.thickness = 'undefined'
-    assert str(excinfo.value).startswith('Cannot use \'undefined\' as '
-                                         'thickness for a LineSegment. '
-                                         'Available values are in: ')
+    assert str(excinfo.value) == 'Incorrect thickness value: \'undefined\'. ' \
+        'Available values belong to: {}.'.format(THICKNESS_VALUES)
     with pytest.raises(ValueError) as excinfo:
         s.label_mask = 'undefined'
     assert str(excinfo.value).startswith('label_mask must be in '

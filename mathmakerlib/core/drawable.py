@@ -26,6 +26,10 @@ from mathmakerlib import requires, colors_names
 from mathmakerlib.calculus.tools import is_number
 
 
+THICKNESS_VALUES = [None, 'thin', 'very thin', 'ultra thin', 'thick',
+                    'very thick', 'ultra thick']
+
+
 def check_color(value):
     if (value is None or value in colors_names.LATEX
         or value in colors_names.XCOLOR_BASE):
@@ -83,7 +87,24 @@ class Colored(object, metaclass=ABCMeta):
         setattr(self, '_color', value)
 
 
-class Drawable(Colored, metaclass=ABCMeta):
+class Thick(object, metaclass=ABCMeta):
+    @property
+    def thickness(self):
+        if not hasattr(self, '_thickness'):
+            return None
+        return self._thickness
+
+    @thickness.setter
+    def thickness(self, value):
+        if value in THICKNESS_VALUES:
+            self._thickness = value
+        else:
+            raise ValueError('Incorrect thickness value: \'{}\'. '
+                             'Available values belong to: {}.'
+                             .format(str(value), str(THICKNESS_VALUES)))
+
+
+class Drawable(Colored, Thick, metaclass=ABCMeta):
 
     def draw(self):
         """

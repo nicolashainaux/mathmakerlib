@@ -25,8 +25,6 @@ from mathmakerlib.geometry.pointspair import PointsPair
 from mathmakerlib.calculus.number import Number
 from mathmakerlib.geometry.point import OPPOSITE_LABEL_POSITIONS
 
-THICKNESS_VALUES = [None, 'thin', 'very thin', 'ultra thin', 'thick',
-                    'very thick', 'ultra thick']
 LABEL_MASK_VALUES = [None, ' ', '?']
 
 
@@ -258,16 +256,3 @@ class LineSegment(Drawable, PointsPair):
             output = '{}\n{}'.format(self.endpoints[0].tikz_label(),
                                      self.endpoints[1].tikz_label())
         return output
-
-    @property
-    def thickness(self):
-        return self._thickness
-
-    @thickness.setter
-    def thickness(self, value):
-        if value in THICKNESS_VALUES:
-            self._thickness = value
-        else:
-            raise ValueError('Cannot use \'{}\' as thickness for a '
-                             'LineSegment. Available values are in: {}.'
-                             .format(str(value), str(THICKNESS_VALUES)))
