@@ -22,6 +22,7 @@
 import pytest
 
 from mathmakerlib import required
+from mathmakerlib.core.drawable import HasRadius, HasThickness
 from mathmakerlib.geometry import Point, LineSegment
 
 
@@ -33,6 +34,22 @@ def A():
 @pytest.fixture()
 def E():
     return Point(1, 0, 'E')
+
+
+def test_hasradius():
+    """Check abstract class HasRadius"""
+    class FakeCircle(HasRadius):
+        pass
+    o = FakeCircle()
+    assert o.radius is None
+
+
+def test_hasthickness():
+    """Check abstract class HasThickness"""
+    class FakeLineSegment(HasThickness):
+        pass
+    o = FakeLineSegment()
+    assert o.thickness is None
 
 
 def test_scale(A, E):

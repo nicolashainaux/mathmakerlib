@@ -48,5 +48,5 @@ class Vector(PointsPair):
         """
         if not isinstance(other, Vector):
             raise TypeError('Can only create the bisector with another Vector.'
-                            'Got a {} instead.'.format(type(other)))
+                            ' Got a {} instead.'.format(type(other)))
         return self.unit_vector() + other.unit_vector()

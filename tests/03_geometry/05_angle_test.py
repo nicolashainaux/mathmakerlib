@@ -54,6 +54,10 @@ def test_angle_mark():
         == '[draw, green, thin, angle radius = 0.25]'
     assert AngleMark(radius=Number(0.5, unit=Unit('cm'))) \
         .tikz_mark_attributes() == '[draw, thick, angle radius = 0.5 cm]'
+    with pytest.raises(TypeError) as excinfo:
+        AngleMark(radius='2 cm')
+    assert str(excinfo.value) == 'Expected a number as radius. Got ' \
+        '<class \'str\'> instead.'
 
 
 def test_instanciation_errors(pointO, pointI, pointJ):

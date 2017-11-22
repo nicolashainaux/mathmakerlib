@@ -75,3 +75,7 @@ def test_bisector_vector(pointO, pointI, pointJ, pointA):
     assert i.bisector_vector(j).same_as(a)
     k = Vector(pointO, Point(2, 0))
     assert k.bisector_vector(j).same_as(a)
+    with pytest.raises(TypeError) as excinfo:
+        k.bisector_vector('j')
+    assert str(excinfo.value) == 'Can only create the bisector with another ' \
+        'Vector. Got a <class \'str\'> instead.'
