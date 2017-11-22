@@ -21,7 +21,7 @@
 
 import pytest
 
-from mathmakerlib import requires
+from mathmakerlib import required
 from mathmakerlib.calculus import Number, Unit
 from mathmakerlib.geometry import Point
 from mathmakerlib.geometry.angle import AngleMark, Angle
@@ -92,18 +92,18 @@ def test_instanciation(pointO, pointI, pointJ, pointA):
 
 def test_marked_angles(pointO, pointI, pointJ, pointA):
     """Check Angle's instanciation."""
-    requires.rightangle_mark_hack = False
-    requires.tikz_libraries = []
+    required.rightangle_mark_hack = False
+    required.tikz_libraries = []
     theta = Angle(pointI, pointO, pointJ)
     assert theta.tikz_angle_mark() == ''
     theta.mark = AngleMark(color='red', thickness='ultra thick',
                            radius=Number(2))
     assert theta.tikz_angle_mark() \
         == 'pic [draw, red, ultra thick, angle radius = 2] {angle = I--O--J}'
-    assert 'angles' in requires.tikz_libraries
+    assert 'angles' in required.tikz_libraries
     theta.mark_right = True
-    assert not requires.rightangle_mark_hack
+    assert not required.rightangle_mark_hack
     assert theta.tikz_angle_mark() \
         == 'pic [draw, red, ultra thick, angle radius = 2] '\
         '{squared angle = I--O--J}'
-    assert requires.rightangle_mark_hack
+    assert required.rightangle_mark_hack

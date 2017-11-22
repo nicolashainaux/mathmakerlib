@@ -22,7 +22,7 @@
 from decimal import Decimal
 from abc import ABCMeta, abstractmethod
 
-from mathmakerlib import requires, colors_names
+from mathmakerlib import required, colors_names
 from mathmakerlib.calculus.tools import is_number
 
 
@@ -38,9 +38,9 @@ def check_color(value):
         # necessary to explicitely load them neither.
         pass
     elif value in colors_names.XCOLOR_DVIPSNAMES:
-        requires.package['xcolor'] = True
-        if 'dvipsnames' not in requires.options['xcolor']:
-            requires.options['xcolor'].append('dvipsnames')
+        required.package['xcolor'] = True
+        if 'dvipsnames' not in required.options['xcolor']:
+            required.options['xcolor'].append('dvipsnames')
     else:
         raise ValueError('Unknown color name: {}. Only colors from '
                          'xcolor\'s dvipsnames are yet supported.'
@@ -131,7 +131,7 @@ class Drawable(Colored, metaclass=ABCMeta):
         argument is required. First, setup the object (at initialization, or
         modify it later), once it's ready, draw it.
         """
-        requires.package['tikz'] = True
+        required.package['tikz'] = True
         picture_format = {'header': self.tikz_header(),
                           'declaring_comment': self.tikz_declaring_comment(),
                           'declarations': self.tikz_declarations(),

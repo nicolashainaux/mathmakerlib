@@ -19,10 +19,10 @@
 # along with Mathmaker Lib; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-from . import requires, colors_names, exceptions
+from . import required, colors_names, exceptions
 from . import calculus, core, geometry
 
-__all__ = ['requires', 'colors_names', 'exceptions', 'calculus', 'core',
+__all__ = ['required', 'colors_names', 'exceptions', 'calculus', 'core',
            'geometry']
 
 __version_info__ = (0, 4, 0)
