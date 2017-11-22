@@ -92,18 +92,18 @@ def test_instanciation(pointO, pointI, pointJ, pointA):
 
 def test_marked_angles(pointO, pointI, pointJ, pointA):
     """Check Angle's instanciation."""
-    required.rightangle_mark_hack = False
-    required.tikz_libraries = []
+    required.hack['rightangle_mark'] = False
+    required.tikz_library['angles'] = False
     theta = Angle(pointI, pointO, pointJ)
     assert theta.tikz_angle_mark() == ''
     theta.mark = AngleMark(color='red', thickness='ultra thick',
                            radius=Number(2))
     assert theta.tikz_angle_mark() \
         == 'pic [draw, red, ultra thick, angle radius = 2] {angle = I--O--J}'
-    assert 'angles' in required.tikz_libraries
+    assert required.tikz_library['angles']
     theta.mark_right = True
-    assert not required.rightangle_mark_hack
+    assert not required.hack['rightangle_mark']
     assert theta.tikz_angle_mark() \
         == 'pic [draw, red, ultra thick, angle radius = 2] '\
         '{squared angle = I--O--J}'
-    assert required.rightangle_mark_hack
+    assert required.hack['rightangle_mark']

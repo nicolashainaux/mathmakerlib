@@ -21,7 +21,7 @@
 
 from math import acos, degrees
 
-from mathmakerlib import requires
+from mathmakerlib import required
 from mathmakerlib.core.drawable import Colored, HasThickness, HasRadius
 from mathmakerlib.geometry.point import Point
 from mathmakerlib.geometry.pointspair import PointsPair
@@ -143,11 +143,10 @@ class Angle(Colored):
     def tikz_angle_mark(self):
         if self.mark is None:
             return ''
-        if 'angles' not in requires.tikz_libraries:
-            requires.tikz_libraries.append('angles')
+        required.tikz_library['angles'] = True
         if self.mark_right:
             right = 'squared '
-            requires.rightangle_mark_hack = True
+            required.hack['rightangle_mark'] = True
         else:
             right = ''
         return 'pic {} {{{}angle = {}--{}--{}}}'\

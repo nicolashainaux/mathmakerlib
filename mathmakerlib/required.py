@@ -21,13 +21,10 @@
 
 
 def init():
-    global package, options, tikz_libraries, rightangle_mark_hack
+    global package, options, tikz_library, hack
 
-    package = {name: False
-               for name in ['tikz', 'siunitx', 'xcolor']}
-
+    package = {pkg_name: False
+               for pkg_name in ['tikz', 'siunitx', 'xcolor']}
     options = {'xcolor': []}
-
-    tikz_libraries = []
-
-    rightangle_mark_hack = False
+    tikz_library = {'angles': False}
+    hack = {'rightangle_mark': False}
