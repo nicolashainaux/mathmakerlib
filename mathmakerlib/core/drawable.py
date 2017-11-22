@@ -87,6 +87,23 @@ class Colored(object, metaclass=ABCMeta):
         setattr(self, '_color', value)
 
 
+class HasRadius(object, metaclass=ABCMeta):
+    @property
+    def radius(self):
+        if not hasattr(self, '_radius'):
+            return None
+        return self._radius
+
+    @radius.setter
+    def radius(self, value):
+        from mathmakerlib.calculus.number import Number
+        if is_number(value):
+            self._radius = Number(value)
+        else:
+            raise TypeError('Expected a number as radius. Got {} instead.'
+                            .format(str(type(value))))
+
+
 class HasThickness(object, metaclass=ABCMeta):
     @property
     def thickness(self):
