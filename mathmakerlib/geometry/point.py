@@ -114,6 +114,13 @@ class Point(Drawable):
         else:
             return True
 
+    def same_as(self, other):
+        """Test geometric equality."""
+        if not isinstance(other, Point):
+            raise TypeError('Can only test if another Point is at the same '
+                            'place. Got a {} instead.'.format(type(other)))
+        return self.coordinates == other.coordinates
+
     def reset_names():
         Point.available_names = [_ for _ in string.ascii_uppercase][::-1]
         Point.names_in_use = []
