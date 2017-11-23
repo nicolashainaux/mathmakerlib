@@ -23,5 +23,7 @@ from .point import Point
 from .pointspair import PointsPair
 from .linesegment import LineSegment
 from .dividedlinesegment import DividedLineSegment
+from .angle import AngleMark
 
-__all__ = ['Point', 'PointsPair', 'LineSegment', 'DividedLineSegment']
+__all__ = ['Point', 'PointsPair', 'LineSegment', 'DividedLineSegment',
+           'AngleMark']
