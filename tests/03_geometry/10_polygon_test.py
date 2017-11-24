@@ -324,6 +324,26 @@ def test_drawing_with_labeled_sides(pointO, pointA, pointB, pointC):
 
 \end{tikzpicture}
 """
+    p.setup_labels_masks([None, None, '?', ' '])
+    assert p.drawn == r"""
+\begin{tikzpicture}
+% Declare Points
+\coordinate (O) at (0,0);
+\coordinate (A) at (4,0);
+\coordinate (B) at (3,2);
+\coordinate (C) at (1,3);
+
+% Draw Polygon
+\draw[thick] (O)
+-- (A) node[midway, below, sloped] {7 cm}
+-- (B) node[midway, above, sloped] {5 cm}
+-- (C) node[midway, above, sloped] {?}
+-- cycle;
+
+% Label Points
+
+\end{tikzpicture}
+"""
 
 
 def test_drawing_with_marked_sides(pointO, pointA, pointB, pointC):

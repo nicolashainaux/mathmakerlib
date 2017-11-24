@@ -158,7 +158,7 @@ class Polygon(Drawable, Colored, HasThickness):
                      mean([v.y for v in self.vertices]),
                      name)
 
-    def setup_labels(self, labels, linesegments=None):
+    def setup_labels(self, labels, linesegments=None, masks=False):
         """
         Convenience method tho easily setup all sides in a row.
 
@@ -182,7 +182,14 @@ class Polygon(Drawable, Colored, HasThickness):
                              .format(str(len(labels)),
                                      str(len(linesegments))))
         for (ls, lbl) in zip(linesegments, labels):
-            ls.label = lbl
+            if masks:
+                ls.label_mask = lbl
+            else:
+                ls.label = lbl
+
+    def setup_labels_masks(self, masks, linesegments=None):
+        """Shortcut for setup_labels(..., masks=True)"""
+        self.setup_labels(labels=masks, linesegments=linesegments, masks=True)
 
     @property
     def draw_vertices(self):
