@@ -138,6 +138,26 @@ def test_sides_labeling(pointO, pointA, pointB, pointC):
         'to the number of line segments (4).'
 
 
+def test_perimeter(pointO, pointA, pointB, pointC):
+    """Check Polygon's sides' labeling."""
+    p = Polygon(pointO, pointA, pointB, pointC)
+    assert p.perimeter.rounded(Number('0.01')) == Number('11.63')
+
+
+def test_lbl_perimeter(pointO, pointA, pointB, pointC):
+    """Check Polygon's sides' labeling."""
+    p = Polygon(pointO, pointA, pointB, pointC)
+    with pytest.raises(RuntimeError) as excinfo:
+        p.lbl_perimeter
+    assert str(excinfo.value) == 'All labels must have been set as Numbers ' \
+        'in order to calculate the perimeter from labels.'
+    p.setup_labels([Number(7, unit='cm'), Number(5, unit='cm'),
+                    Number(6, unit='cm'), Number(4, unit='cm')])
+    assert p.lbl_perimeter == Number(22, unit='cm')
+    p.setup_labels_masks([None, None, '?', ' '])
+    assert p.lbl_perimeter == Number(22, unit='cm')
+
+
 def test_simple_drawing(pointO, pointA, pointB, pointC):
     """Check drawing the Polygon."""
     p = Polygon(pointO, pointA, pointB, pointC)

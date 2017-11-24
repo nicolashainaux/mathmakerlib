@@ -22,6 +22,7 @@
 from copy import deepcopy
 from statistics import mean
 
+from mathmakerlib.calculus.number import Number
 from mathmakerlib.calculus.tools import is_number
 from mathmakerlib.core.drawable import Drawable, HasThickness, Colored
 from mathmakerlib.core.drawable import tikz_approx_position
@@ -157,6 +158,20 @@ class Polygon(Drawable, Colored, HasThickness):
         return Point(mean([v.x for v in self.vertices]),
                      mean([v.y for v in self.vertices]),
                      name)
+
+    @property
+    def perimeter(self):
+        return sum([s.length for s in self.sides])
+
+    @property
+    def lbl_perimeter(self):
+        if any([not isinstance(s.label_value, Number) for s in self.sides]):
+            raise RuntimeError('All labels must have been set as Numbers '
+                               'in order to calculate the perimeter from '
+                               'labels.')
+        else:
+            return sum([s.label_value for s in self.sides],
+                       Number(0, unit=self.sides[0].label_value.unit))
 
     def setup_labels(self, labels, linesegments=None, masks=False):
         """
