@@ -128,7 +128,7 @@ class Polygon(Drawable, Colored, HasThickness):
             self._type = POLYGONS_TYPES[len(self._sides)]
         else:
             self._type = \
-                "Polygon_of_{n}_sides".format(n=str(len(self._sides)))
+                '{n}-sided Polygon'.format(n=str(len(self._sides)))
 
     def __repr__(self):
         return '{} {}'.format(self.type, self.name)

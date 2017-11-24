@@ -101,6 +101,32 @@ def test_instanciation(pointO, pointA, pointB, pointC):
     assert p.vertices[1].label_position == 'below right'
     assert p.vertices[2].label_position == 'above right'
     assert p.vertices[3].label_position == 'above left'
+    q = Polygon(pointO, Point(0, 1), Point(Number('1.96'), Number('0.29')),
+                Point(Number('2.78'), Number('0.86')),
+                Point(Number('3.41'), Number('1.64')),
+                Point(Number('3.77'), Number('2.57')),
+                Point(Number('3.85'), Number('3.57')),
+                Point(Number('3.62'), Number('4.54')),
+                Point(Number('3.12'), Number('5.41')),
+                Point(Number('2.39'), Number('6.09')),
+                Point(Number('1.49'), Number('6.52')),
+                Point(Number('0.5'), Number('6.67')),
+                Point(Number('-0.49'), Number('6.52')),
+                Point(Number('-1.39'), Number('6.09')),
+                Point(Number('-2.12'), Number('5.41')),
+                Point(Number('-2.62'), Number('4.54')),
+                Point(Number('-2.85'), Number('3.57')),
+                Point(Number('-2.77'), Number('2.57')),
+                Point(Number('-2.41'), Number('1.64')),
+                Point(Number('-1.78'), Number('0.86')),
+                Point(Number('-0.96'), Number('0.29')))
+    assert q.type == '21-sided Polygon'
+    q = Polygon(pointO, Point(4, 0), Point(4, 2), Point(0, 2),
+                rotation_angle=90)
+    assert q.vertices[0].same_as(Point(3, -1))
+    assert q.vertices[1].same_as(Point(3, 3))
+    assert q.vertices[2].same_as(Point(1, 3))
+    assert q.vertices[3].same_as(Point(1, -1))
 
 
 def test_simple_drawing(pointO, pointA, pointB, pointC):
