@@ -56,8 +56,7 @@ RIGHT_ANGLES_MARK_HACK = \
   \fi
 }
 \makeatother
-}
-\makeatother"""
+"""
 
 
 class AngleMark(Colored, HasThickness, HasRadius):
