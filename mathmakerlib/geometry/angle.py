@@ -62,7 +62,8 @@ RIGHT_ANGLES_MARK_HACK = \
 
 class AngleMark(Colored, HasThickness, HasRadius):
 
-    def __init__(self, color=None, thickness='thick', radius=Number('0.25')):
+    def __init__(self, color=None, thickness='thick',
+                 radius=Number('0.25', unit='cm')):
         self.color = color
         self.thickness = thickness
         self.radius = radius

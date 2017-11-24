@@ -49,9 +49,9 @@ def pointA():
 
 def test_angle_mark():
     assert AngleMark().tikz_mark_attributes() \
-        == '[draw, thick, angle radius = 0.25]'
+        == '[draw, thick, angle radius = 0.25 cm]'
     assert AngleMark(color='green', thickness='thin').tikz_mark_attributes() \
-        == '[draw, green, thin, angle radius = 0.25]'
+        == '[draw, green, thin, angle radius = 0.25 cm]'
     assert AngleMark(radius=Number(0.5, unit=Unit('cm'))) \
         .tikz_mark_attributes() == '[draw, thick, angle radius = 0.5 cm]'
     with pytest.raises(TypeError) as excinfo:
