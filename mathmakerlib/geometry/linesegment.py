@@ -223,7 +223,7 @@ class LineSegment(Drawable, HasThickness, PointsPair):
             if self.label is not None:
                 lslabel = ' node[midway, {}, sloped] {}'\
                     .format(self.label_position, '{' + self.label + '}')
-        else:
+        elif self.label_mask != ' ':
             lslabel = ' node[midway, {}, sloped] {}'\
                 .format(self.label_position, '{' + self.label_mask + '}')
         return lslabel
