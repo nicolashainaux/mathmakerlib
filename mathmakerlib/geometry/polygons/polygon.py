@@ -95,8 +95,12 @@ class Polygon(Drawable, Colored, HasThickness):
                 vname = v.name
             else:
                 vname = name[i]
-            self._vertices.append(Point(v.x, v.y, vname, shape=v.shape,
-                                        label=v.label, color=v.color,
+            if v.name == v.label:
+                lbl = 'default'
+            else:
+                lbl = v.label
+            self._vertices.append(Point(v.x, v.y, name=vname, shape=v.shape,
+                                        label=lbl, color=v.color,
                                         shape_scale=v.shape_scale))
         if rotation_angle:
             center = self.isobarycenter()

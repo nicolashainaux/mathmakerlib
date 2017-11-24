@@ -95,8 +95,13 @@ def test_instanciation(pointO, pointA, pointB, pointC):
     assert p.name == 'OABC'
     assert repr(p) == 'Quadrilateral OABC'
     assert p.isobarycenter().same_as(Point(2, Number('1.25')))
+    pointA.label = 'U'
     p = Polygon(pointO, pointA, pointB, pointC, name='YOGA')
     assert p.name == 'YOGA'
+    assert p.vertices[0].label == 'Y'
+    assert p.vertices[1].label == 'U'
+    assert p.vertices[2].label == 'G'
+    assert p.vertices[3].label == 'A'
     assert p.vertices[0].label_position == 'below left'
     assert p.vertices[1].label_position == 'below right'
     assert p.vertices[2].label_position == 'above right'
@@ -160,6 +165,29 @@ def test_lbl_perimeter(pointO, pointA, pointB, pointC):
 
 def test_simple_drawing(pointO, pointA, pointB, pointC):
     """Check drawing the Polygon."""
+    p = Polygon(pointO, pointA, pointB, pointC, name='PLUM')
+    assert p.drawn == r"""
+\begin{tikzpicture}
+% Declare Points
+\coordinate (P) at (0,0);
+\coordinate (L) at (4,0);
+\coordinate (U) at (3,2);
+\coordinate (M) at (1,3);
+
+% Draw Quadrilateral
+\draw[thick] (P)
+-- (L)
+-- (U)
+-- (M)
+-- cycle;
+
+% Label Points
+\draw (P) node[below left] {P};
+\draw (L) node[below right] {L};
+\draw (U) node[above right] {U};
+\draw (M) node[above left] {M};
+\end{tikzpicture}
+"""
     p = Polygon(pointO, pointA, pointB, pointC)
     assert p.drawn == r"""
 \begin{tikzpicture}
