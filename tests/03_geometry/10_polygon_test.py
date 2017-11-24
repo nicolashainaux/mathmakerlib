@@ -22,7 +22,7 @@
 import pytest
 
 from mathmakerlib import required
-from mathmakerlib.calculus import Number  # , Unit
+from mathmakerlib.calculus import Number
 from mathmakerlib.geometry import Point, Polygon, AngleMark
 
 
