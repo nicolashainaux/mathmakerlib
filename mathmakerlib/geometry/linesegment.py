@@ -217,7 +217,7 @@ class LineSegment(Drawable, HasThickness, PointsPair):
         else:
             return []
 
-    def _tikz_ls_label(self):
+    def tikz_label(self):
         lslabel = ''
         if self.label_mask is None:
             if self.label is not None:
@@ -237,7 +237,7 @@ class LineSegment(Drawable, HasThickness, PointsPair):
 
     def tikz_draw_section(self):
         return '-- ({}){}{}'.format(self.endpoints[1].name,
-                                    self._tikz_ls_label(),
+                                    self.tikz_label(),
                                     self._tikz_ls_mark())
 
     def tikz_draw(self):
@@ -249,7 +249,7 @@ class LineSegment(Drawable, HasThickness, PointsPair):
                               self.tikz_draw_section()))
         return output
 
-    def tikz_label(self):
+    def tikz_points_labels(self):
         """Return the command to write the labels."""
         output = ''
         if self.label_endpoints:

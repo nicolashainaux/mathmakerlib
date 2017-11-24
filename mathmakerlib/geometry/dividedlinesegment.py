@@ -145,7 +145,7 @@ class DividedLineSegment(LineSegment):
 \draw{} ({}) -- ({}) {};'''\
     .format(self.tikz_options_list('draw'),
             self.endpoints[0].name, self.endpoints[1].name,
-            self._tikz_ls_label(),
+            self.tikz_label(),
             self.tikz_options_list(options_list=[self.thickness,
                                                  self.fillcolor]),
             self.endpoints[0].name, self.fillpoint.name,

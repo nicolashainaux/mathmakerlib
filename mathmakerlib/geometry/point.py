@@ -274,6 +274,9 @@ class Point(Drawable):
         """
         return '% Label Point'
 
+    def tikz_points_labels(self):
+        return self.tikz_label()
+
     def tikz_label(self):
         """Return the command to write the Point's label."""
         if self.label is None:

@@ -222,13 +222,16 @@ class Polygon(Drawable, Colored, HasThickness):
                       .format(self.tikz_options_list('draw'),
                               self.vertices[0].name,
                               self._tikz_draw_sides(),
-                              self.sides[-1]._tikz_ls_label(),
+                              self.sides[-1].tikz_label(),
                               self.sides[-1]._tikz_ls_mark(),
                               self._tikz_draw_angles_marks()))
         return output
 
-    def tikz_label(self):
+    def tikz_points_labels(self):
         """Return the command to write the Points' labels."""
         if self.label_vertices:
             return '\n'.join([v.tikz_label() for v in self.vertices])
         return ''
+
+    def tikz_label(self):
+        """Not implemented yet. See issue #4."""

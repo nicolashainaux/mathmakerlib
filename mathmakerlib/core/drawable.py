@@ -136,7 +136,7 @@ class Drawable(Colored, metaclass=ABCMeta):
                           'declaring_comment': self.tikz_declaring_comment(),
                           'declarations': self.tikz_declarations(),
                           'labeling_comment': self.tikz_labeling_comment(),
-                          'labels': self.tikz_label()}
+                          'labels': self.tikz_points_labels()}
         drawing_section = ''
         for (i, (c, d)) in enumerate(zip(self.tikz_drawing_comment(),
                                          self.tikz_draw())):
@@ -248,6 +248,10 @@ class Drawable(Colored, metaclass=ABCMeta):
     @abstractmethod
     def tikz_label(self):
         """Return the command to write the object's label."""
+
+    @abstractmethod
+    def tikz_points_labels(self):
+        """Return the command to write the object's points' labels."""
 
     @property
     def drawn(self):
