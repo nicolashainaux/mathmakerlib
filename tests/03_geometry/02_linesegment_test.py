@@ -428,6 +428,27 @@ def test_drawing_with_linesegment_labels(A, B, E):
 \draw (E) node[right] {E};
 \end{tikzpicture}
 """
+    ls.label = Number(6, unit='cm')
+    assert ls.label == '6 cm'
+    assert ls.label_value == Number(6, unit='cm')
+    assert ls.drawn == r"""
+\begin{tikzpicture}
+% Declare Points
+\coordinate (A) at (0,0);
+\coordinate (E) at (1,0);
+
+% Draw Points
+\draw (A) node[scale=0.67] {$\times$};
+\draw (E) node[scale=0.67] {$\times$};
+
+% Draw Line Segment
+\draw[thick] (A) -- (E) node[midway, below, sloped] {6 cm};
+
+% Label Points
+\draw (A) node[left] {A};
+\draw (E) node[right] {E};
+\end{tikzpicture}
+"""
     ls = LineSegment(A, E, label='4 cm', label_position='above')
     assert ls.drawn == r"""
 \begin{tikzpicture}

@@ -23,6 +23,7 @@ from decimal import Decimal
 from abc import ABCMeta, abstractmethod
 
 from mathmakerlib import required, colors_names
+from mathmakerlib.core.printable import Printable
 from mathmakerlib.calculus.tools import is_number
 
 
@@ -259,15 +260,22 @@ class Drawable(Colored, metaclass=ABCMeta):
         return self.draw()
 
     @property
+    def label_value(self):
+        return self._label_value
+
+    @property
     def label(self):
         return self._label
 
     @label.setter
-    def label(self, other):
-        if other in ['', None]:
-            self._label = None
+    def label(self, value):
+        if value in ['', None]:
+            self._label = self._label_value = None
+        elif isinstance(value, Printable):
+            self._label = value.uiprinted
+            self._label_value = value
         else:
-            self._label = str(other)
+            self._label = self._label_value = str(value)
 
     @property
     def scale(self):
