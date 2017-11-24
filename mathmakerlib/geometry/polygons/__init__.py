@@ -19,12 +19,6 @@
 # along with Mathmaker Lib; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-from .point import Point
-from .pointspair import PointsPair
-from .linesegment import LineSegment
-from .dividedlinesegment import DividedLineSegment
-from .polygons import Polygon
-from .angle import AngleMark
+from .polygon import Polygon
 
-__all__ = ['Point', 'PointsPair', 'LineSegment', 'DividedLineSegment',
-           'Polygon', 'AngleMark']
+__all__ = ['Polygon']
