@@ -158,6 +158,32 @@ class Polygon(Drawable, Colored, HasThickness):
                      mean([v.y for v in self.vertices]),
                      name)
 
+    def setup_labels(self, labels, linesegments=None):
+        """
+        Convenience method tho easily setup all sides in a row.
+
+        If no line segments' list is provided, it defaults to the Polygon's
+        sides. This is practical if extra line segments require labeling, like
+        in InterceptTheoremFigure, or if one wants to label a diagonal.
+
+        It is expected that both the labels' and line segments' lists
+        have the same length.
+
+        :param labels: the list of the labels
+        :type labels: list
+        :param linesegments: the list of the LineSegments to label
+        :type linesegments: list (of LineSegments)
+        """
+        if linesegments is None:
+            linesegments = self.sides
+        if len(labels) != len(linesegments):
+            raise ValueError('The number of labels ({}) should be equal '
+                             'to the number of line segments ({}).'
+                             .format(str(len(labels)),
+                                     str(len(linesegments))))
+        for (ls, lbl) in zip(linesegments, labels):
+            ls.label = lbl
+
     @property
     def draw_vertices(self):
         return self._draw_vertices

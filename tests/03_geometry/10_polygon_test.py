@@ -129,6 +129,15 @@ def test_instanciation(pointO, pointA, pointB, pointC):
     assert q.vertices[3].same_as(Point(1, -1))
 
 
+def test_sides_labeling(pointO, pointA, pointB, pointC):
+    """Check Polygon's sides' labeling."""
+    p = Polygon(pointO, pointA, pointB, pointC)
+    with pytest.raises(ValueError) as excinfo:
+        p.setup_labels(['', '', ''])
+    assert str(excinfo.value) == 'The number of labels (3) should be equal ' \
+        'to the number of line segments (4).'
+
+
 def test_simple_drawing(pointO, pointA, pointB, pointC):
     """Check drawing the Polygon."""
     p = Polygon(pointO, pointA, pointB, pointC)
@@ -289,6 +298,27 @@ def test_drawing_with_labeled_sides(pointO, pointA, pointB, pointC):
 -- (B) node[midway, above, sloped] {3 cm}
 -- (C)
 -- cycle node[midway, above, sloped] {5 cm};
+
+% Label Points
+
+\end{tikzpicture}
+"""
+    p.setup_labels([Number(7, unit='cm'), Number(5, unit='cm'),
+                    Number(6, unit='cm'), Number(4, unit='cm')])
+    assert p.drawn == r"""
+\begin{tikzpicture}
+% Declare Points
+\coordinate (O) at (0,0);
+\coordinate (A) at (4,0);
+\coordinate (B) at (3,2);
+\coordinate (C) at (1,3);
+
+% Draw Polygon
+\draw[thick] (O)
+-- (A) node[midway, below, sloped] {7 cm}
+-- (B) node[midway, above, sloped] {5 cm}
+-- (C) node[midway, above, sloped] {6 cm}
+-- cycle node[midway, above, sloped] {4 cm};
 
 % Label Points
 
