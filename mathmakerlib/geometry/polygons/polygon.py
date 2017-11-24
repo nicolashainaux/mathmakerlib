@@ -237,9 +237,9 @@ class Polygon(Drawable, Colored, HasThickness):
     def tikz_drawing_comment(self):
         """Return the comment preceding the Polygon's drawing."""
         if self.draw_vertices:
-            return ['% Draw Vertices', '% Draw Polygon']
+            return ['% Draw Vertices', '% Draw {}'.format(self.type)]
         else:
-            return ['% Draw Polygon']
+            return ['% Draw {}'.format(self.type)]
 
     def _tikz_draw_options(self):
         return [self.thickness, self.color]
