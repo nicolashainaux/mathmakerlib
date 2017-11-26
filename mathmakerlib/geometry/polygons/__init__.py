@@ -20,5 +20,6 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 from .polygon import Polygon
+from .rectangle import Rectangle
 
-__all__ = ['Polygon']
+__all__ = ['Polygon', 'Rectangle']
