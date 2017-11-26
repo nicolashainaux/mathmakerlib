@@ -110,5 +110,5 @@ def test_marked_angles(pointO, pointI, pointJ, pointA):
     assert theta.tikz_angle_mark() == ''
     assert not required.tikz_library['angles']
     assert theta.tikz_rightangle_mark() == \
-        '\draw[thick, cm={cos(0), -sin(0), sin(0), cos(0), (O)}]' \
+        '\draw[thick, cm={cos(0), sin(0), -sin(0), cos(0), (O)}]' \
         ' (0.25 cm, 0) -- (0.25 cm, 0.25 cm) -- (0, 0.25 cm);'

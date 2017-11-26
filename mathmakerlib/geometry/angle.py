@@ -122,9 +122,7 @@ class Angle(Colored):
     def tikz_rightangle_mark(self):
         if self.mark is None or not self.mark_right:
             return ''
-        # The rotation matrix is for a clockwise oriented plan.
-        # Looks like it is the default TikZ orientation.
-        rt = 'cm={{cos({θ}), -sin({θ}), sin({θ}), cos({θ}), ({v})}}' \
+        rt = 'cm={{cos({θ}), sin({θ}), -sin({θ}), cos({θ}), ({v})}}' \
             .format(θ=PointsPair(self.vertex, self.points[0]).slope.printed,
                     v=self.vertex.name)
         draw_options = tikz_options_list([self.mark.thickness,
