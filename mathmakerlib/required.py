@@ -27,4 +27,4 @@ def init():
                for pkg_name in ['tikz', 'siunitx', 'xcolor']}
     options = {'xcolor': []}
     tikz_library = {'angles': False}
-    hack = {'rightangle_mark': False}
+    # hack = {'rightangle_mark': False}

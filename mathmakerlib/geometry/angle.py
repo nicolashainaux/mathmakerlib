@@ -23,40 +23,10 @@ from math import acos, degrees
 
 from mathmakerlib import required
 from mathmakerlib.core.drawable import Colored, HasThickness, HasRadius
+from mathmakerlib.core.drawable import tikz_options_list
 from mathmakerlib.geometry.point import Point
 from mathmakerlib.geometry.pointspair import PointsPair
 from mathmakerlib.calculus.number import Number
-# from mathmakerlib.calculus.tools import is_number
-
-RIGHT_ANGLES_MARK_HACK = \
-    r"""% Hack to mark right angles, taken almost unmodified from
-% https://tex.stackexchange.com/a/154357/81138
-\makeatletter
-\tikzset{
-  pics/squared angle/.style = {
-    setup code  = \tikz@lib@angle@parse#1\pgf@stop,
-    background code = \tikz@lib@angle@background#1\pgf@stop,
-    foreground code = \tikz@lib@squaredangle@foreground#1\pgf@stop,},
-  angle eccentricity/.initial=.6,
-  angle radius/.initial=5mm
-}
-
-\def\tikz@lib@squaredangle@foreground#1--#2--#3\pgf@stop{%
-  \path [name prefix ..] [pic actions]
-  ([shift={(\tikz@start@angle@temp:\tikz@lib@angle@rad pt)}]#2.center)
-    |-
-  ([shift={(\tikz@end@angle@temp:\tikz@lib@angle@rad pt)}]#2.center);
-  \ifx\tikzpictext\relax\else%
-    \def\pgf@temp{\node()[name prefix
-      ..,at={([shift={({.5*\tikz@start@angle@temp+.5*\tikz@end@angle@temp}:
-                       \pgfkeysvalueof{/tikz/angle eccentricity}
-                       *\tikz@lib@angle@rad pt)
-                      }]#2.center)}]}
-    \expandafter\pgf@temp\expandafter[\tikzpictextoptions]{\tikzpictext};%
-  \fi
-}
-\makeatother
-"""
 
 
 class AngleMark(Colored, HasThickness, HasRadius):
@@ -96,7 +66,6 @@ class Angle(Colored):
 
         self.mark = mark
         self.mark_right = mark_right
-        # requires.rightangle_mark_hack is only set when it is used
 
         # Measure of the angle:
         pp0 = PointsPair(self._points[0], self._points[1])
@@ -141,17 +110,26 @@ class Angle(Colored):
         self._mark_right = value
 
     def tikz_angle_mark(self):
-        if self.mark is None:
+        if self.mark is None or self.mark_right:
             return ''
         required.tikz_library['angles'] = True
-        if self.mark_right:
-            right = 'squared '
-            required.hack['rightangle_mark'] = True
-        else:
-            right = ''
-        return 'pic {} {{{}angle = {}--{}--{}}}'\
+        return 'pic {} {{angle = {}--{}--{}}}'\
             .format(self.mark.tikz_mark_attributes(),
-                    right,
                     self.points[0].name,
                     self.vertex.name,
                     self.points[2].name)
+
+    def tikz_rightangle_mark(self):
+        if self.mark is None or not self.mark_right:
+            return ''
+        # The rotation matrix is for a clockwise oriented plan.
+        # Looks like it is the default TikZ orientation.
+        rt = 'cm={{cos({θ}), -sin({θ}), sin({θ}), cos({θ}), ({v})}}' \
+            .format(θ=PointsPair(self.vertex, self.points[0]).slope.printed,
+                    v=self.vertex.name)
+        draw_options = tikz_options_list([self.mark.thickness,
+                                          self.mark.color,
+                                          rt])
+        rightangle_shape = '({R}, 0) -- ({R}, {R}) -- (0, {R})'\
+            .format(R=self.mark.radius.uiprinted)
+        return '\draw{} {};'.format(draw_options, rightangle_shape)

@@ -490,7 +490,6 @@ pic [draw, red, thin, angle radius = 8 mm] {angle = C--B--A};
 \end{tikzpicture}
 """
     required.tikz_library['angles'] = False
-    required.hack['rightangle_mark'] = False
     p = Polygon(pointO, pointA, pointB, pointJ)
     p.label_vertices = False
     p.angles[0].mark = AngleMark()
@@ -509,12 +508,14 @@ pic [draw, red, thin, angle radius = 8 mm] {angle = C--B--A};
 -- (A)
 -- (B)
 -- (J)
--- cycle
-pic [draw, thick, angle radius = 0.25 cm] {squared angle = A--O--J};
+-- cycle;
+
+% Mark right angles
+\draw[thick, cm={cos(0), -sin(0), sin(0), cos(0), (O)}] """\
+        r"""(0.25 cm, 0) -- (0.25 cm, 0.25 cm) -- (0, 0.25 cm);
 
 % Label Points
 
 \end{tikzpicture}
 """
-    assert required.tikz_library['angles']
-    assert required.hack['rightangle_mark']
+    assert not required.tikz_library['angles']

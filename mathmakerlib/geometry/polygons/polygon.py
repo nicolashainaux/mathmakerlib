@@ -240,20 +240,19 @@ class Polygon(Drawable, Colored, HasThickness):
 
     def tikz_drawing_comment(self):
         """Return the comment preceding the Polygon's drawing."""
+        output = []
         if self.draw_vertices:
-            return ['% Draw Vertices', '% Draw {}'.format(self.type)]
-        else:
-            return ['% Draw {}'.format(self.type)]
+            output.append('% Draw Vertices')
+        output.append('% Draw {}'.format(self.type))
+        if any([θ.mark_right for θ in self.angles]):
+            output.append('\n% Mark right angles')
+        return output
 
     def _tikz_draw_options(self):
         return [self.thickness, self.color]
 
     def _tikz_draw_vertices(self):
-        if self.draw_vertices:
-            return ['\n'.join([v.tikz_draw()[0] for v in self.vertices])
-                    + '\n']
-        else:
-            return []
+        return '\n'.join([v.tikz_draw()[0] for v in self.vertices]) + '\n'
 
     def _tikz_draw_sides(self):
         return '\n'.join([s.tikz_draw_section() for s in self.sides[:-1]])
@@ -267,9 +266,16 @@ class Polygon(Drawable, Colored, HasThickness):
         else:
             return '\n' + marks
 
+    def _tikz_draw_right_angles_marks(self):
+        return '\n'.join([θ.tikz_rightangle_mark()
+                          for θ in self.angles
+                          if θ.tikz_rightangle_mark() != ''])
+
     def tikz_draw(self):
         """Return the command to actually draw the Polygon."""
-        output = self._tikz_draw_vertices()
+        output = []
+        if self.draw_vertices:
+            output.append(self._tikz_draw_vertices())
         output.append('\draw{} ({})\n{}\n-- cycle{}{}{};'
                       .format(tikz_options_list('draw', self),
                               self.vertices[0].name,
@@ -277,6 +283,8 @@ class Polygon(Drawable, Colored, HasThickness):
                               self.sides[-1].tikz_label(),
                               self.sides[-1]._tikz_ls_mark(),
                               self._tikz_draw_angles_marks()))
+        if any([θ.mark_right for θ in self.angles]):
+            output.append(self._tikz_draw_right_angles_marks())
         return output
 
     def tikz_points_labels(self):
