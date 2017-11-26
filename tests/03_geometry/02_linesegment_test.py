@@ -57,6 +57,11 @@ def F():
     return Point(4, 0, 'F')
 
 
+@pytest.fixture()
+def J():
+    return Point(0, 1, 'J')
+
+
 def test_instanciation_errors(A, B):
     """Check LineSegment's instanciation exceptions."""
     with pytest.raises(TypeError) as excinfo:
@@ -145,16 +150,26 @@ def test_length(A, B, D):
     assert s.length.rounded(Decimal('0.0001')) == Number('1.4142')
 
 
-def test_slope(A, B, D):
+def test_slope(A, B, D, E, J):
     """Check length is correct."""
-    t = LineSegment(A, D)
-    assert t.slope == Number(0)
+    s = LineSegment(A, D)
+    assert s.slope360 == Number(0)
+    assert s.slope == Number(0)
     s = LineSegment(A, B)
+    assert s.slope360 == Number('45')
     assert s.slope == Number('45')
-    s = LineSegment(B, A)
-    assert s.slope == Number('225')
     s = LineSegment(A, Point(0, 1, 'B'))
+    assert s.slope360 == Number('90')
     assert s.slope == Number('90')
+    s = LineSegment(A, J)
+    assert s.slope360 == Number('90')
+    assert s.slope == Number('90')
+    s = LineSegment(J, A)
+    assert s.slope360 == Number('270')
+    assert s.slope == Number('-90')
+    s = LineSegment(B, A)
+    assert s.slope360 == Number('225')
+    assert s.slope == Number('-135')
 
 
 def test_midpoint():

@@ -87,8 +87,18 @@ class PointsPair(object):
 
     @property
     def slope(self):
-        """Slope of the pair of Points."""
-        theta = Number(str(math.degrees(math.acos(self.deltax / self.length))))
+        """Slope of the pair of Points, from -180° to 180°."""
+        theta = Number(
+            str(math.degrees(math.acos(self.deltax / self.length))))\
+            .rounded(Number('0.001'))
+        return theta if self.deltay >= 0 else -theta
+
+    @property
+    def slope360(self):
+        """Slope of the pair of Points, from 0° to 360°."""
+        theta = Number(
+            str(math.degrees(math.acos(self.deltax / self.length))))\
+            .rounded(Number('0.001'))
         return theta if self.deltay >= 0 else Number('360') - theta
 
     def dividing_points(self, n=None, prefix='a'):

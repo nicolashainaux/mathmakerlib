@@ -127,7 +127,7 @@ class Polygon(Drawable, Colored, HasThickness):
                 .bisector_vector(Vector(self._vertices[i],
                                         left_shifted_vertices[i]))
             self._vertices[i].label_position = OPPOSITE_LABEL_POSITIONS[
-                tikz_approx_position(bisector.slope)]
+                tikz_approx_position(bisector.slope360)]
 
         if len(self._sides) in POLYGONS_TYPES:
             self._type = POLYGONS_TYPES[len(self._sides)]

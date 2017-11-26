@@ -84,7 +84,7 @@ class LineSegment(Drawable, HasThickness, PointsPair):
         self.label_endpoints = label_endpoints
         self.mark = mark
         self.mark_scale = mark_scale
-        self.endpoints[1].label_position = tikz_approx_position(self.slope)
+        self.endpoints[1].label_position = tikz_approx_position(self.slope360)
         self.endpoints[0].label_position = \
             OPPOSITE_LABEL_POSITIONS[self.endpoints[1].label_position]
         if label_position == 'anticlockwise':
