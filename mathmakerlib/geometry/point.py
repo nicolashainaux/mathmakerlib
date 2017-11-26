@@ -22,7 +22,7 @@
 import string
 from math import cos, sin, radians
 
-from mathmakerlib.core.drawable import Drawable, check_scale
+from mathmakerlib.core.drawable import Drawable, check_scale, tikz_options_list
 from mathmakerlib.calculus.number import Number
 from mathmakerlib.calculus.tools import is_number
 
@@ -261,7 +261,7 @@ class Point(Drawable):
         if self.shape_scale != 1:
             sh_scale = '[scale={}]'.format(self.shape_scale)
         return [r'\draw{} ({}) node{} {};'
-                .format(self.tikz_options_list('draw'),
+                .format(tikz_options_list('draw', self),
                         self.name,
                         sh_scale,
                         '{' + self.shape + '}')]

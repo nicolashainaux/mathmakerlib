@@ -25,7 +25,7 @@ from statistics import mean
 from mathmakerlib.calculus.number import Number
 from mathmakerlib.calculus.tools import is_number
 from mathmakerlib.core.drawable import Drawable, HasThickness, Colored
-from mathmakerlib.core.drawable import tikz_approx_position
+from mathmakerlib.core.drawable import tikz_approx_position, tikz_options_list
 from mathmakerlib.geometry.point import Point, OPPOSITE_LABEL_POSITIONS
 from mathmakerlib.geometry.linesegment import LineSegment
 from mathmakerlib.geometry.vector import Vector
@@ -271,7 +271,7 @@ class Polygon(Drawable, Colored, HasThickness):
         """Return the command to actually draw the Polygon."""
         output = self._tikz_draw_vertices()
         output.append('\draw{} ({})\n{}\n-- cycle{}{}{};'
-                      .format(self.tikz_options_list('draw'),
+                      .format(tikz_options_list('draw', self),
                               self.vertices[0].name,
                               self._tikz_draw_sides(),
                               self.sides[-1].tikz_label(),

@@ -21,7 +21,7 @@
 
 from decimal import Decimal
 
-from mathmakerlib.core.drawable import check_color
+from mathmakerlib.core.drawable import check_color, tikz_options_list
 from mathmakerlib.calculus.tools import is_number, is_integer
 from mathmakerlib.calculus.number import Number
 from mathmakerlib.geometry.linesegment import LineSegment
@@ -143,14 +143,12 @@ class DividedLineSegment(LineSegment):
         draw_cmd = r'''\draw{} ({}) -- ({}){};
 \draw{} ({}) -- ({});
 \draw{} ({}) -- ({}) {};'''\
-    .format(self.tikz_options_list('draw'),
+    .format(tikz_options_list('draw', self),
             self.endpoints[0].name, self.endpoints[1].name,
             self.tikz_label(),
-            self.tikz_options_list(options_list=[self.thickness,
-                                                 self.fillcolor]),
+            tikz_options_list([self.thickness, self.fillcolor]),
             self.endpoints[0].name, self.fillpoint.name,
-            self.tikz_options_list(options_list=[self.thickness,
-                                                 'opacity=0']),
+            tikz_options_list([self.thickness, 'opacity=0']),
             self.endpoints[0].name, self.endpoints[1].name,
             self.tikz_graduations())
         output.append(draw_cmd)

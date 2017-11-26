@@ -74,6 +74,32 @@ def tikz_approx_position(slope):
         return 'below right'
 
 
+def tikz_options_list(options_list, source=None):
+    """
+    Return '[opt1, opt2,...]' or '' (if all options are None).
+
+    :param options_list: a str keyword (available so far: 'draw') or a list of
+    strings (or None)
+    :type options_list: list
+    :param source: used if options_list is a keyword instead of a list
+    :type source: if options_list is 'draw', source must be a Drawable
+    :rtype: str
+    """
+    options = []
+    if options_list == 'draw':
+        if not isinstance(source, Drawable):
+            raise TypeError('Expected a Drawable, found {}.'
+                            .format(type(source)))
+        options_list = source._tikz_draw_options()
+    for o in options_list:
+        if o is not None:
+            options.append(o)
+    if options:
+        return '[{}]'.format(', '.join(options))
+    else:
+        return ''
+
+
 class Colored(object, metaclass=ABCMeta):
     @property
     def color(self):
@@ -203,23 +229,6 @@ class Drawable(Colored, metaclass=ABCMeta):
 
         :rtype: list
         """
-
-    def tikz_options_list(self, options_list):
-        """
-        Return '[opt1, opt2,...]' or '' (if all options are None).
-
-        :rtype: str
-        """
-        options = []
-        if options_list == 'draw':
-            options_list = self._tikz_draw_options()
-        for o in options_list:
-            if o is not None:
-                options.append(o)
-        if options:
-            return '[{}]'.format(', '.join(options))
-        else:
-            return ''
 
     @abstractmethod
     def tikz_drawing_comment(self):

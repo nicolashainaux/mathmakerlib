@@ -20,7 +20,7 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 from mathmakerlib.core.drawable import check_scale, Drawable, HasThickness
-from mathmakerlib.core.drawable import tikz_approx_position
+from mathmakerlib.core.drawable import tikz_approx_position, tikz_options_list
 from mathmakerlib.geometry.pointspair import PointsPair
 from mathmakerlib.calculus.number import Number
 from mathmakerlib.geometry.point import OPPOSITE_LABEL_POSITIONS
@@ -244,7 +244,7 @@ class LineSegment(Drawable, HasThickness, PointsPair):
         """Return the command to actually draw the LineSegment."""
         output = self._tikz_draw_endpoints()
         output.append(r'\draw{} ({}) {};'
-                      .format(self.tikz_options_list('draw'),
+                      .format(tikz_options_list('draw', self),
                               self.endpoints[0].name,
                               self.tikz_draw_section()))
         return output

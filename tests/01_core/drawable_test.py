@@ -23,6 +23,7 @@ import pytest
 
 from mathmakerlib import required
 from mathmakerlib.core.drawable import HasRadius, HasThickness
+from mathmakerlib.core.drawable import tikz_options_list
 from mathmakerlib.geometry import Point, LineSegment
 
 
@@ -34,6 +35,18 @@ def A():
 @pytest.fixture()
 def E():
     return Point(1, 0, 'E')
+
+
+def test_tikz_options_list():
+    """Check tikz_options_list()"""
+    with pytest.raises(TypeError) as excinfo:
+        tikz_options_list('draw')
+    assert str(excinfo.value) == 'Expected a Drawable, found <class ' \
+        '\'NoneType\'>.'
+    assert tikz_options_list([None, None]) == ''
+    assert tikz_options_list(['attr1=val1', 'val2']) == '[attr1=val1, val2]'
+    assert tikz_options_list(['attr1=val1', None, 'val2']) \
+        == '[attr1=val1, val2]'
 
 
 def test_hasradius():
