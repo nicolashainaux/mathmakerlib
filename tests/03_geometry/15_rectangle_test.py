@@ -19,6 +19,9 @@
 # along with Mathmaker Lib; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
+import pytest
+
+from mathmakerlib.calculus import Number, Unit
 from mathmakerlib.geometry import Rectangle
 
 
@@ -26,6 +29,34 @@ def test_instanciation():
     """Check Rectangle's instanciation."""
     r = Rectangle()
     assert r.type == 'Rectangle'
+    assert r.width == Number(1)
+    assert r.length == Number(2)
+    assert r.area == Number(2)
+
+
+def test_sides_labeling():
+    """Check Rectangle's sides' labeling."""
+    r = Rectangle(name='TIDY', width=2, length=3)
+    with pytest.raises(ValueError) as excinfo:
+        r.setup_labels(Number(4, unit='cm'), Number(15, unit='cm'),
+                       masks=['', ''])
+    assert str(excinfo.value) == 'All four masks must be setup. Found 2 '\
+        'values instead.'
+    with pytest.raises(TypeError) as excinfo:
+        r.lbl_area
+    assert str(excinfo.value) == 'The Rectangle\'s width has not been set as '\
+        'a Number. Cannot calculate the area from labels.'
+    r.setup_labels(Number(4, unit='cm'), '15 cm')
+    with pytest.raises(TypeError) as excinfo:
+        r.lbl_area
+    assert str(excinfo.value) == 'The Rectangle\'s length has not been set '\
+        'as a Number. Cannot calculate the area from labels.'
+    r.setup_labels(Number(4, unit='cm'), Number(15, unit='cm'))
+    assert r.lbl_width.uiprinted == '4 cm'
+    assert r.lbl_length.uiprinted == '15 cm'
+    assert r.lbl_area == Number(60, unit=Unit('cm', exponent=Number(2)))
+    assert r.lbl_area.uiprinted == '60 cm^2'
+    assert [s.label_mask for s in r.sides] == [' ', None, None, ' ']
 
 
 def test_simple_drawing():

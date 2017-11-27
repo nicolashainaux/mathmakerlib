@@ -67,6 +67,10 @@ class Rectangle(Polygon):
         """
         if start_vertex is None:
             start_vertex = Point(0, 0)
+        # Accepted type for width and length is number, will be checked at
+        # vertices' instanciations.
+        self._width = width
+        self._length = length
         v1 = Point(length, 0)
         v2 = Point(length, width)
         v3 = Point(0, width)
@@ -80,3 +84,57 @@ class Rectangle(Polygon):
             for a in self.angles:
                 a.mark = AngleMark()
                 a.mark_right = True
+
+    @property
+    def width(self):
+        return self._width
+
+    @property
+    def length(self):
+        return self._length
+
+    @property
+    def area(self):
+        return self.width * self.length
+
+    def setup_labels(self, lbl_width, lbl_length, masks=None):
+        """
+        Convenience method to easily setup Rectangle's length and width labels.
+
+        If masks is None, then by default, only side[1] (width) and side[2]
+        (length) labels will be shown. The two others will be masked.
+
+        :param lbl_length: the lengths' labels
+        :type lbl_length: a label (either str or Number)
+        :param lbl_width: the widths' labels
+        :type lbl_width: a label (either str or Number)
+        :param masks: the list of masks to setup.
+        :type masks: None or list of 4 elements
+        """
+        if masks is None:
+            masks = [' ', None, None, ' ']
+        if len(masks) != 4:
+            raise ValueError('All four masks must be setup. Found {} values '
+                             'instead.'.format(len(masks)))
+        self.sides[0].label = self.sides[2].label = lbl_length
+        self.sides[1].label = self.sides[3].label = lbl_width
+        for i, m in enumerate(masks):
+            self.sides[i].label_mask = m
+
+    @property
+    def lbl_width(self):
+        return self.sides[1].label_value
+
+    @property
+    def lbl_length(self):
+        return self.sides[0].label_value
+
+    @property
+    def lbl_area(self):
+        if not isinstance(self.lbl_width, Number):
+            raise TypeError('The Rectangle\'s width has not been set as a '
+                            'Number. Cannot calculate the area from labels.')
+        if not isinstance(self.lbl_length, Number):
+            raise TypeError('The Rectangle\'s length has not been set as a '
+                            'Number. Cannot calculate the area from labels.')
+        return self.lbl_width * self.lbl_length
