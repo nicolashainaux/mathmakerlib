@@ -23,6 +23,7 @@ import copy
 import locale
 import random
 import warnings
+from copy import deepcopy
 from decimal import Decimal, ROUND_DOWN, ROUND_HALF_UP
 
 from mathmakerlib import required
@@ -117,12 +118,25 @@ class Number(Decimal, Signed, Printable, Evaluable):
         if isinstance(value, Number) and unit is None:
             unit = copy.deepcopy(value.unit)
         self = super().__new__(cls, value=value, context=context)
-        self._unit = None
-        self.unit = unit
+        if unit is None:
+            self._unit = None
+        else:
+            self._unit = Unit(unit)
         return self
 
     def __hash__(self):
         return hash(Decimal(self))
+
+    def __copy__(self):  # Similar to Decimal.__copy__()
+        if type(self) is Number:
+            return self     # I'm immutable; therefore I am my own clone
+        return self.__class__(self)
+
+    def __deepcopy__(self, memo):  # Similar to Decimal.__deepcopy__()...
+        if type(self) is Number:
+            # ...but my components are *not* also immutable
+            return Number(value=self, unit=self.unit)
+        return self.__class__(self, unit=self.unit)
 
     def __eq__(self, other):
         if self.unit is None:
@@ -324,13 +338,6 @@ class Number(Decimal, Signed, Printable, Evaluable):
     @property
     def unit(self):
         return self._unit
-
-    @unit.setter
-    def unit(self, u):
-        if u is None:
-            self._unit = None
-        else:
-            self._unit = Unit(u)
 
     @property
     def sign(self):

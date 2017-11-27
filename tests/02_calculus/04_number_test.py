@@ -22,6 +22,7 @@
 import sys
 import locale
 import pytest
+from copy import copy, deepcopy
 from decimal import Decimal, ROUND_HALF_UP
 
 from mathmakerlib import required
@@ -108,6 +109,14 @@ def test_Sign():
     assert Number(-4) * n == Number(4)
     assert p.evaluate() == Number(1)
     assert n.evaluate() == Number(-1)
+
+
+def test_copyability():
+    """Check copy.copy() and copy.deepcopy() work correctly."""
+    assert copy(Number('6')) == 6
+    assert copy(Number('6', unit='cm')) == Number(6, unit='cm')
+    assert deepcopy(Number('6')) == 6
+    assert deepcopy(Number('6', unit='cm')).uiprinted == '6 cm'
 
 
 def test__repr__():
