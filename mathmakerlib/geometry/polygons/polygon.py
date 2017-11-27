@@ -179,7 +179,7 @@ class Polygon(Drawable, Colored, HasThickness):
 
     def setup_labels(self, labels, linesegments=None, masks=False):
         """
-        Convenience method tho easily setup all sides in a row.
+        Convenience method to easily setup all sides in a row.
 
         If no line segments' list is provided, it defaults to the Polygon's
         sides. This is practical if extra line segments require labeling, like
@@ -192,6 +192,8 @@ class Polygon(Drawable, Colored, HasThickness):
         :type labels: list
         :param linesegments: the list of the LineSegments to label
         :type linesegments: list (of LineSegments)
+        :param masks: tells whether the labels to set are actually masks
+        :type masks: bool
         """
         if linesegments is None:
             linesegments = self.sides
