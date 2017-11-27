@@ -141,6 +141,19 @@ def test_sides_labeling(pointO, pointA, pointB, pointC):
         p.setup_labels(['', '', ''])
     assert str(excinfo.value) == 'The number of labels (3) should be equal ' \
         'to the number of line segments (4).'
+    p.setup_labels([Number(7, unit='cm'), Number(5, unit='cm'),
+                    Number(6, unit='cm'), Number(4, unit='cm')])
+    assert all(s.label_mask is None for s in p.sides)
+    with pytest.raises(ValueError) as excinfo:
+        p.setup_labels([Number(7, unit='cm'), Number(5, unit='cm'),
+                        Number(6, unit='cm'), Number(4, unit='cm')],
+                       masks=['', ''])
+    assert str(excinfo.value) == 'The number of label masks (2) should be '\
+        'equal to the number of line segments (4).'
+    with pytest.raises(ValueError) as excinfo:
+        p.setup_labels()
+    assert str(excinfo.value) == 'There must be at least either labels or '\
+        'masks to setup. Both are undefined (None).'
 
 
 def test_perimeter(pointO, pointA, pointB, pointC):
@@ -157,9 +170,8 @@ def test_lbl_perimeter(pointO, pointA, pointB, pointC):
     assert str(excinfo.value) == 'All labels must have been set as Numbers ' \
         'in order to calculate the perimeter from labels.'
     p.setup_labels([Number(7, unit='cm'), Number(5, unit='cm'),
-                    Number(6, unit='cm'), Number(4, unit='cm')])
-    assert p.lbl_perimeter == Number(22, unit='cm')
-    p.setup_labels_masks([None, None, '?', ' '])
+                    Number(6, unit='cm'), Number(4, unit='cm')],
+                   masks=[None, None, '?', ' '])
     assert p.lbl_perimeter == Number(22, unit='cm')
 
 
@@ -372,7 +384,7 @@ def test_drawing_with_labeled_sides(pointO, pointA, pointB, pointC):
 
 \end{tikzpicture}
 """
-    p.setup_labels_masks([None, None, '?', ' '])
+    p.setup_labels(masks=[None, None, '?', ' '])
     assert p.drawn == r"""
 \begin{tikzpicture}
 % Declare Points

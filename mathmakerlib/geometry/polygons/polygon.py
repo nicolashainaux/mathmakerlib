@@ -177,40 +177,51 @@ class Polygon(Drawable, Colored, HasThickness):
             return sum([s.label_value for s in self.sides],
                        Number(0, unit=self.sides[0].label_value.unit))
 
-    def setup_labels(self, labels, linesegments=None, masks=False):
+    def setup_labels(self, labels=None, linesegments=None, masks=None):
         """
         Convenience method to easily setup all sides in a row.
 
-        If no line segments' list is provided, it defaults to the Polygon's
-        sides. This is practical if extra line segments require labeling, like
-        in InterceptTheoremFigure, or if one wants to label a diagonal.
+        If labels is None, then the labels won't be set.
+        If masks is None, then the masks won't be set.
+        At least labels or masks must be different from None.
+
+        If linesegments is None, it defaults to the Polygon's sides. This is
+        practical if extra line segments require labeling, like in
+        InterceptTheoremFigure, or if one wants to label a diagonal.
 
         It is expected that both the labels' and line segments' lists
         have the same length.
 
-        :param labels: the list of the labels
+        :param labels: None of the list of the labels
         :type labels: list
         :param linesegments: the list of the LineSegments to label
         :type linesegments: list (of LineSegments)
-        :param masks: tells whether the labels to set are actually masks
-        :type masks: bool
+        :param masks: the list of masks to setup. If None (default), all masks
+        will be set to None.
+        :type masks: None or list
         """
+        if labels is None and masks is None:
+            raise ValueError('There must be at least either labels or masks '
+                             'to setup. Both are undefined (None).')
         if linesegments is None:
             linesegments = self.sides
-        if len(labels) != len(linesegments):
+        if labels is not None and len(labels) != len(linesegments):
             raise ValueError('The number of labels ({}) should be equal '
                              'to the number of line segments ({}).'
                              .format(str(len(labels)),
                                      str(len(linesegments))))
-        for (ls, lbl) in zip(linesegments, labels):
-            if masks:
-                ls.label_mask = lbl
-            else:
+        if masks is None:
+            masks = [None for _ in range(len(linesegments))]
+        if len(masks) != len(linesegments):
+            raise ValueError('The number of label masks ({}) should be equal '
+                             'to the number of line segments ({}).'
+                             .format(str(len(masks)),
+                                     str(len(linesegments))))
+        if labels is not None:
+            for (ls, lbl) in zip(linesegments, labels):
                 ls.label = lbl
-
-    def setup_labels_masks(self, masks, linesegments=None):
-        """Shortcut for setup_labels(..., masks=True)"""
-        self.setup_labels(labels=masks, linesegments=linesegments, masks=True)
+        for (ls, m) in zip(linesegments, masks):
+            ls.label_mask = m
 
     @property
     def draw_vertices(self):
