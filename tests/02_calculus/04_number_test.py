@@ -382,6 +382,8 @@ def test_printing():
     assert str(n) == '9 cm'
     n = Number('9')
     assert str(n) == '9'
+    assert Number(60, unit=Unit('cm', exponent=Number(2))).uiprinted \
+        == '60 cm^2'
 
 
 def test_sign():

@@ -365,7 +365,7 @@ class Number(Decimal, Signed, Printable, Evaluable):
                 return extra_sign + r'\SI{' + Decimal.__str__(abs(self)) \
                     + '}{' + self.unit.printed + '}'
             else:  # 'user_input'
-                return extra_sign + self_str + ' ' + self.unit.printed
+                return extra_sign + self_str + ' ' + self.unit.uiprinted
 
     def evaluate(self, **kwargs):
         return self
