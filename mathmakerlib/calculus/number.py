@@ -23,7 +23,6 @@ import copy
 import locale
 import random
 import warnings
-from copy import deepcopy
 from decimal import Decimal, ROUND_DOWN, ROUND_HALF_UP
 
 from mathmakerlib import required
