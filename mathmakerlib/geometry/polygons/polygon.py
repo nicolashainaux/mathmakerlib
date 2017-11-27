@@ -192,7 +192,7 @@ class Polygon(Drawable, Colored, HasThickness):
         It is expected that both the labels' and line segments' lists
         have the same length.
 
-        :param labels: None of the list of the labels
+        :param labels: None or the list of the labels
         :type labels: list
         :param linesegments: the list of the LineSegments to label
         :type linesegments: list (of LineSegments)
