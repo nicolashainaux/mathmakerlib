@@ -127,18 +127,38 @@ class Rectangle(Polygon):
 
     @property
     def lbl_width(self):
-        return self.sides[1].label_value
+        if isinstance(self.sides[1].label_value, Number):
+            if isinstance(self.sides[3].label_value, Number):
+                if self.sides[1].label_value == self.sides[3].label_value:
+                    return self.sides[1].label_value
+                else:
+                    raise ValueError('Two different labels have been set '
+                                     'for the width: {} and {}.'
+                                     .format(repr(self.sides[1].label_value),
+                                             repr(self.sides[3].label_value)))
+            else:
+                return self.sides[1].label_value
+        elif isinstance(self.sides[3].label_value, Number):
+            return self.sides[3].label_value
+        raise ValueError('No width has been set as a Number.')
 
     @property
     def lbl_length(self):
-        return self.sides[0].label_value
+        if isinstance(self.sides[0].label_value, Number):
+            if isinstance(self.sides[2].label_value, Number):
+                if self.sides[0].label_value == self.sides[2].label_value:
+                    return self.sides[0].label_value
+                else:
+                    raise ValueError('Two different labels have been set '
+                                     'for the length: {} and {}.'
+                                     .format(repr(self.sides[0].label_value),
+                                             repr(self.sides[2].label_value)))
+            else:
+                return self.sides[0].label_value
+        elif isinstance(self.sides[2].label_value, Number):
+            return self.sides[2].label_value
+        raise ValueError('No length has been set as a Number.')
 
     @property
     def lbl_area(self):
-        if not isinstance(self.lbl_width, Number):
-            raise TypeError('The Rectangle\'s width has not been set as a '
-                            'Number. Cannot calculate the area from labels.')
-        if not isinstance(self.lbl_length, Number):
-            raise TypeError('The Rectangle\'s length has not been set as a '
-                            'Number. Cannot calculate the area from labels.')
         return self.lbl_width * self.lbl_length

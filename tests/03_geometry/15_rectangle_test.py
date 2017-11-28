@@ -42,21 +42,35 @@ def test_sides_labeling():
                        masks=['', ''])
     assert str(excinfo.value) == 'All four masks must be setup. Found 2 '\
         'values instead.'
-    with pytest.raises(TypeError) as excinfo:
+    with pytest.raises(ValueError) as excinfo:
         r.lbl_area
-    assert str(excinfo.value) == 'The Rectangle\'s width has not been set as '\
-        'a Number. Cannot calculate the area from labels.'
+    assert str(excinfo.value) == 'No width has been set as a Number.'
     r.setup_labels(Number(4, unit='cm'), '15 cm')
-    with pytest.raises(TypeError) as excinfo:
+    with pytest.raises(ValueError) as excinfo:
+        r.lbl_length
+    assert str(excinfo.value) == 'No length has been set as a Number.'
+    with pytest.raises(ValueError) as excinfo:
         r.lbl_area
-    assert str(excinfo.value) == 'The Rectangle\'s length has not been set '\
-        'as a Number. Cannot calculate the area from labels.'
+    assert str(excinfo.value) == 'No length has been set as a Number.'
     r.setup_labels(Number(4, unit='cm'), Number(15, unit='cm'))
     assert r.lbl_width.uiprinted == '4 cm'
     assert r.lbl_length.uiprinted == '15 cm'
     assert r.lbl_area == Number(60, unit=Unit('cm', exponent=Number(2)))
     assert r.lbl_area.uiprinted == '60 cm^2'
     assert [s.label_mask for s in r.sides] == [' ', None, None, ' ']
+    for s in r.sides:
+        s.unlock_label()
+    r.sides[3].label = Number(5, unit='cm')
+    with pytest.raises(ValueError) as excinfo:
+        r.lbl_area
+    assert str(excinfo.value) == 'Two different labels have been set '\
+        'for the width: Number(\'4 cm\') and Number(\'5 cm\').'
+    r.sides[3].label = Number(4, unit='cm')
+    r.sides[2].label = Number(12, unit='cm')
+    with pytest.raises(ValueError) as excinfo:
+        r.lbl_area
+    assert str(excinfo.value) == 'Two different labels have been set '\
+        'for the length: Number(\'15 cm\') and Number(\'12 cm\').'
 
 
 def test_simple_drawing():
