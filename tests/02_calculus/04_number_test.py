@@ -118,6 +118,14 @@ def test_copyability():
     assert deepcopy(Number('6')) == 6
     assert deepcopy(Number('6', unit='cm')).uiprinted == '6 cm'
 
+    class DerivedNb(Number):
+        pass
+
+    assert copy(DerivedNb(Number('6'))) == 6
+    assert copy(DerivedNb(Number('6', unit='cm'))) == Number(6, unit='cm')
+    assert deepcopy(DerivedNb(Number('6'))) == 6
+    assert deepcopy(DerivedNb(Number('6', unit='cm'))) == Number(6, unit='cm')
+
 
 def test__repr__():
     """Check __repr__ is correct."""
