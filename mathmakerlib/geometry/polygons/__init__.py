@@ -21,5 +21,6 @@
 
 from .polygon import Polygon
 from .rectangle import Rectangle
+from .square import Square
 
-__all__ = ['Polygon', 'Rectangle']
+__all__ = ['Polygon', 'Rectangle', 'Square']

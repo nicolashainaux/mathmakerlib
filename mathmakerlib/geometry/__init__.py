@@ -23,8 +23,8 @@ from .point import Point
 from .pointspair import PointsPair
 from .linesegment import LineSegment
 from .dividedlinesegment import DividedLineSegment
-from .polygons import Polygon, Rectangle
+from .polygons import Polygon, Rectangle, Square
 from .angle import AngleMark
 
 __all__ = ['Point', 'PointsPair', 'LineSegment', 'DividedLineSegment',
-           'Polygon', 'Rectangle', 'AngleMark']
+           'Polygon', 'Rectangle', 'Square', 'AngleMark']
