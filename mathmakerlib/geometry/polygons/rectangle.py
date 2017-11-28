@@ -39,8 +39,8 @@ class Rectangle(Polygon):
         :param start_vertex: the vertex to start to draw the Rectangle
         (default (0; 0))
         :type start_vertex: Point
-        :param name: the name of the Rectangle, like ABCDE for a pentagon. Can
-        be either None (the names will be automatically created), or a
+        :param name: the name of the Rectangle, like ABCD.
+        Can be either None (the names will be automatically created), or a
         string of the letters to use to name the vertices. Only single letters
         are supported as Points' names so far (at Polygon's creation).
         See issue #3.
@@ -101,7 +101,7 @@ class Rectangle(Polygon):
         """
         Convenience method to easily setup Rectangle's length and width labels.
 
-        If masks is None, then by default, only side[1] (width) and side[2]
+        If masks is None, then by default, only sides[1] (width) and sides[2]
         (length) labels will be shown. The two others will be masked.
 
         :param lbl_length: the lengths' labels
