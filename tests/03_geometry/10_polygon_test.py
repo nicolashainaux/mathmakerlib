@@ -303,6 +303,7 @@ def test_drawing_with_labeled_sides(pointO, pointA, pointB, pointC):
     """Check drawing the Polygon."""
     p = Polygon(pointO, pointA, pointB, pointC)
     p.label_vertices = False
+    p.sides[1].unlock_label()
     p.sides[1].label = '3 cm'
     assert p.drawn == r"""
 \begin{tikzpicture}
@@ -323,6 +324,7 @@ def test_drawing_with_labeled_sides(pointO, pointA, pointB, pointC):
 
 \end{tikzpicture}
 """
+    p.sides[0].unlock_label()
     p.sides[0].label = '? cm'
     assert p.drawn == r"""
 \begin{tikzpicture}
@@ -343,6 +345,7 @@ def test_drawing_with_labeled_sides(pointO, pointA, pointB, pointC):
 
 \end{tikzpicture}
 """
+    p.sides[3].unlock_label()
     p.sides[3].label = '5 cm'
     assert p.drawn == r"""
 \begin{tikzpicture}

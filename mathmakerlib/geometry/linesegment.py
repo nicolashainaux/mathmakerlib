@@ -33,7 +33,8 @@ class LineSegment(Drawable, HasThickness, PointsPair):
     def __init__(self, *points, thickness='thick', label=None, label_mask=None,
                  label_position='anticlockwise',
                  draw_endpoints=True, label_endpoints=True, color=None,
-                 mark=None, mark_scale=Number('0.67')):
+                 mark=None, mark_scale=Number('0.67'),
+                 locked_label=False):
         """
         Initialize LineSegment
 
@@ -65,6 +66,9 @@ class LineSegment(Drawable, HasThickness, PointsPair):
         :type mark: str
         :param mark_scale: the scale (size) of the mark. Defaults to 0.67
         :type mark_scale: any number
+        :param locked_label: to allow or prevent, by default, modifications of
+        the LineSegment's label.
+        :type locked_label: bool
         """
         if len(points) != 2:
             raise TypeError('Two Points are required to create a '
@@ -77,7 +81,8 @@ class LineSegment(Drawable, HasThickness, PointsPair):
         self._label_position = None
         self._draw_endpoints = None
         self._label_endpoints = None
-        self.label = label
+        self._locked_label = False  # Only temporary, in order to be able to
+        self.label = label          # use the label setter.
         self.label_mask = label_mask
         self.thickness = thickness
         self.draw_endpoints = draw_endpoints
@@ -102,6 +107,10 @@ class LineSegment(Drawable, HasThickness, PointsPair):
         if color is not None:
             self.color = color
         self._comment_designation = 'Line Segment'
+        if not isinstance(locked_label, bool):
+            raise TypeError('Expected bool type for \'locked_label\' keyword '
+                            'argument. Found {}.'.format(type(locked_label)))
+        self._locked_label = locked_label
 
     def __repr__(self):
         return 'LineSegment({}, {})'.format(repr(self.endpoints[0]),
@@ -140,6 +149,34 @@ class LineSegment(Drawable, HasThickness, PointsPair):
     # @property
     # def name(self):
     #     return '[' + self.endpoints[0].name + self.endpoints[1].name + ']'
+
+    @property
+    def locked_label(self):
+        """Tell if the LineSegment's label can be changed."""
+        return self._locked_label
+
+    def lock_label(self):
+        """Forbid modifications of LineSegment's label."""
+        self._locked_label = True
+
+    def unlock_label(self):
+        """Allow modifications of LineSegment's label."""
+        self._locked_label = False
+
+    @property
+    def label(self):
+        return self._label
+
+    @label.setter
+    def label(self, value):
+        if self.locked_label:
+            raise TypeError('This LineSegments\' label is locked. '
+                            'If you\'re using this LineSegment embedded in '
+                            'another object (e.g. a Polygon), please use the '
+                            'setup_labels() method of this object. Otherwise, '
+                            'first explicitely unlock the LineSegment.')
+        else:
+            super(LineSegment, self.__class__).label.fset(self, value)
 
     @property
     def label_endpoints(self):

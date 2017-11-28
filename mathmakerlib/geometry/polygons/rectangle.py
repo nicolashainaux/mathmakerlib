@@ -116,8 +116,12 @@ class Rectangle(Polygon):
         if len(masks) != 4:
             raise ValueError('All four masks must be setup. Found {} values '
                              'instead.'.format(len(masks)))
+        for s in self.sides:
+            s.unlock_label()
         self.sides[0].label = self.sides[2].label = lbl_length
         self.sides[1].label = self.sides[3].label = lbl_width
+        for s in self.sides:
+            s.lock_label()
         for i, m in enumerate(masks):
             self.sides[i].label_mask = m
 

@@ -121,6 +121,17 @@ def test_some_setters(A, B):
         s.mark_scale = 'undefined'
     assert str(excinfo.value).startswith('The LineSegment\'s mark\'s scale '
                                          'must be a number.')
+    with pytest.raises(TypeError) as excinfo:
+        s = LineSegment(A, B, locked_label=1)
+    assert str(excinfo.value) == 'Expected bool type for \'locked_label\' '\
+        'keyword argument. Found <class \'int\'>.'
+    s = LineSegment(A, B, locked_label=True)
+    with pytest.raises(TypeError) as excinfo:
+        s.label = '4.5 cm'
+    assert str(excinfo.value) == 'This LineSegments\' label is locked. '\
+        'If you\'re using this LineSegment embedded in another '\
+        'object (e.g. a Polygon), please use the setup_labels() method of '\
+        'this object. Otherwise, first explicitely unlock the LineSegment.'
 
 
 def test_repr(A, B):
