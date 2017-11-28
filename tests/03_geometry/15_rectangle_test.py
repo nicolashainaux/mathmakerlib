@@ -71,6 +71,14 @@ def test_sides_labeling():
         r.lbl_area
     assert str(excinfo.value) == 'Two different labels have been set '\
         'for the length: Number(\'15 cm\') and Number(\'12 cm\').'
+    r.sides[0].label = 'undefined'
+    r.sides[1].label = 'undefined'
+    assert r.lbl_area.uiprinted == '48 cm^2'
+    r.sides[0].label = Number(3, unit='cm')
+    r.sides[1].label = Number(17, unit='cm')
+    r.sides[2].label = 'undefined'
+    r.sides[3].label = 'undefined'
+    assert r.lbl_area.uiprinted == '51 cm^2'
 
 
 def test_simple_drawing():
