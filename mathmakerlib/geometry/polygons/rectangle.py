@@ -22,10 +22,10 @@
 from mathmakerlib.calculus.number import Number
 from mathmakerlib.geometry.point import Point
 from mathmakerlib.geometry.angle import AngleMark
-from . import Polygon
+from . import Quadrilateral
 
 
-class Rectangle(Polygon):
+class Rectangle(Quadrilateral):
     """Rectangles."""
 
     def __init__(self, start_vertex=None, name=None,
@@ -74,11 +74,11 @@ class Rectangle(Polygon):
         v1 = Point(length, 0)
         v2 = Point(length, width)
         v3 = Point(0, width)
-        Polygon.__init__(self, start_vertex, v1, v2, v3, name=name,
-                         draw_vertices=draw_vertices,
-                         label_vertices=label_vertices,
-                         thickness=thickness, color=color,
-                         rotation_angle=rotation_angle)
+        Quadrilateral.__init__(self, start_vertex, v1, v2, v3, name=name,
+                               draw_vertices=draw_vertices,
+                               label_vertices=label_vertices,
+                               thickness=thickness, color=color,
+                               rotation_angle=rotation_angle)
         self._type = 'Rectangle'
         if mark_right_angles:
             for a in self.angles:
@@ -113,17 +113,9 @@ class Rectangle(Polygon):
         """
         if masks is None:
             masks = [' ', None, None, ' ']
-        if len(masks) != 4:
-            raise ValueError('All four masks must be setup. Found {} values '
-                             'instead.'.format(len(masks)))
-        for s in self.sides:
-            s.unlock_label()
-        self.sides[0].label = self.sides[2].label = lbl_length
-        self.sides[1].label = self.sides[3].label = lbl_width
-        for s in self.sides:
-            s.lock_label()
-        for i, m in enumerate(masks):
-            self.sides[i].label_mask = m
+        super().setup_labels(labels=[lbl_length, lbl_width,
+                                     lbl_length, lbl_width],
+                             masks=masks)
 
     @property
     def lbl_width(self):

@@ -38,11 +38,6 @@ def test_sides_labeling():
     """Check Rectangle's sides' labeling."""
     r = Rectangle(name='TIDY', width=2, length=3)
     with pytest.raises(ValueError) as excinfo:
-        r.setup_labels(Number(4, unit='cm'), Number(15, unit='cm'),
-                       masks=['', ''])
-    assert str(excinfo.value) == 'All four masks must be setup. Found 2 '\
-        'values instead.'
-    with pytest.raises(ValueError) as excinfo:
         r.lbl_area
     assert str(excinfo.value) == 'No width has been set as a Number.'
     r.setup_labels(Number(4, unit='cm'), '15 cm')
