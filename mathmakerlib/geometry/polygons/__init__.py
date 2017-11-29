@@ -20,7 +20,8 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 from .polygon import Polygon
+from .quadrilateral import Quadrilateral
 from .rectangle import Rectangle
 from .square import Square
 
-__all__ = ['Polygon', 'Rectangle', 'Square']
+__all__ = ['Polygon', 'Quadrilateral', 'Rectangle', 'Square']
