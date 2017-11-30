@@ -19,11 +19,19 @@
 # along with Mathmaker Lib; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-from .equilateral import Equilateral
-from .polygon import Polygon
-from .quadrilateral import Quadrilateral
-from .rectangle import Rectangle
-from .square import Square
+from abc import ABCMeta, abstractmethod
 
-__all__ = ['Equilateral', 'Polygon',
-           'Quadrilateral', 'Rectangle', 'Square']
+from mathmakerlib.core.drawable import Drawable
+
+
+class Equilateral(Drawable, metaclass=ABCMeta):
+
+    def __init__(self, mark_equal_sides=True):
+        if mark_equal_sides:
+            for s in self.sides:
+                s.mark = '//'
+
+    @property
+    @abstractmethod
+    def sides(self):
+        """The sides of the object."""
