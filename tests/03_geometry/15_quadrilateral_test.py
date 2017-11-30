@@ -25,7 +25,7 @@ from mathmakerlib.geometry import Point, Quadrilateral
 
 
 def test_instanciation_errors():
-    """Check erros on Quadrilateral's instanciation."""
+    """Check errors on Quadrilateral's instanciation."""
     with pytest.raises(ValueError) as excinfo:
         Quadrilateral(Point(0, 0), Point(0, 1), Point(1, 1))
     assert str(excinfo.value) == 'Four vertices are required to build a '\
