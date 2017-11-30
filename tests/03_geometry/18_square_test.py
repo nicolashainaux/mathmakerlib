@@ -19,7 +19,6 @@
 # along with Mathmaker Lib; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-import pytest
 
 from mathmakerlib.calculus import Number
 from mathmakerlib.geometry import Square
@@ -33,22 +32,9 @@ def test_instanciation():
     assert s.area == Number(1)
 
 
-def test_sides_labeling():
+def test_lbl_area():
     """Check Square's sides' labeling."""
     r = Square(name='DUCK', side_length=3)
-    with pytest.raises(ValueError) as excinfo:
-        r.lbl_area
-    assert str(excinfo.value) == 'Found no side labeled as a Number.'
-    for s in r.sides:
-        s.unlock_label()
-    r.sides[0].label = Number(3, unit='cm')
-    r.sides[3].label = Number(4, unit='cm')
-    with pytest.raises(ValueError) as excinfo:
-        r.lbl_area
-    assert str(excinfo.value) == 'Found different values for the sides: '\
-        'Number(\'3 cm\') and Number(\'4 cm\').'
-    for s in r.sides:
-        s.lock_label()
     r.setup_labels(Number('1.5', unit='cm'))
     assert r.lbl_area.uiprinted == '2.25 cm^2'
 

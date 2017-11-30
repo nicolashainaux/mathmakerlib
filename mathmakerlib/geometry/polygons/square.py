@@ -20,10 +20,10 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 from mathmakerlib.calculus.number import Number
-from . import Rectangle
+from . import Rectangle, Rhombus, Equilateral
 
 
-class Square(Rectangle):
+class Square(Rectangle, Rhombus):
     """Squares."""
 
     def __init__(self, start_vertex=None, name=None,
@@ -71,37 +71,20 @@ class Square(Rectangle):
                            label_vertices=label_vertices,
                            thickness=thickness, color=color,
                            rotation_angle=rotation_angle)
-        self._type = 'Square'
+        # TODO: see issue #5
         # Accepted type for side_length is number, already checked at
         # vertices' instanciations (in Rectangle.__init__() call).
-        self._side_length = side_length
-        if mark_equal_sides:
-            for s in self.sides:
-                s.mark = '//'
+        self._side_length = Number(side_length)
+        Equilateral.__init__(self, mark_equal_sides=mark_equal_sides)
+        self._type = 'Square'
 
     @property
     def side_length(self):
         return self._side_length
 
-    @property
-    def area(self):
-        return self.side_length * self.side_length
-
     def setup_labels(self, lbl_side_length, masks=None):
-        """
-        Convenience method to easily setup Square's side length label.
-
-        If masks is None, then by default, only sides[3].label will be shown.
-        The three others will be masked.
-
-        :param lbl_side_length: the side's length's label
-        :type lbl_side_length: a label (either str or Number)
-        :param masks: the list of masks to setup.
-        :type masks: None or list of 4 elements
-        """
-        if masks is None:
-            masks = [' ', ' ', ' ', None]
-        super().setup_labels(lbl_side_length, lbl_side_length, masks=masks)
+        """Same as Rhombus.setup_labels()."""
+        Rhombus.setup_labels(self, lbl_side_length, masks=masks)
 
     @property
     def lbl_width(self):
@@ -110,18 +93,3 @@ class Square(Rectangle):
     @property
     def lbl_length(self):
         return self.lbl_side_length
-
-    @property
-    def lbl_side_length(self):
-        collected_values = []
-        for s in self.sides:
-            if isinstance(s.label_value, Number):
-                collected_values.append(s.label_value)
-        if not collected_values:
-            raise ValueError('Found no side labeled as a Number.')
-        ref = collected_values[0]
-        for v in collected_values:
-            if v != ref:
-                raise ValueError('Found different values for the sides: {} '
-                                 'and {}.'.format(repr(ref), repr(v)))
-        return ref
