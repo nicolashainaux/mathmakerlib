@@ -38,6 +38,7 @@ def test_instanciation():
     r = Rhombus()
     assert r.type == 'Rhombus'
     assert all([s.mark == '//' for s in r.sides])
+    assert r.side_length == Number(1)
 
 
 def test_sides_labeling():
