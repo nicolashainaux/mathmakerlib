@@ -51,3 +51,7 @@ class Equilateral(Drawable, metaclass=ABCMeta):
                 raise ValueError('Found different values for the sides: {} '
                                  'and {}.'.format(repr(ref), repr(v)))
         return ref
+
+    @property
+    def default_masks(self):
+        return [' ' for _ in range(len(self.sides) - 1)] + [None]

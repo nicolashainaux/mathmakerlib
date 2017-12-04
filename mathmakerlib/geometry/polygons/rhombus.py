@@ -107,7 +107,7 @@ class Rhombus(Quadrilateral, Equilateral):
         :type masks: None or list of 4 elements
         """
         if masks is None:
-            masks = [' ', ' ', ' ', None]
+            masks = self.default_masks
         super().setup_labels(labels=[lbl_side_length, lbl_side_length,
                                      lbl_side_length, lbl_side_length],
                              masks=masks)
