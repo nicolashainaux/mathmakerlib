@@ -31,7 +31,7 @@ LABEL_MASK_VALUES = [None, ' ', '?']
 class LineSegment(Drawable, HasThickness, PointsPair):
 
     def __init__(self, *points, thickness='thick', label=None, label_mask=None,
-                 label_position='anticlockwise',
+                 label_position='anticlockwise', label_scale=None,
                  draw_endpoints=True, label_endpoints=True, color=None,
                  mark=None, mark_scale=Number('0.67'),
                  locked_label=False):
@@ -56,6 +56,8 @@ class LineSegment(Drawable, HasThickness, PointsPair):
         put all LineSegments' labels outside a Polygon that is drawn in an
         anticlockwise manner. Same for 'clockwise', in the reversed direction.
         :type label_position: str
+        :param label_scale: the label's scale
+        :type label_scale: None or str
         :param draw_endpoints: whether or not actually draw the endpoints.
         Defaults to True.
         :type draw_endpoints: bool
@@ -79,11 +81,13 @@ class LineSegment(Drawable, HasThickness, PointsPair):
         self._thickness = None
         self._label_mask = None
         self._label_position = None
+        self._label_scale = None
         self._draw_endpoints = None
         self._label_endpoints = None
         self._locked_label = False  # Only temporary, in order to be able to
         self.label = label          # use the label setter.
         self.label_mask = label_mask
+        self.label_scale = label_scale
         self.thickness = thickness
         self.draw_endpoints = draw_endpoints
         self.label_endpoints = label_endpoints
@@ -235,6 +239,17 @@ class LineSegment(Drawable, HasThickness, PointsPair):
     def label_position(self, value):
         self._label_position = str(value)
 
+    @property
+    def label_scale(self):
+        return self._label_scale
+
+    @label_scale.setter
+    def label_scale(self, value):
+        if value is None:
+            self._label_scale = None
+        else:
+            self._label_scale = str(value)
+
     def tikz_declarations(self):
         """Return the LineSegment's Points' declarations."""
         return '{}\n{}'\
@@ -259,16 +274,24 @@ class LineSegment(Drawable, HasThickness, PointsPair):
         else:
             return []
 
+    def _tikz_label_options(self):
+        options = ['midway', self.label_position, 'sloped']
+        if self.label_scale is not None:
+            options.append('scale={}'.format(self.label_scale))
+        return options
+
     def tikz_label(self):
-        lslabel = ''
-        if self.label_mask is None:
-            if self.label is not None:
-                lslabel = ' node[midway, {}, sloped] {}'\
-                    .format(self.label_position, '{' + self.label + '}')
-        elif self.label_mask != ' ':
-            lslabel = ' node[midway, {}, sloped] {}'\
-                .format(self.label_position, '{' + self.label_mask + '}')
-        return lslabel
+        lbl = ''
+        if self.label_mask is None and self.label is not None:
+            lbl = self.label
+        elif self.label_mask is not None and self.label_mask != ' ':
+            lbl = self.label_mask
+        if lbl != '':
+            return ' node{} {}'\
+                .format(tikz_options_list(self._tikz_label_options()),
+                        '{' + lbl + '}')
+        else:
+            return lbl
 
     def _tikz_ls_mark(self):
         if self.mark is not None:
