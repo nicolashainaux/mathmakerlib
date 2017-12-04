@@ -23,11 +23,12 @@ from .equilateral import Equilateral
 from .polygon import Polygon
 from .triangle import Triangle
 from .righttriangle import RightTriangle
+from .equilateraltriangle import EquilateralTriangle
 from .quadrilateral import Quadrilateral
 from .rectangle import Rectangle
 from .rhombus import Rhombus
 from .square import Square
 
 __all__ = ['Equilateral', 'Polygon',
-           'Triangle', 'RightTriangle',
+           'Triangle', 'RightTriangle', 'EquilateralTriangle',
            'Quadrilateral', 'Rectangle', 'Rhombus', 'Square']
