@@ -57,3 +57,27 @@ r"""(0.25 cm, 0) -- (0.25 cm, 0.25 cm) -- (0, 0.25 cm);
 \draw (Y) node[above right] {Y};
 \end{tikzpicture}
 """
+    r = RightTriangle(start_vertex=Point(-3, 4), name='ICY')
+    assert r.drawn == r"""
+\begin{tikzpicture}
+% Declare Points
+\coordinate (I) at (-3,4);
+\coordinate (C) at (-1,4);
+\coordinate (Y) at (-1,5);
+
+% Draw RightTriangle
+\draw[thick] (I)
+-- (C)
+-- (Y)
+-- cycle;
+
+% Mark right angles
+\draw[thick, cm={cos(90), sin(90), -sin(90), cos(90), (C)}] """\
+r"""(0.25 cm, 0) -- (0.25 cm, 0.25 cm) -- (0, 0.25 cm);
+
+% Label Points
+\draw (I) node[left] {I};
+\draw (C) node[below right] {C};
+\draw (Y) node[above right] {Y};
+\end{tikzpicture}
+"""

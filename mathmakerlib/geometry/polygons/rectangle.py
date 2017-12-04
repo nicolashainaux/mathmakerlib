@@ -71,9 +71,9 @@ class Rectangle(Quadrilateral):
         # vertices' instanciations.
         self._width = width
         self._length = length
-        v1 = Point(length, 0)
-        v2 = Point(length, width)
-        v3 = Point(0, width)
+        v1 = Point(length + start_vertex.x, start_vertex.y)
+        v2 = Point(length + start_vertex.x, width + start_vertex.y)
+        v3 = Point(start_vertex.x, width + start_vertex.y)
         Quadrilateral.__init__(self, start_vertex, v1, v2, v3, name=name,
                                draw_vertices=draw_vertices,
                                label_vertices=label_vertices,

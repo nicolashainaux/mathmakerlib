@@ -79,9 +79,9 @@ class Rhombus(Quadrilateral, Equilateral):
             .rounded(Number('0.001'))
         y = (side_length * Number(str(sin(radians(build_angle / 2)))))\
             .rounded(Number('0.001'))
-        v1 = Point(x, -y)
-        v2 = Point(2 * x, 0)
-        v3 = Point(x, y)
+        v1 = Point(x + start_vertex.x, -y + start_vertex.y)
+        v2 = Point(2 * x + start_vertex.x, start_vertex.y)
+        v3 = Point(x + start_vertex.x, y + start_vertex.y)
         Quadrilateral.__init__(self, start_vertex, v1, v2, v3, name=name,
                                draw_vertices=draw_vertices,
                                label_vertices=label_vertices,

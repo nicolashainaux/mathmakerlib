@@ -69,8 +69,8 @@ class RightTriangle(Triangle):
             start_vertex = Point(0, 0)
         # Accepted type for leg1's and leg2's lengths is number, will be
         # checked at vertices' instanciations.
-        v1 = Point(leg1_length, 0)
-        v2 = Point(leg1_length, leg2_length)
+        v1 = Point(leg1_length + start_vertex.x, start_vertex.y)
+        v2 = Point(leg1_length + start_vertex.x, leg2_length + start_vertex.y)
         Triangle.__init__(self, start_vertex, v1, v2, name=name,
                           draw_vertices=draw_vertices,
                           label_vertices=label_vertices,

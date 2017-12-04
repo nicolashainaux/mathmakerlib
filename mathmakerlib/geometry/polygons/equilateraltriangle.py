@@ -64,10 +64,10 @@ class EquilateralTriangle(Triangle, Equilateral):
         if start_vertex is None:
             start_vertex = Point(0, 0)
         self._side_length = Number(side_length)
-        v1 = Point(side_length, 0)
-        v2 = Point(side_length / 2,
+        v1 = Point(side_length + start_vertex.x, start_vertex.y)
+        v2 = Point(side_length / 2 + start_vertex.x,
                    (side_length * Number(3).sqrt() * Number('0.5'))
-                   .rounded(Number('0.001')))
+                   .rounded(Number('0.001')) + start_vertex.y)
         Triangle.__init__(self, start_vertex, v1, v2, name=name,
                           draw_vertices=draw_vertices,
                           label_vertices=label_vertices,

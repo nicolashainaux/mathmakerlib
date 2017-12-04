@@ -19,7 +19,7 @@
 # along with Mathmaker Lib; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-from mathmakerlib.geometry import EquilateralTriangle
+from mathmakerlib.geometry import Point, EquilateralTriangle
 
 
 def test_instanciation():
@@ -38,6 +38,26 @@ def test_simple_drawing():
 \coordinate (K) at (0,0);
 \coordinate (E) at (1,0);
 \coordinate (Y) at (0.5,0.866);
+
+% Draw EquilateralTriangle
+\draw[thick] (K)
+-- (E) node[midway, sloped, scale=0.67] {//}
+-- (Y) node[midway, sloped, scale=0.67] {//}
+-- cycle node[midway, sloped, scale=0.67] {//};
+
+% Label Points
+\draw (K) node[below left] {K};
+\draw (E) node[below right] {E};
+\draw (Y) node[above] {Y};
+\end{tikzpicture}
+"""
+    t = EquilateralTriangle(start_vertex=Point(5, 7), name='KEY')
+    assert t.drawn == r"""
+\begin{tikzpicture}
+% Declare Points
+\coordinate (K) at (5,7);
+\coordinate (E) at (6,7);
+\coordinate (Y) at (5.5,7.866);
 
 % Draw EquilateralTriangle
 \draw[thick] (K)

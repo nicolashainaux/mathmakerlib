@@ -22,7 +22,7 @@
 import pytest
 
 from mathmakerlib.calculus import Number
-from mathmakerlib.geometry import Rhombus
+from mathmakerlib.geometry import Point, Rhombus
 
 
 def test_instanciation_errors():
@@ -71,6 +71,29 @@ def test_simple_drawing():
 \coordinate (A) at (0.866,-0.5);
 \coordinate (S) at (1.732,0);
 \coordinate (Y) at (0.866,0.5);
+
+% Draw Rhombus
+\draw[thick] (E)
+-- (A) node[midway, sloped, scale=0.67] {//}
+-- (S) node[midway, sloped, scale=0.67] {//}
+-- (Y) node[midway, sloped, scale=0.67] {//}
+-- cycle node[midway, sloped, scale=0.67] {//};
+
+% Label Points
+\draw (E) node[left] {E};
+\draw (A) node[below] {A};
+\draw (S) node[right] {S};
+\draw (Y) node[above] {Y};
+\end{tikzpicture}
+"""
+    r = Rhombus(start_vertex=Point(2, 2), name='EASY')
+    assert r.drawn == r"""
+\begin{tikzpicture}
+% Declare Points
+\coordinate (E) at (2,2);
+\coordinate (A) at (2.866,1.5);
+\coordinate (S) at (3.732,2);
+\coordinate (Y) at (2.866,2.5);
 
 % Draw Rhombus
 \draw[thick] (E)

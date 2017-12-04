@@ -22,7 +22,7 @@
 import pytest
 
 from mathmakerlib.calculus import Number, Unit
-from mathmakerlib.geometry import Rectangle
+from mathmakerlib.geometry import Point, Rectangle
 
 
 def test_instanciation():
@@ -86,6 +86,39 @@ def test_simple_drawing():
 \coordinate (O) at (2,0);
 \coordinate (G) at (2,1);
 \coordinate (A) at (0,1);
+
+% Draw Rectangle
+\draw[thick] (Y)
+-- (O)
+-- (G)
+-- (A)
+-- cycle;
+
+% Mark right angles
+\draw[thick, cm={cos(0), sin(0), -sin(0), cos(0), (Y)}] """\
+r"""(0.25 cm, 0) -- (0.25 cm, 0.25 cm) -- (0, 0.25 cm);
+\draw[thick, cm={cos(90), sin(90), -sin(90), cos(90), (O)}] """\
+r"""(0.25 cm, 0) -- (0.25 cm, 0.25 cm) -- (0, 0.25 cm);
+\draw[thick, cm={cos(180), sin(180), -sin(180), cos(180), (G)}] """\
+r"""(0.25 cm, 0) -- (0.25 cm, 0.25 cm) -- (0, 0.25 cm);
+\draw[thick, cm={cos(-90), sin(-90), -sin(-90), cos(-90), (A)}] """\
+r"""(0.25 cm, 0) -- (0.25 cm, 0.25 cm) -- (0, 0.25 cm);
+
+% Label Points
+\draw (Y) node[below left] {Y};
+\draw (O) node[below right] {O};
+\draw (G) node[above right] {G};
+\draw (A) node[above left] {A};
+\end{tikzpicture}
+"""
+    r = Rectangle(start_vertex=Point(-1, -1), name='YOGA')
+    assert r.drawn == r"""
+\begin{tikzpicture}
+% Declare Points
+\coordinate (Y) at (-1,-1);
+\coordinate (O) at (1,-1);
+\coordinate (G) at (1,0);
+\coordinate (A) at (-1,0);
 
 % Draw Rectangle
 \draw[thick] (Y)
