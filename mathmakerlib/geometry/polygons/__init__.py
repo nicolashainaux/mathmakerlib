@@ -24,6 +24,7 @@ from .polygon import Polygon
 from .triangle import Triangle
 from .righttriangle import RightTriangle
 from .equilateraltriangle import EquilateralTriangle
+from .isoscelestriangle import IsoscelesTriangle
 from .quadrilateral import Quadrilateral
 from .rectangle import Rectangle
 from .rhombus import Rhombus
@@ -31,4 +32,5 @@ from .square import Square
 
 __all__ = ['Equilateral', 'Polygon',
            'Triangle', 'RightTriangle', 'EquilateralTriangle',
+           'IsoscelesTriangle',
            'Quadrilateral', 'Rectangle', 'Rhombus', 'Square']

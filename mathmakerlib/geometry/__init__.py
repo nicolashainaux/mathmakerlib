@@ -25,11 +25,13 @@ from .linesegment import LineSegment
 from .dividedlinesegment import DividedLineSegment
 from .polygons import Polygon
 from .polygons import Triangle, RightTriangle, EquilateralTriangle
+from .polygons import IsoscelesTriangle
 from .polygons import Quadrilateral, Rectangle, Rhombus, Square
 from .angle import AngleMark
 
 __all__ = ['Point', 'PointsPair', 'LineSegment', 'DividedLineSegment',
            'Polygon',
            'Triangle', 'RightTriangle', 'EquilateralTriangle',
+           'IsoscelesTriangle',
            'Quadrilateral', 'Rectangle', 'Rhombus', 'Square',
            'AngleMark']
