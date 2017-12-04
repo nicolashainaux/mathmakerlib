@@ -63,7 +63,7 @@ def test_simple_drawing():
 
 
 def test_drawing_with_labeled_sides():
-    """Check drawing the Quadrilateral."""
+    """Check drawing the Triangle."""
     r = Triangle(Point(0, 0), Point(1, 0), Point(0, 1),
                  name='WAX')
     with pytest.raises(ValueError) as excinfo:
