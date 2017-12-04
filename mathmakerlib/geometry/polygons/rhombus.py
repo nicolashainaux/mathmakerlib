@@ -49,7 +49,7 @@ class Rhombus(Quadrilateral, Equilateral):
         See issue #3.
         :type name: None or str
         :param side_length: the length that will be used to calculate the
-        coordinates of the vertices used to build the Square
+        coordinates of the vertices used to build the Rhombus
         :type side_length: a number
         :param build_angle: one of the interior angles of the Rhombus.
         :type build_angle: any number
@@ -111,18 +111,3 @@ class Rhombus(Quadrilateral, Equilateral):
         super().setup_labels(labels=[lbl_side_length, lbl_side_length,
                                      lbl_side_length, lbl_side_length],
                              masks=masks)
-
-    @property
-    def lbl_side_length(self):
-        collected_values = []
-        for s in self.sides:
-            if isinstance(s.label_value, Number):
-                collected_values.append(s.label_value)
-        if not collected_values:
-            raise ValueError('Found no side labeled as a Number.')
-        ref = collected_values[0]
-        for v in collected_values:
-            if v != ref:
-                raise ValueError('Found different values for the sides: {} '
-                                 'and {}.'.format(repr(ref), repr(v)))
-        return ref

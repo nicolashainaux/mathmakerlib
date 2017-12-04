@@ -21,6 +21,7 @@
 
 from abc import ABCMeta, abstractmethod
 
+from mathmakerlib.calculus.number import Number
 from mathmakerlib.core.drawable import Drawable
 
 
@@ -35,3 +36,18 @@ class Equilateral(Drawable, metaclass=ABCMeta):
     @abstractmethod
     def sides(self):
         """The sides of the object."""
+
+    @property
+    def lbl_side_length(self):
+        collected_values = []
+        for s in self.sides:
+            if isinstance(s.label_value, Number):
+                collected_values.append(s.label_value)
+        if not collected_values:
+            raise ValueError('Found no side labeled as a Number.')
+        ref = collected_values[0]
+        for v in collected_values:
+            if v != ref:
+                raise ValueError('Found different values for the sides: {} '
+                                 'and {}.'.format(repr(ref), repr(v)))
+        return ref
