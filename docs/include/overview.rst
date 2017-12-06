@@ -161,10 +161,10 @@ Once compiled (here using Ubuntu font):
 
     % Draw Rhombus
     \draw[thick] (Q)
-    -- (R) node[midway, sloped, scale=0.67] {||}
-    -- (S) node[midway, sloped, scale=0.67] {||}
-    -- (T) node[midway, sloped, scale=0.67] {||}
-    -- cycle node[midway, sloped, scale=0.67] {||};
+    -- (R) node[midway, sloped, scale=0.5] {||}
+    -- (S) node[midway, sloped, scale=0.5] {||}
+    -- (T) node[midway, sloped, scale=0.5] {||}
+    -- cycle node[midway, sloped, scale=0.5] {||};
 
     % Label Points
     \draw (Q) node[left] {Q};
@@ -181,11 +181,14 @@ Once compiled (still using Ubuntu font):
 
 ::
 
+    >>> import mathmakerlib.required
     >>> from mathmakerlib.calculus import Number
     >>> from mathmakerlib.geometry import Polygon, Point, AngleMark
+    >>> mathmakerlib.required.init()
     >>> p = Polygon(Point(0, 0), Point(3, -1), Point(4, 2), Point(2, 3), Point(-1, 2), name='STONE')
     >>> p.setup_labels([Number(3, unit='cm'), Number('3.5', unit='cm'), Number('2.5', unit='cm'), Number(3, unit='cm'), Number(3, unit='cm')], masks=[None, None, '?', ' ', ' '])
     >>> p.sides[0].mark = p.sides[3].mark = p.sides[4].mark = '||'
+    >>> p.sides[0].mark_scale = p.sides[3].mark_scale = p.sides[4].mark_scale = Number('0.67')
     >>> p.angles[1].mark = AngleMark(color='NavyBlue', thickness='very thick', radius=Number('0.5', unit='cm'))
     >>> print(p.drawn)
 

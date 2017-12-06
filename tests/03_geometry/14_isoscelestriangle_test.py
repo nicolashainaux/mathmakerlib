@@ -46,8 +46,8 @@ def test_simple_drawing():
 % Draw IsoscelesTriangle
 \draw[thick] (G)
 -- (U)
--- (M) node[midway, sloped, scale=0.67] {||}
--- cycle node[midway, sloped, scale=0.67] {||};
+-- (M) node[midway, sloped, scale=0.5] {||}
+-- cycle node[midway, sloped, scale=0.5] {||};
 
 % Label Points
 \draw (G) node[left] {G};
@@ -71,9 +71,9 @@ def test_drawing_with_labeled_sides():
 % Draw IsoscelesTriangle
 \draw[thick] (G)
 -- (U) node[midway, below, sloped] {1.5 cm}
--- (M) node[midway, sloped, scale=0.67] {||}
+-- (M) node[midway, sloped, scale=0.5] {||}
 -- cycle node[midway, above, sloped] {1 cm} """\
-r"""node[midway, sloped, scale=0.67] {||};
+r"""node[midway, sloped, scale=0.5] {||};
 
 % Label Points
 \draw (G) node[left] {G};

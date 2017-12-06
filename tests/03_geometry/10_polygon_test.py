@@ -424,7 +424,7 @@ def test_drawing_with_marked_sides(pointO, pointA, pointB, pointC):
 
 % Draw Quadrilateral
 \draw[thick] (O)
--- (A) node[midway, sloped, scale=0.67] {//}
+-- (A) node[midway, sloped, scale=0.5] {//}
 -- (B)
 -- (C)
 -- cycle;
@@ -444,10 +444,10 @@ def test_drawing_with_marked_sides(pointO, pointA, pointB, pointC):
 
 % Draw Quadrilateral
 \draw[thick] (O)
--- (A) node[midway, sloped, scale=0.67] {//}
+-- (A) node[midway, sloped, scale=0.5] {//}
 -- (B)
 -- (C)
--- cycle node[midway, sloped, scale=0.67] {//};
+-- cycle node[midway, sloped, scale=0.5] {//};
 
 % Label Points
 

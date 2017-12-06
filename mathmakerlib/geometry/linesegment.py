@@ -33,7 +33,7 @@ class LineSegment(Drawable, HasThickness, PointsPair):
     def __init__(self, *points, thickness='thick', label=None, label_mask=None,
                  label_position='anticlockwise', label_scale=None,
                  draw_endpoints=True, label_endpoints=True, color=None,
-                 mark=None, mark_scale=Number('0.67'),
+                 mark=None, mark_scale=Number('0.5'),
                  locked_label=False):
         """
         Initialize LineSegment
@@ -66,7 +66,7 @@ class LineSegment(Drawable, HasThickness, PointsPair):
         :type label_endpoints: bool
         :param mark: the mark to print on the line segment
         :type mark: str
-        :param mark_scale: the scale (size) of the mark. Defaults to 0.67
+        :param mark_scale: the scale (size) of the mark. Defaults to 0.5
         :type mark_scale: any number
         :param locked_label: to allow or prevent, by default, modifications of
         the LineSegment's label.

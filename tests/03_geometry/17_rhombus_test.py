@@ -74,10 +74,10 @@ def test_simple_drawing():
 
 % Draw Rhombus
 \draw[thick] (E)
--- (A) node[midway, sloped, scale=0.67] {||}
--- (S) node[midway, sloped, scale=0.67] {||}
--- (Y) node[midway, sloped, scale=0.67] {||}
--- cycle node[midway, sloped, scale=0.67] {||};
+-- (A) node[midway, sloped, scale=0.5] {||}
+-- (S) node[midway, sloped, scale=0.5] {||}
+-- (Y) node[midway, sloped, scale=0.5] {||}
+-- cycle node[midway, sloped, scale=0.5] {||};
 
 % Label Points
 \draw (E) node[left] {E};
@@ -97,10 +97,10 @@ def test_simple_drawing():
 
 % Draw Rhombus
 \draw[thick] (E)
--- (A) node[midway, sloped, scale=0.67] {||}
--- (S) node[midway, sloped, scale=0.67] {||}
--- (Y) node[midway, sloped, scale=0.67] {||}
--- cycle node[midway, sloped, scale=0.67] {||};
+-- (A) node[midway, sloped, scale=0.5] {||}
+-- (S) node[midway, sloped, scale=0.5] {||}
+-- (Y) node[midway, sloped, scale=0.5] {||}
+-- cycle node[midway, sloped, scale=0.5] {||};
 
 % Label Points
 \draw (E) node[left] {E};

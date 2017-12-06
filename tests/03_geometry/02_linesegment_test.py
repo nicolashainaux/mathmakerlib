@@ -646,7 +646,7 @@ def test_drawing_marked_linesegment(A, F):
 \draw (F) node[scale=0.67] {$\times$};
 
 % Draw Line Segment
-\draw[thick] (A) -- (F) node[midway, sloped, scale=0.67] {//};
+\draw[thick] (A) -- (F) node[midway, sloped, scale=0.5] {//};
 
 % Label Points
 \draw (A) node[left] {A};
@@ -666,7 +666,7 @@ def test_drawing_marked_linesegment(A, F):
 
 % Draw Line Segment
 \draw[thick] (A) -- (F) node[midway, below, sloped] {4 cm} """
-                        r"""node[midway, sloped, scale=0.67] {//};
+                        r"""node[midway, sloped, scale=0.5] {//};
 
 % Label Points
 \draw (A) node[left] {A};

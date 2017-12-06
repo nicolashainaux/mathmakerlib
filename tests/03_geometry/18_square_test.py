@@ -52,10 +52,10 @@ def test_simple_drawing():
 
 % Draw Square
 \draw[thick] (G)
--- (E) node[midway, sloped, scale=0.67] {||}
--- (M) node[midway, sloped, scale=0.67] {||}
--- (S) node[midway, sloped, scale=0.67] {||}
--- cycle node[midway, sloped, scale=0.67] {||};
+-- (E) node[midway, sloped, scale=0.5] {||}
+-- (M) node[midway, sloped, scale=0.5] {||}
+-- (S) node[midway, sloped, scale=0.5] {||}
+-- cycle node[midway, sloped, scale=0.5] {||};
 
 % Mark right angles
 \draw[thick, cm={cos(0), sin(0), -sin(0), cos(0), (G)}] """\
