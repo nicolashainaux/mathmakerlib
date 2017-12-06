@@ -41,9 +41,9 @@ def test_simple_drawing():
 
 % Draw EquilateralTriangle
 \draw[thick] (K)
--- (E) node[midway, sloped, scale=0.67] {//}
--- (Y) node[midway, sloped, scale=0.67] {//}
--- cycle node[midway, sloped, scale=0.67] {//};
+-- (E) node[midway, sloped, scale=0.67] {||}
+-- (Y) node[midway, sloped, scale=0.67] {||}
+-- cycle node[midway, sloped, scale=0.67] {||};
 
 % Label Points
 \draw (K) node[below left] {K};
@@ -61,9 +61,9 @@ def test_simple_drawing():
 
 % Draw EquilateralTriangle
 \draw[thick] (K)
--- (E) node[midway, sloped, scale=0.67] {//}
--- (Y) node[midway, sloped, scale=0.67] {//}
--- cycle node[midway, sloped, scale=0.67] {//};
+-- (E) node[midway, sloped, scale=0.67] {||}
+-- (Y) node[midway, sloped, scale=0.67] {||}
+-- cycle node[midway, sloped, scale=0.67] {||};
 
 % Label Points
 \draw (K) node[below left] {K};
@@ -86,10 +86,10 @@ def test_drawing_with_labeled_sides():
 
 % Draw EquilateralTriangle
 \draw[thick] (W)
--- (A) node[midway, sloped, scale=0.67] {//}
--- (X) node[midway, sloped, scale=0.67] {//}
+-- (A) node[midway, sloped, scale=0.67] {||}
+-- (X) node[midway, sloped, scale=0.67] {||}
 -- cycle node[midway, above, sloped] {7.5 cm} """\
-r"""node[midway, sloped, scale=0.67] {//};
+r"""node[midway, sloped, scale=0.67] {||};
 
 % Label Points
 \draw (W) node[below left] {W};

@@ -37,7 +37,7 @@ def test_instanciation():
     """Check Rhombus's instanciation."""
     r = Rhombus()
     assert r.type == 'Rhombus'
-    assert all([s.mark == '//' for s in r.sides])
+    assert all([s.mark == '||' for s in r.sides])
     assert r.side_length == Number(1)
 
 
@@ -74,10 +74,10 @@ def test_simple_drawing():
 
 % Draw Rhombus
 \draw[thick] (E)
--- (A) node[midway, sloped, scale=0.67] {//}
--- (S) node[midway, sloped, scale=0.67] {//}
--- (Y) node[midway, sloped, scale=0.67] {//}
--- cycle node[midway, sloped, scale=0.67] {//};
+-- (A) node[midway, sloped, scale=0.67] {||}
+-- (S) node[midway, sloped, scale=0.67] {||}
+-- (Y) node[midway, sloped, scale=0.67] {||}
+-- cycle node[midway, sloped, scale=0.67] {||};
 
 % Label Points
 \draw (E) node[left] {E};
@@ -97,10 +97,10 @@ def test_simple_drawing():
 
 % Draw Rhombus
 \draw[thick] (E)
--- (A) node[midway, sloped, scale=0.67] {//}
--- (S) node[midway, sloped, scale=0.67] {//}
--- (Y) node[midway, sloped, scale=0.67] {//}
--- cycle node[midway, sloped, scale=0.67] {//};
+-- (A) node[midway, sloped, scale=0.67] {||}
+-- (S) node[midway, sloped, scale=0.67] {||}
+-- (Y) node[midway, sloped, scale=0.67] {||}
+-- cycle node[midway, sloped, scale=0.67] {||};
 
 % Label Points
 \draw (E) node[left] {E};

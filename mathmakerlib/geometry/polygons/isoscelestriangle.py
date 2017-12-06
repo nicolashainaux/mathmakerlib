@@ -81,8 +81,7 @@ class IsoscelesTriangle(Triangle):
                           rotation_angle=rotation_angle)
         self._type = 'IsoscelesTriangle'
         if mark_equal_sides:
-            self.sides[1].mark = '//'
-            self.sides[2].mark = r'\textbackslash\textbackslash'
+            self.sides[1].mark = self.sides[2].mark = '||'
 
     @property
     def base_length(self):

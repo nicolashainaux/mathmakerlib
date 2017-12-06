@@ -29,8 +29,8 @@ def test_instanciation():
     assert t.type == 'IsoscelesTriangle'
     assert t.base_length == Number('1.5')
     assert t.equal_legs_length == Number('1')
-    assert t.sides[1].mark == '//'
-    assert t.sides[2].mark == r'\textbackslash\textbackslash'
+    assert t.sides[1].mark == '||'
+    assert t.sides[2].mark == '||'
 
 
 def test_simple_drawing():
@@ -46,8 +46,8 @@ def test_simple_drawing():
 % Draw IsoscelesTriangle
 \draw[thick] (G)
 -- (U)
--- (M) node[midway, sloped, scale=0.67] {//}
--- cycle node[midway, sloped, scale=0.67] {\textbackslash\textbackslash};
+-- (M) node[midway, sloped, scale=0.67] {||}
+-- cycle node[midway, sloped, scale=0.67] {||};
 
 % Label Points
 \draw (G) node[left] {G};
@@ -71,9 +71,9 @@ def test_drawing_with_labeled_sides():
 % Draw IsoscelesTriangle
 \draw[thick] (G)
 -- (U) node[midway, below, sloped] {1.5 cm}
--- (M) node[midway, sloped, scale=0.67] {//}
+-- (M) node[midway, sloped, scale=0.67] {||}
 -- cycle node[midway, above, sloped] {1 cm} """\
-r"""node[midway, sloped, scale=0.67] {\textbackslash\textbackslash};
+r"""node[midway, sloped, scale=0.67] {||};
 
 % Label Points
 \draw (G) node[left] {G};

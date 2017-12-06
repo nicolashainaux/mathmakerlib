@@ -30,7 +30,7 @@ class Equilateral(Drawable, metaclass=ABCMeta):
     def __init__(self, mark_equal_sides=True):
         if mark_equal_sides:
             for s in self.sides:
-                s.mark = '//'
+                s.mark = '||'
 
     @property
     @abstractmethod
