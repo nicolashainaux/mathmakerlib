@@ -116,6 +116,117 @@ Once compiled (here using Ubuntu font):
 
 .. image:: pics/dividedlinesegment.png
 
+
+::
+    >>> from mathmakerlib.geometry import Rectangle, Rhombus
+    >>> import mathmakerlib.required
+    >>> mathmakerlib.required.init()
+    >>> print(Rectangle().drawn)
+
+    \begin{tikzpicture}
+    % Declare Points
+    \coordinate (A) at (0,0);
+    \coordinate (B) at (2,0);
+    \coordinate (C) at (2,1);
+    \coordinate (D) at (0,1);
+
+    % Draw Rectangle
+    \draw[thick] (A)
+    -- (B)
+    -- (C)
+    -- (D)
+    -- cycle;
+
+    % Mark right angles
+    \draw[thick, cm={cos(0), sin(0), -sin(0), cos(0), (A)}] (0.25 cm, 0) -- (0.25 cm, 0.25 cm) -- (0, 0.25 cm);
+    \draw[thick, cm={cos(90), sin(90), -sin(90), cos(90), (B)}] (0.25 cm, 0) -- (0.25 cm, 0.25 cm) -- (0, 0.25 cm);
+    \draw[thick, cm={cos(180), sin(180), -sin(180), cos(180), (C)}] (0.25 cm, 0) -- (0.25 cm, 0.25 cm) -- (0, 0.25 cm);
+    \draw[thick, cm={cos(-90), sin(-90), -sin(-90), cos(-90), (D)}] (0.25 cm, 0) -- (0.25 cm, 0.25 cm) -- (0, 0.25 cm);
+
+    % Label Points
+    \draw (A) node[below left] {A};
+    \draw (B) node[below right] {B};
+    \draw (C) node[above right] {C};
+    \draw (D) node[above left] {D};
+    \end{tikzpicture}
+
+    >>> print(Rhombus().drawn)
+
+    \begin{tikzpicture}
+    % Declare Points
+    \coordinate (Q) at (0,0);
+    \coordinate (R) at (0.866,-0.5);
+    \coordinate (S) at (1.732,0);
+    \coordinate (T) at (0.866,0.5);
+
+    % Draw Rhombus
+    \draw[thick] (Q)
+    -- (R) node[midway, sloped, scale=0.67] {||}
+    -- (S) node[midway, sloped, scale=0.67] {||}
+    -- (T) node[midway, sloped, scale=0.67] {||}
+    -- cycle node[midway, sloped, scale=0.67] {||};
+
+    % Label Points
+    \draw (Q) node[left] {Q};
+    \draw (R) node[below] {R};
+    \draw (S) node[right] {S};
+    \draw (T) node[above] {T};
+    \end{tikzpicture}
+
+Once compiled (still using Ubuntu font):
+
+.. image:: pics/default_rectangle.png
+
+.. image:: pics/default_rhombus.png
+
+::
+
+    >>> from mathmakerlib.calculus import Number
+    >>> from mathmakerlib.geometry import Polygon, Point, AngleMark
+    >>> p = Polygon(Point(0, 0), Point(3, -1), Point(4, 2), Point(2, 3), Point(-1, 2), name='STONE')
+    >>> p.setup_labels([Number(3, unit='cm'), Number('3.5', unit='cm'), Number('2.5', unit='cm'), Number(3, unit='cm'), Number(3, unit='cm')], masks=[None, None, '?', ' ', ' '])
+    >>> p.sides[0].mark = p.sides[3].mark = p.sides[4].mark = '||'
+    >>> p.angles[1].mark = AngleMark(color='NavyBlue', thickness='very thick', radius=Number('0.5', unit='cm'))
+    >>> print(p.drawn)
+
+    \begin{tikzpicture}
+    % Declare Points
+    \coordinate (S) at (0,0);
+    \coordinate (T) at (3,-1);
+    \coordinate (O) at (4,2);
+    \coordinate (N) at (2,3);
+    \coordinate (E) at (-1,2);
+
+    % Draw Pentagon
+    \draw[thick] (S)
+    -- (T) node[midway, below, sloped] {3 cm} node[midway, sloped, scale=0.67] {||}
+    -- (O) node[midway, below, sloped] {3.5 cm}
+    -- (N) node[midway, above, sloped] {?}
+    -- (E) node[midway, sloped, scale=0.67] {||}
+    -- cycle node[midway, sloped, scale=0.67] {||}
+    pic [draw, NavyBlue, very thick, angle radius = 0.5 cm] {angle = O--T--S};
+
+    % Label Points
+    \draw (S) node[below left] {S};
+    \draw (T) node[below right] {T};
+    \draw (O) node[above right] {O};
+    \draw (N) node[above] {N};
+    \draw (E) node[left] {E};
+    \end{tikzpicture}
+
+    >>> p.lbl_perimeter
+    Number('15.0 cm')
+    >>> p.type
+    'Pentagon'
+    >>> print(mathmakerlib.required.tikz_library)
+    {'angles': True}
+    >>>
+
+Once compiled (still using Ubuntu font, take care to include angles tikz library):
+
+.. image:: pics/example_polygon.png
+
+
 Contribute
 ==========
 
