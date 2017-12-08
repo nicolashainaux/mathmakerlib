@@ -418,6 +418,21 @@ def test_is_power_of_10():
         assert not Number(n).is_power_of_10()
 
 
+def test_is_pure_half():
+    """Check is_pure_half() in different cases."""
+    assert Number('10.5').is_pure_half()
+    assert not Number('4.25').is_pure_half()
+    assert not Number('4').is_pure_half()
+
+
+def test_is_pure_quarter():
+    """Check is_pure_quarter() in different cases."""
+    assert not Number('10.5').is_pure_quarter()
+    assert Number('4.25').is_pure_quarter()
+    assert Number('8.75').is_pure_quarter()
+    assert not Number('4').is_pure_quarter()
+
+
 def test_nonzero_digits_nb():
     """Check nonzero_digits_nb() in different cases."""
     assert Number('0').nonzero_digits_nb() == 0

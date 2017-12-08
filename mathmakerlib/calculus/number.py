@@ -422,6 +422,14 @@ class Number(Decimal, Signed, Printable, Evaluable):
         elif n == 0:
             return False
 
+    def is_pure_half(self):
+        """True if fractional part is .5"""
+        return self % 1 == Number('0.5')
+
+    def is_pure_quarter(self):
+        """True if fractional part is .25 or .75"""
+        return self % 1 in (Number('0.25'), Number('0.75'))
+
     def atomized(self, keep_zeros=False):
         """Split abs(self) in as many Numbers as digits."""
         _, digits, e = self.standardized().as_tuple()
