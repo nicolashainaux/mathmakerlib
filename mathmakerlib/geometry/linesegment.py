@@ -97,13 +97,8 @@ class LineSegment(Drawable, HasThickness, PointsPair):
         self.endpoints[0].label_position = \
             OPPOSITE_LABEL_POSITIONS[self.endpoints[1].label_position]
         if label_position == 'anticlockwise':
-            if self.deltax > 0:
+            if self.deltax >= 0:
                 self.label_position = 'below'
-            elif self.deltax == 0:
-                if self.deltay > 0:
-                    self.label_position = 'above'
-                else:
-                    self.label_position = 'below'
             else:
                 self.label_position = 'above'
         elif label_position == 'clockwise':

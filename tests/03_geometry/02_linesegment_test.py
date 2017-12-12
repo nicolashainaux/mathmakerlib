@@ -525,7 +525,7 @@ def test_drawing_with_linesegment_labels(A, B, E):
 \draw (B) node[scale=0.67] {$\times$};
 
 % Draw Line Segment
-\draw[thick] (E) -- (B) node[midway, above, sloped] {4 cm};
+\draw[thick] (E) -- (B) node[midway, below, sloped] {4 cm};
 
 % Label Points
 \draw (E) node[below] {E};

@@ -120,3 +120,27 @@ def test_drawing_with_labeled_sides():
 
 \end{tikzpicture}
 """
+    t = Triangle(Point(0, 0), Point(2, 0), Point(2, 1),
+                 name='BOT', label_vertices=False, thickness='thin')
+    t.setup_labels(labels=[Number(9, unit='dam'),
+                           Number(8, unit='dam'),
+                           Number(4, unit='dam')])
+    for s in t.sides:
+        s.label_scale = '0.85'
+    assert t.drawn == r"""
+\begin{tikzpicture}
+% Declare Points
+\coordinate (B) at (0,0);
+\coordinate (O) at (2,0);
+\coordinate (T) at (2,1);
+
+% Draw Triangle
+\draw[thin] (B)
+-- (O) node[midway, below, sloped, scale=0.85] {9 dam}
+-- (T) node[midway, below, sloped, scale=0.85] {8 dam}
+-- cycle node[midway, above, sloped, scale=0.85] {4 dam};
+
+% Label Points
+
+\end{tikzpicture}
+"""
