@@ -19,6 +19,7 @@
 # along with Mathmaker Lib; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
+import sys
 from math import acos, degrees
 
 from mathmakerlib import required
@@ -27,6 +28,8 @@ from mathmakerlib.core.drawable import tikz_options_list
 from mathmakerlib.geometry.point import Point
 from mathmakerlib.geometry.pointspair import PointsPair
 from mathmakerlib.calculus.number import Number
+
+LOCALE_US = 'en-US' if sys.platform.startswith('win') else 'en_US.UTF-8'
 
 
 class AngleMark(Colored, HasThickness, HasRadius):
@@ -123,7 +126,8 @@ class Angle(Colored):
         if self.mark is None or not self.mark_right:
             return ''
         rt = 'cm={{cos({θ}), sin({θ}), -sin({θ}), cos({θ}), ({v})}}' \
-            .format(θ=PointsPair(self.vertex, self.points[0]).slope.printed,
+            .format(θ=PointsPair(self.vertex, self.points[0])
+                    .slope.imprint(mod_locale=LOCALE_US),
                     v=self.vertex.name)
         draw_options = tikz_options_list([self.mark.thickness,
                                           self.mark.color,

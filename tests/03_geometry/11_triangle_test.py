@@ -19,10 +19,15 @@
 # along with Mathmaker Lib; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
+import sys
+import locale
 import pytest
 
 from mathmakerlib.calculus import Number
-from mathmakerlib.geometry import Point, Triangle
+from mathmakerlib.geometry import Point, Triangle, AngleMark
+
+LOCALE_US = 'en-US' if sys.platform.startswith('win') else 'en_US.UTF-8'
+LOCALE_FR = 'fr-FR' if sys.platform.startswith('win') else 'fr_FR.UTF-8'
 
 
 def test_instanciation_errors():
@@ -144,3 +149,36 @@ def test_drawing_with_labeled_sides():
 
 \end{tikzpicture}
 """
+    t = Triangle(Point(0, 0), Point('2.236', 0), Point('0.582', '0.98'),
+                 name='ABC', label_vertices=False)
+    t.setup_labels(labels=[Number(10, unit='hm'),
+                           Number(6, unit='hm'),
+                           Number(5, unit='hm')])
+    for s in t.sides:
+        s.label_scale = '0.85'
+    t.angles[1].mark = AngleMark()
+    t.angles[1].mark_right = True
+    locale.setlocale(locale.LC_ALL, LOCALE_FR)
+    assert t.drawn == r"""
+\begin{tikzpicture}
+% Declare Points
+\coordinate (A) at (0,0);
+\coordinate (B) at (2.236,0);
+\coordinate (C) at (0.582,0.98);
+
+% Draw Triangle
+\draw[thick] (A)
+-- (B) node[midway, below, sloped, scale=0.85] {10 hm}
+-- (C) node[midway, above, sloped, scale=0.85] {6 hm}
+-- cycle node[midway, above, sloped, scale=0.85] {5 hm};
+
+% Mark right angles
+\draw[thick, """\
+r"""cm={cos(149.353), sin(149.353), -sin(149.353), cos(149.353), (B)}] """\
+                      r"""(0.25 cm, 0) -- (0.25 cm, 0.25 cm) -- (0, 0.25 cm);
+
+% Label Points
+
+\end{tikzpicture}
+"""
+    locale.setlocale(locale.LC_ALL, LOCALE_US)
