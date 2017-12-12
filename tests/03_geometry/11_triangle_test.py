@@ -21,6 +21,7 @@
 
 import pytest
 
+from mathmakerlib.calculus import Number
 from mathmakerlib.geometry import Point, Triangle
 
 
@@ -92,5 +93,30 @@ def test_drawing_with_labeled_sides():
 \draw (W) node[below left] {W};
 \draw (A) node[right] {A};
 \draw (X) node[above left] {X};
+\end{tikzpicture}
+"""
+    t = Triangle(Point(0, 0), Point(2, 0),
+                 Point(Number('0.776'), Number('1.232')),
+                 name='BOT', label_vertices=False, thickness='thin')
+    t.setup_labels(labels=[Number(4, unit='cm'),
+                           Number('3.5', unit='cm'),
+                           Number(3, unit='cm')])
+    for s in t.sides:
+        s.label_scale = '0.9'
+    assert t.drawn == r"""
+\begin{tikzpicture}
+% Declare Points
+\coordinate (B) at (0,0);
+\coordinate (O) at (2,0);
+\coordinate (T) at (0.776,1.232);
+
+% Draw Triangle
+\draw[thin] (B)
+-- (O) node[midway, below, sloped, scale=0.9] {4 cm}
+-- (T) node[midway, above, sloped, scale=0.9] {3.5 cm}
+-- cycle node[midway, above, sloped, scale=0.9] {3 cm};
+
+% Label Points
+
 \end{tikzpicture}
 """
