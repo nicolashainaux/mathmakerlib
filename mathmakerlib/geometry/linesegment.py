@@ -57,7 +57,7 @@ class LineSegment(Drawable, HasThickness, PointsPair):
         anticlockwise manner. Same for 'clockwise', in the reversed direction.
         :type label_position: str
         :param label_scale: the label's scale
-        :type label_scale: None or str
+        :type label_scale: None or anything that is accepted to create a Number
         :param draw_endpoints: whether or not actually draw the endpoints.
         Defaults to True.
         :type draw_endpoints: bool
@@ -248,7 +248,7 @@ class LineSegment(Drawable, HasThickness, PointsPair):
         if value is None:
             self._label_scale = None
         else:
-            self._label_scale = str(value)
+            self._label_scale = Number(value)
 
     def tikz_declarations(self):
         """Return the LineSegment's Points' declarations."""
