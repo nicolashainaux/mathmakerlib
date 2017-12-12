@@ -109,6 +109,18 @@ class Polygon(Drawable, Colored, HasThickness):
                     center=center,
                     angle=rotation_angle,
                     rename=None)
+
+        # Make use of the shoelace formula to determine the Polygon's winding:
+        x = [v.x for v in self.vertices]
+        y = [v.y for v in self.vertices]
+        x.append(self.vertices[0].x)
+        y.append(self.vertices[0].y)
+        if sum(x[i] * (y[i + 1] - y[i - 1])
+               for i in range(1, len(self.vertices))) < 0:
+            self._winding = 'clockwise'
+        else:
+            self._winding = 'anticlockwise'
+
         self._sides = []
         shifted_vertices = deepcopy(self._vertices)
         shifted_vertices += [shifted_vertices.pop(0)]
@@ -176,6 +188,11 @@ class Polygon(Drawable, Colored, HasThickness):
         else:
             return sum([s.label_value for s in self.sides],
                        Number(0, unit=self.sides[0].label_value.unit))
+
+    @property
+    def winding(self):
+        """Tells whether the Polygon is clockwise or anticlockwise."""
+        return self._winding
 
     def setup_labels(self, labels=None, linesegments=None, masks=None):
         """

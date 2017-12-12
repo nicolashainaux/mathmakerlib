@@ -175,6 +175,14 @@ def test_lbl_perimeter(pointO, pointA, pointB, pointC):
     assert p.lbl_perimeter == Number(22, unit='cm')
 
 
+def test_winding(pointO, pointI, pointJ):
+    """Check the Polygon's winding."""
+    p = Polygon(pointO, pointI, pointJ)
+    assert p.winding == 'anticlockwise'
+    q = Polygon(pointO, pointJ, pointI)
+    assert q.winding == 'clockwise'
+
+
 def test_simple_drawing(pointO, pointA, pointB, pointC):
     """Check drawing the Polygon."""
     p = Polygon(pointO, pointA, pointB, pointC, name='PLUM')
