@@ -345,12 +345,17 @@ class Number(Decimal, Signed, Printable, Evaluable):
         else:
             return Sign('+')
 
-    def imprint(self, start_expr=True, variant='latex'):
+    def imprint(self, start_expr=True, variant='latex', mod_locale=None):
         extra_sign = ''
         if not start_expr and self >= 0:
             extra_sign = '+'
         if variant == 'latex':
+            if mod_locale is not None:
+                prev_locale = locale.getlocale()
+                locale.setlocale(locale.LC_ALL, mod_locale)
             self_str = locale.str(Decimal(self))
+            if mod_locale is not None:
+                locale.setlocale(locale.LC_ALL, prev_locale)
         elif variant == 'user_input':
             self_str = Decimal.__str__(self)
         else:

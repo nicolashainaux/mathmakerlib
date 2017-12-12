@@ -380,6 +380,8 @@ def test_printing():
     assert locale.str(Decimal('8.6')) == '8,6'
     assert Number('8.6').printed == '8,6'
     assert Number('8.6').uiprinted == '8.6'
+    assert Number('8.6').imprint(mod_locale=LOCALE_US) == '8.6'
+    assert Number('8.6').printed == '8,6'
     locale.setlocale(locale.LC_ALL, LOCALE_US)
     assert Number('8.6').imprint(start_expr=False) == '+8.6'
     required.package['siunitx'] = False
