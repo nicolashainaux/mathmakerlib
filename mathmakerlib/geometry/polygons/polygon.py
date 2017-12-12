@@ -125,7 +125,8 @@ class Polygon(Drawable, Colored, HasThickness):
         shifted_vertices = deepcopy(self._vertices)
         shifted_vertices += [shifted_vertices.pop(0)]
         for (v0, v1) in zip(self._vertices, shifted_vertices):
-            self._sides += [LineSegment(v0, v1, locked_label=True)]
+            self._sides += [LineSegment(v0, v1, label_position=self.winding,
+                                        locked_label=True)]
         self._angles = []
         left_shifted_vertices = deepcopy(self._vertices)
         left_shifted_vertices = \

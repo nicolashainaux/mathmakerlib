@@ -415,6 +415,29 @@ def test_drawing_with_labeled_sides(pointO, pointA, pointB, pointC):
 
 \end{tikzpicture}
 """
+    p = Polygon(pointC, pointB, pointA, pointO)
+    p.label_vertices = False
+    p.setup_labels([Number(7, unit='cm'), Number(5, unit='cm'),
+                    Number(6, unit='cm'), Number(4, unit='cm')])
+    assert p.drawn == r"""
+\begin{tikzpicture}
+% Declare Points
+\coordinate (C) at (1,3);
+\coordinate (B) at (3,2);
+\coordinate (A) at (4,0);
+\coordinate (O) at (0,0);
+
+% Draw Quadrilateral
+\draw[thick] (C)
+-- (B) node[midway, above, sloped] {7 cm}
+-- (A) node[midway, above, sloped] {5 cm}
+-- (O) node[midway, below, sloped] {6 cm}
+-- cycle node[midway, above, sloped] {4 cm};
+
+% Label Points
+
+\end{tikzpicture}
+"""
 
 
 def test_drawing_with_marked_sides(pointO, pointA, pointB, pointC):
