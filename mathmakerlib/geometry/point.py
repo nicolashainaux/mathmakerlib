@@ -20,6 +20,7 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 import string
+import decimal
 from math import cos, sin, radians
 
 from mathmakerlib.core.drawable import Drawable, check_scale, tikz_options_list
@@ -148,11 +149,15 @@ class Point(Drawable):
 
     @x.setter
     def x(self, other):
-        if is_number(other):
+        try:
             self._x = Number(other)
-        else:
-            raise TypeError('Expected a number as abscissa, got \'{}\' '
-                            'instead.'.format(other))
+        except (TypeError, decimal.InvalidOperation) as excinfo:
+            if (str(excinfo).startswith('Invalid literal for Decimal:')
+                or str(excinfo).startswith('Cannot convert None to Decimal')):
+                raise TypeError('Expected a number as abscissa, got \'{}\' '
+                                'instead.'.format(other))
+            else:
+                raise
 
     @property
     def y(self):
@@ -160,11 +165,15 @@ class Point(Drawable):
 
     @y.setter
     def y(self, other):
-        if is_number(other):
+        try:
             self._y = Number(other)
-        else:
-            raise TypeError('Expected a number as ordinate, got \'{}\' '
-                            'instead.'.format(other))
+        except (TypeError, decimal.InvalidOperation) as excinfo:
+            if (str(excinfo).startswith('Invalid literal for Decimal:')
+                or str(excinfo).startswith('Cannot convert None to Decimal')):
+                raise TypeError('Expected a number as ordinate, got \'{}\' '
+                                'instead.'.format(other))
+            else:
+                raise
 
     @property
     def coordinates(self):

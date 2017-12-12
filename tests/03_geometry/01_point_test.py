@@ -46,6 +46,9 @@ def test_instanciation():
     p = Point(0, 0, 'A', label='?')
     assert p.name == 'A'
     assert p.label == '?'
+    p = Point('0.1', '0.7', 'B')
+    assert p.x == Number('0.1')
+    assert p.y == Number('0.7')
 
 
 def test_automatic_naming():
