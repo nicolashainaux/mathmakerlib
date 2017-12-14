@@ -164,12 +164,8 @@ class Point(Drawable):
         try:
             self._y = Number(other)
         except (TypeError, decimal.InvalidOperation) as excinfo:
-            if (str(excinfo).startswith('Invalid literal for Decimal:')
-                or str(excinfo).startswith('Cannot convert None to Decimal')):
-                raise TypeError('Expected a number as ordinate, got \'{}\' '
-                                'instead.'.format(other))
-            else:
-                raise
+            raise TypeError('Expected a number as ordinate, got \'{}\' '
+                            'instead.'.format(other))
 
     @property
     def coordinates(self):
