@@ -30,7 +30,7 @@ class IsoscelesTriangle(Triangle):
     def __init__(self, start_vertex=None, name=None,
                  base_length=Number('1.5'),
                  equal_legs_length=Number('1'),
-                 mark_equal_sides=True,
+                 mark_equal_sides=True, use_mark='||',
                  draw_vertices=False, label_vertices=True,
                  thickness='thick', color=None, rotation_angle=0):
         r"""
@@ -81,7 +81,7 @@ class IsoscelesTriangle(Triangle):
                           rotation_angle=rotation_angle)
         self._type = 'IsoscelesTriangle'
         if mark_equal_sides:
-            self.sides[1].mark = self.sides[2].mark = '||'
+            self.sides[1].mark = self.sides[2].mark = use_mark
 
     @property
     def base_length(self):

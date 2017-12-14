@@ -33,7 +33,7 @@ class Rhombus(Quadrilateral, Equilateral):
     def __init__(self, start_vertex=None, name=None,
                  side_length=Number('1'),
                  build_angle=60,
-                 mark_equal_sides=True,
+                 mark_equal_sides=True, use_mark='||',
                  draw_vertices=False, label_vertices=True,
                  thickness='thick', color=None, rotation_angle=0):
         r"""
@@ -88,7 +88,8 @@ class Rhombus(Quadrilateral, Equilateral):
                                thickness=thickness, color=color,
                                rotation_angle=rotation_angle)
         self._type = 'Rhombus'
-        Equilateral.__init__(self, mark_equal_sides=mark_equal_sides)
+        Equilateral.__init__(self, mark_equal_sides=mark_equal_sides,
+                             use_mark=use_mark)
 
     @property
     def side_length(self):

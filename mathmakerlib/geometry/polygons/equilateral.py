@@ -27,10 +27,10 @@ from mathmakerlib.core.drawable import Drawable
 
 class Equilateral(Drawable, metaclass=ABCMeta):
 
-    def __init__(self, mark_equal_sides=True):
+    def __init__(self, mark_equal_sides=True, use_mark='||'):
         if mark_equal_sides:
             for s in self.sides:
-                s.mark = '||'
+                s.mark = use_mark
 
     @property
     @abstractmethod

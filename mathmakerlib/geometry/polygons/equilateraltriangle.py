@@ -29,7 +29,7 @@ class EquilateralTriangle(Triangle, Equilateral):
 
     def __init__(self, start_vertex=None, name=None,
                  side_length=Number('1'),
-                 mark_equal_sides=True,
+                 mark_equal_sides=True, use_mark='||',
                  draw_vertices=False, label_vertices=True,
                  thickness='thick', color=None, rotation_angle=0):
         r"""
@@ -73,7 +73,8 @@ class EquilateralTriangle(Triangle, Equilateral):
                           label_vertices=label_vertices,
                           thickness=thickness, color=color,
                           rotation_angle=rotation_angle)
-        Equilateral.__init__(self, mark_equal_sides=mark_equal_sides)
+        Equilateral.__init__(self, mark_equal_sides=mark_equal_sides,
+                             use_mark=use_mark)
         self._type = 'EquilateralTriangle'
 
     @property
