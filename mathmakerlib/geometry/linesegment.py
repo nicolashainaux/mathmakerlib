@@ -102,7 +102,7 @@ class LineSegment(Drawable, HasThickness, PointsPair):
             else:
                 self.label_position = 'above'
         elif label_position == 'clockwise':
-            if self.deltax > 0:
+            if self.deltax >= 0:
                 self.label_position = 'above'
             else:
                 self.label_position = 'below'

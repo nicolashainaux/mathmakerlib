@@ -182,3 +182,31 @@ r"""cm={cos(149.353), sin(149.353), -sin(149.353), cos(149.353), (B)}] """\
 \end{tikzpicture}
 """
     locale.setlocale(locale.LC_ALL, LOCALE_US)
+    t = Triangle(Point(0, '-0.4'), Point(0, '0.4'), Point('2', 0),
+                 name='MNO', label_vertices=False, thickness='thin')
+    t.setup_labels(labels=[Number(5, unit='hm'),
+                           Number(9, unit='hm'),
+                           Number(9, unit='hm')],
+                   masks=[None, ' ', None])
+    for s in t.sides:
+        s.label_scale = '0.85'
+        s.mark_scale = Number('0.5')
+    t.sides[1].mark = t.sides[2].mark = '||'
+    assert t.drawn == r"""
+\begin{tikzpicture}
+% Declare Points
+\coordinate (M) at (0,-0.4);
+\coordinate (N) at (0,0.4);
+\coordinate (O) at (2,0);
+
+% Draw Triangle
+\draw[thin] (M)
+-- (N) node[midway, above, sloped, scale=0.85] {5 hm}
+-- (O) node[midway, sloped, scale=0.5] {||}
+-- cycle node[midway, below, sloped, scale=0.85] {9 hm} """\
+r"""node[midway, sloped, scale=0.5] {||};
+
+% Label Points
+
+\end{tikzpicture}
+"""
