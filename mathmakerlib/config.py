@@ -19,19 +19,21 @@
 # along with Mathmaker Lib; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-from .point import Point
-from .pointspair import PointsPair
-from .linesegment import LineSegment
-from .dividedlinesegment import DividedLineSegment
-from .polygons import Polygon, shoelace_formula
-from .polygons import Triangle, RightTriangle, EquilateralTriangle
-from .polygons import IsoscelesTriangle
-from .polygons import Quadrilateral, Rectangle, Rhombus, Square
-from .angle import AngleMark
+# To change default mathmakerlib's settings:
+# from mathmakerlib import config
 
-__all__ = ['Point', 'PointsPair', 'LineSegment', 'DividedLineSegment',
-           'Polygon', 'shoelace_formula',
-           'Triangle', 'RightTriangle', 'EquilateralTriangle',
-           'IsoscelesTriangle',
-           'Quadrilateral', 'Rectangle', 'Rhombus', 'Square',
-           'AngleMark']
+# Then in your main module:
+# config.init()
+
+# and where you need to change values:
+# config.MY_VALUE = ...
+
+
+def init():
+    global DEFAULT_POLYGON_WINDING
+
+    # This can be set to either 'clockwise', 'anticlockwise' or None.
+    # If it is left to None, the polygons' winding won't be forced to a default
+    # value (if not overriden by the user at Polygon's initialization),
+    # but deduced from the given vertices' order.
+    DEFAULT_POLYGON_WINDING = None

@@ -122,7 +122,7 @@ class Angle(Colored):
                     self.vertex.name,
                     self.points[2].name)
 
-    def tikz_rightangle_mark(self):
+    def tikz_rightangle_mark(self, winding='anticlockwise'):
         if self.mark is None or not self.mark_right:
             return ''
         rt = 'cm={{cos({θ}), sin({θ}), -sin({θ}), cos({θ}), ({v})}}' \
@@ -132,6 +132,14 @@ class Angle(Colored):
         draw_options = tikz_options_list([self.mark.thickness,
                                           self.mark.color,
                                           rt])
-        rightangle_shape = '({R}, 0) -- ({R}, {R}) -- (0, {R})'\
-            .format(R=self.mark.radius.uiprinted)
+        if winding == 'anticlockwise':
+            rightangle_shape = '({R}, 0) -- ({R}, {R}) -- (0, {R})'\
+                .format(R=self.mark.radius.uiprinted)
+        elif winding == 'clockwise':
+            rightangle_shape = '({R}, 0) -- ({R}, -{R}) -- (0, -{R})'\
+                .format(R=self.mark.radius.uiprinted)
+        else:
+            raise ValueError('\'winding\' keyword must be either \'clock'
+                             'wise\' or \'anticlockwise\', got {} instead.'
+                             .format(winding))
         return '\draw{} {};'.format(draw_options, rightangle_shape)

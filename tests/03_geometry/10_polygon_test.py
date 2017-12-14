@@ -23,7 +23,7 @@ import pytest
 
 from mathmakerlib import required
 from mathmakerlib.calculus import Number
-from mathmakerlib.geometry import Point, Polygon, AngleMark
+from mathmakerlib.geometry import Point, Polygon, AngleMark, shoelace_formula
 
 
 @pytest.fixture()
@@ -54,6 +54,14 @@ def pointB():
 @pytest.fixture()
 def pointC():
     return Point(1, 3, 'C')
+
+
+def test_shoelace_formula():
+    """Check shoelace formula results."""
+    assert shoelace_formula(Point(0, 0), Point(2, 0), Point(2, 1)) == 1
+    assert shoelace_formula(Point(-3, 0), Point(-1, 0), Point(-1, 1)) == 1
+    assert shoelace_formula(Point(3, 4), Point(5, 11), Point(12, 8),
+                            Point(9, 5), Point(5, 6)) == -30
 
 
 def test_instanciation_errors(pointO, pointI, pointJ):

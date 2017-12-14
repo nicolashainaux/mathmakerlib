@@ -60,6 +60,7 @@ def test_simple_drawing():
 def test_drawing_with_labeled_sides():
     """Check drawing the Triangle."""
     t = IsoscelesTriangle(name='GUM')
+    assert t.winding == 'anticlockwise'
     t.setup_labels('1.5 cm', '1 cm')
     assert t.drawn == r"""
 \begin{tikzpicture}
@@ -78,6 +79,29 @@ r"""node[midway, sloped, scale=0.5] {||};
 % Label Points
 \draw (G) node[left] {G};
 \draw (U) node[right] {U};
+\draw (M) node[above] {M};
+\end{tikzpicture}
+"""
+    t = IsoscelesTriangle(name='GUM', winding='clockwise')
+    assert t.winding == 'clockwise'
+    t.setup_labels('1.5 cm', '1 cm')
+    assert t.drawn == r"""
+\begin{tikzpicture}
+% Declare Points
+\coordinate (G) at (1.5,0);
+\coordinate (U) at (0,0);
+\coordinate (M) at (0.75,0.661);
+
+% Draw IsoscelesTriangle
+\draw[thick] (G)
+-- (U) node[midway, below, sloped] {1.5 cm}
+-- (M) node[midway, above, sloped] {1 cm} node[midway, sloped, scale=0.5] {||}
+-- cycle """\
+r"""node[midway, sloped, scale=0.5] {||};
+
+% Label Points
+\draw (G) node[right] {G};
+\draw (U) node[left] {U};
 \draw (M) node[above] {M};
 \end{tikzpicture}
 """

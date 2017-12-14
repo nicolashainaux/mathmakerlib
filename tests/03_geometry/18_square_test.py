@@ -74,3 +74,72 @@ r"""(0.25 cm, 0) -- (0.25 cm, 0.25 cm) -- (0, 0.25 cm);
 \draw (S) node[above left] {S};
 \end{tikzpicture}
 """
+    r.setup_labels(Number(5, unit='cm'), masks=[None, None, None, None])
+    assert r.drawn == r"""
+\begin{tikzpicture}
+% Declare Points
+\coordinate (G) at (0,0);
+\coordinate (E) at (1,0);
+\coordinate (M) at (1,1);
+\coordinate (S) at (0,1);
+
+% Draw Square
+\draw[thick] (G)
+-- (E) node[midway, below, sloped] {5 cm} node[midway, sloped, scale=0.5] {||}
+-- (M) node[midway, below, sloped] {5 cm} node[midway, sloped, scale=0.5] {||}
+-- (S) node[midway, above, sloped] {5 cm} node[midway, sloped, scale=0.5] {||}
+-- cycle node[midway, below, sloped] {5 cm}"""\
+r""" node[midway, sloped, scale=0.5] {||};
+
+% Mark right angles
+\draw[thick, cm={cos(0), sin(0), -sin(0), cos(0), (G)}] """\
+r"""(0.25 cm, 0) -- (0.25 cm, 0.25 cm) -- (0, 0.25 cm);
+\draw[thick, cm={cos(90), sin(90), -sin(90), cos(90), (E)}] """\
+r"""(0.25 cm, 0) -- (0.25 cm, 0.25 cm) -- (0, 0.25 cm);
+\draw[thick, cm={cos(180), sin(180), -sin(180), cos(180), (M)}] """\
+r"""(0.25 cm, 0) -- (0.25 cm, 0.25 cm) -- (0, 0.25 cm);
+\draw[thick, cm={cos(-90), sin(-90), -sin(-90), cos(-90), (S)}] """\
+r"""(0.25 cm, 0) -- (0.25 cm, 0.25 cm) -- (0, 0.25 cm);
+
+% Label Points
+\draw (G) node[below left] {G};
+\draw (E) node[below right] {E};
+\draw (M) node[above right] {M};
+\draw (S) node[above left] {S};
+\end{tikzpicture}
+"""
+    r = Square(name='GEMS', winding='clockwise')
+    r.setup_labels(Number(5, unit='cm'), masks=[None, None, None, None])
+    assert r.drawn == r"""
+\begin{tikzpicture}
+% Declare Points
+\coordinate (G) at (0,1);
+\coordinate (E) at (1,1);
+\coordinate (M) at (1,0);
+\coordinate (S) at (0,0);
+
+% Draw Square
+\draw[thick] (G)
+-- (E) node[midway, above, sloped] {5 cm} node[midway, sloped, scale=0.5] {||}
+-- (M) node[midway, above, sloped] {5 cm} node[midway, sloped, scale=0.5] {||}
+-- (S) node[midway, below, sloped] {5 cm} node[midway, sloped, scale=0.5] {||}
+-- cycle node[midway, above, sloped] {5 cm}"""\
+r""" node[midway, sloped, scale=0.5] {||};
+
+% Mark right angles
+\draw[thick, cm={cos(0), sin(0), -sin(0), cos(0), (G)}] """\
+r"""(0.25 cm, 0) -- (0.25 cm, -0.25 cm) -- (0, -0.25 cm);
+\draw[thick, cm={cos(-90), sin(-90), -sin(-90), cos(-90), (E)}] """\
+r"""(0.25 cm, 0) -- (0.25 cm, -0.25 cm) -- (0, -0.25 cm);
+\draw[thick, cm={cos(180), sin(180), -sin(180), cos(180), (M)}] """\
+r"""(0.25 cm, 0) -- (0.25 cm, -0.25 cm) -- (0, -0.25 cm);
+\draw[thick, cm={cos(90), sin(90), -sin(90), cos(90), (S)}] """\
+r"""(0.25 cm, 0) -- (0.25 cm, -0.25 cm) -- (0, -0.25 cm);
+
+% Label Points
+\draw (G) node[above left] {G};
+\draw (E) node[above right] {E};
+\draw (M) node[below right] {M};
+\draw (S) node[below left] {S};
+\end{tikzpicture}
+"""

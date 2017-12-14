@@ -27,7 +27,8 @@ class Triangle(Polygon):
 
     def __init__(self, *vertices, name=None,
                  draw_vertices=False, label_vertices=True,
-                 thickness='thick', color=None, rotation_angle=0):
+                 thickness='thick', color=None, rotation_angle=0,
+                 winding=None):
         r"""
         Initialize Triangle
 
@@ -58,7 +59,8 @@ class Triangle(Polygon):
                          draw_vertices=draw_vertices,
                          label_vertices=label_vertices,
                          thickness=thickness, color=color,
-                         rotation_angle=rotation_angle)
+                         rotation_angle=rotation_angle,
+                         winding=winding)
         self._type = 'Triangle'
 
     def setup_labels(self, labels=None, linesegments=None, masks=None):

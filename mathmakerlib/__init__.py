@@ -19,14 +19,14 @@
 # along with Mathmaker Lib; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-from . import required, colors_names, exceptions
+from . import required, colors_names, exceptions, config
 from . import calculus, core, geometry
 
-__all__ = ['required', 'colors_names', 'exceptions', 'calculus', 'core',
-           'geometry']
+__all__ = ['required', 'colors_names', 'config', 'exceptions',
+           'core', 'calculus', 'geometry']
 
 __version_info__ = (0, 4, 0)
-__dev__ = 0
+__dev__ = 9
 __patch_nb__ = 0
 __version__ = '.'.join(str(c) for c in __version_info__)
 dev_addendum = '' if __dev__ == 0 else '.dev' + str(__dev__)

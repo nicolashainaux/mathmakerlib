@@ -22,6 +22,7 @@
 from copy import deepcopy
 from statistics import mean
 
+from mathmakerlib import config
 from mathmakerlib.calculus.number import Number
 from mathmakerlib.calculus.tools import is_number
 from mathmakerlib.core.drawable import Drawable, HasThickness, Colored
@@ -39,12 +40,24 @@ POLYGONS_TYPES = {3: 'Triangle', 4: 'Quadrilateral', 5: 'Pentagon',
                   18: 'Octodecagon', 19: 'Enneadecagon', 20: 'Icosagon'}
 
 
+def shoelace_formula(*points):
+    x = [v.x for v in points]
+    y = [v.y for v in points]
+    x.append(x[0])
+    y.append(y[0])
+    x.append(x[1])
+    y.append(y[1])
+    return sum(x[i] * (y[i + 1] - y[i - 1])
+               for i in range(1, len(points) + 1)) / 2
+
+
 class Polygon(Drawable, Colored, HasThickness):
     """Polygons."""
 
     def __init__(self, *vertices, name=None,
                  draw_vertices=False, label_vertices=True,
-                 thickness='thick', color=None, rotation_angle=0):
+                 thickness='thick', color=None, rotation_angle=0,
+                 winding=None):
         r"""
         Initialize Polygon
 
@@ -66,6 +79,12 @@ class Polygon(Drawable, Colored, HasThickness):
         :type color: str
         :param rotate: the angle of rotation around isobarycenter
         :type rotate: int
+        :param winding: force the winding to be either 'clockwise' or
+        'anticlockwise'. If left to None (default), doesn't force anything,
+        the winding will be either forced by the value of
+        config.DEFAULT_POLYGON_WINDING, or if it is None too, then the winding
+        will be deduced from the given vertices' order.
+        :type winding: None or a str ('clockwise' or 'anticlockwise')
         """
         self.thickness = thickness
         self.color = color
@@ -89,6 +108,23 @@ class Polygon(Drawable, Colored, HasThickness):
                 raise ValueError('The number of provided vertices ({}) does '
                                  'not match the number of Points\' names '
                                  '({}).'.format(len(vertices), len(name)))
+
+        if winding is None and config.DEFAULT_POLYGON_WINDING is not None:
+            winding = config.DEFAULT_POLYGON_WINDING
+
+        if shoelace_formula(*vertices) < 0:
+            if winding == 'anticlockwise':
+                vertices = vertices[::-1]
+                self._winding = 'anticlockwise'
+            else:
+                self._winding = 'clockwise'
+        else:
+            if winding == 'clockwise':
+                vertices = vertices[::-1]
+                self._winding = 'clockwise'
+            else:
+                self._winding = 'anticlockwise'
+
         self._vertices = []
         for i, v in enumerate(vertices):
             if name is None:
@@ -109,17 +145,6 @@ class Polygon(Drawable, Colored, HasThickness):
                     center=center,
                     angle=rotation_angle,
                     rename=None)
-
-        # Make use of the shoelace formula to determine the Polygon's winding:
-        x = [v.x for v in self.vertices]
-        y = [v.y for v in self.vertices]
-        x.append(self.vertices[0].x)
-        y.append(self.vertices[0].y)
-        if sum(x[i] * (y[i + 1] - y[i - 1])
-               for i in range(1, len(self.vertices))) < 0:
-            self._winding = 'clockwise'
-        else:
-            self._winding = 'anticlockwise'
 
         self._sides = []
         shifted_vertices = deepcopy(self._vertices)
@@ -300,9 +325,9 @@ class Polygon(Drawable, Colored, HasThickness):
             return '\n' + marks
 
     def _tikz_draw_right_angles_marks(self):
-        return '\n'.join([θ.tikz_rightangle_mark()
+        return '\n'.join([θ.tikz_rightangle_mark(self.winding)
                           for θ in self.angles
-                          if θ.tikz_rightangle_mark() != ''])
+                          if θ.tikz_rightangle_mark(self.winding) != ''])
 
     def tikz_draw(self):
         """Return the command to actually draw the Polygon."""

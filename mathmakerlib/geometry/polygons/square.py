@@ -31,7 +31,8 @@ class Square(Rectangle, Rhombus):
                  mark_right_angles=True,
                  mark_equal_sides=True, use_mark='||',
                  draw_vertices=False, label_vertices=True,
-                 thickness='thick', color=None, rotation_angle=0):
+                 thickness='thick', color=None, rotation_angle=0,
+                 winding=None):
         r"""
         Initialize Square
 
@@ -70,7 +71,8 @@ class Square(Rectangle, Rhombus):
                            draw_vertices=draw_vertices,
                            label_vertices=label_vertices,
                            thickness=thickness, color=color,
-                           rotation_angle=rotation_angle)
+                           rotation_angle=rotation_angle,
+                           winding=winding)
         # TODO: see issue #5
         # Accepted type for side_length is number, already checked at
         # vertices' instanciations (in Rectangle.__init__() call).

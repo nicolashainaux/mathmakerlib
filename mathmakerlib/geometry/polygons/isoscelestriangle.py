@@ -19,6 +19,7 @@
 # along with Mathmaker Lib; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
+from mathmakerlib import config
 from mathmakerlib.calculus.number import Number
 from mathmakerlib.geometry.point import Point
 from . import Triangle
@@ -32,7 +33,8 @@ class IsoscelesTriangle(Triangle):
                  equal_legs_length=Number('1'),
                  mark_equal_sides=True, use_mark='||',
                  draw_vertices=False, label_vertices=True,
-                 thickness='thick', color=None, rotation_angle=0):
+                 thickness='thick', color=None, rotation_angle=0,
+                 winding=None):
         r"""
         Initialize Isosceles Triangle
 
@@ -74,11 +76,16 @@ class IsoscelesTriangle(Triangle):
         v2 = Point(base_length / 2,
                    (equal_legs_length ** 2 - Number('0.25') * base_length ** 2)
                    .sqrt().rounded(Number('0.001')) + start_vertex.y)
+        if (winding == 'clockwise'
+            or (winding is None
+                and config.DEFAULT_POLYGON_WINDING == 'clockwise')):
+            start_vertex, v1 = v1, start_vertex
         Triangle.__init__(self, start_vertex, v1, v2, name=name,
                           draw_vertices=draw_vertices,
                           label_vertices=label_vertices,
                           thickness=thickness, color=color,
-                          rotation_angle=rotation_angle)
+                          rotation_angle=rotation_angle,
+                          winding=winding)
         self._type = 'IsoscelesTriangle'
         if mark_equal_sides:
             self.sides[1].mark = self.sides[2].mark = use_mark
@@ -107,7 +114,10 @@ class IsoscelesTriangle(Triangle):
         :type masks: None or list of 3 elements
         """
         if masks is None:
-            masks = [None, ' ', None]
+            if self.winding == 'anticlockwise':
+                masks = [None, ' ', None]
+            else:
+                masks = [None, None, ' ']
         super().setup_labels(labels=[lbl_base_length, lbl_equal_legs_length,
                                      lbl_equal_legs_length],
                              masks=masks)

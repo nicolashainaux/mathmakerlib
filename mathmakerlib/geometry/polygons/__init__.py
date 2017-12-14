@@ -20,7 +20,7 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 from .equilateral import Equilateral
-from .polygon import Polygon
+from .polygon import Polygon, shoelace_formula
 from .triangle import Triangle
 from .righttriangle import RightTriangle
 from .equilateraltriangle import EquilateralTriangle
@@ -30,7 +30,7 @@ from .rectangle import Rectangle
 from .rhombus import Rhombus
 from .square import Square
 
-__all__ = ['Equilateral', 'Polygon',
+__all__ = ['Equilateral', 'Polygon', 'shoelace_formula',
            'Triangle', 'RightTriangle', 'EquilateralTriangle',
            'IsoscelesTriangle',
            'Quadrilateral', 'Rectangle', 'Rhombus', 'Square']

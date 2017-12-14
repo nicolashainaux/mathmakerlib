@@ -19,6 +19,7 @@
 # along with Mathmaker Lib; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
+from mathmakerlib import config
 from mathmakerlib.calculus.number import Number
 from mathmakerlib.geometry.point import Point
 from mathmakerlib.geometry.angle import AngleMark
@@ -32,7 +33,8 @@ class RightTriangle(Triangle):
                  leg1_length=Number(2), leg2_length=Number(1),
                  mark_right_angle=True,
                  draw_vertices=False, label_vertices=True,
-                 thickness='thick', color=None, rotation_angle=0):
+                 thickness='thick', color=None, rotation_angle=0,
+                 winding=None):
         r"""
         Initialize Right Triangle
 
@@ -71,11 +73,16 @@ class RightTriangle(Triangle):
         # checked at vertices' instanciations.
         v1 = Point(leg1_length + start_vertex.x, start_vertex.y)
         v2 = Point(leg1_length + start_vertex.x, leg2_length + start_vertex.y)
+        if (winding == 'clockwise'
+            or (winding is None
+                and config.DEFAULT_POLYGON_WINDING == 'clockwise')):
+            start_vertex, v2 = v2, start_vertex
         Triangle.__init__(self, start_vertex, v1, v2, name=name,
                           draw_vertices=draw_vertices,
                           label_vertices=label_vertices,
                           thickness=thickness, color=color,
-                          rotation_angle=rotation_angle)
+                          rotation_angle=rotation_angle,
+                          winding=winding)
         self._type = 'RightTriangle'
         if mark_right_angle:
             self.right_angle.mark = AngleMark()

@@ -32,7 +32,8 @@ class Rectangle(Quadrilateral):
                  width=Number(1), length=Number(2),
                  mark_right_angles=True,
                  draw_vertices=False, label_vertices=True,
-                 thickness='thick', color=None, rotation_angle=0):
+                 thickness='thick', color=None, rotation_angle=0,
+                 winding=None):
         r"""
         Initialize Rectangle
 
@@ -78,7 +79,8 @@ class Rectangle(Quadrilateral):
                                draw_vertices=draw_vertices,
                                label_vertices=label_vertices,
                                thickness=thickness, color=color,
-                               rotation_angle=rotation_angle)
+                               rotation_angle=rotation_angle,
+                               winding=winding)
         self._type = 'Rectangle'
         if mark_right_angles:
             for a in self.angles:
