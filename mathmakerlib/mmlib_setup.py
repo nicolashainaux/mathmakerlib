@@ -20,13 +20,13 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 # To change default mathmakerlib's settings:
-# from mathmakerlib import config
+# from mathmakerlib import mmlib_setup
 
 # Then in your main module:
-# config.init()
+# mmlib_setup.init()
 
 # and where you need to change values:
-# config.MY_VALUE = ...
+# mmlib_setup.MY_VALUE = ...
 
 
 def init():

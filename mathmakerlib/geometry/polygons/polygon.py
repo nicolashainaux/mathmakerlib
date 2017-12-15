@@ -22,7 +22,7 @@
 from copy import deepcopy
 from statistics import mean
 
-from mathmakerlib import config
+from mathmakerlib import mmlib_setup
 from mathmakerlib.calculus.number import Number
 from mathmakerlib.calculus.tools import is_number
 from mathmakerlib.core.drawable import Drawable, HasThickness, Colored
@@ -82,8 +82,8 @@ class Polygon(Drawable, Colored, HasThickness):
         :param winding: force the winding to be either 'clockwise' or
         'anticlockwise'. If left to None (default), doesn't force anything,
         the winding will be either forced by the value of
-        config.DEFAULT_POLYGON_WINDING, or if it is None too, then the winding
-        will be deduced from the given vertices' order.
+        mmlib_setup.DEFAULT_POLYGON_WINDING, or if it is None too, then the
+        winding will be deduced from the given vertices' order.
         :type winding: None or a str ('clockwise' or 'anticlockwise')
         """
         self.thickness = thickness
@@ -109,8 +109,8 @@ class Polygon(Drawable, Colored, HasThickness):
                                  'not match the number of Points\' names '
                                  '({}).'.format(len(vertices), len(name)))
 
-        if winding is None and config.DEFAULT_POLYGON_WINDING is not None:
-            winding = config.DEFAULT_POLYGON_WINDING
+        if winding is None and mmlib_setup.DEFAULT_POLYGON_WINDING is not None:
+            winding = mmlib_setup.DEFAULT_POLYGON_WINDING
 
         if shoelace_formula(*vertices) < 0:
             if winding == 'anticlockwise':
