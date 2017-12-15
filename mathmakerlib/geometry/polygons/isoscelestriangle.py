@@ -78,7 +78,7 @@ class IsoscelesTriangle(Triangle):
                    .sqrt().rounded(Number('0.001')) + start_vertex.y)
         if (winding == 'clockwise'
             or (winding is None
-                and mmlib_setup.DEFAULT_POLYGON_WINDING == 'clockwise')):
+                and mmlib_setup.polygons.DEFAULT_WINDING == 'clockwise')):
             start_vertex, v1 = v1, start_vertex
         Triangle.__init__(self, start_vertex, v1, v2, name=name,
                           draw_vertices=draw_vertices,

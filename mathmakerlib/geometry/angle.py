@@ -23,6 +23,7 @@ import sys
 from math import acos, degrees
 
 from mathmakerlib import required
+from mathmakerlib.core.oriented import check_winding
 from mathmakerlib.core.drawable import Colored, HasThickness, HasRadius
 from mathmakerlib.core.drawable import tikz_options_list
 from mathmakerlib.geometry.point import Point
@@ -125,6 +126,7 @@ class Angle(Colored):
     def tikz_rightangle_mark(self, winding='anticlockwise'):
         if self.mark is None or not self.mark_right:
             return ''
+        check_winding(winding)
         rt = 'cm={{cos({θ}), sin({θ}), -sin({θ}), cos({θ}), ({v})}}' \
             .format(θ=PointsPair(self.vertex, self.points[0])
                     .slope.imprint(mod_locale=LOCALE_US),
@@ -138,8 +140,4 @@ class Angle(Colored):
         elif winding == 'clockwise':
             rightangle_shape = '({R}, 0) -- ({R}, -{R}) -- (0, -{R})'\
                 .format(R=self.mark.radius.uiprinted)
-        else:
-            raise ValueError('\'winding\' keyword must be either \'clock'
-                             'wise\' or \'anticlockwise\', got {} instead.'
-                             .format(winding))
         return '\draw{} {};'.format(draw_options, rightangle_shape)

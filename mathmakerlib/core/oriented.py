@@ -19,11 +19,21 @@
 # along with Mathmaker Lib; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-from .drawable import Drawable
-from .oriented import Oriented
-from .evaluable import Evaluable
-from .printable import Printable
-from .signed import Signed
-from .word import Word
+from abc import ABCMeta
 
-__all__ = ['Drawable', 'Oriented', 'Evaluable', 'Printable', 'Signed', 'Word']
+
+def check_winding(value):
+    if value not in ['clockwise', 'anticlockwise']:
+        raise ValueError('Expect \'clockwise\' or \'anticlockwise\'. '
+                         'Found \'{}\' instead.'.format(value))
+
+
+class Oriented(object, metaclass=ABCMeta):
+    @property
+    def winding(self):
+        return self._winding
+
+    @winding.setter
+    def winding(self, value):
+        check_winding(value)
+        setattr(self, '_winding', value)

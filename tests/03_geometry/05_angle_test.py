@@ -112,3 +112,10 @@ def test_marked_angles(pointO, pointI, pointJ, pointA):
     assert theta.tikz_rightangle_mark() == \
         '\draw[thick, cm={cos(0), sin(0), -sin(0), cos(0), (O)}]' \
         ' (0.25 cm, 0) -- (0.25 cm, 0.25 cm) -- (0, 0.25 cm);'
+    assert theta.tikz_rightangle_mark(winding='clockwise') == \
+        '\draw[thick, cm={cos(0), sin(0), -sin(0), cos(0), (O)}]' \
+        ' (0.25 cm, 0) -- (0.25 cm, -0.25 cm) -- (0, -0.25 cm);'
+    with pytest.raises(ValueError) as excinfo:
+        theta.tikz_rightangle_mark(winding=None)
+    assert str(excinfo.value) == 'Expect \'clockwise\' or \'anticlockwise\'. '\
+        'Found \'None\' instead.'

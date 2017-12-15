@@ -189,6 +189,16 @@ def test_winding(pointO, pointI, pointJ):
     assert p.winding == 'anticlockwise'
     q = Polygon(pointO, pointJ, pointI)
     assert q.winding == 'clockwise'
+    with pytest.raises(AttributeError) as excinfo:
+        q.winding = 'clockwise'
+    assert str(excinfo.value) == 'Cannot reset the winding of a Polygon.'
+    with pytest.raises(AttributeError) as excinfo:
+        q.winding = 'counterclockwise'
+    assert str(excinfo.value) == 'Cannot reset the winding of a Polygon.'
+    with pytest.raises(ValueError) as excinfo:
+        Polygon(pointO, pointJ, pointI, winding='counterclockwise')
+    assert str(excinfo.value) == 'Expect \'clockwise\' or '\
+        '\'anticlockwise\'. Found \'counterclockwise\' instead.'
 
 
 def test_simple_drawing(pointO, pointA, pointB, pointC):

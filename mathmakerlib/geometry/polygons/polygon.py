@@ -26,6 +26,7 @@ from mathmakerlib import mmlib_setup
 from mathmakerlib.calculus.number import Number
 from mathmakerlib.calculus.tools import is_number
 from mathmakerlib.core.drawable import Drawable, HasThickness, Colored
+from mathmakerlib.core.oriented import Oriented, check_winding
 from mathmakerlib.core.drawable import tikz_approx_position, tikz_options_list
 from mathmakerlib.geometry.point import Point, OPPOSITE_LABEL_POSITIONS
 from mathmakerlib.geometry.linesegment import LineSegment
@@ -51,7 +52,7 @@ def shoelace_formula(*points):
                for i in range(1, len(points) + 1)) / 2
 
 
-class Polygon(Drawable, Colored, HasThickness):
+class Polygon(Drawable, Colored, HasThickness, Oriented):
     """Polygons."""
 
     def __init__(self, *vertices, name=None,
@@ -109,21 +110,25 @@ class Polygon(Drawable, Colored, HasThickness):
                                  'not match the number of Points\' names '
                                  '({}).'.format(len(vertices), len(name)))
 
-        if winding is None and mmlib_setup.DEFAULT_POLYGON_WINDING is not None:
-            winding = mmlib_setup.DEFAULT_POLYGON_WINDING
+        if (winding is None
+            and mmlib_setup.polygons.DEFAULT_WINDING is not None):
+            winding = mmlib_setup.polygons.DEFAULT_WINDING
+
+        if winding is not None:
+            check_winding(winding)
 
         if shoelace_formula(*vertices) < 0:
             if winding == 'anticlockwise':
                 vertices = vertices[::-1]
-                self._winding = 'anticlockwise'
+                self.winding = 'anticlockwise'
             else:
-                self._winding = 'clockwise'
+                self.winding = 'clockwise'
         else:
             if winding == 'clockwise':
                 vertices = vertices[::-1]
-                self._winding = 'clockwise'
+                self.winding = 'clockwise'
             else:
-                self._winding = 'anticlockwise'
+                self.winding = 'anticlockwise'
 
         self._vertices = []
         for i, v in enumerate(vertices):
@@ -219,6 +224,14 @@ class Polygon(Drawable, Colored, HasThickness):
     def winding(self):
         """Tells whether the Polygon is clockwise or anticlockwise."""
         return self._winding
+
+    @winding.setter
+    def winding(self, value):
+        if not hasattr(self, '_winding'):
+            check_winding(value)
+            setattr(self, '_winding', value)
+        else:
+            raise AttributeError('Cannot reset the winding of a Polygon.')
 
     def setup_labels(self, labels=None, linesegments=None, masks=None):
         """

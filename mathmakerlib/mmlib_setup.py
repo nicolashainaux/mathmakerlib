@@ -25,15 +25,35 @@
 # Then in your main module:
 # mmlib_setup.init()
 
-# and where you need to change values:
-# mmlib_setup.MY_VALUE = ...
+# example of usage to change a value:
+# mmlib_setup.polygons.DEFAULT_WINDING = 'clockwise'
+
+from mathmakerlib.core.oriented import check_winding
+
+
+class PolygonsSetup(object):
+
+    def __init__(self, default_winding=None):
+        self.DEFAULT_WINDING = default_winding
+
+    @property
+    def DEFAULT_WINDING(self):
+        return self._DEFAULT_WINDING
+
+    @DEFAULT_WINDING.setter
+    def DEFAULT_WINDING(self, value):
+        if value is not None:
+            check_winding(value)
+        self._DEFAULT_WINDING = value
 
 
 def init():
-    global DEFAULT_POLYGON_WINDING
+    global polygons
 
-    # This can be set to either 'clockwise', 'anticlockwise' or None.
-    # If it is left to None, the polygons' winding won't be forced to a default
-    # value (if not overriden by the user at Polygon's initialization),
-    # but deduced from the given vertices' order.
-    DEFAULT_POLYGON_WINDING = None
+    polygons = PolygonsSetup(
+        # default_winding can be set to either 'clockwise', 'anticlockwise' or
+        # None. If it is left to None, the polygons' winding won't be forced
+        # to a default value (if not overriden by the user at Polygon's
+        # initialization), but deduced from the given vertices' order.
+        default_winding=None
+    )
