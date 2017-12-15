@@ -99,24 +99,32 @@ class Rectangle(Quadrilateral):
     def area(self):
         return self.width * self.length
 
-    def setup_labels(self, lbl_width, lbl_length, masks=None):
+    def setup_labels(self, labels=None, linesegments=None, masks=None):
         """
         Convenience method to easily setup Rectangle's length and width labels.
 
         If masks is None, then by default, only sides[1] (width) and sides[2]
         (length) labels will be shown. The two others will be masked.
 
-        :param lbl_length: the lengths' labels
-        :type lbl_length: a label (either str or Number)
-        :param lbl_width: the widths' labels
-        :type lbl_width: a label (either str or Number)
+        If labels has only two elements, then the first one will be considered
+        as the width and the second one as the length. They will be
+        appropriately duplicated.
+
+        :param labels: None or the list of the labels
+        :type labels: None or list of 2 or 4 elements
+        :param linesegments: the list of the LineSegments to label
+        (defaults to Polygon's sides)
+        :type linesegments: list (of LineSegments)
         :param masks: the list of masks to setup.
         :type masks: None or list of 4 elements
         """
+        if linesegments is None:
+            linesegments = self.sides
+        if len(labels) == 2:
+            labels = [labels[1], labels[0], labels[1], labels[0]]
         if masks is None:
             masks = [' ', None, None, ' ']
-        super().setup_labels(labels=[lbl_length, lbl_width,
-                                     lbl_length, lbl_width],
+        super().setup_labels(labels=labels, linesegments=linesegments,
                              masks=masks)
 
     @property

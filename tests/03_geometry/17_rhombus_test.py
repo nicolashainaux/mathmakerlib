@@ -57,7 +57,7 @@ def test_sides_labeling():
         'Number(\'3 cm\') and Number(\'4 cm\').'
     for s in r.sides:
         s.lock_label()
-    r.setup_labels(Number('1.5', unit='cm'))
+    r.setup_labels([Number('1.5', unit='cm')])
     assert all([s.label_value == Number('1.5', unit='cm') for s in r.sides])
 
 

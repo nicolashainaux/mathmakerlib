@@ -61,7 +61,7 @@ def test_drawing_with_labeled_sides():
     """Check drawing the Triangle."""
     t = IsoscelesTriangle(name='GUM')
     assert t.winding == 'anticlockwise'
-    t.setup_labels('1.5 cm', '1 cm')
+    t.setup_labels(['1.5 cm', '1 cm'])
     assert t.drawn == r"""
 \begin{tikzpicture}
 % Declare Points
@@ -84,7 +84,7 @@ r"""node[midway, sloped, scale=0.5] {||};
 """
     t = IsoscelesTriangle(name='GUM', winding='clockwise')
     assert t.winding == 'clockwise'
-    t.setup_labels('1.5 cm', '1 cm')
+    t.setup_labels(['1.5 cm', '1 cm'])
     assert t.drawn == r"""
 \begin{tikzpicture}
 % Declare Points

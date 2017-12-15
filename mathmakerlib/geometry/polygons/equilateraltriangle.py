@@ -83,20 +83,28 @@ class EquilateralTriangle(Triangle, Equilateral):
     def side_length(self):
         return self._side_length
 
-    def setup_labels(self, lbl_side_length, masks=None):
+    def setup_labels(self, labels=None, linesegments=None, masks=None):
         """
         Convenience to easily setup EquilateralTriangle's side length label.
 
         If masks is None, then by default, only sides[2].label will be shown.
         The two others will be masked.
 
-        :param lbl_side_length: the side's length's label
-        :type lbl_side_length: a label (either str or Number)
+        If labels has only one element, then it is duplicated three times.
+
+        :param labels: None or the list of the labels
+        :type labels: None or list of 1 or 3 elements
+        :param linesegments: the list of the LineSegments to label
+        (defaults to Polygon's sides)
+        :type linesegments: list (of LineSegments)
         :param masks: the list of masks to setup.
         :type masks: None or list of 3 elements
         """
+        if len(labels) == 1:
+            labels *= 3
         if masks is None:
             masks = self.default_masks
-        super().setup_labels(labels=[lbl_side_length, lbl_side_length,
-                                     lbl_side_length],
-                             masks=masks)
+        if linesegments is None:
+            linesegments = self.sides
+        super().setup_labels(labels=labels, masks=masks,
+                             linesegments=linesegments)

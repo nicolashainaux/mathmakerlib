@@ -85,9 +85,10 @@ class Square(Rectangle, Rhombus):
     def side_length(self):
         return self._side_length
 
-    def setup_labels(self, lbl_side_length, masks=None):
+    def setup_labels(self, labels=None, linesegments=None, masks=None):
         """Same as Rhombus.setup_labels()."""
-        Rhombus.setup_labels(self, lbl_side_length, masks=masks)
+        Rhombus.setup_labels(self, labels=labels, linesegments=linesegments,
+                             masks=masks)
 
     @property
     def lbl_width(self):

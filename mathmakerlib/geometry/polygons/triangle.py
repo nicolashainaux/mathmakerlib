@@ -72,6 +72,7 @@ class Triangle(Polygon):
         :param labels: None or the list of the labels
         :type labels: None or list of 3 elements
         :param linesegments: the list of the LineSegments to label
+        (defaults to Polygon's sides)
         :type linesegments: list (of LineSegments)
         :param masks: the list of masks to setup. If None (default), all masks
         will be set to None.

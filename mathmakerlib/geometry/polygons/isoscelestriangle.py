@@ -98,18 +98,21 @@ class IsoscelesTriangle(Triangle):
     def equal_legs_length(self):
         return self._equal_legs_length
 
-    def setup_labels(self, lbl_base_length, lbl_equal_legs_length,
-                     masks=None):
+    def setup_labels(self, labels=None, linesegments=None, masks=None):
         """
         Convenience to easily setup IsoscelesTriangle's sides length labels.
 
         If masks is None, then by default, only base's label and sides[2].label
         will be shown. The other will be masked.
 
-        :param lbl_base_length: the base's length's label
-        :type lbl_base_length: a label (either str or Number)
-        :param lbl_equal_legs_length: the equal legs's length's label
-        :type lbl_equal_legs_length: a label (either str or Number)
+        If labels has only two elements, then the second one will be considered
+        as the length of equal length sides and will be duplicated.
+
+        :param labels: None or the list of the labels
+        :type labels: None or list of 2 or 3 elements
+        :param linesegments: the list of the LineSegments to label
+        (defaults to Polygon's sides)
+        :type linesegments: list (of LineSegments)
         :param masks: the list of masks to setup.
         :type masks: None or list of 3 elements
         """
@@ -118,6 +121,9 @@ class IsoscelesTriangle(Triangle):
                 masks = [None, ' ', None]
             else:
                 masks = [None, None, ' ']
-        super().setup_labels(labels=[lbl_base_length, lbl_equal_legs_length,
-                                     lbl_equal_legs_length],
-                             masks=masks)
+        if len(labels) == 2:
+            labels = [labels[0], labels[1], labels[1]]
+        if linesegments is None:
+            linesegments = self.sides
+        super().setup_labels(labels=labels, masks=masks,
+                             linesegments=linesegments)

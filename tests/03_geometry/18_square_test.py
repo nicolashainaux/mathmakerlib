@@ -35,7 +35,7 @@ def test_instanciation():
 def test_lbl_area():
     """Check Square's sides' labeling."""
     r = Square(name='DUCK', side_length=3)
-    r.setup_labels(Number('1.5', unit='cm'))
+    r.setup_labels([Number('1.5', unit='cm')])
     assert r.lbl_area.uiprinted == '2.25 cm^2'
 
 
@@ -74,7 +74,7 @@ r"""(0.25 cm, 0) -- (0.25 cm, 0.25 cm) -- (0, 0.25 cm);
 \draw (S) node[above left] {S};
 \end{tikzpicture}
 """
-    r.setup_labels(Number(5, unit='cm'), masks=[None, None, None, None])
+    r.setup_labels([Number(5, unit='cm')], masks=[None, None, None, None])
     assert r.drawn == r"""
 \begin{tikzpicture}
 % Declare Points
@@ -109,7 +109,7 @@ r"""(0.25 cm, 0) -- (0.25 cm, 0.25 cm) -- (0, 0.25 cm);
 \end{tikzpicture}
 """
     r = Square(name='GEMS', winding='clockwise')
-    r.setup_labels(Number(5, unit='cm'), masks=[None, None, None, None])
+    r.setup_labels([Number(5, unit='cm')], masks=[None, None, None, None])
     assert r.drawn == r"""
 \begin{tikzpicture}
 % Declare Points

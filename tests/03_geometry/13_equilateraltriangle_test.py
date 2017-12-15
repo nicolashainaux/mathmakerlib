@@ -76,7 +76,7 @@ def test_simple_drawing():
 def test_drawing_with_labeled_sides():
     """Check drawing the Triangle."""
     t = EquilateralTriangle(name='WAX')
-    t.setup_labels('7.5 cm')
+    t.setup_labels(['7.5 cm'])
     assert t.drawn == r"""
 \begin{tikzpicture}
 % Declare Points

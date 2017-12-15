@@ -40,14 +40,14 @@ def test_sides_labeling():
     with pytest.raises(ValueError) as excinfo:
         r.lbl_area
     assert str(excinfo.value) == 'No width has been set as a Number.'
-    r.setup_labels(Number(4, unit='cm'), '15 cm')
+    r.setup_labels([Number(4, unit='cm'), '15 cm'])
     with pytest.raises(ValueError) as excinfo:
         r.lbl_length
     assert str(excinfo.value) == 'No length has been set as a Number.'
     with pytest.raises(ValueError) as excinfo:
         r.lbl_area
     assert str(excinfo.value) == 'No length has been set as a Number.'
-    r.setup_labels(Number(4, unit='cm'), Number(15, unit='cm'))
+    r.setup_labels([Number(4, unit='cm'), Number(15, unit='cm')])
     assert r.lbl_width.uiprinted == '4 cm'
     assert r.lbl_length.uiprinted == '15 cm'
     assert r.lbl_area == Number(60, unit=Unit('cm', exponent=Number(2)))
