@@ -19,12 +19,13 @@
 # along with Mathmaker Lib; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-from decimal import Decimal
+from decimal import Decimal, InvalidOperation
 from abc import ABCMeta, abstractmethod
 
 from mathmakerlib import required, colors_names
 from mathmakerlib.core.printable import Printable
 from mathmakerlib.calculus.tools import is_number
+from mathmakerlib.calculus.number import Number
 
 
 THICKNESS_VALUES = [None, 'thin', 'very thin', 'ultra thin', 'thick',
@@ -186,6 +187,13 @@ class Drawable(Colored, metaclass=ABCMeta):
         if pic_options:
             pic_options = '[{}]'.format(pic_options)
         picture_format.update({'pic_options': pic_options})
+        boundingbox_section = ''
+        if self.boundingbox is not None:
+            boundingbox_section = '\n\n' \
+                + (r'\useasboundingbox ({},{}) rectangle ({},{});'
+                   .format(*self.boundingbox))
+
+        picture_format.update({'boundingbox_section': boundingbox_section})
         return r"""
 \begin{{tikzpicture}}{pic_options}{header}
 {declaring_comment}
@@ -193,7 +201,7 @@ class Drawable(Colored, metaclass=ABCMeta):
 
 {drawing_section}
 {labeling_comment}
-{labels}
+{labels}{boundingbox_section}
 \end{{tikzpicture}}
 """.format(**picture_format)
 
@@ -308,3 +316,27 @@ class Drawable(Colored, metaclass=ABCMeta):
     @baseline.setter
     def baseline(self, value):
         setattr(self, '_baseline', str(value))
+
+    @property
+    def boundingbox(self):
+        if not hasattr(self, '_boundingbox'):
+            return None
+        else:
+            return self._boundingbox
+
+    @boundingbox.setter
+    def boundingbox(self, value):
+        if not isinstance(value, tuple):
+            raise TypeError('Expected a tuple, found a {} instead.'
+                            .format(type(value).__name__))
+        if len(value) != 4:
+            raise ValueError('Expected a tuple of 4 elements, found {} '
+                             'elements instead.'.format(len(value)))
+        for v in value:
+            try:
+                Number(v)
+            except (TypeError, InvalidOperation):
+                raise TypeError('Expected a tuple containing only numbers. '
+                                'Found a {} instead.'
+                                .format(type(v).__name__))
+        setattr(self, '_boundingbox', tuple(Number(v) for v in value))

@@ -168,3 +168,42 @@ def test_baseline(A, E):
 \draw (E) node[right] {E};
 \end{tikzpicture}
 """
+
+
+def test_boundingbox(A, E):
+    """Check boundingbox setting and usage."""
+    ls = LineSegment(A, E)
+    assert ls.boundingbox is None
+    with pytest.raises(TypeError) as excinfo:
+        ls.boundingbox = [1, 2, 3, 4]
+    assert str(excinfo.value) == 'Expected a tuple, found a list instead.'
+    with pytest.raises(ValueError) as excinfo:
+        ls.boundingbox = (1, 2, 3)
+    assert str(excinfo.value) == 'Expected a tuple of 4 elements, found 3 '\
+        'elements instead.'
+    with pytest.raises(TypeError) as excinfo:
+        ls.boundingbox = (1, 2, 3, 'a')
+    assert str(excinfo.value) == 'Expected a tuple containing only numbers. '\
+        'Found a str instead.'
+    ls.boundingbox = (-1, -1, '2', 1)
+    assert ls.boundingbox == (-1, -1, 2, 1)
+    assert ls.drawn == r"""
+\begin{tikzpicture}
+% Declare Points
+\coordinate (A) at (0,0);
+\coordinate (E) at (1,0);
+
+% Draw Points
+\draw (A) node[scale=0.67] {$\times$};
+\draw (E) node[scale=0.67] {$\times$};
+
+% Draw Line Segment
+\draw[thick] (A) -- (E);
+
+% Label Points
+\draw (A) node[left] {A};
+\draw (E) node[right] {E};
+
+\useasboundingbox (-1,-1) rectangle (2,1);
+\end{tikzpicture}
+"""
