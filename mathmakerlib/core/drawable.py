@@ -326,17 +326,18 @@ class Drawable(Colored, metaclass=ABCMeta):
 
     @boundingbox.setter
     def boundingbox(self, value):
-        if not isinstance(value, tuple):
-            raise TypeError('Expected a tuple, found a {} instead.'
-                            .format(type(value).__name__))
-        if len(value) != 4:
-            raise ValueError('Expected a tuple of 4 elements, found {} '
-                             'elements instead.'.format(len(value)))
-        for v in value:
-            try:
-                Number(v)
-            except (TypeError, InvalidOperation):
-                raise TypeError('Expected a tuple containing only numbers. '
-                                'Found a {} instead.'
-                                .format(type(v).__name__))
-        setattr(self, '_boundingbox', tuple(Number(v) for v in value))
+        if value is not None:
+            if not isinstance(value, tuple):
+                raise TypeError('Expected a tuple, found a {} instead.'
+                                .format(type(value).__name__))
+            if len(value) != 4:
+                raise ValueError('Expected a tuple of 4 elements, found {} '
+                                 'elements instead.'.format(len(value)))
+            for v in value:
+                try:
+                    Number(v)
+                except (TypeError, InvalidOperation):
+                    raise TypeError('Expected a tuple containing only '
+                                    'numbers. Found a {} instead.'
+                                    .format(type(v).__name__))
+            setattr(self, '_boundingbox', tuple(Number(v) for v in value))
