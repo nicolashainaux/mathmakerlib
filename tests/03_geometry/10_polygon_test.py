@@ -21,7 +21,7 @@
 
 import pytest
 
-from mathmakerlib import required
+from mathmakerlib import required, mmlib_setup
 from mathmakerlib.calculus import Number
 from mathmakerlib.geometry import Point, Polygon, AngleMark, shoelace_formula
 
@@ -185,6 +185,15 @@ def test_lbl_perimeter(pointO, pointA, pointB, pointC):
 
 def test_winding(pointO, pointI, pointJ):
     """Check the Polygon's winding."""
+    mmlib_setup.polygons.DEFAULT_WINDING = 'clockwise'
+    p = Polygon(pointO, pointI, pointJ)
+    assert p.winding == 'clockwise'
+    q = Polygon(pointO, pointJ, pointI)
+    assert q.winding == 'clockwise'
+    mmlib_setup.polygons.DEFAULT_WINDING = 'anticlockwise'
+    q = Polygon(pointO, pointJ, pointI)
+    assert q.winding == 'anticlockwise'
+    mmlib_setup.polygons.DEFAULT_WINDING = None
     p = Polygon(pointO, pointI, pointJ)
     assert p.winding == 'anticlockwise'
     q = Polygon(pointO, pointJ, pointI)

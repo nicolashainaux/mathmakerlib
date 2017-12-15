@@ -220,19 +220,6 @@ class Polygon(Drawable, Colored, HasThickness, Oriented):
             return sum([s.label_value for s in self.sides],
                        Number(0, unit=self.sides[0].label_value.unit))
 
-    @property
-    def winding(self):
-        """Tells whether the Polygon is clockwise or anticlockwise."""
-        return self._winding
-
-    @winding.setter
-    def winding(self, value):
-        if not hasattr(self, '_winding'):
-            check_winding(value)
-            setattr(self, '_winding', value)
-        else:
-            raise AttributeError('Cannot reset the winding of a Polygon.')
-
     def setup_labels(self, labels=None, linesegments=None, masks=None):
         """
         Convenience method to easily setup all sides in a row.

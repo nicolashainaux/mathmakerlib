@@ -31,9 +31,15 @@ def check_winding(value):
 class Oriented(object, metaclass=ABCMeta):
     @property
     def winding(self):
+        """Tells whether the Oriented object is clockwise or anticlockwise."""
         return self._winding
 
     @winding.setter
     def winding(self, value):
-        check_winding(value)
-        setattr(self, '_winding', value)
+        """The winding can be set only once (at object's initialization)."""
+        if not hasattr(self, '_winding'):
+            check_winding(value)
+            setattr(self, '_winding', value)
+        else:
+            raise AttributeError('Cannot reset the winding of a {}.'
+                                 .format(type(self).__name__))
