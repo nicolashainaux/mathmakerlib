@@ -315,7 +315,8 @@ class Drawable(Colored, metaclass=ABCMeta):
 
     @baseline.setter
     def baseline(self, value):
-        setattr(self, '_baseline', str(value))
+        if value is not None:
+            setattr(self, '_baseline', str(value))
 
     @property
     def boundingbox(self):
