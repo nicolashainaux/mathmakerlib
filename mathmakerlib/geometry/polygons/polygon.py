@@ -222,7 +222,7 @@ class Polygon(Drawable, Colored, HasThickness, Oriented):
 
     def setup_labels(self, labels=None, linesegments=None, masks=None):
         """
-        Convenience method to easily setup all sides in a row.
+        Convenience method to easily setup all sides' labels in a row.
 
         If labels is None, then the labels won't be set.
         If masks is None, then the masks won't be set.
@@ -268,6 +268,24 @@ class Polygon(Drawable, Colored, HasThickness, Oriented):
                 ls.lock_label()
         for (ls, m) in zip(linesegments, masks):
             ls.label_mask = m
+
+    def setup_marks(self, marks=None, linesegments=None):
+        """
+        Convenience method to easily setup all sides' marks in a row.
+
+        If marks is None, no LineSegment's mark will be set.
+
+        :param marks: None or the list of the marks
+        :type marks: list
+        :param linesegments: the list of the LineSegments to mark
+        (defaults to Polygon's sides)
+        :type linesegments: list (of LineSegments)
+        """
+        if linesegments is None:
+            linesegments = self.sides
+        if marks is not None and len(marks) == len(linesegments):
+            for s, m in zip(linesegments, marks):
+                s.mark = m
 
     @property
     def draw_vertices(self):
