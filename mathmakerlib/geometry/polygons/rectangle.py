@@ -84,7 +84,7 @@ class Rectangle(Quadrilateral):
         self._type = 'Rectangle'
         if mark_right_angles:
             for a in self.angles:
-                a.mark = AngleMark()
+                a.mark = AngleMark(thickness=thickness)
                 a.mark_right = True
 
     @property
