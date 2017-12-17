@@ -183,7 +183,7 @@ def test_lbl_perimeter(pointO, pointA, pointB, pointC):
     assert p.lbl_perimeter == Number(22, unit='cm')
 
 
-def test_winding(pointO, pointI, pointJ):
+def test_winding(pointO, pointA, pointB, pointC, pointI, pointJ):
     """Check the Polygon's winding."""
     mmlib_setup.polygons.DEFAULT_WINDING = 'clockwise'
     p = Polygon(pointO, pointI, pointJ)
@@ -208,6 +208,34 @@ def test_winding(pointO, pointI, pointJ):
         Polygon(pointO, pointJ, pointI, winding='counterclockwise')
     assert str(excinfo.value) == 'Expect \'clockwise\' or '\
         '\'anticlockwise\'. Found \'counterclockwise\' instead.'
+    p = Polygon(pointO, pointA, pointB, pointC, name='PLUM',
+                winding='clockwise')
+    p.setup_labels(['one', 'two', 'three', 'four'])
+    p.setup_marks(['|', '||', '|||', '||||'])
+    assert p.drawn == r"""
+\begin{tikzpicture}
+% Declare Points
+\coordinate (P) at (1,3);
+\coordinate (L) at (3,2);
+\coordinate (U) at (4,0);
+\coordinate (M) at (0,0);
+
+% Draw Quadrilateral
+\draw[thick] (P)
+-- (L) node[midway, above, sloped] {three} """\
+r"""node[midway, sloped, scale=0.5] {|||}
+-- (U) node[midway, above, sloped] {two} node[midway, sloped, scale=0.5] {||}
+-- (M) node[midway, below, sloped] {one} node[midway, sloped, scale=0.5] {|}
+-- cycle node[midway, above, sloped] """\
+r"""{four} node[midway, sloped, scale=0.5] {||||};
+
+% Label Points
+\draw (P) node[above left] {P};
+\draw (L) node[above right] {L};
+\draw (U) node[below right] {U};
+\draw (M) node[below left] {M};
+\end{tikzpicture}
+"""
 
 
 def test_simple_drawing(pointO, pointA, pointB, pointC):

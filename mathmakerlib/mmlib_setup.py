@@ -55,5 +55,12 @@ def init():
         # None. If it is left to None, the polygons' winding won't be forced
         # to a default value (if not overriden by the user at Polygon's
         # initialization), but deduced from the given vertices' order.
+        # Use with caution: when you force the winding to be 'clockwise' by
+        # default and give anticlockwise oriented vertices to build a Polygon,
+        # the vertices' names' order in the final created Polygon WILL NOT be
+        # the same as the given one (it cannot be the same). Yet setup_labels()
+        # and setup_marks() WILL remember the order you gave the vertices to
+        # create the Polygon (this places the marks and labels at expected
+        # places...).
         default_winding=None
     )

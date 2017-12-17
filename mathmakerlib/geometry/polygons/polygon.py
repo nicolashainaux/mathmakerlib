@@ -117,15 +117,19 @@ class Polygon(Drawable, Colored, HasThickness, Oriented):
         if winding is not None:
             check_winding(winding)
 
+        self._reverted_winding = False
+
         if shoelace_formula(*vertices) < 0:
             if winding == 'anticlockwise':
                 vertices = vertices[::-1]
+                self._reverted_winding = True
                 self.winding = 'anticlockwise'
             else:
                 self.winding = 'clockwise'
         else:
             if winding == 'clockwise':
                 vertices = vertices[::-1]
+                self._reverted_winding = True
                 self.winding = 'clockwise'
             else:
                 self.winding = 'anticlockwise'
@@ -261,6 +265,9 @@ class Polygon(Drawable, Colored, HasThickness, Oriented):
                              'to the number of line segments ({}).'
                              .format(str(len(masks)),
                                      str(len(linesegments))))
+        if linesegments == self.sides and self._reverted_winding:
+            labels = labels[::-1]
+            labels += [labels.pop(0)]
         if labels is not None:
             for (ls, lbl) in zip(linesegments, labels):
                 ls.unlock_label()
@@ -283,6 +290,9 @@ class Polygon(Drawable, Colored, HasThickness, Oriented):
         """
         if linesegments is None:
             linesegments = self.sides
+        if linesegments == self.sides and self._reverted_winding:
+            marks = marks[::-1]
+            marks += [marks.pop(0)]
         if marks is not None and len(marks) == len(linesegments):
             for s, m in zip(linesegments, marks):
                 s.mark = m
