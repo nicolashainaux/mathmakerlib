@@ -265,7 +265,8 @@ class Polygon(Drawable, Colored, HasThickness, Oriented):
                              'to the number of line segments ({}).'
                              .format(str(len(masks)),
                                      str(len(linesegments))))
-        if linesegments == self.sides and self._reverted_winding:
+        if (labels is not None and self._reverted_winding
+            and linesegments == self.sides):
             labels = labels[::-1]
             labels += [labels.pop(0)]
         if labels is not None:
@@ -290,7 +291,8 @@ class Polygon(Drawable, Colored, HasThickness, Oriented):
         """
         if linesegments is None:
             linesegments = self.sides
-        if linesegments == self.sides and self._reverted_winding:
+        if (marks is not None and self._reverted_winding
+            and linesegments == self.sides):
             marks = marks[::-1]
             marks += [marks.pop(0)]
         if marks is not None and len(marks) == len(linesegments):
