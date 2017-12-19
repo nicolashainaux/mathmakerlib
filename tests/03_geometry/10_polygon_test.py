@@ -186,12 +186,18 @@ def test_lbl_perimeter(pointO, pointA, pointB, pointC):
 def test_winding(pointO, pointA, pointB, pointC, pointI, pointJ):
     """Check the Polygon's winding."""
     mmlib_setup.polygons.DEFAULT_WINDING = 'clockwise'
-    p = Polygon(pointO, pointI, pointJ)
+    with pytest.warns(UserWarning) as record:
+        p = Polygon(pointO, pointI, pointJ)
+    assert len(record) == 1
+    assert str(record[0].message) == 'Changed the order of Points to comply '\
+        'with forced winding (clockwise) for Triangle JIO.'
     assert p.winding == 'clockwise'
     q = Polygon(pointO, pointJ, pointI)
     assert q.winding == 'clockwise'
     mmlib_setup.polygons.DEFAULT_WINDING = 'anticlockwise'
-    q = Polygon(pointO, pointJ, pointI)
+    with pytest.warns(UserWarning) as record:
+        q = Polygon(pointO, pointJ, pointI)
+    assert len(record) == 1
     assert q.winding == 'anticlockwise'
     mmlib_setup.polygons.DEFAULT_WINDING = None
     p = Polygon(pointO, pointI, pointJ)
@@ -208,8 +214,12 @@ def test_winding(pointO, pointA, pointB, pointC, pointI, pointJ):
         Polygon(pointO, pointJ, pointI, winding='counterclockwise')
     assert str(excinfo.value) == 'Expect \'clockwise\' or '\
         '\'anticlockwise\'. Found \'counterclockwise\' instead.'
-    p = Polygon(pointO, pointA, pointB, pointC, name='PLUM',
-                winding='clockwise')
+    mmlib_setup.polygons.ENABLE_MISMATCH_WINDING_WARNING = False
+    with pytest.warns(None) as record:
+        p = Polygon(pointO, pointA, pointB, pointC, name='PLUM',
+                    winding='clockwise')
+    assert len(record) == 0
+    mmlib_setup.polygons.ENABLE_MISMATCH_WINDING_WARNING = True
     p.setup_labels(['one', 'two', 'three', 'four'])
     p.setup_marks(['|', '||', '|||', '||||'])
     assert p.drawn == r"""

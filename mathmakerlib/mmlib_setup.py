@@ -33,8 +33,21 @@ from mathmakerlib.core.oriented import check_winding
 
 class PolygonsSetup(object):
 
-    def __init__(self, default_winding=None):
-        self.DEFAULT_WINDING = default_winding
+    def __init__(self):
+        # default_winding can be set to either 'clockwise', 'anticlockwise' or
+        # None. If it is left to None, the polygons' winding won't be forced
+        # to a default value (if not overriden by the user at Polygon's
+        # initialization), but deduced from the given vertices' order.
+        # Use with caution: when you force the winding to be 'clockwise' by
+        # default and give anticlockwise oriented vertices to build a Polygon,
+        # the vertices' names' order in the final created Polygon WILL NOT be
+        # the same as the given one (it cannot be the same). Yet setup_labels()
+        # and setup_marks() WILL remember the order you gave the vertices to
+        # create the Polygon (this places the marks and labels at expected
+        # places...). By default, a warning will raise if the winding is forced
+        # to the opposite warning of given Points when building a Polygon.
+        self.DEFAULT_WINDING = None
+        self.ENABLE_MISMATCH_WINDING_WARNING = True
 
     @property
     def DEFAULT_WINDING(self):
@@ -46,21 +59,19 @@ class PolygonsSetup(object):
             check_winding(value)
         self._DEFAULT_WINDING = value
 
+    @property
+    def ENABLE_MISMATCH_WINDING_WARNING(self):
+        return self._ENABLE_MISMATCH_WINDING_WARNING
+
+    @ENABLE_MISMATCH_WINDING_WARNING.setter
+    def ENABLE_MISMATCH_WINDING_WARNING(self, value):
+        if value:
+            self._ENABLE_MISMATCH_WINDING_WARNING = True
+        else:
+            self._ENABLE_MISMATCH_WINDING_WARNING = False
+
 
 def init():
     global polygons
 
-    polygons = PolygonsSetup(
-        # default_winding can be set to either 'clockwise', 'anticlockwise' or
-        # None. If it is left to None, the polygons' winding won't be forced
-        # to a default value (if not overriden by the user at Polygon's
-        # initialization), but deduced from the given vertices' order.
-        # Use with caution: when you force the winding to be 'clockwise' by
-        # default and give anticlockwise oriented vertices to build a Polygon,
-        # the vertices' names' order in the final created Polygon WILL NOT be
-        # the same as the given one (it cannot be the same). Yet setup_labels()
-        # and setup_marks() WILL remember the order you gave the vertices to
-        # create the Polygon (this places the marks and labels at expected
-        # places...).
-        default_winding=None
-    )
+    polygons = PolygonsSetup()

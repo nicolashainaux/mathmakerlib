@@ -20,6 +20,7 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 
+from mathmakerlib import mmlib_setup
 from mathmakerlib.calculus import Number
 from mathmakerlib.geometry import Square
 
@@ -108,7 +109,9 @@ r"""(0.25 cm, 0) -- (0.25 cm, 0.25 cm) -- (0, 0.25 cm);
 \draw (S) node[above left] {S};
 \end{tikzpicture}
 """
+    mmlib_setup.polygons.ENABLE_MISMATCH_WINDING_WARNING = False
     r = Square(name='GEMS', winding='clockwise')
+    mmlib_setup.polygons.ENABLE_MISMATCH_WINDING_WARNING = True
     r.setup_labels([Number(5, unit='cm')], masks=[None, None, None, None])
     assert r.drawn == r"""
 \begin{tikzpicture}

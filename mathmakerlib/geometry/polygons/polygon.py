@@ -19,6 +19,7 @@
 # along with Mathmaker Lib; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
+import warnings
 from copy import deepcopy
 from statistics import mean
 
@@ -181,6 +182,11 @@ class Polygon(Drawable, Colored, HasThickness, Oriented):
         else:
             self._type = \
                 '{n}-sided Polygon'.format(n=str(len(self._sides)))
+
+        if (self._reverted_winding
+            and mmlib_setup.polygons.ENABLE_MISMATCH_WINDING_WARNING):
+            warnings.warn('Changed the order of Points to comply with forced '
+                          'winding ({}) for {}.'.format(winding, repr(self)))
 
     def __repr__(self):
         return '{} {}'.format(self.type, self.name)
