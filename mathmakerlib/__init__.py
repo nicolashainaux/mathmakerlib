@@ -26,7 +26,7 @@ __all__ = ['required', 'colors_names', 'mmlib_setup', 'exceptions',
            'core', 'calculus', 'geometry']
 
 __version_info__ = (0, 4, 0)
-__dev__ = 9
+__dev__ = 0
 __patch_nb__ = 0
 __version__ = '.'.join(str(c) for c in __version_info__)
 dev_addendum = '' if __dev__ == 0 else '.dev' + str(__dev__)

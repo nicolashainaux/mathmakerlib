@@ -1,6 +1,17 @@
 Changelog
 =========
 
+Version 0.4 (2017-12-19)
+-------------------------
+
+* Add more complex geometric objects: Polygon, Triangle, RightTriangle, EquilateralTriangle, IsoscelesTriangle, Quadrilateral, Rhombus, Rectangle, Square.
+* Numbers can be "copied" using copy.copy() or copy.deepcopy().
+* Add Point.rotate().
+* Add the ability to change the size of Point's drawn shape (using Point.shape_scale).
+* Add LineSegment.mark and the ability to change its size (using LineSegment.mark_scale).
+* mathmakerlib.requires_pkg becomes mathmakerlib.required and will also handle required options and hacks.
+* Add module mathmakerlib.mmlib_setup to configure the behaviour (default values etc.).
+
 Version 0.3 (2017-11-17)
 ------------------------
 
