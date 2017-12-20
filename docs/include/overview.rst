@@ -116,8 +116,8 @@ Once compiled (here using Ubuntu font):
 
 .. image:: pics/dividedlinesegment.png
 
-
 ::
+
     >>> from mathmakerlib.geometry import Rectangle, Rhombus
     >>> import mathmakerlib.required
     >>> mathmakerlib.required.init()
@@ -227,7 +227,7 @@ Once compiled (still using Ubuntu font):
 
 Once compiled (still using Ubuntu font, take care to include angles tikz library):
 
-.. image:: pics/example_polygon.png
+.. image:: pics/example_pentagon.png
 
 
 Contribute
