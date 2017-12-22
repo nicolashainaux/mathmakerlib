@@ -1,8 +1,9 @@
-version: 0.4-build{build}
+version: 0.5-build{build}
 
 branches:
   only:
   - master
+  - pre-release
 
 max_jobs: 1
 
