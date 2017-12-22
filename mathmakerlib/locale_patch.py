@@ -30,15 +30,15 @@ import locale
 _last_category, _last_locale = None, None
 
 
-def my_setlocale(category, locale=None):
+def my_setlocale(category, value=None):
     global _last_category, _last_locale
 
     try:
-        result = _orig_setlocale(category, locale)
+        result = _orig_setlocale(category, value)
     except locale.Error:
         raise  # Didn't work, ignore arguments.
 
-    _last_category, _last_locale = category, locale
+    _last_category, _last_locale = category, value
     return result
 
 
