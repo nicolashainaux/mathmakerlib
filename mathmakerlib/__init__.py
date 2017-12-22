@@ -20,10 +20,10 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 from . import required, colors_names, exceptions, mmlib_setup
-from . import calculus, core, geometry
+from . import locale_patch, calculus, core, geometry
 
 __all__ = ['required', 'colors_names', 'mmlib_setup', 'exceptions',
-           'core', 'calculus', 'geometry']
+           'locale_patch', 'core', 'calculus', 'geometry']
 
 __version_info__ = (0, 4, 0)
 __dev__ = 0

@@ -26,6 +26,7 @@ import warnings
 from decimal import Decimal, ROUND_DOWN, ROUND_HALF_UP
 
 from mathmakerlib import required
+from mathmakerlib import locale_patch  # noqa
 from mathmakerlib.calculus.tools import is_number, is_integer
 from mathmakerlib.core.signed import Signed
 from mathmakerlib.core.printable import Printable
@@ -351,11 +352,11 @@ class Number(Decimal, Signed, Printable, Evaluable):
             extra_sign = '+'
         if variant == 'latex':
             if mod_locale is not None:
-                prev_locale = locale.getlocale()
+                restore_values = locale.setting_values()
                 locale.setlocale(locale.LC_ALL, mod_locale)
             self_str = locale.str(Decimal(self))
             if mod_locale is not None:
-                locale.setlocale(locale.LC_ALL, prev_locale)
+                locale.setlocale(*restore_values)
         elif variant == 'user_input':
             self_str = Decimal.__str__(self)
         else:

@@ -23,6 +23,7 @@ import sys
 import locale
 
 from mathmakerlib import required, mmlib_setup
+from mathmakerlib import locale_patch  # noqa Apply monkey-patch to locale.
 
 required.init()
 mmlib_setup.init()
