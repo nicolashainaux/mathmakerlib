@@ -12,6 +12,11 @@ Version 0.4 (2017-12-19)
 * mathmakerlib.requires_pkg becomes mathmakerlib.required and will also handle required options and hacks.
 * Add module mathmakerlib.mmlib_setup to configure the behaviour (default values etc.).
 
+Patch 0.4.1 (2018-01-01)
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+* Fix the locale monkey patch
+
 Version 0.3 (2017-11-17)
 ------------------------
 
