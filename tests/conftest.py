@@ -28,9 +28,6 @@ from mathmakerlib import locale_patch  # noqa Apply monkey-patch to locale.
 required.init()
 mmlib_setup.init()
 
-LOCALE_US = 'en_US.UTF-8'
+LOCALE_US = 'en' if sys.platform.startswith('win') else 'en_US.UTF-8'
 
-if sys.platform.startswith('win'):
-    LOCALE_US = 'en-US'
-
-locale.setlocale(locale.LC_ALL, LOCALE_US)
+locale.setlocale(locale.LC_ALL, locale=LOCALE_US)

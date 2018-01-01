@@ -32,8 +32,8 @@ from mathmakerlib.calculus import move_fracdigits_to
 from mathmakerlib.calculus import remove_fracdigits_from
 from mathmakerlib.calculus import fix_fracdigits
 
-LOCALE_US = 'en-US' if sys.platform.startswith('win') else 'en_US.UTF-8'
-LOCALE_FR = 'fr-FR' if sys.platform.startswith('win') else 'fr_FR.UTF-8'
+LOCALE_US = 'en' if sys.platform.startswith('win') else 'en_US.UTF-8'
+LOCALE_FR = 'fr' if sys.platform.startswith('win') else 'fr_FR.UTF-8'
 
 
 def test_Number_inheritance():

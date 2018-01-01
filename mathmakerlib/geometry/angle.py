@@ -30,7 +30,7 @@ from mathmakerlib.geometry.point import Point
 from mathmakerlib.geometry.pointspair import PointsPair
 from mathmakerlib.calculus.number import Number
 
-LOCALE_US = 'en-US' if sys.platform.startswith('win') else 'en_US.UTF-8'
+LOCALE_US = 'en' if sys.platform.startswith('win') else 'en_US.UTF-8'
 
 
 class AngleMark(Colored, HasThickness, HasRadius):

@@ -26,8 +26,8 @@ import pytest
 from mathmakerlib.calculus import Number
 from mathmakerlib.geometry import Point, Triangle, AngleMark
 
-LOCALE_US = 'en-US' if sys.platform.startswith('win') else 'en_US.UTF-8'
-LOCALE_FR = 'fr-FR' if sys.platform.startswith('win') else 'fr_FR.UTF-8'
+LOCALE_US = 'en' if sys.platform.startswith('win') else 'en_US.UTF-8'
+LOCALE_FR = 'fr' if sys.platform.startswith('win') else 'fr_FR.UTF-8'
 
 
 def test_instanciation_errors():
