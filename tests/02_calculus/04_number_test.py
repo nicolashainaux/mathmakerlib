@@ -138,6 +138,14 @@ def test_sqrt():
     assert Number(2).sqrt().rounded(Decimal('0.0001')) == Number('1.4142')
 
 
+def test_quantize():
+    """Check quantize() is correct."""
+    assert Number(2).quantize(Decimal('0.01')) == Number('2.00')
+    assert Number('3.6').quantize(Decimal('0.01')) == Number('3.60')
+    assert Number('3.6', unit='mL').quantize(Decimal('0.01')) \
+        == Number('3.60', unit='mL')
+
+
 def test_additions_errors():
     """Check additions exceptions."""
     with pytest.raises(TypeError) as excinfo:

@@ -335,6 +335,13 @@ class Number(Decimal, Signed, Printable, Evaluable):
     def sqrt(self):
         return Number(Decimal(self).sqrt())
 
+    def quantize(self, exp, rounding=None, context=None):
+        return Number(Decimal(self).quantize(exp,
+                                             rounding=rounding,
+                                             context=context),
+                      context=context,
+                      unit=self.unit)
+
     @property
     def unit(self):
         return self._unit
