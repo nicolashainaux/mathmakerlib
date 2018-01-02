@@ -29,26 +29,26 @@ def test_exponented_errors():
     with pytest.raises(TypeError) as excinfo:
         Exponented('No Printable')
     assert str(excinfo.value) == 'The content of an Exponented must be a ' \
-        'Printable object. Got <class \'str\'> instead.'
+        'Printable object. An int would be ' \
+        'accepted (turned into Number). Got <class \'str\'> instead.'
     with pytest.raises(TypeError) as excinfo:
-        Exponented(Number(3), exponent='No Printable')
+        Exponented(3, exponent='No Printable')
     assert str(excinfo.value) == 'The exponent of an Exponented must be ' \
-        'either None or a Printable object. Got <class \'str\'> instead.'
+        'either None or a Printable object. An int would be ' \
+        'accepted (turned into Number). Got <class \'str\'> instead.'
 
 
 def test_repr():
     """Check __repr__."""
     assert repr(Exponented(Number(3))) == 'Exponented(Number(\'3\'))'
-    assert repr(Exponented(Number(3), exponent=Number(4))) \
+    assert repr(Exponented(Number(3), exponent=4)) \
         == 'Exponented(Number(\'3\')^Number(\'4\'))'
 
 
 def test_exponented():
     """Check initialization."""
     assert Exponented(Number(3)).printed == '3'
-    assert Exponented(Number(3), exponent=Number(2)).printed == '3^{2}'
-    assert Exponented(Number(-3), exponent=Number(2)).printed == '(-3)^{2}'
-    assert Exponented(Number(3),
-                      exponent=Exponented(Number(6),
-                                          exponent=Number(2)))\
+    assert Exponented(3, exponent=2).printed == '3^{2}'
+    assert Exponented(Number(-3), exponent=2).printed == '(-3)^{2}'
+    assert Exponented(3, exponent=Exponented(6, exponent=2))\
         .printed == '3^{6^{2}}'

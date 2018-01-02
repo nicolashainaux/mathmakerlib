@@ -38,10 +38,6 @@ def test_Unit_errors():
         Unit(6)
     assert str(excinfo.value) == 'content must be a str or a Unit. ' \
         'Got <class \'int\'> instead.'
-    with pytest.raises(TypeError) as excinfo:
-        Unit('cm', exponent=2)
-    assert str(excinfo.value) == 'The exponent of an Exponented must be ' \
-        'either None or a Printable object. Got <class \'int\'> instead.'
 
 
 def test_Unit():
@@ -50,28 +46,28 @@ def test_Unit():
     assert Unit('cm', exponent=Number(2)).printed == 'cm^{2}'
     u = Unit('cm')
     assert Unit(u).printed == 'cm'
-    assert Unit(u, exponent=Number(2)).printed == 'cm^{2}'
+    assert Unit(u, exponent=2).printed == 'cm^{2}'
     assert Unit(u, exponent=Number(3)).printed == 'cm^{3}'
-    u = Unit('cm', exponent=Number(2))
+    u = Unit('cm', exponent=2)
     assert Unit(u).printed == 'cm^{2}'
-    v = Unit('cm', exponent=Number(2))
+    v = Unit('cm', exponent=2)
     assert u == v
-    w = Unit(v, exponent=Number(3))
+    w = Unit(v, exponent=3)
     assert v != w
-    w = Unit(v, exponent=Number(2))
+    w = Unit(v, exponent=2)
     assert v == w
     assert u != 6
 
 
 def test_printing():
     """Check printing."""
-    assert Unit('cm', exponent=Number(2)).uiprinted == 'cm^2'
-    assert Unit('cm', exponent=Number(2)).printed == 'cm^{2}'
+    assert Unit('cm', exponent=2).uiprinted == 'cm^2'
+    assert Unit('cm', exponent=2).printed == 'cm^{2}'
     assert str(Unit('cm')) == 'cm'
-    assert str(Unit('cm', exponent=Number(2))) == 'cm^2'
+    assert str(Unit('cm', exponent=2)) == 'cm^2'
 
 
 def test_repr():
     """Check __repr__."""
     assert repr(Unit('cm')) == 'Unit(\'cm\')'
-    assert repr(Unit('cm', exponent=Number(2))) == 'Unit(\'cm\'^Number(\'2\'))'
+    assert repr(Unit('cm', exponent=2)) == 'Unit(\'cm\'^Number(\'2\'))'

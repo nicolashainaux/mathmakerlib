@@ -52,9 +52,13 @@ class Exponented(Printable):
 
     @content.setter
     def content(self, content):
+        if isinstance(content, int):
+            from mathmakerlib.calculus import Number
+            content = Number(content)
         if not isinstance(content, Printable):
             raise TypeError('The content of an Exponented must be a Printable '
-                            'object. Got {} instead.'
+                            'object. An int would be '
+                            'accepted (turned into Number). Got {} instead.'
                             .format(str(type(content))))
         self._content = copy.deepcopy(content)
 
@@ -64,9 +68,13 @@ class Exponented(Printable):
 
     @exponent.setter
     def exponent(self, exponent):
+        if isinstance(exponent, int):
+            from mathmakerlib.calculus import Number
+            exponent = Number(exponent)
         if not (exponent is None or isinstance(exponent, Printable)):
             raise TypeError('The exponent of an Exponented must be either '
-                            'None or a Printable object. Got {} instead.'
+                            'None or a Printable object. An int would be '
+                            'accepted (turned into Number). Got {} instead.'
                             .format(str(type(exponent))))
         self._exponent = copy.deepcopy(exponent)
 
