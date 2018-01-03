@@ -42,14 +42,14 @@ def test_Unit_errors():
 
 def test_Unit():
     """Check the Unit class."""
-    assert Unit('cm').printed == 'cm'
-    assert Unit('cm', exponent=Number(2)).printed == 'cm^{2}'
+    assert Unit('cm').printed == r'\si{cm}'
+    assert Unit('cm', exponent=Number(2)).printed == r'\si{cm^{2}}'
     u = Unit('cm')
-    assert Unit(u).printed == 'cm'
-    assert Unit(u, exponent=2).printed == 'cm^{2}'
-    assert Unit(u, exponent=Number(3)).printed == 'cm^{3}'
+    assert Unit(u).printed == r'\si{cm}'
+    assert Unit(u, exponent=2).printed == r'\si{cm^{2}}'
+    assert Unit(u, exponent=Number(3)).printed == r'\si{cm^{3}}'
     u = Unit('cm', exponent=2)
-    assert Unit(u).printed == 'cm^{2}'
+    assert Unit(u).printed == r'\si{cm^{2}}'
     v = Unit('cm', exponent=2)
     assert u == v
     w = Unit(v, exponent=3)
@@ -62,7 +62,7 @@ def test_Unit():
 def test_printing():
     """Check printing."""
     assert Unit('cm', exponent=2).uiprinted == 'cm^2'
-    assert Unit('cm', exponent=2).printed == 'cm^{2}'
+    assert Unit('cm', exponent=2).printed == r'\si{cm^{2}}'
     assert str(Unit('cm')) == 'cm'
     assert str(Unit('cm', exponent=2)) == 'cm^2'
 

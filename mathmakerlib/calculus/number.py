@@ -167,12 +167,12 @@ class Number(Decimal, Signed, Printable, Evaluable):
             return Number(Decimal(self).__add__(other), unit=self.unit)
         else:
             if hasattr(other, 'unit') and other.unit is not None:
-                other_unit = other.unit.printed
+                other_unit = str(other.unit)
             else:
                 other_unit = str(None)
             raise ValueError('Cannot add two Numbers having different '
                              'Units ({} and {}).'
-                             .format(self.unit.printed,
+                             .format(str(self.unit),
                                      other_unit))
 
     def __radd__(self, other, context=None):
@@ -187,12 +187,12 @@ class Number(Decimal, Signed, Printable, Evaluable):
             return Number(Decimal(self).__sub__(other), unit=self.unit)
         else:
             if hasattr(other, 'unit') and other.unit is not None:
-                other_unit = other.unit.printed
+                other_unit = str(other.unit)
             else:
                 other_unit = str(None)
             raise ValueError('Cannot subtract two Numbers having different '
                              'Units ({} and {}).'
-                             .format(self.unit.printed,
+                             .format(str(self.unit),
                                      other_unit))
 
     def __rsub__(self, other, context=None):
@@ -321,7 +321,7 @@ class Number(Decimal, Signed, Printable, Evaluable):
         if self.unit is None:
             return basic_str
         else:
-            return basic_str + ' ' + self.unit.printed
+            return basic_str + ' ' + str(self.unit)
 
     def __repr__(self):
         basic_repr = repr(Decimal(Decimal.__str__(self))).replace('Decimal',
@@ -376,7 +376,7 @@ class Number(Decimal, Signed, Printable, Evaluable):
             if variant == 'latex':
                 required.package['siunitx'] = True
                 return extra_sign + r'\SI{' + Decimal.__str__(abs(self)) \
-                    + '}{' + self.unit.printed + '}'
+                    + '}{' + self.unit.imprint(standalone=False) + '}'
             else:  # 'user_input'
                 return extra_sign + self_str + ' ' + self.unit.uiprinted
 

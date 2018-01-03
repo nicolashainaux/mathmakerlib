@@ -21,6 +21,7 @@
 
 from copy import deepcopy
 
+from mathmakerlib import required
 from mathmakerlib.core.word import Word
 from mathmakerlib.calculus.exponented import Exponented
 
@@ -94,3 +95,10 @@ class Unit(Exponented):
         else:
             return not (self.content == other.content
                         and self.exponent == other.exponent)
+
+    def imprint(self, start_expr=True, variant='latex', standalone=True):
+        if standalone and variant == 'latex':
+            required.package['siunitx'] = True
+            return r'\si{' + super().imprint(start_expr=start_expr) + '}'
+        else:
+            return super().imprint(start_expr=start_expr, variant=variant)
