@@ -138,12 +138,89 @@ def test_sqrt():
     assert Number(2).sqrt().rounded(Decimal('0.0001')) == Number('1.4142')
 
 
+def test_rounded():
+    """Check rounding is good."""
+    assert Number(4.2).rounded(0) == 4
+    assert Number(4.2).rounded(Decimal('1'), rounding=ROUND_HALF_UP) == 4
+    assert Number('4.2', unit='cm').rounded(0) == Number(4, unit='cm')
+
+
+def test_fracdigits_nb():
+    """Check fracdigits_nb() in different cases."""
+    assert all(Number(n).fracdigits_nb() == 0
+               for n in [0, 1, 8, Decimal(4), Decimal('4.0'),
+                         Decimal('4.00000000000000000000')])
+    assert all(Number(n).fracdigits_nb() == 1
+               for n in [Decimal('0.4'), Decimal('10.000') / 4])
+    assert all(Number(n).fracdigits_nb() == 0
+               for n in [-0, -1, -8, Decimal(-4), Decimal('-4.0'),
+                         Decimal('-4.00000000000000000000')])
+    assert all(Number(n).fracdigits_nb() == 1
+               for n in [Decimal('-0.4'), Decimal('-10.000') / 4])
+    assert Number('4.0').fracdigits_nb(ignore_trailing_zeros=False) == 1
+    assert Number('4', unit='cm').fracdigits_nb() == 0
+    assert Number('4.0', unit='cm').fracdigits_nb() == 0
+    assert Number('4.0', unit='cm').fracdigits_nb(ignore_trailing_zeros=False)\
+        == 1
+
+
 def test_quantize():
     """Check quantize() is correct."""
     assert Number(2).quantize(Decimal('0.01')) == Number('2.00')
     assert Number('3.6').quantize(Decimal('0.01')) == Number('3.60')
     assert Number('3.6', unit='mL').quantize(Decimal('0.01')) \
         == Number('3.60', unit='mL')
+    assert Number('3.6', unit='mL').quantize(Number('0.01')) \
+        == Number('3.60', unit='mL')
+
+
+def test_evaluate():
+    """Check evaluate() is correct."""
+    assert Number(4).evaluate() == Number(4)
+
+
+def test_printing_errors():
+    """Check exceptions raised by self.imprint()."""
+    with pytest.raises(ValueError) as excinfo:
+        Number('8.6').imprint(variant='undefined')
+    assert str(excinfo.value) == 'variant must belong to [\'latex\', ' \
+        '\'user_input\']; got \'undefined\' instead.'
+
+
+def test_printing():
+    """Check printing is correct."""
+    assert Number('8.6').printed == '8.6'
+    assert Number('8.60').printed == '8.60'
+    assert Number('8.6').imprint(mod_locale=LOCALE_US) == '8.6'
+    locale.setlocale(locale.LC_ALL, LOCALE_FR)
+    assert locale.str(Decimal('8.6')) == '8,6'
+    assert Number('8.6').printed == '8,6'
+    assert Number('8.6').uiprinted == '8.6'
+    assert Number('8.6').imprint(mod_locale=LOCALE_US) == '8.6'
+    assert Number('8.6').printed == '8,6'
+    assert Number('8.6', unit='cm').printed == '\SI{8,6}{cm}'
+    locale.setlocale(locale.LC_ALL, LOCALE_US)
+    assert Number('8.6').imprint(start_expr=False) == '+8.6'
+    required.package['siunitx'] = False
+    n = Number('9', unit='cm')
+    assert n.printed == r'\SI{9}{cm}'
+    assert required.package['siunitx']
+    assert n.uiprinted == '9 cm'
+    assert str(n) == '9 cm'
+    n = Number('9')
+    assert str(n) == '9'
+    assert Number(60, unit=Unit('cm', exponent=Number(2))).uiprinted \
+        == '60 cm^2'
+    assert Number('3.6', unit='mL').quantize(Number('0.01')).printed \
+        == r'\SI{3.60}{mL}'
+    assert Number('0.70', unit=r'\officialeuro').quantize(Number('0.01'))\
+        .printed == r'\SI{0.70}{\officialeuro}'
+
+
+def test_sign():
+    """Check Number.sign is correct."""
+    assert Number(4).sign == '+'
+    assert Number(-6).sign == '-'
 
 
 def test_additions_errors():
@@ -243,6 +320,10 @@ def test_multiplications():
     n = Number(4)
     n *= Number(4)
     n *= 4
+    n = Number(6)
+    p = Number(7)
+    assert n * p == Number(42)
+    assert (n * p).printed == '42'
     assert isinstance(n, Number)
     n = Number(6, unit='cm')
     p = Number(7)
@@ -368,56 +449,6 @@ def test_divisions():
     assert n / p == Number('1.75', unit=Unit('cm', exponent=Number(-1)))
 
 
-def test_printing_errors():
-    """Check exceptions raised by self.imprint()."""
-    with pytest.raises(ValueError) as excinfo:
-        Number('8.6').imprint(variant='undefined')
-    assert str(excinfo.value) == 'variant must belong to [\'latex\', ' \
-        '\'user_input\']; got \'undefined\' instead.'
-
-
-def test_evaluate():
-    """Check evaluate() is correct."""
-    assert Number(4).evaluate() == Number(4)
-
-
-def test_printing():
-    """Check printing is correct."""
-    assert Number('8.6').printed == '8.6'
-    assert Number('8.6').imprint(mod_locale=LOCALE_US) == '8.6'
-    locale.setlocale(locale.LC_ALL, LOCALE_FR)
-    assert locale.str(Decimal('8.6')) == '8,6'
-    assert Number('8.6').printed == '8,6'
-    assert Number('8.6').uiprinted == '8.6'
-    assert Number('8.6').imprint(mod_locale=LOCALE_US) == '8.6'
-    assert Number('8.6').printed == '8,6'
-    assert Number('8.6', unit='cm').printed == '\SI{8,6}{cm}'
-    locale.setlocale(locale.LC_ALL, LOCALE_US)
-    assert Number('8.6').imprint(start_expr=False) == '+8.6'
-    required.package['siunitx'] = False
-    n = Number('9', unit='cm')
-    assert n.printed == r'\SI{9}{cm}'
-    assert required.package['siunitx']
-    assert n.uiprinted == '9 cm'
-    assert str(n) == '9 cm'
-    n = Number('9')
-    assert str(n) == '9'
-    assert Number(60, unit=Unit('cm', exponent=Number(2))).uiprinted \
-        == '60 cm^2'
-
-
-def test_sign():
-    """Check Number.sign is correct."""
-    assert Number(4).sign == '+'
-    assert Number(-6).sign == '-'
-
-
-def test_rounded():
-    """Check rounding is good."""
-    assert Number(4.2).rounded(0) == 4
-    assert Number(4.2).rounded(Decimal('1'), rounding=ROUND_HALF_UP) == 4
-
-
 def test_is_power_of_10():
     """Check is_power_of_10() in different cases."""
     for n in [1, 10, 100, 1000, 10000, -1, -10, -100]:
@@ -468,20 +499,6 @@ def test_isolated_zeros():
     assert Number('0.04').isolated_zeros() == 0
     assert Number('0.0409').isolated_zeros() == 1
     assert Number('0.3006').isolated_zeros() == 2
-
-
-def test_fracdigits_nb():
-    """Check fracdigits_nb() in different cases."""
-    assert all(Number(n).fracdigits_nb() == 0
-               for n in [0, 1, 8, Decimal(4), Decimal('4.0'),
-                         Decimal('4.00000000000000000000')])
-    assert all(Number(n).fracdigits_nb() == 1
-               for n in [Decimal('0.4'), Decimal('10.000') / 4])
-    assert all(Number(n).fracdigits_nb() == 0
-               for n in [-0, -1, -8, Decimal(-4), Decimal('-4.0'),
-                         Decimal('-4.00000000000000000000')])
-    assert all(Number(n).fracdigits_nb() == 1
-               for n in [Decimal('-0.4'), Decimal('-10.000') / 4])
 
 
 def test_atomized():

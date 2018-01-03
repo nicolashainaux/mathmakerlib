@@ -361,9 +361,13 @@ class Number(Decimal, Signed, Printable, Evaluable):
             if mod_locale is not None:
                 restore_values = locale.setting_values()
                 locale.setlocale(locale.LC_ALL, mod_locale)
-            self_str = locale.str(Decimal(self))
+            self_str = locale.format(
+                '%.{}f'.format(
+                    self.fracdigits_nb(ignore_trailing_zeros=False)),
+                Decimal(self))
             if mod_locale is not None:
                 locale.setlocale(*restore_values)
+
         elif variant == 'user_input':
             self_str = Decimal.__str__(self)
         else:
@@ -385,9 +389,9 @@ class Number(Decimal, Signed, Printable, Evaluable):
 
     def standardized(self):
         """Turn 8.0 to 8 and 1E+1 to 10"""
-        return Number(self.quantize(Decimal(1))) \
+        return Number(self.quantize(Decimal(1)), unit=self.unit) \
             if self == self.to_integral() \
-            else Number(self.normalize())
+            else Number(self.normalize(), unit=self.unit)
 
     def nonzero_digits_nb(self):
         """Return the number of nonzero digits."""
@@ -411,11 +415,16 @@ class Number(Decimal, Signed, Printable, Evaluable):
                           For instance, Decimal('1'), Decimal('1.0') etc.
         """
         return Number(self.quantize(precision,
-                                    rounding=rounding)).standardized()
+                                    rounding=rounding),
+                      unit=self.unit).standardized()
 
-    def fracdigits_nb(self):
+    def fracdigits_nb(self, ignore_trailing_zeros=True):
         """Return the number of fractional digits."""
-        n = Number(abs(self)).standardized()
+        n = Number(Decimal(self), unit=None)
+        if ignore_trailing_zeros:
+            n = Number(abs(n)).standardized()
+        else:
+            n = abs(n)
         temp = len(str((n - n.rounded(Decimal(1), rounding=ROUND_DOWN)))) - 2
         return temp if temp >= 0 else 0
 
