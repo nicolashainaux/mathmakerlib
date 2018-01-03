@@ -289,7 +289,7 @@ class Drawable(Colored, metaclass=ABCMeta):
         if value in ['', None]:
             self._label = self._label_value = None
         elif isinstance(value, Printable):
-            self._label = value.uiprinted
+            self._label = value.printed
             self._label_value = value
         else:
             self._label = self._label_value = str(value)

@@ -19,11 +19,16 @@
 # along with Mathmaker Lib; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
+import sys
+import locale
 import pytest
 
 from mathmakerlib import required, mmlib_setup
 from mathmakerlib.calculus import Number
 from mathmakerlib.geometry import Point, Polygon, AngleMark, shoelace_formula
+
+LOCALE_US = 'en' if sys.platform.startswith('win') else 'en_US.UTF-8'
+LOCALE_FR = 'fr' if sys.platform.startswith('win') else 'fr_FR.UTF-8'
 
 
 @pytest.fixture()
@@ -451,10 +456,10 @@ def test_drawing_with_labeled_sides(pointO, pointA, pointB, pointC):
 
 % Draw Quadrilateral
 \draw[thick] (O)
--- (A) node[midway, below, sloped] {7 cm}
--- (B) node[midway, above, sloped] {5 cm}
--- (C) node[midway, above, sloped] {6 cm}
--- cycle node[midway, above, sloped] {4 cm};
+-- (A) node[midway, below, sloped] {\SI{7}{cm}}
+-- (B) node[midway, above, sloped] {\SI{5}{cm}}
+-- (C) node[midway, above, sloped] {\SI{6}{cm}}
+-- cycle node[midway, above, sloped] {\SI{4}{cm}};
 
 % Label Points
 
@@ -471,8 +476,8 @@ def test_drawing_with_labeled_sides(pointO, pointA, pointB, pointC):
 
 % Draw Quadrilateral
 \draw[thick] (O)
--- (A) node[midway, below, sloped] {7 cm}
--- (B) node[midway, above, sloped] {5 cm}
+-- (A) node[midway, below, sloped] {\SI{7}{cm}}
+-- (B) node[midway, above, sloped] {\SI{5}{cm}}
 -- (C) node[midway, above, sloped] {?}
 -- cycle;
 
@@ -494,15 +499,57 @@ def test_drawing_with_labeled_sides(pointO, pointA, pointB, pointC):
 
 % Draw Quadrilateral
 \draw[thick] (C)
--- (B) node[midway, above, sloped] {7 cm}
--- (A) node[midway, above, sloped] {5 cm}
--- (O) node[midway, below, sloped] {6 cm}
--- cycle node[midway, above, sloped] {4 cm};
+-- (B) node[midway, above, sloped] {\SI{7}{cm}}
+-- (A) node[midway, above, sloped] {\SI{5}{cm}}
+-- (O) node[midway, below, sloped] {\SI{6}{cm}}
+-- cycle node[midway, above, sloped] {\SI{4}{cm}};
 
 % Label Points
 
 \end{tikzpicture}
 """
+    p.setup_labels([Number('7.5', unit='cm'), None, None, None])
+    assert p.drawn == r"""
+\begin{tikzpicture}
+% Declare Points
+\coordinate (C) at (1,3);
+\coordinate (B) at (3,2);
+\coordinate (A) at (4,0);
+\coordinate (O) at (0,0);
+
+% Draw Quadrilateral
+\draw[thick] (C)
+-- (B) node[midway, above, sloped] {\SI{7.5}{cm}}
+-- (A)
+-- (O)
+-- cycle;
+
+% Label Points
+
+\end{tikzpicture}
+"""
+    locale.setlocale(locale.LC_ALL, LOCALE_FR)
+    p.setup_labels([Number('7.5', unit='cm'), None, None, None])
+    assert p.drawn == r"""
+\begin{tikzpicture}
+% Declare Points
+\coordinate (C) at (1,3);
+\coordinate (B) at (3,2);
+\coordinate (A) at (4,0);
+\coordinate (O) at (0,0);
+
+% Draw Quadrilateral
+\draw[thick] (C)
+-- (B) node[midway, above, sloped] {\SI{7,5}{cm}}
+-- (A)
+-- (O)
+-- cycle;
+
+% Label Points
+
+\end{tikzpicture}
+"""
+    locale.setlocale(locale.LC_ALL, LOCALE_US)
 
 
 def test_drawing_with_marked_sides(pointO, pointA, pointB, pointC):

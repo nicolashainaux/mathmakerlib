@@ -455,7 +455,7 @@ def test_drawing_with_linesegment_labels(A, B, E):
 \end{tikzpicture}
 """
     ls.label = Number(6, unit='cm')
-    assert ls.label == '6 cm'
+    assert ls.label == r'\SI{6}{cm}'
     assert ls.label_value == Number(6, unit='cm')
     assert ls.drawn == r"""
 \begin{tikzpicture}
@@ -468,7 +468,7 @@ def test_drawing_with_linesegment_labels(A, B, E):
 \draw (E) node[scale=0.67] {$\times$};
 
 % Draw Line Segment
-\draw[thick] (A) -- (E) node[midway, below, sloped] {6 cm};
+\draw[thick] (A) -- (E) node[midway, below, sloped] {\SI{6}{cm}};
 
 % Label Points
 \draw (A) node[left] {A};

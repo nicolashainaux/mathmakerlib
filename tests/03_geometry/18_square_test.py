@@ -86,10 +86,13 @@ r"""(0.25 cm, 0) -- (0.25 cm, 0.25 cm) -- (0, 0.25 cm);
 
 % Draw Square
 \draw[thick] (G)
--- (E) node[midway, below, sloped] {5 cm} node[midway, sloped, scale=0.5] {||}
--- (M) node[midway, below, sloped] {5 cm} node[midway, sloped, scale=0.5] {||}
--- (S) node[midway, above, sloped] {5 cm} node[midway, sloped, scale=0.5] {||}
--- cycle node[midway, below, sloped] {5 cm}"""\
+-- (E) node[midway, below, sloped] {\SI{5}{cm}}"""\
+r""" node[midway, sloped, scale=0.5] {||}
+-- (M) node[midway, below, sloped] {\SI{5}{cm}}"""\
+r""" node[midway, sloped, scale=0.5] {||}
+-- (S) node[midway, above, sloped] {\SI{5}{cm}}"""\
+r""" node[midway, sloped, scale=0.5] {||}
+-- cycle node[midway, below, sloped] {\SI{5}{cm}}"""\
 r""" node[midway, sloped, scale=0.5] {||};
 
 % Mark right angles
@@ -123,10 +126,13 @@ r"""(0.25 cm, 0) -- (0.25 cm, 0.25 cm) -- (0, 0.25 cm);
 
 % Draw Square
 \draw[thick] (G)
--- (E) node[midway, above, sloped] {5 cm} node[midway, sloped, scale=0.5] {||}
--- (M) node[midway, above, sloped] {5 cm} node[midway, sloped, scale=0.5] {||}
--- (S) node[midway, below, sloped] {5 cm} node[midway, sloped, scale=0.5] {||}
--- cycle node[midway, above, sloped] {5 cm}"""\
+-- (E) node[midway, above, sloped] {\SI{5}{cm}}"""\
+r""" node[midway, sloped, scale=0.5] {||}
+-- (M) node[midway, above, sloped] {\SI{5}{cm}}"""\
+r""" node[midway, sloped, scale=0.5] {||}
+-- (S) node[midway, below, sloped] {\SI{5}{cm}}"""\
+r""" node[midway, sloped, scale=0.5] {||}
+-- cycle node[midway, above, sloped] {\SI{5}{cm}}"""\
 r""" node[midway, sloped, scale=0.5] {||};
 
 % Mark right angles

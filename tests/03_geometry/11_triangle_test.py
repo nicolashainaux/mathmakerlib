@@ -117,9 +117,9 @@ def test_drawing_with_labeled_sides():
 
 % Draw Triangle
 \draw[thin] (B)
--- (O) node[midway, below, sloped, scale=0.9] {4 cm}
--- (T) node[midway, above, sloped, scale=0.9] {3.5 cm}
--- cycle node[midway, above, sloped, scale=0.9] {3 cm};
+-- (O) node[midway, below, sloped, scale=0.9] {\SI{4}{cm}}
+-- (T) node[midway, above, sloped, scale=0.9] {\SI{3.5}{cm}}
+-- cycle node[midway, above, sloped, scale=0.9] {\SI{3}{cm}};
 
 % Label Points
 
@@ -141,9 +141,9 @@ def test_drawing_with_labeled_sides():
 
 % Draw Triangle
 \draw[thin] (B)
--- (O) node[midway, below, sloped, scale=0.85] {9 dam}
--- (T) node[midway, below, sloped, scale=0.85] {8 dam}
--- cycle node[midway, above, sloped, scale=0.85] {4 dam};
+-- (O) node[midway, below, sloped, scale=0.85] {\SI{9}{dam}}
+-- (T) node[midway, below, sloped, scale=0.85] {\SI{8}{dam}}
+-- cycle node[midway, above, sloped, scale=0.85] {\SI{4}{dam}};
 
 % Label Points
 
@@ -168,9 +168,9 @@ def test_drawing_with_labeled_sides():
 
 % Draw Triangle
 \draw[thick] (A)
--- (B) node[midway, below, sloped, scale=0.85] {10 hm}
--- (C) node[midway, above, sloped, scale=0.85] {6 hm}
--- cycle node[midway, above, sloped, scale=0.85] {5 hm};
+-- (B) node[midway, below, sloped, scale=0.85] {\SI{10}{hm}}
+-- (C) node[midway, above, sloped, scale=0.85] {\SI{6}{hm}}
+-- cycle node[midway, above, sloped, scale=0.85] {\SI{5}{hm}};
 
 % Mark right angles
 \draw[thick, """\
@@ -201,9 +201,9 @@ r"""cm={cos(149.353), sin(149.353), -sin(149.353), cos(149.353), (B)}] """\
 
 % Draw Triangle
 \draw[thin] (M)
--- (N) node[midway, above, sloped, scale=0.85] {5 hm}
+-- (N) node[midway, above, sloped, scale=0.85] {\SI{5}{hm}}
 -- (O) node[midway, sloped, scale=0.5] {||}
--- cycle node[midway, below, sloped, scale=0.85] {9 hm} """\
+-- cycle node[midway, below, sloped, scale=0.85] {\SI{9}{hm}} """\
 r"""node[midway, sloped, scale=0.5] {||};
 
 % Label Points

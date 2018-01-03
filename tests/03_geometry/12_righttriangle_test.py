@@ -99,9 +99,9 @@ r"""(0.25 cm, 0) -- (0.25 cm, 0.25 cm) -- (0, 0.25 cm);
 
 % Draw RightTriangle
 \draw[thick] (I)
--- (C) node[midway, above, sloped] {3 cm}
--- (Y) node[midway, below, sloped] {4 cm}
--- cycle node[midway, above, sloped] {5 cm};
+-- (C) node[midway, above, sloped] {\SI{3}{cm}}
+-- (Y) node[midway, below, sloped] {\SI{4}{cm}}
+-- cycle node[midway, above, sloped] {\SI{5}{cm}};
 
 % Mark right angles
 \draw[thick, cm={cos(180), sin(180), -sin(180), cos(180), (C)}] """\
