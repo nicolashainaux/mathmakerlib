@@ -26,19 +26,25 @@ from mathmakerlib.calculus.tools import is_number, is_integer
 from mathmakerlib.calculus.tools import prime_factors
 from mathmakerlib.core.signed import Signed
 from mathmakerlib.core.printable import Printable
-# from mathmakerlib.core.evaluable import Evaluable
+from mathmakerlib.core.evaluable import Evaluable
 from mathmakerlib.exceptions import StopFractionReduction
 
 
-class Fraction(Signed, Printable):  # Evaluable
+class Fraction(Signed, Printable, Evaluable):
     """Fractions."""
 
     # To keep Fraction immutable, use __new__ not __init__
-    def __new__(cls, sign=None, numerator=None, denominator=None):
+    def __new__(cls, sign=None, numerator=None, denominator=None,
+                from_decimal=None):
         """
         Fraction(5, 8) is equivalent to Fraction('+', 5, 8).
         """
-        if sign in ['+', '-']:
+        if from_decimal is not None:
+            f = Number(10) ** max(1, from_decimal.fracdigits_nb())
+            sign = Sign(from_decimal)
+            numerator = (f * from_decimal).standardized()
+            denominator = f.standardized()
+        elif sign in ['+', '-']:
             if not (is_number(numerator) and is_number(denominator)):
                 raise TypeError('Numerator and denominator must be numbers. '
                                 'Got {} and {} instead.'
@@ -82,6 +88,18 @@ class Fraction(Signed, Printable):  # Evaluable
         return (self.sign != other.sign or self.numerator != other.numerator
                 or self.denominator != other.denominator)
 
+    def __lt__(self, other):
+        return (self.sign * self.numerator / self.denominator).__lt__(other)
+
+    def __gt__(self, other):
+        return (self.sign * self.numerator / self.denominator).__gt__(other)
+
+    def __le__(self, other):
+        return (self.sign * self.numerator / self.denominator).__le__(other)
+
+    def __ge__(self, other):
+        return (self.sign * self.numerator / self.denominator).__ge__(other)
+
     def __repr__(self):
         if self.sign == '+':
             return 'Fraction({}, {})'.format(self.numerator, self.denominator)
@@ -111,8 +129,9 @@ class Fraction(Signed, Printable):  # Evaluable
         elif variant == 'user_input':
             return '{}{}/{}'.format(s, self.numerator, self.denominator)
 
-    # def evaluate(self, **kwargs):
-    #     pass
+    def evaluate(self, **kwargs):
+        return self.sign.evaluate() \
+            * self.numerator.evaluate() / self.denominator.evaluate()
 
     def is_reducible(self):
         return gcd(int(self.numerator), int(self.denominator)) > 1

@@ -76,6 +76,18 @@ def test_instanciation():
     assert f.numerator == Number('-5')
     assert f.denominator == 8
     assert f.denominator == Number('8')
+    f = Fraction(from_decimal=Number('0.67'))
+    assert f.numerator == 67
+    assert f.denominator == 100
+    assert f.printed == r'\dfrac{67}{100}'
+
+
+def test_comparisons():
+    """Check Fraction can be compared."""
+    assert Fraction(5, 8) < 1
+    assert Fraction(5, 8) <= 1
+    assert Fraction(9, 8) > 1
+    assert Fraction(9, 8) >= 1
 
 
 def test_hash():
@@ -105,6 +117,12 @@ def test_printing():
     assert Fraction(5, 8).imprint(start_expr=False, variant='user_input') \
         == '+5/8'
     assert Fraction(5, 8).uiprinted == '5/8'
+
+
+def test_evaluation():
+    """Check Fractions are correctly evaluated."""
+    assert Fraction(3, 8).evaluate() == Number('0.375')
+    assert Fraction(from_decimal=Number('1.79')).evaluate() == Number('1.79')
 
 
 def test_reducing():
