@@ -391,6 +391,7 @@ def test_printing():
     assert Number('8.6').uiprinted == '8.6'
     assert Number('8.6').imprint(mod_locale=LOCALE_US) == '8.6'
     assert Number('8.6').printed == '8,6'
+    assert Number('8.6', unit='cm').printed == '\SI{8,6}{cm}'
     locale.setlocale(locale.LC_ALL, LOCALE_US)
     assert Number('8.6').imprint(start_expr=False) == '+8.6'
     required.package['siunitx'] = False

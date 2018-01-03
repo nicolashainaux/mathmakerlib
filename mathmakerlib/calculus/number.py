@@ -375,7 +375,7 @@ class Number(Decimal, Signed, Printable, Evaluable):
         else:
             if variant == 'latex':
                 required.package['siunitx'] = True
-                return extra_sign + r'\SI{' + Decimal.__str__(abs(self)) \
+                return extra_sign + r'\SI{' + self_str \
                     + '}{' + self.unit.imprint(standalone=False) + '}'
             else:  # 'user_input'
                 return extra_sign + self_str + ' ' + self.unit.uiprinted
