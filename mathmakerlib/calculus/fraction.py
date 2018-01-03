@@ -89,16 +89,16 @@ class Fraction(Signed, Printable, Evaluable):
                 or self.denominator != other.denominator)
 
     def __lt__(self, other):
-        return (self.sign * self.numerator / self.denominator).__lt__(other)
+        return self.evaluate().__lt__(other)
 
     def __gt__(self, other):
-        return (self.sign * self.numerator / self.denominator).__gt__(other)
+        return self.evaluate().__gt__(other)
 
     def __le__(self, other):
-        return (self.sign * self.numerator / self.denominator).__le__(other)
+        return self.evaluate().__le__(other)
 
     def __ge__(self, other):
-        return (self.sign * self.numerator / self.denominator).__ge__(other)
+        return self.evaluate().__ge__(other)
 
     def __repr__(self):
         if self.sign == '+':
