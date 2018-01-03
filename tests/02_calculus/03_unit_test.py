@@ -29,7 +29,12 @@ def test_physical_quantity():
     assert physical_quantity('mm') == 'length'
     assert physical_quantity('hL') == 'capacity'
     assert physical_quantity('pg') == 'mass'
+    assert physical_quantity(Unit('pg')) == 'mass'
+    assert physical_quantity(Unit('mm', exponent=2)) == 'area'
+    assert physical_quantity(Unit('mm', exponent=3)) == 'volume'
     assert physical_quantity('undefined') is None
+    assert physical_quantity(r'\officialeuro') == 'currency'
+    assert physical_quantity(r'\textdegree') == 'angle'
 
 
 def test_Unit_errors():
