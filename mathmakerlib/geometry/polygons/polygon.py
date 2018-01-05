@@ -59,7 +59,7 @@ class Polygon(Drawable, Colored, HasThickness, Oriented):
     def __init__(self, *vertices, name=None,
                  draw_vertices=False, label_vertices=True,
                  thickness='thick', color=None, rotation_angle=0,
-                 winding=None):
+                 winding=None, do_cycle=True):
         r"""
         Initialize Polygon
 
@@ -90,6 +90,7 @@ class Polygon(Drawable, Colored, HasThickness, Oriented):
         """
         self.thickness = thickness
         self.color = color
+        self.do_cycle = do_cycle
         self.draw_vertices = draw_vertices
         self.label_vertices = label_vertices
         if len(vertices) <= 2:
@@ -306,6 +307,18 @@ class Polygon(Drawable, Colored, HasThickness, Oriented):
                 s.mark = m
 
     @property
+    def do_cycle(self):
+        return self._do_cycle
+
+    @do_cycle.setter
+    def do_cycle(self, value):
+        if isinstance(value, bool):
+            self._do_cycle = value
+        else:
+            raise TypeError('do_cycle must be a boolean; '
+                            'got {} instead.'.format(type(value)))
+
+    @property
     def draw_vertices(self):
         return self._draw_vertices
 
@@ -350,7 +363,10 @@ class Polygon(Drawable, Colored, HasThickness, Oriented):
         return '\n'.join([v.tikz_draw()[0] for v in self.vertices]) + '\n'
 
     def _tikz_draw_sides(self):
-        return '\n'.join([s.tikz_draw_section() for s in self.sides[:-1]])
+        if self.do_cycle:
+            return '\n'.join([s.tikz_draw_section() for s in self.sides[:-1]])
+        else:
+            return '\n'.join([s.tikz_draw_section() for s in self.sides])
 
     def _tikz_draw_angles_marks(self):
         marks = '\n'.join([a.tikz_angle_mark()
@@ -371,13 +387,20 @@ class Polygon(Drawable, Colored, HasThickness, Oriented):
         output = []
         if self.draw_vertices:
             output.append(self._tikz_draw_vertices())
-        output.append('\draw{} ({})\n{}\n-- cycle{}{}{};'
-                      .format(tikz_options_list('draw', self),
-                              self.vertices[0].name,
-                              self._tikz_draw_sides(),
-                              self.sides[-1].tikz_label(),
-                              self.sides[-1]._tikz_ls_mark(),
-                              self._tikz_draw_angles_marks()))
+        if self.do_cycle:
+            output.append('\draw{} ({})\n{}\n-- cycle{}{}{};'
+                          .format(tikz_options_list('draw', self),
+                                  self.vertices[0].name,
+                                  self._tikz_draw_sides(),
+                                  self.sides[-1].tikz_label(),
+                                  self.sides[-1]._tikz_ls_mark(),
+                                  self._tikz_draw_angles_marks()))
+        else:
+            output.append('\draw{} ({})\n{}{};'
+                          .format(tikz_options_list('draw', self),
+                                  self.vertices[0].name,
+                                  self._tikz_draw_sides(),
+                                  self._tikz_draw_angles_marks()))
         if any([θ.mark_right for θ in self.angles]):
             output.append(self._tikz_draw_right_angles_marks())
         return output

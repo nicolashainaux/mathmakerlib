@@ -616,6 +616,26 @@ def test_drawing_with_marked_sides(pointO, pointA, pointB, pointC):
 
 \end{tikzpicture}
 """
+    p.do_cycle = False
+    assert p.drawn == r"""
+\begin{tikzpicture}
+% Declare Points
+\coordinate (O) at (0,0);
+\coordinate (A) at (4,0);
+\coordinate (B) at (3,2);
+\coordinate (C) at (1,3);
+
+% Draw Quadrilateral
+\draw[thick] (O)
+-- (A) node[midway, sloped, scale=0.5] {|}
+-- (B) node[midway, sloped, scale=0.5] {||}
+-- (C) node[midway, sloped, scale=0.5] {O}
+-- (O) node[midway, sloped, scale=0.5] {|||};
+
+% Label Points
+
+\end{tikzpicture}
+"""
 
 
 def test_drawing_with_marked_angles(pointO, pointA, pointB, pointC, pointJ):
