@@ -95,6 +95,10 @@ def test_instanciation_errors(pointO, pointI, pointJ):
         Polygon(pointO, pointI, pointJ, label_vertices=0)
     assert str(excinfo.value) == 'label_vertices must be a boolean; ' \
         'got <class \'int\'> instead.'
+    with pytest.raises(TypeError) as excinfo:
+        Polygon(pointO, pointI, pointJ, do_cycle=0)
+    assert str(excinfo.value) == 'do_cycle must be a boolean; ' \
+        'got <class \'int\'> instead.'
 
 
 def test_instanciation(pointO, pointA, pointB, pointC):
@@ -630,7 +634,7 @@ def test_drawing_with_marked_sides(pointO, pointA, pointB, pointC):
 -- (A) node[midway, sloped, scale=0.5] {|}
 -- (B) node[midway, sloped, scale=0.5] {||}
 -- (C) node[midway, sloped, scale=0.5] {O}
--- (O) node[midway, sloped, scale=0.5] {|||};
+-- (O) node[midway, sloped, scale=0.5] {|||} -- cycle;
 
 % Label Points
 

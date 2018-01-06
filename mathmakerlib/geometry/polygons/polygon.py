@@ -396,7 +396,7 @@ class Polygon(Drawable, Colored, HasThickness, Oriented):
                                   self.sides[-1]._tikz_ls_mark(),
                                   self._tikz_draw_angles_marks()))
         else:
-            output.append('\draw{} ({})\n{}{};'
+            output.append('\draw{} ({})\n{}{} -- cycle;'
                           .format(tikz_options_list('draw', self),
                                   self.vertices[0].name,
                                   self._tikz_draw_sides(),
