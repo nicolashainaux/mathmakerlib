@@ -1,8 +1,23 @@
 Changelog
 =========
 
+Version 0.5 (2018-01-10)
+------------------------
+
+* Add Number.quantize().
+* A Number can be converted into a another unit of the same physical quantity.
+* Accept int as exponent (or even content) of an Exponented.
+* Fractions can be created from a decimal Number.
+* Fractions become Evaluable and can be compared to other numbers.
+* Standalone Units will be printed using siunitx (e.g. as '\\si{cm}').
+* Fix bug: current locale is ignored when printing a number having a unit.
+* Do not automatically remove possible trailing zeros when printing a Number.
+* Add the tonne (t) as mass unit.
+* An optional patch allow Polygons to be drawn to the first vertex again instead of only cycling (default behaviour).
+
+
 Version 0.4 (2017-12-19)
--------------------------
+------------------------
 
 * Add more complex geometric objects: Polygon, Triangle, RightTriangle, EquilateralTriangle, IsoscelesTriangle, Quadrilateral, Rhombus, Rectangle, Square.
 * Numbers can be "copied" using copy.copy() or copy.deepcopy().
@@ -15,7 +30,7 @@ Version 0.4 (2017-12-19)
 Patch 0.4.1 (2018-01-01)
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-* Fix the locale monkey patch
+* Fix the locale monkey patch.
 
 Version 0.3 (2017-11-17)
 ------------------------

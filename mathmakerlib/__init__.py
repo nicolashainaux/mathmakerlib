@@ -25,7 +25,7 @@ from . import locale_patch, calculus, core, geometry
 __all__ = ['required', 'colors_names', 'mmlib_setup', 'exceptions',
            'locale_patch', 'core', 'calculus', 'geometry']
 
-__version_info__ = (0, 4, 1)
+__version_info__ = (0, 5, 0)
 __dev__ = 0
 __patch_nb__ = 0
 __version__ = '.'.join(str(c) for c in __version_info__)
