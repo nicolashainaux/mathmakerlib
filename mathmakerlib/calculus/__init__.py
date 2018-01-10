@@ -23,10 +23,11 @@ from .tools import is_number, is_integer, is_natural, prime_factors
 from .exponented import Exponented
 from .number import Sign, Number, move_fracdigits_to, remove_fracdigits_from
 from .number import fix_fracdigits
-from .unit import Unit, physical_quantity
+from .unit import Unit, physical_quantity, difference_of_orders_of_magnitude
 from .fraction import Fraction
 
 __all__ = ['is_number', 'is_integer', 'is_natural', 'Exponented', 'Sign',
            'Number', 'move_fracdigits_to', 'remove_fracdigits_from',
            'fix_fracdigits', 'Unit', 'physical_quantity',
+           'difference_of_orders_of_magnitude',
            'Fraction', 'prime_factors']

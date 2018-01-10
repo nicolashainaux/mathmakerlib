@@ -20,6 +20,7 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 from copy import deepcopy
+from decimal import Decimal
 
 from mathmakerlib import required
 from mathmakerlib.core.word import Word
@@ -71,6 +72,30 @@ def physical_quantity(u):
                     return 'volume'
             return pq
     return None
+
+
+def difference_of_orders_of_magnitude(unit1, unit2):
+    """
+    Return the required power of 10 to multiply unit1 by, to get unit2.
+
+    :param unit1: the first unit
+    :type unit1: str or Unit
+    :param unit2: the second unit (to get from unit1)
+    :type unit2: str or Unit
+    :rtype: decimal.Decimal
+    """
+    if isinstance(unit1, str):
+        unit1 = Unit(unit1)
+    if isinstance(unit2, str):
+        unit2 = Unit(unit2)
+    phq = physical_quantity(unit1)
+    if phq != physical_quantity(unit2):
+        raise TypeError('Cannot give the difference of orders of magnitude '
+                        'between two units that do not belong to the same '
+                        'physical quantity ({} and {}).'
+                        .format(unit1, unit2))
+    return 10 ** Decimal(str(PHYSICAL_QUANTITIES[phq].index(unit2.content)
+                             - PHYSICAL_QUANTITIES[phq].index(unit1.content)))
 
 
 class Unit(Exponented):

@@ -31,7 +31,7 @@ from mathmakerlib.calculus.tools import is_number, is_integer
 from mathmakerlib.core.signed import Signed
 from mathmakerlib.core.printable import Printable
 from mathmakerlib.core.evaluable import Evaluable
-from mathmakerlib.calculus.unit import Unit
+from mathmakerlib.calculus.unit import Unit, difference_of_orders_of_magnitude
 
 
 class Sign(Printable, Evaluable):
@@ -392,6 +392,20 @@ class Number(Decimal, Signed, Printable, Evaluable):
         return Number(self.quantize(Decimal(1)), unit=self.unit) \
             if self == self.to_integral() \
             else Number(self.normalize(), unit=self.unit)
+
+    def converted_to(self, unit):
+        if isinstance(unit, str):
+            unit = Unit(unit)
+        try:
+            factor = difference_of_orders_of_magnitude(str(self.unit), unit)
+        except TypeError as excinfo:
+            if str(excinfo).startswith('Cannot give the difference of orders '
+                                       'of magnitude between two units that '
+                                       'do not belong to the same '
+                                       'physical quantity'):
+                raise TypeError('Cannot convert {} into {}.'
+                                .format(self.uiprinted, unit.uiprinted))
+        return Number(self * factor, unit=unit)
 
     def nonzero_digits_nb(self):
         """Return the number of nonzero digits."""

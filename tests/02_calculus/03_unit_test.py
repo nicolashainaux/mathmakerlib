@@ -20,8 +20,10 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 import pytest
+from decimal import Decimal
 
 from mathmakerlib.calculus import Unit, physical_quantity, Number
+from mathmakerlib.calculus import difference_of_orders_of_magnitude
 
 
 def test_physical_quantity():
@@ -35,6 +37,22 @@ def test_physical_quantity():
     assert physical_quantity('undefined') is None
     assert physical_quantity(r'\officialeuro') == 'currency'
     assert physical_quantity(r'\textdegree') == 'angle'
+
+
+def test_difference_of_orders_of_magnitude_exceptions():
+    """Check wrong units trigger an error."""
+    with pytest.raises(TypeError) as excinfo:
+        difference_of_orders_of_magnitude('cm', 'hL')
+    assert str(excinfo.value) == 'Cannot give the difference of orders of ' \
+        'magnitude between two units that do not belong to the same physical '\
+        'quantity (cm and hL).'
+
+
+def test_difference_of_orders_of_magnitude():
+    """Check the difference of orders of magnitude is calculated correctly."""
+    assert difference_of_orders_of_magnitude('L', 'mL') == Decimal('1000')
+    assert difference_of_orders_of_magnitude('cm', 'm') == Decimal('0.01')
+    assert difference_of_orders_of_magnitude('kg', 'mg') == Decimal('1000000')
 
 
 def test_Unit_errors():

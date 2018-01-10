@@ -138,6 +138,30 @@ def test_sqrt():
     assert Number(2).sqrt().rounded(Decimal('0.0001')) == Number('1.4142')
 
 
+def test_conversions_errors():
+    """Check numbers' conversions errors."""
+    i = Number(6, unit='m')
+    with pytest.raises(TypeError) as excinfo:
+        i.converted_to('g')
+    assert str(excinfo.value) == 'Cannot convert 6 m into g.'
+
+
+def test_conversions():
+    """Check numbers' conversions."""
+    i = Number(6, unit='m')
+    j = i.converted_to('cm')
+    assert str(j.unit) == 'cm'
+    assert j.uiprinted == '600 cm'
+    i = Number('0.25', unit='kg')
+    j = i.converted_to('kg')
+    assert str(j.unit) == 'kg'
+    assert j.uiprinted == '0.25 kg'
+    i = Number('1.096', unit='L')
+    j = i.converted_to('hL')
+    assert str(j.unit) == 'hL'
+    assert j.uiprinted == '0.01096 hL'
+
+
 def test_rounded():
     """Check rounding is good."""
     assert Number(4.2).rounded(0) == 4
