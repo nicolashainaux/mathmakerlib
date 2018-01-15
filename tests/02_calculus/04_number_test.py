@@ -647,6 +647,35 @@ def test_split():
     assert Number(14).split(operation='difference', return_all=True) \
         == [(15, 1), (16, 2), (17, 3), (18, 4,), (19, 5), (20, 6), (21, 7),
             (22, 8), (23, 9), (24, 10), (25, 11), (26, 12), (27, 13)]
+    assert Number(7).split(return_all=True) \
+        == [(1, 6), (2, 5), (3, 4), (4, 3), (5, 2), (6, 1)]
+    assert Number(7).split(return_all=True, int_as_halves=True) \
+        == [(Number('1.5'), Number('5.5')),
+            (Number('2.5'), Number('4.5')),
+            (Number('3.5'), Number('3.5')),
+            (Number('4.5'), Number('2.5')),
+            (Number('5.5'), Number('1.5')),
+            (Number('6.5'), Number('0.5'))]
+    assert Number(7).split(return_all=True, int_as_quarters=True) \
+        == [(Number('1.25'), Number('5.75')),
+            (Number('2.25'), Number('4.75')),
+            (Number('3.25'), Number('3.75')),
+            (Number('4.25'), Number('2.75')),
+            (Number('5.25'), Number('1.75')),
+            (Number('6.25'), Number('0.75'))]
+    assert Number(7).split(return_all=True, int_as_halves_or_quarters=True) \
+        in [[(Number('1.25'), Number('5.75')),
+             (Number('2.25'), Number('4.75')),
+             (Number('3.25'), Number('3.75')),
+             (Number('4.25'), Number('2.75')),
+             (Number('5.25'), Number('1.75')),
+             (Number('6.25'), Number('0.75'))],
+            [(Number('1.5'), Number('5.5')),
+             (Number('2.5'), Number('4.5')),
+             (Number('3.5'), Number('3.5')),
+             (Number('4.5'), Number('2.5')),
+             (Number('5.5'), Number('1.5')),
+             (Number('6.5'), Number('0.5'))]]
 
 
 def test_move_fracdigits_to():

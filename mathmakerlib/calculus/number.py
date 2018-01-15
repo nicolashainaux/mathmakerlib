@@ -540,7 +540,9 @@ class Number(Decimal, Signed, Printable, Evaluable):
         else:
             return random.choice(results)
 
-    def split(self, operation='sum', dig=0, return_all=False):
+    def split(self, operation='sum', dig=0, return_all=False,
+              int_as_halves=False, int_as_quarters=False,
+              int_as_halves_or_quarters=False):
         """
         Split self as a sum or difference, e.g. self = a + b or self = a - b
 
@@ -554,6 +556,16 @@ class Number(Decimal, Signed, Printable, Evaluable):
         :type operation: str
         :param dig: extra depth level to use
         :type dig: int
+        :param int_as_halves: whether integers should be split as two integers
+        ± 0.5. Disabled if self is not integer.
+        :type int_as_halves: bool
+        :param int_as_quarters: whether integers should be split as two
+        integers ± 0.25 Disabled if self is not integer.
+        :type int_as_quarters: bool
+        :param int_as_halves_or_quarters: whether integers should be split as
+        two integers ± 0.5 or ±0.25 (randomly). Disabled if self is not
+        integer.
+        :type int_as_halves_or_quarters: bool
         :rtype: tuple (of numbers)
         """
         if operation not in ['sum', 'difference', '+', '-']:
@@ -587,18 +599,34 @@ class Number(Decimal, Signed, Printable, Evaluable):
         if depth >= 1:
             seq = [i for i in seq
                    if not is_integer(i * (10 ** (depth - 1)))]
+        delta = 0
+        if is_integer(self):
+            if int_as_halves_or_quarters:
+                if random.choice([True, False]):
+                    int_as_halves, int_as_quarters = True, False
+                    int_as_halves, int_as_quarters = False, True
+            if int_as_halves:
+                delta = Number('0.5')
+            if int_as_quarters:
+                delta = Number('0.25')
         if return_all:
             if operation in ['sum', '+']:
-                return [(Number(a), Number(n - a)) for a in seq]
+                return [(Number(a) + delta, Number(n - a) - delta)
+                        for a in seq]
             elif operation in ['difference', '-']:
-                return [(Number(n + b), Number(b)) for b in seq]
+                return [(Number(n + b) + delta, Number(b) + delta)
+                        for b in seq]
         else:
             if operation in ['sum', '+']:
                 a = random.choice(seq)
                 b = n - a
+                a += delta
+                b -= delta
             elif operation in ['difference', '-']:
                 b = random.choice(seq)
                 a = n + b
+                a += delta
+                b += delta
             return (Number(a), Number(b))
 
 
