@@ -562,7 +562,7 @@ class Number(Decimal, Signed, Printable, Evaluable):
 
     def split(self, operation='sum', dig=0, return_all=False,
               int_as_halves=False, int_as_quarters=False,
-              int_as_halves_or_quarters=False):
+              int_as_halves_or_quarters=False, integer_split_at_unit=False):
         """
         Split self as a sum or difference, e.g. self = a + b or self = a - b
 
@@ -591,8 +591,12 @@ class Number(Decimal, Signed, Printable, Evaluable):
         if operation not in ['sum', 'difference', '+', '-']:
             raise ValueError('Argument "operation" should be either \'sum\' '
                              'or \'difference\'.')
-        n_depth = self.fracdigits_nb()
-        depth = dig + self.fracdigits_nb()
+        if integer_split_at_unit:
+            n_depth = self.fracdigits_nb()
+            depth = dig + self.fracdigits_nb()
+        else:
+            n_depth = self.lowest_nonzero_digit_index()
+            depth = dig + self.lowest_nonzero_digit_index()
         n = self
         if operation in ['sum', '+']:
             if self.is_power_of_10() and abs(self) <= 1 and dig == 0:

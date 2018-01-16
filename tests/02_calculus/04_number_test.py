@@ -687,6 +687,61 @@ def test_split():
              (Number('4.5'), Number('2.5')),
              (Number('5.5'), Number('1.5')),
              (Number('6.5'), Number('0.5'))]]
+    assert Number(20).split(return_all=True, integer_split_at_unit=True) == \
+        [(Number('1'), Number('19')),
+         (Number('2'), Number('18')),
+         (Number('3'), Number('17')),
+         (Number('4'), Number('16')),
+         (Number('5'), Number('15')),
+         (Number('6'), Number('14')),
+         (Number('7'), Number('13')),
+         (Number('8'), Number('12')),
+         (Number('9'), Number('11')),
+         (Number('10'), Number('10')),
+         (Number('11'), Number('9')),
+         (Number('12'), Number('8')),
+         (Number('13'), Number('7')),
+         (Number('14'), Number('6')),
+         (Number('15'), Number('5')),
+         (Number('16'), Number('4')),
+         (Number('17'), Number('3')),
+         (Number('18'), Number('2')),
+         (Number('19'), Number('1'))]
+    assert Number(20).split(return_all=True) == [(Number('10'), Number('10'))]
+    assert Number(70).split(return_all=True) == \
+        [(Number('10'), Number('60')),
+         (Number('20'), Number('50')),
+         (Number('30'), Number('40')),
+         (Number('40'), Number('30')),
+         (Number('50'), Number('20')),
+         (Number('60'), Number('10'))]
+    assert Number(700).split(return_all=True) == \
+        [(Number('100'), Number('600')),
+         (Number('200'), Number('500')),
+         (Number('300'), Number('400')),
+         (Number('400'), Number('300')),
+         (Number('500'), Number('200')),
+         (Number('600'), Number('100'))]
+    assert Number(200).split(dig=1, return_all=True) == \
+        [(Number('10'), Number('190')),
+         (Number('20'), Number('180')),
+         (Number('30'), Number('170')),
+         (Number('40'), Number('160')),
+         (Number('50'), Number('150')),
+         (Number('60'), Number('140')),
+         (Number('70'), Number('130')),
+         (Number('80'), Number('120')),
+         (Number('90'), Number('110')),
+         (Number('100'), Number('100')),
+         (Number('110'), Number('90')),
+         (Number('120'), Number('80')),
+         (Number('130'), Number('70')),
+         (Number('140'), Number('60')),
+         (Number('150'), Number('50')),
+         (Number('160'), Number('40')),
+         (Number('170'), Number('30')),
+         (Number('180'), Number('20')),
+         (Number('190'), Number('10'))]
 
 
 def test_move_fracdigits_to():
