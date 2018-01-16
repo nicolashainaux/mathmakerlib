@@ -660,6 +660,34 @@ def test_split():
             (22, 8), (23, 9), (24, 10), (25, 11), (26, 12), (27, 13)]
     assert Number(7).split(return_all=True) \
         == [(1, 6), (2, 5), (3, 4), (4, 3), (5, 2), (6, 1)]
+    assert Number(3).split(return_all=True, dig=1) \
+        == [(Number('0.1'), Number('2.9')),
+            (Number('0.2'), Number('2.8')),
+            (Number('0.3'), Number('2.7')),
+            (Number('0.4'), Number('2.6')),
+            (Number('0.5'), Number('2.5')),
+            (Number('0.6'), Number('2.4')),
+            (Number('0.7'), Number('2.3')),
+            (Number('0.8'), Number('2.2')),
+            (Number('0.9'), Number('2.1')),
+            (Number('1.1'), Number('1.9')),
+            (Number('1.2'), Number('1.8')),
+            (Number('1.3'), Number('1.7')),
+            (Number('1.4'), Number('1.6')),
+            (Number('1.5'), Number('1.5')),
+            (Number('1.6'), Number('1.4')),
+            (Number('1.7'), Number('1.3')),
+            (Number('1.8'), Number('1.2')),
+            (Number('1.9'), Number('1.1')),
+            (Number('2.1'), Number('0.9')),
+            (Number('2.2'), Number('0.8')),
+            (Number('2.3'), Number('0.7')),
+            (Number('2.4'), Number('0.6')),
+            (Number('2.5'), Number('0.5')),
+            (Number('2.6'), Number('0.4')),
+            (Number('2.7'), Number('0.3')),
+            (Number('2.8'), Number('0.2')),
+            (Number('2.9'), Number('0.1'))]
     assert Number(7).split(return_all=True, int_as_halves=True) \
         == [(Number('1.5'), Number('5.5')),
             (Number('2.5'), Number('4.5')),
