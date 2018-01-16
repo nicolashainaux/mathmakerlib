@@ -509,6 +509,17 @@ def test_nonzero_digits_nb():
     assert Number('30.506').nonzero_digits_nb() == 3
 
 
+def test_lowest_nonzero_digit_index():
+    """Check lowest_nonzero_digit_index() in different cases."""
+    assert Number('0').lowest_nonzero_digit_index() is None
+    assert Number('1.2').lowest_nonzero_digit_index() == 1
+    assert Number('1.09').lowest_nonzero_digit_index() == 2
+    assert Number('4.006').lowest_nonzero_digit_index() == 3
+    assert Number('40').lowest_nonzero_digit_index() == -1
+    assert Number('300').lowest_nonzero_digit_index() == -2
+    assert Number('6000').lowest_nonzero_digit_index() == -3
+
+
 def test_isolated_zeros():
     """Check isolated_zeros() in different cases."""
     assert Number('0').isolated_zeros() == 0

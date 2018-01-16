@@ -407,6 +407,26 @@ class Number(Decimal, Signed, Printable, Evaluable):
                                 .format(self.uiprinted, unit.uiprinted))
         return Number(self * factor, unit=unit)
 
+    def lowest_nonzero_digit_index(self):
+        """
+        Index of the lowest digit different from zero.
+
+        Indices are 0 for the unit position, 1 for tenths, 2 for hundredths,
+        etc. and -1 for tens, -2 for hundreds etc.
+
+        If self is 0, then return None.
+        """
+        if self == 0:
+            return None
+        fdn = self.fracdigits_nb()
+        if fdn > 0:
+            return fdn
+        n_tenth = self / 10
+        if n_tenth.fracdigits_nb() == 0:
+            return -1 + n_tenth.lowest_nonzero_digit_index()
+        else:
+            return 0
+
     def nonzero_digits_nb(self):
         """Return the number of nonzero digits."""
         n = str(abs(self.standardized()))
