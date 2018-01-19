@@ -19,11 +19,11 @@
 # along with Mathmaker Lib; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-from . import required, colors_names, exceptions, mmlib_setup
+from . import required, colors_names, exceptions, mmlib_setup, mmlib_constants
 from . import locale_patch, calculus, core, geometry
 
-__all__ = ['required', 'colors_names', 'mmlib_setup', 'exceptions',
-           'locale_patch', 'core', 'calculus', 'geometry']
+__all__ = ['required', 'colors_names', 'mmlib_setup', 'mmlib_constants',
+           'exceptions', 'locale_patch', 'core', 'calculus', 'geometry']
 
 __version_info__ = (0, 5, 0)
 __dev__ = 0

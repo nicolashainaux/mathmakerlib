@@ -36,11 +36,13 @@ LOCALE_US = 'en' if sys.platform.startswith('win') else 'en_US.UTF-8'
 class AngleMark(Colored, HasThickness, HasRadius):
 
     def __init__(self, color=None, thickness='thick',
-                 radius=Number('0.25', unit='cm'), variety='single'):
+                 radius=Number('0.25', unit='cm'), variety='single',
+                 decoration=None):
         self.color = color
         self.thickness = thickness
         self.radius = radius
         self.variety = variety
+        self.decoration = decoration
 
     @property
     def variety(self):
@@ -52,17 +54,33 @@ class AngleMark(Colored, HasThickness, HasRadius):
             raise TypeError('AngleMark\'s variety can be \'single\', '
                             '\'double\' or \'triple\'. Found {} instead ('
                             'type: {}).'
-                            .format(value, type(value)))
+                            .format(repr(value), type(value)))
         self._variety = value
+
+    @property
+    def decoration(self):
+        return self._decoration
+
+    @decoration.setter
+    def decoration(self, value):
+        if value not in [None, 'singledash', 'doubledash', 'tripledash']:
+            raise TypeError('AngleMark\'s decoration can be None, '
+                            '\'singledash\', \'doubledash\' or '
+                            '\'tripledash\'. Found {} instead (type: {}).'
+                            .format(repr(value), type(value)))
+        self._decoration = value
 
     def tikz_mark_attributes(self, radius_coeff=1):
         if not is_number(radius_coeff):
             raise TypeError('radius_coeff must be a number, found {} instead.'
                             .format(type(radius_coeff)))
         attributes = ['draw']
-        for attr in [self.color, self.thickness]:
+        for attr in [self.decoration, self.color, self.thickness]:
             if attr is not None:
                 attributes.append(attr)
+        if self.decoration is not None:
+            required.tikz_library['decorations.markings'] = True
+            required.tikzset[self.decoration + '_decoration'] = True
         if self.radius is not None:
             attributes.append('angle radius = {}'
                               .format((self.radius * radius_coeff)

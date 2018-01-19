@@ -62,6 +62,11 @@ def test_angle_mark():
         AngleMark().tikz_mark_attributes(radius_coeff='a')
     assert str(excinfo.value) == 'radius_coeff must be a number, '\
         'found <class \'str\'> instead.'
+    with pytest.raises(TypeError) as excinfo:
+        AngleMark(decoration='unknown')
+    assert str(excinfo.value) == 'AngleMark\'s decoration can be None, ' \
+        '\'singledash\', \'doubledash\' or \'tripledash\'. ' \
+        'Found \'unknown\' instead (type: <class \'str\'>).'
 
 
 def test_instanciation_errors(pointO, pointI, pointJ):
@@ -87,7 +92,7 @@ def test_instanciation_errors(pointO, pointI, pointJ):
     with pytest.raises(TypeError) as excinfo:
         Angle(pointO, pointI, pointJ, mark=AngleMark(variety='unknown'))
     assert str(excinfo.value) == 'AngleMark\'s variety can be \'single\', ' \
-        '\'double\' or \'triple\'. Found unknown instead (type: ' \
+        '\'double\' or \'triple\'. Found \'unknown\' instead (type: ' \
         '<class \'str\'>).'
 
 
@@ -202,6 +207,90 @@ pic [draw, thick, angle radius = 0.58 cm] {angle = X--A--Y};
 pic [draw, thick, angle radius = 0.5 cm] {angle = X--A--Y}
 pic [draw, thick, angle radius = 0.58 cm] {angle = X--A--Y}
 pic [draw, thick, angle radius = 0.66 cm] {angle = X--A--Y};
+
+% Label Points
+
+\end{tikzpicture}
+"""
+    α.mark.variety = 'single'
+    α.mark.decoration = 'singledash'
+    assert α.drawn == r"""
+\begin{tikzpicture}
+% Declare Points
+\coordinate (X) at (6,1);
+\coordinate (A) at (0,0);
+\coordinate (Y) at (3,5);
+
+% Draw Angle
+\draw[thick] (X) -- (A) -- (Y)
+pic [draw, singledash, thick, angle radius = 0.5 cm] {angle = X--A--Y};
+
+% Label Points
+
+\end{tikzpicture}
+"""
+    assert required.tikz_library['decorations.markings']
+    assert required.tikzset['singledash_decoration']
+    assert not required.tikzset['doubledash_decoration']
+    assert not required.tikzset['tripledash_decoration']
+    required.tikz_library['decorations.markings'] = False
+    required.tikzset['singledash_decoration'] = False
+    α.mark.decoration = 'doubledash'
+    assert α.drawn == r"""
+\begin{tikzpicture}
+% Declare Points
+\coordinate (X) at (6,1);
+\coordinate (A) at (0,0);
+\coordinate (Y) at (3,5);
+
+% Draw Angle
+\draw[thick] (X) -- (A) -- (Y)
+pic [draw, doubledash, thick, angle radius = 0.5 cm] {angle = X--A--Y};
+
+% Label Points
+
+\end{tikzpicture}
+"""
+    assert required.tikz_library['decorations.markings']
+    assert not required.tikzset['singledash_decoration']
+    assert required.tikzset['doubledash_decoration']
+    assert not required.tikzset['tripledash_decoration']
+    required.tikz_library['decorations.markings'] = False
+    required.tikzset['doubledash_decoration'] = False
+    α.mark.decoration = 'tripledash'
+    assert α.drawn == r"""
+\begin{tikzpicture}
+% Declare Points
+\coordinate (X) at (6,1);
+\coordinate (A) at (0,0);
+\coordinate (Y) at (3,5);
+
+% Draw Angle
+\draw[thick] (X) -- (A) -- (Y)
+pic [draw, tripledash, thick, angle radius = 0.5 cm] {angle = X--A--Y};
+
+% Label Points
+
+\end{tikzpicture}
+"""
+    assert required.tikz_library['decorations.markings']
+    assert not required.tikzset['singledash_decoration']
+    assert not required.tikzset['doubledash_decoration']
+    assert required.tikzset['tripledash_decoration']
+    α.mark.variety = 'triple'
+    α.mark.decoration = 'doubledash'
+    assert α.drawn == r"""
+\begin{tikzpicture}
+% Declare Points
+\coordinate (X) at (6,1);
+\coordinate (A) at (0,0);
+\coordinate (Y) at (3,5);
+
+% Draw Angle
+\draw[thick] (X) -- (A) -- (Y)
+pic [draw, doubledash, thick, angle radius = 0.5 cm] {angle = X--A--Y}
+pic [draw, doubledash, thick, angle radius = 0.58 cm] {angle = X--A--Y}
+pic [draw, doubledash, thick, angle radius = 0.66 cm] {angle = X--A--Y};
 
 % Label Points
 

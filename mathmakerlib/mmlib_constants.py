@@ -19,16 +19,19 @@
 # along with Mathmaker Lib; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-
-def init():
-    global package, options, tikz_library, tikzset
-
-    package = {pkg_name: False
-               for pkg_name in ['tikz', 'siunitx', 'xcolor']}
-    options = {'xcolor': []}
-    tikz_library = {'angles': False,
-                    'decorations.markings': False}
-    tikzset = {'singledash_decoration': False,
-               'doubledash_decoration': False,
-               'tripledash_decoration': False}
-    # hack = {'rightangle_mark': False}
+TIKZSET = {'singledash_decoration': r"""
+\tikzset{singledash/.style={decoration={ markings, mark= at position 0.5
+with { \draw (0pt,-2.5pt) -- (0pt,2.5pt);
+} }, pic actions/.append code=\tikzset{postaction=decorate}}}""",
+           'doubledash_decoration': r"""
+\tikzset{doubledash/.style={decoration={ markings, mark= at position 0.5
+with { \draw (-1pt,-2.5pt) -- (-1pt,2.5pt);
+       \draw (1pt,-2.5pt) -- (1pt,2.5pt);
+} }, pic actions/.append code=\tikzset{postaction=decorate}}}""",
+           'tripledash_decoration': r"""
+\tikzset{tripledash/.style={decoration={ markings, mark= at position 0.5
+with { \draw (-2pt,-2.5pt) -- (-2pt,2.5pt);
+       \draw (0pt,-2.5pt) -- (0pt,2.5pt);
+       \draw (2pt,-2.5pt) -- (2pt,2.5pt);
+} }, pic actions/.append code=\tikzset{postaction=decorate}}}"""
+           }
