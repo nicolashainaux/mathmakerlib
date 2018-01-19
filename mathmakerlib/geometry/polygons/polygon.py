@@ -29,7 +29,7 @@ from mathmakerlib.calculus.tools import is_number
 from mathmakerlib.core.drawable import Drawable, HasThickness, Colored
 from mathmakerlib.core.oriented import Oriented, check_winding
 from mathmakerlib.core.drawable import tikz_approx_position, tikz_options_list
-from mathmakerlib.geometry.point import Point, OPPOSITE_LABEL_POSITIONS
+from mathmakerlib.geometry.point import Point
 from mathmakerlib.geometry.linesegment import LineSegment
 from mathmakerlib.geometry.vector import Vector
 from mathmakerlib.geometry.angle import Angle
@@ -172,11 +172,11 @@ class Polygon(Drawable, Colored, HasThickness, Oriented):
                                 shifted_vertices):
             self._angles += [Angle(v2, v1, v0)]
         for i in range(len(self._vertices)):
-            bisector = Vector(self._vertices[i], shifted_vertices[i])\
-                .bisector_vector(Vector(self._vertices[i],
-                                        left_shifted_vertices[i]))
-            self._vertices[i].label_position = OPPOSITE_LABEL_POSITIONS[
-                tikz_approx_position(bisector.slope360)]
+            bisector = Vector(shifted_vertices[i], self._vertices[i])\
+                .bisector_vector(Vector(left_shifted_vertices[i],
+                                        self._vertices[i]))
+            self._vertices[i].label_position = \
+                tikz_approx_position(bisector.slope360)
 
         if len(self._sides) in POLYGONS_TYPES:
             self._type = POLYGONS_TYPES[len(self._sides)]
