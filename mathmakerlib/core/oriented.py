@@ -22,6 +22,17 @@
 from abc import ABCMeta
 
 
+def shoelace_formula(*points):
+    x = [v.x for v in points]
+    y = [v.y for v in points]
+    x.append(x[0])
+    y.append(y[0])
+    x.append(x[1])
+    y.append(y[1])
+    return sum(x[i] * (y[i + 1] - y[i - 1])
+               for i in range(1, len(points) + 1)) / 2
+
+
 def check_winding(value):
     if value not in ['clockwise', 'anticlockwise']:
         raise ValueError('Expect \'clockwise\' or \'anticlockwise\'. '

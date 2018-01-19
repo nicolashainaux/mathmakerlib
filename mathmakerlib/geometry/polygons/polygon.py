@@ -28,6 +28,7 @@ from mathmakerlib.calculus.number import Number
 from mathmakerlib.calculus.tools import is_number
 from mathmakerlib.core.drawable import Drawable, HasThickness, Colored
 from mathmakerlib.core.oriented import Oriented, check_winding
+from mathmakerlib.core.oriented import shoelace_formula
 from mathmakerlib.core.drawable import tikz_approx_position, tikz_options_list
 from mathmakerlib.geometry.point import Point
 from mathmakerlib.geometry.linesegment import LineSegment
@@ -40,17 +41,6 @@ POLYGONS_TYPES = {3: 'Triangle', 4: 'Quadrilateral', 5: 'Pentagon',
                   12: 'Dodecagon', 13: 'Tridecagon', 14: 'Tetradecagon',
                   15: 'Pentadecagon', 16: 'Hexadecagon', 17: 'Heptadecagon',
                   18: 'Octodecagon', 19: 'Enneadecagon', 20: 'Icosagon'}
-
-
-def shoelace_formula(*points):
-    x = [v.x for v in points]
-    y = [v.y for v in points]
-    x.append(x[0])
-    y.append(y[0])
-    x.append(x[1])
-    y.append(y[1])
-    return sum(x[i] * (y[i + 1] - y[i - 1])
-               for i in range(1, len(points) + 1)) / 2
 
 
 class Polygon(Drawable, Colored, HasThickness, Oriented):
