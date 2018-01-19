@@ -94,6 +94,14 @@ def test_instanciation_errors(pointO, pointI, pointJ):
     assert str(excinfo.value) == 'AngleMark\'s variety can be \'single\', ' \
         '\'double\' or \'triple\'. Found \'unknown\' instead (type: ' \
         '<class \'str\'>).'
+    with pytest.raises(TypeError) as excinfo:
+        Angle(pointO, pointI, pointJ, label_vertex='a')
+    assert str(excinfo.value) == 'label_vertex must be a boolean; ' \
+        'got <class \'str\'> instead.'
+    with pytest.raises(TypeError) as excinfo:
+        Angle(pointO, pointI, pointJ, label_endpoints='a')
+    assert str(excinfo.value) == 'label_endpoints must be a boolean; ' \
+        'got <class \'str\'> instead.'
 
 
 def test_instanciation(pointO, pointI, pointJ, pointA):
@@ -112,6 +120,11 @@ def test_instanciation(pointO, pointI, pointJ, pointA):
     theta = Angle(pointI, pointO, 60)
     assert theta.vertex == pointO
     assert theta.points[2] == Point('0.5', '0.866', 'I\'')
+    A = Point(0, 0, 'A')
+    X = Point(6, 1, 'X')
+    Y = Point(3, 5, 'Y')
+    α = Angle(X, A, Y)
+    assert α.winding == 'anticlockwise'
 
 
 def test_marked_angles(pointO, pointI, pointJ, pointA):
@@ -161,6 +174,87 @@ def test_drawing_angles():
 
 \end{tikzpicture}
 """
+    α.label_vertex = True
+    assert α.drawn == r"""
+\begin{tikzpicture}
+% Declare Points
+\coordinate (X) at (6,1);
+\coordinate (A) at (0,0);
+\coordinate (Y) at (3,5);
+
+% Draw Angle
+\draw[thick] (X) -- (A) -- (Y);
+
+% Label Points
+\draw (A) node[below left] {A};
+\end{tikzpicture}
+"""
+    α.label_endpoints = True
+    assert α.drawn == r"""
+\begin{tikzpicture}
+% Declare Points
+\coordinate (X) at (6,1);
+\coordinate (A) at (0,0);
+\coordinate (Y) at (3,5);
+
+% Draw Angle
+\draw[thick] (X) -- (A) -- (Y);
+
+% Label Points
+\draw (A) node[below left] {A};
+\draw (X) node[below right] {X};
+\draw (Y) node[above left] {Y};
+\end{tikzpicture}
+"""
+    α.draw_vertex = True
+    assert α.drawn == r"""
+\begin{tikzpicture}
+% Declare Points
+\coordinate (X) at (6,1);
+\coordinate (A) at (0,0);
+\coordinate (Y) at (3,5);
+
+% Draw Angle
+\draw[thick] (X) -- (A) -- (Y);
+% Draw Vertex
+\draw (A) node[scale=0.67] {$\times$};
+
+% Label Points
+\draw (A) node[below left] {A};
+\draw (X) node[below right] {X};
+\draw (Y) node[above left] {Y};
+\end{tikzpicture}
+"""
+    α.draw_endpoints = True
+    assert α.drawn == r"""
+\begin{tikzpicture}
+% Declare Points
+\coordinate (X) at (6,1);
+\coordinate (A) at (0,0);
+\coordinate (Y) at (3,5);
+
+% Draw Angle
+\draw[thick] (X) -- (A) -- (Y);
+% Draw Vertex
+\draw (A) node[scale=0.67] {$\times$};
+% Draw End Points
+\draw (X) node[scale=0.67] {$\times$};
+\draw (Y) node[scale=0.67] {$\times$};
+
+% Label Points
+\draw (A) node[below left] {A};
+\draw (X) node[below right] {X};
+\draw (Y) node[above left] {Y};
+\end{tikzpicture}
+"""
+
+
+def test_drawing_marked_angles():
+    """Check drawing standalone Angles."""
+    A = Point(0, 0, 'A')
+    X = Point(6, 1, 'X')
+    Y = Point(3, 5, 'Y')
+    α = Angle(X, A, Y)
     α.mark = AngleMark(radius=Number('0.5', unit='cm'))
     assert α.drawn == r"""
 \begin{tikzpicture}

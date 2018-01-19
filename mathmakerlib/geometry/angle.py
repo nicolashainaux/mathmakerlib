@@ -23,11 +23,13 @@ import sys
 from math import acos, degrees
 
 from mathmakerlib import required
-from mathmakerlib.core.oriented import check_winding
+from mathmakerlib.core.oriented import check_winding, shoelace_formula
 from mathmakerlib.core.drawable import Colored, HasThickness, HasRadius
 from mathmakerlib.core.drawable import tikz_options_list, Drawable
+from mathmakerlib.core.drawable import tikz_approx_position
 from mathmakerlib.geometry.point import Point
 from mathmakerlib.geometry.pointspair import PointsPair
+from mathmakerlib.geometry.vector import Vector
 from mathmakerlib.calculus.number import Number, is_number
 
 LOCALE_US = 'en' if sys.platform.startswith('win') else 'en_US.UTF-8'
@@ -92,8 +94,8 @@ class Angle(Drawable, HasThickness):
 
     def __init__(self, point, vertex, point_or_measure, mark=None,
                  mark_right=False, second_point_name='auto',
-                 color=None, thickness='thick', label_arms_points=False,
-                 label_vertex=False):
+                 color=None, thickness='thick', label_endpoints=False,
+                 label_vertex=False, draw_vertex=False, draw_endpoints=False):
         """
         :param point: a Point of an arm of the Angle
         :type point: Point
@@ -110,13 +112,20 @@ class Angle(Drawable, HasThickness):
         this is the name of the 2d arm's Point. If set to 'auto', then the name
         of the first Point will be used, concatenated to a '.
         :type second_point_name: str
+        :param thickness: the Angle's arms' thickness. Available values are
+        TikZ's ones.
+        :type thickness: str
+        :param color: the color of the Angle's arms.
+        :type color: str
         """
         self.color = color
         self.thickness = thickness
         self.mark = mark
         self.mark_right = mark_right
         self.label_vertex = label_vertex
-        self.label_arms_points = label_arms_points
+        self.label_endpoints = label_endpoints
+        self.draw_endpoints = draw_endpoints
+        self.draw_vertex = draw_vertex
         if not (isinstance(point, Point)
                 and isinstance(vertex, Point)
                 and (isinstance(point_or_measure, Point)
@@ -133,12 +142,33 @@ class Angle(Drawable, HasThickness):
             self._points.append(point.rotate(vertex, point_or_measure,
                                              rename=second_point_name))
         # Measure of the angle:
-        pp0 = PointsPair(self._points[0], self._points[1])
-        pp1 = PointsPair(self._points[1], self._points[2])
+        arm0 = PointsPair(self._points[1], self._points[0])
+        arm1 = PointsPair(self._points[1], self._points[2])
         pp2 = PointsPair(self._points[2], self._points[0])
-        n = pp0.length ** 2 + pp1.length ** 2 - pp2.length ** 2
-        d = 2 * pp0.length * pp1.length
+        n = arm0.length ** 2 + arm1.length ** 2 - pp2.length ** 2
+        d = 2 * arm0.length * arm1.length
         self._measure = Number(str(degrees(acos(n / d))))
+
+        # This is not like the matching Triangle!
+        if shoelace_formula(*self.points) > 0:
+            self.winding = 'clockwise'
+        else:
+            self.winding = 'anticlockwise'
+
+        # self._arms = [arm0, arm1]
+
+        # Vertex' label positioning
+        bisector = Vector(self._points[0], self.vertex)\
+            .bisector_vector(Vector(self._points[2], self.vertex))
+        self._points[1].label_position = \
+            tikz_approx_position(bisector.slope360)
+
+        # Endpoints labels positioning
+        direction = 1 if self.winding == 'anticlockwise' else -1
+        self.endpoints[0].label_position = \
+            tikz_approx_position(arm0.slope360 - direction * 55)
+        self.endpoints[1].label_position = \
+            tikz_approx_position(arm1.slope360 + direction * 55)
 
     @property
     def vertex(self):
@@ -147,6 +177,18 @@ class Angle(Drawable, HasThickness):
     @property
     def points(self):
         return self._points
+
+    @property
+    def endpoints(self):
+        return [self._points[0], self._points[2]]
+
+    # @property
+    # def armpoints(self):
+    #     return self._points[]
+    #
+    # @property
+    # def arms(self):
+    #     return self._arms
 
     @property
     def measure(self):
@@ -175,6 +217,30 @@ class Angle(Drawable, HasThickness):
         self._mark_right = value
 
     @property
+    def draw_vertex(self):
+        return self._draw_vertex
+
+    @draw_vertex.setter
+    def draw_vertex(self, value):
+        if isinstance(value, bool):
+            self._draw_vertex = value
+        else:
+            raise TypeError('draw_vertex must be a boolean; '
+                            'got {} instead.'.format(type(value)))
+
+    @property
+    def draw_endpoints(self):
+        return self._draw_endpoints
+
+    @draw_endpoints.setter
+    def draw_endpoints(self, value):
+        if isinstance(value, bool):
+            self._draw_endpoints = value
+        else:
+            raise TypeError('draw_endpoints must be a boolean; '
+                            'got {} instead.'.format(type(value)))
+
+    @property
     def label_vertex(self):
         return self._label_vertex
 
@@ -187,16 +253,28 @@ class Angle(Drawable, HasThickness):
                             'got {} instead.'.format(type(value)))
 
     @property
-    def label_arms_points(self):
-        return self._label_arms_points
+    def label_endpoints(self):
+        return self._label_endpoints
 
-    @label_arms_points.setter
-    def label_arms_points(self, value):
+    @label_endpoints.setter
+    def label_endpoints(self, value):
         if isinstance(value, bool):
-            self._label_arms_points = value
+            self._label_endpoints = value
         else:
-            raise TypeError('label_arms_points must be a boolean; '
+            raise TypeError('label_endpoints must be a boolean; '
                             'got {} instead.'.format(type(value)))
+
+    # @property
+    # def label_armspoints(self):
+    #     return self._label_armspoints
+    #
+    # @label_armspoints.setter
+    # def label_armspoints(self, value):
+    #     if isinstance(value, bool):
+    #         self._label_armspoints = value
+    #     else:
+    #         raise TypeError('label_armspoints must be a boolean; '
+    #                         'got {} instead.'.format(type(value)))
 
     def tikz_angle_mark(self):
         if self.mark is None or self.mark_right:
@@ -255,19 +333,32 @@ class Angle(Drawable, HasThickness):
         """
         return [self.thickness, self.color]
 
+    def _tikz_draw_vertex(self):
+        return self.vertex.tikz_draw()[0]
+
+    def _tikz_draw_endpoints(self):
+        return '\n'.join([p.tikz_draw()[0] for p in self.endpoints])
+
     def tikz_drawing_comment(self):
         """
         Return the comments matching each drawing category.
 
         :rtype: list
         """
-        return ['% Draw Angle']
+        comments = ['% Draw Angle']
+        if self.draw_vertex:
+            comments.append('% Draw Vertex')
+        if self.draw_endpoints:
+            comments.append('% Draw End Points')
+        return comments
 
     def tikz_draw(self):
         """
         Return the commands to actually draw the object.
 
-        If enabled, the vertex is drawn; if enabled the arms' Points are drawn.
+        If enabled, the vertex is drawn;
+        if enabled the end Points are drawn;
+        if enabled the arms' Points are drawn.
         The Angle is always drawn.
 
         :rtype: list
@@ -275,11 +366,16 @@ class Angle(Drawable, HasThickness):
         mark = self.tikz_angle_mark()
         if mark != '':
             mark = '\n' + mark
-        return ['\draw{} ({}) -- ({}) -- ({}){};'
-                .format(tikz_options_list('draw', self),
-                        *[p.name for p in self.points],
-                        mark)
-                ]
+        commands = ['\draw{} ({}) -- ({}) -- ({}){};'
+                    .format(tikz_options_list('draw', self),
+                            *[p.name for p in self.points],
+                            mark)
+                    ]
+        if self.draw_vertex:
+            commands.append(self._tikz_draw_vertex())
+        if self.draw_endpoints:
+            commands.append(self._tikz_draw_endpoints())
+        return commands
 
     def tikz_label(self):
         """Not implemented yet."""
@@ -290,7 +386,10 @@ class Angle(Drawable, HasThickness):
         labels = []
         if self.label_vertex:
             labels.append(self.vertex.tikz_label())
-        if self.label_arms_points:
-            labels.append(self.points[0].tikz_label())
-            labels.append(self.points[1].tikz_label())
+        if self.label_endpoints:
+            labels.append(self.endpoints[0].tikz_label())
+            labels.append(self.endpoints[1].tikz_label())
+        # if self.label_armpoints:
+        #     labels.append(self.armpoints[0].tikz_label())
+        #     labels.append(self.armpoints[1].tikz_label())
         return '\n'.join(labels)
