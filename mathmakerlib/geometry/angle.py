@@ -25,7 +25,7 @@ from math import acos, degrees
 from mathmakerlib import required
 from mathmakerlib.core.oriented import check_winding
 from mathmakerlib.core.drawable import Colored, HasThickness, HasRadius
-from mathmakerlib.core.drawable import tikz_options_list
+from mathmakerlib.core.drawable import tikz_options_list, Drawable
 from mathmakerlib.geometry.point import Point
 from mathmakerlib.geometry.pointspair import PointsPair
 from mathmakerlib.calculus.number import Number, is_number
@@ -52,11 +52,12 @@ class AngleMark(Colored, HasThickness, HasRadius):
         return '[{}]'.format(', '.join(attributes))
 
 
-class Angle(Colored):
-    """Angles. Not Drawable neither publicly available yet."""
+class Angle(Drawable, HasThickness):
 
     def __init__(self, point, vertex, point_or_measure, mark=None,
-                 mark_right=False, second_point_name='auto'):
+                 mark_right=False, second_point_name='auto',
+                 color=None, thickness=None, label_arms_points=False,
+                 label_vertex=False):
         """
         :param point: a Point of an arm of the Angle
         :type point: Point
@@ -74,8 +75,12 @@ class Angle(Colored):
         of the first Point will be used, concatenated to a '.
         :type second_point_name: str
         """
+        self.color = color
+        self.thickness = thickness
         self.mark = mark
         self.mark_right = mark_right
+        self.label_vertex = label_vertex
+        self.label_arms_points = label_arms_points
         if not (isinstance(point, Point)
                 and isinstance(vertex, Point)
                 and (isinstance(point_or_measure, Point)
@@ -133,6 +138,30 @@ class Angle(Colored):
             raise TypeError('\'mark_right\' must be a boolean')
         self._mark_right = value
 
+    @property
+    def label_vertex(self):
+        return self._label_vertex
+
+    @label_vertex.setter
+    def label_vertex(self, value):
+        if isinstance(value, bool):
+            self._label_vertex = value
+        else:
+            raise TypeError('label_vertex must be a boolean; '
+                            'got {} instead.'.format(type(value)))
+
+    @property
+    def label_arms_points(self):
+        return self._label_arms_points
+
+    @label_arms_points.setter
+    def label_arms_points(self, value):
+        if isinstance(value, bool):
+            self._label_arms_points = value
+        else:
+            raise TypeError('label_arms_points must be a boolean; '
+                            'got {} instead.'.format(type(value)))
+
     def tikz_angle_mark(self):
         if self.mark is None or self.mark_right:
             return ''
@@ -161,3 +190,50 @@ class Angle(Colored):
             rightangle_shape = '({R}, 0) -- ({R}, -{R}) -- (0, -{R})'\
                 .format(R=self.mark.radius.uiprinted)
         return '\draw{} {};'.format(draw_options, rightangle_shape)
+
+    def tikz_declarations(self):
+        """Return the Points declarations."""
+        return '\n'.join([v.tikz_declarations() for v in self.points])
+
+    def _tikz_draw_options(self):
+        """
+        The list of possible options for draw command.
+
+        :rtype: list
+        """
+        return [self.thickness, self.color]
+
+    def tikz_drawing_comment(self):
+        """
+        Return the comments matching each drawing category.
+
+        :rtype: list
+        """
+        return ['% Draw Angle']
+
+    def tikz_draw(self):
+        """
+        Return the commands to actually draw the object.
+
+        If enabled, the vertex is drawn; if enabled the arms' Points are drawn.
+        The Angle is always drawn.
+
+        :rtype: list
+        """
+        return ['\draw{} ({}) -- ({}) -- ({});'
+                .format(tikz_options_list('draw', self),
+                        *[p.name for p in self.points])]
+
+    def tikz_label(self):
+        """Not implemented yet."""
+        """Return the command to write the object's label."""
+
+    def tikz_points_labels(self):
+        """Return the command to write the object's points' labels."""
+        labels = []
+        if self.label_vertex:
+            labels.append(self.vertex.tikz_label())
+        if self.label_arms_points:
+            labels.append(self.points[0].tikz_label())
+            labels.append(self.points[1].tikz_label())
+        return '\n'.join(labels)

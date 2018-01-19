@@ -126,26 +126,24 @@ def test_marked_angles(pointO, pointI, pointJ, pointA):
     assert str(excinfo.value) == 'Expect \'clockwise\' or \'anticlockwise\'. '\
         'Found \'None\' instead.'
 
-#
-# def test_drawing_angles():
-#     """Check drawing standalone Angles."""
-#     A = Point(0, 0, 'A')
-#     X = Point(6, 1, 'X')
-#     Y = Point(3, 5, 'Y')
-#     α = Angle(A, X, Y)
-#     assert α.drawn == r"""
-# \begin{tikzpicture}
-#
-# % Declare Points
-# \coordinate (A) at (0,0);
-# \coordinate (X) at (6,1);
-# \coordinate (Y) at (3,5);
-#
-# % Draw Angle
-# \draw[thick] (X) -- (A) -- (Y);
-#
-# % Label Points
-# \draw (A) node[below left] {$A$};
-#
-# \end{tikzpicture}
-# """
+
+def test_drawing_angles():
+    """Check drawing standalone Angles."""
+    A = Point(0, 0, 'A')
+    X = Point(6, 1, 'X')
+    Y = Point(3, 5, 'Y')
+    α = Angle(X, A, Y)
+    assert α.drawn == r"""
+\begin{tikzpicture}
+% Declare Points
+\coordinate (X) at (6,1);
+\coordinate (A) at (0,0);
+\coordinate (Y) at (3,5);
+
+% Draw Angle
+\draw (X) -- (A) -- (Y);
+
+% Label Points
+
+\end{tikzpicture}
+"""
