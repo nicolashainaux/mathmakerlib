@@ -58,6 +58,10 @@ def test_angle_mark():
         AngleMark(radius='2 cm')
     assert str(excinfo.value) == 'Expected a number as radius. Got ' \
         '<class \'str\'> instead.'
+    with pytest.raises(TypeError) as excinfo:
+        AngleMark().tikz_mark_attributes(radius_coeff='a')
+    assert str(excinfo.value) == 'radius_coeff must be a number, '\
+        'found <class \'str\'> instead.'
 
 
 def test_instanciation_errors(pointO, pointI, pointJ):
@@ -80,6 +84,11 @@ def test_instanciation_errors(pointO, pointI, pointJ):
         Angle(pointO, pointI, pointJ, mark='right')
     assert str(excinfo.value) == 'An angle mark must belong to the ' \
         'AngleMark class. Got <class \'str\'> instead.'
+    with pytest.raises(TypeError) as excinfo:
+        Angle(pointO, pointI, pointJ, mark=AngleMark(variety='unknown'))
+    assert str(excinfo.value) == 'AngleMark\'s variety can be \'single\', ' \
+        '\'double\' or \'triple\'. Found unknown instead (type: ' \
+        '<class \'str\'>).'
 
 
 def test_instanciation(pointO, pointI, pointJ, pointA):
@@ -142,6 +151,57 @@ def test_drawing_angles():
 
 % Draw Angle
 \draw[thick] (X) -- (A) -- (Y);
+
+% Label Points
+
+\end{tikzpicture}
+"""
+    α.mark = AngleMark(radius=Number('0.5', unit='cm'))
+    assert α.drawn == r"""
+\begin{tikzpicture}
+% Declare Points
+\coordinate (X) at (6,1);
+\coordinate (A) at (0,0);
+\coordinate (Y) at (3,5);
+
+% Draw Angle
+\draw[thick] (X) -- (A) -- (Y)
+pic [draw, thick, angle radius = 0.5 cm] {angle = X--A--Y};
+
+% Label Points
+
+\end{tikzpicture}
+"""
+    α.mark.variety = 'double'
+    assert α.drawn == r"""
+\begin{tikzpicture}
+% Declare Points
+\coordinate (X) at (6,1);
+\coordinate (A) at (0,0);
+\coordinate (Y) at (3,5);
+
+% Draw Angle
+\draw[thick] (X) -- (A) -- (Y)
+pic [draw, thick, angle radius = 0.5 cm] {angle = X--A--Y}
+pic [draw, thick, angle radius = 0.58 cm] {angle = X--A--Y};
+
+% Label Points
+
+\end{tikzpicture}
+"""
+    α.mark.variety = 'triple'
+    assert α.drawn == r"""
+\begin{tikzpicture}
+% Declare Points
+\coordinate (X) at (6,1);
+\coordinate (A) at (0,0);
+\coordinate (Y) at (3,5);
+
+% Draw Angle
+\draw[thick] (X) -- (A) -- (Y)
+pic [draw, thick, angle radius = 0.5 cm] {angle = X--A--Y}
+pic [draw, thick, angle radius = 0.58 cm] {angle = X--A--Y}
+pic [draw, thick, angle radius = 0.66 cm] {angle = X--A--Y};
 
 % Label Points
 

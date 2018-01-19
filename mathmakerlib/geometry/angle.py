@@ -36,19 +36,37 @@ LOCALE_US = 'en' if sys.platform.startswith('win') else 'en_US.UTF-8'
 class AngleMark(Colored, HasThickness, HasRadius):
 
     def __init__(self, color=None, thickness='thick',
-                 radius=Number('0.25', unit='cm')):
+                 radius=Number('0.25', unit='cm'), variety='single'):
         self.color = color
         self.thickness = thickness
         self.radius = radius
+        self.variety = variety
 
-    def tikz_mark_attributes(self):
+    @property
+    def variety(self):
+        return self._variety
+
+    @variety.setter
+    def variety(self, value):
+        if value not in ['single', 'double', 'triple']:
+            raise TypeError('AngleMark\'s variety can be \'single\', '
+                            '\'double\' or \'triple\'. Found {} instead ('
+                            'type: {}).'
+                            .format(value, type(value)))
+        self._variety = value
+
+    def tikz_mark_attributes(self, radius_coeff=1):
+        if not is_number(radius_coeff):
+            raise TypeError('radius_coeff must be a number, found {} instead.'
+                            .format(type(radius_coeff)))
         attributes = ['draw']
         for attr in [self.color, self.thickness]:
             if attr is not None:
                 attributes.append(attr)
         if self.radius is not None:
             attributes.append('angle radius = {}'
-                              .format(self.radius.uiprinted))
+                              .format((self.radius * radius_coeff)
+                                      .standardized().uiprinted))
         return '[{}]'.format(', '.join(attributes))
 
 
@@ -166,11 +184,27 @@ class Angle(Drawable, HasThickness):
         if self.mark is None or self.mark_right:
             return ''
         required.tikz_library['angles'] = True
-        return 'pic {} {{angle = {}--{}--{}}}'\
-            .format(self.mark.tikz_mark_attributes(),
-                    self.points[0].name,
-                    self.vertex.name,
-                    self.points[2].name)
+        marks = ['pic {} {{angle = {}--{}--{}}}'
+                 .format(self.mark.tikz_mark_attributes(),
+                         self.points[0].name,
+                         self.vertex.name,
+                         self.points[2].name)]
+        space_sep = Number('0.16')
+        if self.mark.variety in ['double', 'triple']:
+            marks.append('pic {} {{angle = {}--{}--{}}}'
+                         .format(self.mark.tikz_mark_attributes(
+                                 radius_coeff=1 + space_sep),
+                                 self.points[0].name,
+                                 self.vertex.name,
+                                 self.points[2].name))
+        if self.mark.variety == 'triple':
+            marks.append('pic {} {{angle = {}--{}--{}}}'
+                         .format(self.mark.tikz_mark_attributes(
+                                 radius_coeff=1 + 2 * space_sep),
+                                 self.points[0].name,
+                                 self.vertex.name,
+                                 self.points[2].name))
+        return '\n'.join(marks)
 
     def tikz_rightangle_mark(self, winding='anticlockwise'):
         if self.mark is None or not self.mark_right:
@@ -220,9 +254,14 @@ class Angle(Drawable, HasThickness):
 
         :rtype: list
         """
-        return ['\draw{} ({}) -- ({}) -- ({});'
+        mark = self.tikz_angle_mark()
+        if mark != '':
+            mark = '\n' + mark
+        return ['\draw{} ({}) -- ({}) -- ({}){};'
                 .format(tikz_options_list('draw', self),
-                        *[p.name for p in self.points])]
+                        *[p.name for p in self.points],
+                        mark)
+                ]
 
     def tikz_label(self):
         """Not implemented yet."""
