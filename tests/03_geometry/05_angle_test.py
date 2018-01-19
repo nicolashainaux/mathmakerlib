@@ -141,7 +141,7 @@ def test_drawing_angles():
 \coordinate (Y) at (3,5);
 
 % Draw Angle
-\draw (X) -- (A) -- (Y);
+\draw[thick] (X) -- (A) -- (Y);
 
 % Label Points
 

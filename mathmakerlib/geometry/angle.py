@@ -56,7 +56,7 @@ class Angle(Drawable, HasThickness):
 
     def __init__(self, point, vertex, point_or_measure, mark=None,
                  mark_right=False, second_point_name='auto',
-                 color=None, thickness=None, label_arms_points=False,
+                 color=None, thickness='thick', label_arms_points=False,
                  label_vertex=False):
         """
         :param point: a Point of an arm of the Angle
