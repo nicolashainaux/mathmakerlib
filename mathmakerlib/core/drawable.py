@@ -56,6 +56,11 @@ def check_scale(value, source_name):
 
 
 def tikz_approx_position(slope):
+    slope %= Number(360)
+    # Caution: modulo on negative Decimals does not behave as on ints.
+    # So, it's necessary to add 360 in case of a negative result.
+    if slope < 0:
+        slope += 360
     if (Decimal('337.5') <= slope <= Decimal('360')
         or Decimal('0') <= slope < Decimal('22.5')):
         return 'right'

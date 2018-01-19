@@ -23,7 +23,7 @@ import pytest
 
 from mathmakerlib import required
 from mathmakerlib.core.drawable import HasRadius, HasThickness
-from mathmakerlib.core.drawable import tikz_options_list
+from mathmakerlib.core.drawable import tikz_options_list, tikz_approx_position
 from mathmakerlib.geometry import Point, LineSegment
 
 
@@ -35,6 +35,11 @@ def A():
 @pytest.fixture()
 def E():
     return Point(1, 0, 'E')
+
+
+def test_tikz_approx_position():
+    """Check tikz_approx_position() results."""
+    assert tikz_approx_position(-65) == 'below right'
 
 
 def test_tikz_options_list():
