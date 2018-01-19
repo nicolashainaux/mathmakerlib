@@ -626,10 +626,9 @@ class Number(Decimal, Signed, Printable, Evaluable):
         delta = 0
         if is_integer(self):
             if int_as_halves_or_quarters:
-                if random.choice([True, False]):
-                    int_as_halves, int_as_quarters = True, False
-                else:
-                    int_as_halves, int_as_quarters = False, True
+                h, q = True, False if random.choice([True, False]) \
+                    else False, True
+                int_as_halves, int_as_quarters = h, q
             if int_as_halves:
                 delta = Number('0.5')
             if int_as_quarters:
