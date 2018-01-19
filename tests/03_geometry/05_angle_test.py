@@ -62,14 +62,17 @@ def test_angle_mark():
 
 def test_instanciation_errors(pointO, pointI, pointJ):
     """Check Angle's instanciation exceptions."""
-    with pytest.raises(ValueError) as excinfo:
+    with pytest.raises(TypeError) as excinfo:
         Angle(pointO, pointI)
-    assert str(excinfo.value) == 'Three Points are required to build an ' \
-        'Angle. Got 2 positional arguments instead.'
+    assert str(excinfo.value) == '__init__() missing 1 required positional ' \
+        'argument: \'point_or_measure\''
     with pytest.raises(TypeError) as excinfo:
         Angle(pointO, pointI, 'J')
-    assert str(excinfo.value) == 'Three Points are required to build an ' \
-        'Angle. Positional argument #2 is <class \'str\'> instead.'
+    assert str(excinfo.value) == 'Three Points, or two Points and the ' \
+        'measure of the angle are required to build an Angle. ' \
+        'Found instead: <class \'mathmakerlib.geometry.point.Point\'>, ' \
+        '<class \'mathmakerlib.geometry.point.Point\'> and ' \
+        '<class \'str\'>.'
     with pytest.raises(TypeError) as excinfo:
         Angle(pointO, pointI, pointJ, mark_right=1)
     assert str(excinfo.value) == '\'mark_right\' must be a boolean'
@@ -92,6 +95,9 @@ def test_instanciation(pointO, pointI, pointJ, pointA):
     assert not theta.mark_right
     assert theta.vertex == pointO
     assert theta.points == [pointA, pointO, pointI]
+    theta = Angle(pointI, pointO, 60)
+    assert theta.vertex == pointO
+    assert theta.points[2] == Point('0.5', '0.866', 'I\'')
 
 
 def test_marked_angles(pointO, pointI, pointJ, pointA):
@@ -119,3 +125,27 @@ def test_marked_angles(pointO, pointI, pointJ, pointA):
         theta.tikz_rightangle_mark(winding=None)
     assert str(excinfo.value) == 'Expect \'clockwise\' or \'anticlockwise\'. '\
         'Found \'None\' instead.'
+
+#
+# def test_drawing_angles():
+#     """Check drawing standalone Angles."""
+#     A = Point(0, 0, 'A')
+#     X = Point(6, 1, 'X')
+#     Y = Point(3, 5, 'Y')
+#     α = Angle(A, X, Y)
+#     assert α.drawn == r"""
+# \begin{tikzpicture}
+#
+# % Declare Points
+# \coordinate (A) at (0,0);
+# \coordinate (X) at (6,1);
+# \coordinate (Y) at (3,5);
+#
+# % Draw Angle
+# \draw[thick] (X) -- (A) -- (Y);
+#
+# % Label Points
+# \draw (A) node[below left] {$A$};
+#
+# \end{tikzpicture}
+# """

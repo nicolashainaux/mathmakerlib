@@ -28,7 +28,7 @@ from mathmakerlib.core.drawable import Colored, HasThickness, HasRadius
 from mathmakerlib.core.drawable import tikz_options_list
 from mathmakerlib.geometry.point import Point
 from mathmakerlib.geometry.pointspair import PointsPair
-from mathmakerlib.calculus.number import Number
+from mathmakerlib.calculus.number import Number, is_number
 
 LOCALE_US = 'en' if sys.platform.startswith('win') else 'en_US.UTF-8'
 
@@ -55,22 +55,42 @@ class AngleMark(Colored, HasThickness, HasRadius):
 class Angle(Colored):
     """Angles. Not Drawable neither publicly available yet."""
 
-    def __init__(self, *points, mark=None, mark_right=False):
-        if not len(points) == 3:
-            raise ValueError('Three Points are required to build an Angle. '
-                             'Got {} positional arguments instead.'
-                             .format(len(points)))
-        self._points = []
-        for i, p in enumerate(points):
-            if not isinstance(p, Point):
-                raise TypeError('Three Points are required to build an Angle. '
-                                'Positional argument #{} is {} instead.'
-                                .format(i, type(p)))
-            self._points.append(p)
-
+    def __init__(self, point, vertex, point_or_measure, mark=None,
+                 mark_right=False, second_point_name='auto'):
+        """
+        :param point: a Point of an arm of the Angle
+        :type point: Point
+        :param vertex: the Angle's vertex
+        :type vertex: Point
+        :param point_or_measure: either a Point of the other arm of the Angle,
+        or the measure of the Angle
+        :type point_or_measure: Point or number
+        :param mark: the mark of the Angle
+        :type mark: None or AngleMark
+        :param mark_right: to tell whether to mark the angle as a right angle
+        :type mark_right: bool
+        :param second_point_name: Only used if point_or_measure is a measure,
+        this is the name of the 2d arm's Point. If set to 'auto', then the name
+        of the first Point will be used, concatenated to a '.
+        :type second_point_name: str
+        """
         self.mark = mark
         self.mark_right = mark_right
-
+        if not (isinstance(point, Point)
+                and isinstance(vertex, Point)
+                and (isinstance(point_or_measure, Point)
+                     or is_number(point_or_measure))):
+            raise TypeError('Three Points, or two Points and the measure of '
+                            'the angle are required to build an Angle. '
+                            'Found instead: {}, {} and {}.'
+                            .format(type(point), type(vertex),
+                                    type(point_or_measure)))
+        self._points = [point, vertex]
+        if isinstance(point_or_measure, Point):
+            self._points.append(point_or_measure)
+        else:
+            self._points.append(point.rotate(vertex, point_or_measure,
+                                             rename=second_point_name))
         # Measure of the angle:
         pp0 = PointsPair(self._points[0], self._points[1])
         pp1 = PointsPair(self._points[1], self._points[2])
