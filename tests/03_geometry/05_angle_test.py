@@ -23,7 +23,7 @@ import pytest
 
 from mathmakerlib import required
 from mathmakerlib.calculus import Number, Unit
-from mathmakerlib.geometry import Point
+from mathmakerlib.geometry import Point, PointsPair
 from mathmakerlib.geometry.angle import AngleMark, Angle
 
 
@@ -125,6 +125,8 @@ def test_instanciation(pointO, pointI, pointJ, pointA):
     Y = Point(3, 5, 'Y')
     α = Angle(X, A, Y)
     assert α.winding == 'anticlockwise'
+    assert α.arms[0].same_as(PointsPair(A, X))
+    assert α.arms[1].same_as(PointsPair(A, Y))
 
 
 def test_marked_angles(pointO, pointI, pointJ, pointA):

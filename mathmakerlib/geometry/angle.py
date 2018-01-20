@@ -155,7 +155,7 @@ class Angle(Drawable, HasThickness):
         else:
             self.winding = 'anticlockwise'
 
-        # self._arms = [arm0, arm1]
+        self._arms = [arm0, arm1]
 
         # Vertex' label positioning
         bisector = Vector(self._points[0], self.vertex)\
@@ -185,10 +185,10 @@ class Angle(Drawable, HasThickness):
     # @property
     # def armpoints(self):
     #     return self._points[]
-    #
-    # @property
-    # def arms(self):
-    #     return self._arms
+
+    @property
+    def arms(self):
+        return self._arms
 
     @property
     def measure(self):
