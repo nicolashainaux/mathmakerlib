@@ -192,6 +192,27 @@ def test_midpoint():
     assert s.midpoint(name='M') == Point(Number('0.5'), Number('0.5'), 'M')
 
 
+def test_point_at():
+    """Check point_at is correct."""
+    Point.reset_names()
+    s = LineSegment(Point(0, 0, 'A'), Point(1, 1, 'B'))
+    with pytest.raises(TypeError) as excinfo:
+        s.point_at('a')
+    assert str(excinfo.value) == 'position must be a number, found ' \
+        '<class \'str\'> instead.'
+    assert s.point_at(Number('0.5')).same_as(s.midpoint())
+    assert s.point_at(Number('0.75')).same_as(Point('0.75', '0.75'))
+    assert s.point_at(Number(2)).same_as(Point(2, 2))
+    assert s.point_at(0).same_as(Point(0, 0))
+    assert s.point_at(1).same_as(Point(1, 1))
+    assert s.point_at(-2).same_as(Point(-2, -2))
+    Point.reset_names()
+    s = LineSegment(Point(1, 1, 'A'), Point(3, 4, 'B'))
+    assert s.point_at(Number('0.8')).same_as(Point('2.6', '3.4'))
+    assert s.point_at(2).same_as(Point(5, 7))
+    assert s.point_at(Number('0.5')).same_as(s.midpoint())
+
+
 def test_dividing_points_errors(A, B):
     """Check LineSegment's instanciation exceptions."""
     AB = LineSegment(Point(0, 0, 'A'), Point(5, 0, 'B'))

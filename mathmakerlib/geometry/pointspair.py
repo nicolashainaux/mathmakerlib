@@ -85,6 +85,37 @@ class PointsPair(object):
                      (self.points[0].y + self.points[1].y) / 2,
                      name=name)
 
+    def point_at(self, position, name='automatic'):
+        """
+        A Point aligned with the PointsPair, at provided position.
+
+        The PointsPair's length is the length unit of position.
+        Hence, position 0 matches points[0], position 1 matches points[1],
+        position 0.5 matches the midpoint, position 0.75 is three quarters
+        on the way from points[0] to points[1], position 2 is a Point that
+        makes points[1] the middle between it and points[0], position -1 makes
+        points[0] the middle between it and points[1].
+
+        :param position: a number
+        :type position: number
+        :param name: the name to give to the Point
+        :type name: str
+        """
+        if not is_number(position):
+            raise TypeError('position must be a number, found {} instead.'
+                            .format(type(position)))
+        k = Number(position)
+        if k == 0:
+            return self.points[0]
+        elif k == 1:
+            return self.points[1]
+        else:
+            return Point((self.points[0].x
+                          + (self.points[1].x - self.points[0].x) * k),
+                         (self.points[0].y
+                          + (self.points[1].y - self.points[0].y) * k),
+                         name=name)
+
     @property
     def slope(self):
         """Slope of the pair of Points, from -180° to 180°."""
