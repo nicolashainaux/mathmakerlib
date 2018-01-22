@@ -95,13 +95,45 @@ def test_instanciation_errors(pointO, pointI, pointJ):
         '\'double\' or \'triple\'. Found \'unknown\' instead (type: ' \
         '<class \'str\'>).'
     with pytest.raises(TypeError) as excinfo:
+        Angle(pointO, pointI, pointJ, draw_vertex='a')
+    assert str(excinfo.value) == 'draw_vertex must be a boolean; ' \
+        'got <class \'str\'> instead.'
+    with pytest.raises(TypeError) as excinfo:
         Angle(pointO, pointI, pointJ, label_vertex='a')
     assert str(excinfo.value) == 'label_vertex must be a boolean; ' \
+        'got <class \'str\'> instead.'
+    with pytest.raises(TypeError) as excinfo:
+        Angle(pointO, pointI, pointJ, draw_endpoints='a')
+    assert str(excinfo.value) == 'draw_endpoints must be a boolean; ' \
         'got <class \'str\'> instead.'
     with pytest.raises(TypeError) as excinfo:
         Angle(pointO, pointI, pointJ, label_endpoints='a')
     assert str(excinfo.value) == 'label_endpoints must be a boolean; ' \
         'got <class \'str\'> instead.'
+    with pytest.raises(TypeError) as excinfo:
+        Angle(pointO, pointI, pointJ, draw_armspoints='a')
+    assert str(excinfo.value) == 'draw_armspoints must be a boolean; ' \
+        'got <class \'str\'> instead.'
+    with pytest.raises(TypeError) as excinfo:
+        Angle(pointO, pointI, pointJ, label_armspoints='a')
+    assert str(excinfo.value) == 'label_armspoints must be a boolean; ' \
+        'got <class \'str\'> instead.'
+    with pytest.raises(TypeError) as excinfo:
+        Angle(pointO, pointI, pointJ, armspoints='X')
+    assert str(excinfo.value) == 'A list must be provided to setup ' \
+        'armspoints. Found <class \'str\'> instead.'
+    with pytest.raises(ValueError) as excinfo:
+        Angle(pointO, pointI, pointJ, armspoints=['1', '2', '3'])
+    assert str(excinfo.value) == 'More values are provided (3) then ' \
+        'available arms (2).'
+    with pytest.raises(TypeError) as excinfo:
+        Angle(pointO, pointI, pointJ, armspoints=['1', '2'])
+    assert str(excinfo.value) == 'Each arm\'s point must be defined by a ' \
+        'tuple. Found <class \'str\'> instead.'
+    with pytest.raises(TypeError) as excinfo:
+        Angle(pointO, pointI, pointJ, armspoints=[('1', '2', '3'), ('2', )])
+    assert str(excinfo.value) == 'Each arm\'s point must be defined by a ' \
+        'tuple of 1 or 2 elements. Found 3 elements instead.'
 
 
 def test_instanciation(pointO, pointI, pointJ, pointA):
@@ -247,6 +279,90 @@ def test_drawing_angles():
 \draw (A) node[below left] {A};
 \draw (X) node[below right] {X};
 \draw (Y) node[above left] {Y};
+\end{tikzpicture}
+"""
+    α.draw_armspoints = True
+    assert α.drawn == r"""
+\begin{tikzpicture}
+% Declare Points
+\coordinate (X) at (6,1);
+\coordinate (A) at (0,0);
+\coordinate (Y) at (3,5);
+
+% Draw Angle
+\draw[thick] (X) -- (A) -- (Y);
+% Draw Vertex
+\draw (A) node[scale=0.67] {$\times$};
+% Draw End Points
+\draw (X) node[scale=0.67] {$\times$};
+\draw (Y) node[scale=0.67] {$\times$};
+
+% Label Points
+\draw (A) node[below left] {A};
+\draw (X) node[below right] {X};
+\draw (Y) node[above left] {Y};
+\end{tikzpicture}
+"""
+
+
+def test_drawing_angles_with_armspoints():
+    """Check drawing standalone Angles."""
+    A = Point(0, 0, 'A')
+    X1 = Point(6, 1, 'X1')
+    Y1 = Point(3, 5, 'Y1')
+    α = Angle(X1, A, Y1, armspoints=[('X', ), ('Y', )],
+              label_vertex=True, draw_vertex=True)
+    assert α.drawn == r"""
+\begin{tikzpicture}
+% Declare Points
+\coordinate (X1) at (6,1);
+\coordinate (A) at (0,0);
+\coordinate (Y1) at (3,5);
+\coordinate (X) at (4.8,0.8);
+\coordinate (Y) at (2.4,4.0);
+
+% Draw Angle
+\draw[thick] (X1) -- (A) -- (Y1);
+% Draw Vertex
+\draw (A) node[scale=0.67] {$\times$};
+% Draw Arms' Points
+\draw (X) node[scale=0.67] {$\times$};
+\draw (Y) node[scale=0.67] {$\times$};
+
+% Label Points
+\draw (A) node[below left] {A};
+\draw (X) node[below right] {X};
+\draw (Y) node[above left] {Y};
+\end{tikzpicture}
+"""
+    Point.reset_names()
+    A = Point(0, 0, 'A')
+    X1 = Point(6, 1, 'X1')
+    Y1 = Point(3, 5, 'Y1')
+    α = Angle(X1, A, Y1, armspoints=[('X', ), ('Y', )],
+              label_vertex=True, draw_vertex=True)
+    α.armspoints = [('', ), (None, )]
+    assert α.drawn == r"""
+\begin{tikzpicture}
+% Declare Points
+\coordinate (X1) at (6,1);
+\coordinate (A) at (0,0);
+\coordinate (Y1) at (3,5);
+\coordinate (E) at (4.8,0.8);
+\coordinate (F) at (2.4,4.0);
+
+% Draw Angle
+\draw[thick] (X1) -- (A) -- (Y1);
+% Draw Vertex
+\draw (A) node[scale=0.67] {$\times$};
+% Draw Arms' Points
+\draw (E) node[scale=0.67] {$\times$};
+\draw (F) node[scale=0.67] {$\times$};
+
+% Label Points
+\draw (A) node[below left] {A};
+\draw (E) node[below right] {E};
+\draw (F) node[above left] {F};
 \end{tikzpicture}
 """
 

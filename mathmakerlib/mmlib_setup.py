@@ -28,7 +28,10 @@
 # example of usage to change a value:
 # mmlib_setup.polygons.DEFAULT_WINDING = 'clockwise'
 
+# from decimal import Decimal
+
 from mathmakerlib.core.oriented import check_winding
+from mathmakerlib.calculus.number import Number, is_number
 
 
 class PolygonsSetup(object):
@@ -71,7 +74,25 @@ class PolygonsSetup(object):
             self._ENABLE_MISMATCH_WINDING_WARNING = False
 
 
+class AnglesSetup(object):
+
+    def __init__(self):
+        self.DEFAULT_ARMSPOINTS_POSITION = Number('0.8')
+
+    @property
+    def DEFAULT_ARMSPOINTS_POSITION(self):
+        return self._DEFAULT_ARMSPOINTS_POSITION
+
+    @DEFAULT_ARMSPOINTS_POSITION.setter
+    def DEFAULT_ARMSPOINTS_POSITION(self, value):
+        if not is_number(value):
+            raise TypeError('DEFAULT_ARMSPOINTS_POSITION must be a number, '
+                            'found {} instead.'.format(type(value)))
+        self._DEFAULT_ARMSPOINTS_POSITION = value
+
+
 def init():
-    global polygons
+    global polygons, angles
 
     polygons = PolygonsSetup()
+    angles = AnglesSetup()
