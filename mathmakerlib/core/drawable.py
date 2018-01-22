@@ -165,10 +165,10 @@ class Drawable(Colored, metaclass=ABCMeta):
         modify it later), once it's ready, draw it.
         """
         required.package['tikz'] = True
-        picture_format = {'declaring_comment': self.tikz_declaring_comment(),
-                          'declarations': self.tikz_declarations(),
-                          'labeling_comment': self.tikz_labeling_comment(),
-                          'labels': self.tikz_points_labels()}
+        body_format = {'declaring_comment': self.tikz_declaring_comment(),
+                       'declarations': self.tikz_declarations(),
+                       'labeling_comment': self.tikz_labeling_comment(),
+                       'labels': self.tikz_points_labels()}
         drawing_section = ''
         for (i, (c, d)) in enumerate(zip(self.tikz_drawing_comment(),
                                          self.tikz_draw())):
@@ -176,7 +176,7 @@ class Drawable(Colored, metaclass=ABCMeta):
                                 .format(i, i))\
                 .format(**{'drawing_comment{}'.format(i): c,
                            'drawing{}'.format(i): d})
-        picture_format.update({'drawing_section': drawing_section})
+        body_format.update({'drawing_section': drawing_section})
         # Prepare possible picture's options
         scale_option = ''
         if self.scale != 1:
@@ -195,12 +195,12 @@ class Drawable(Colored, metaclass=ABCMeta):
         sections = [attr for attr in dir(self)
                     if attr.startswith(section_attr_prefix)]
         for s in sections:
-            picture_format.update({s[len(section_attr_prefix):] + '_section':
-                                   getattr(self, s)()})
+            body_format.update({s[len(section_attr_prefix):] + '_section':
+                                getattr(self, s)()})
         return r"""
 \begin{{tikzpicture}}{pic_options}{body}\end{{tikzpicture}}
 """.format(pic_options=pic_options,
-           body=self.tikz_picture_body().format(**picture_format))
+           body=self.tikz_picture_body().format(**body_format))
 
     def tikz_picture_body(self):
         return r"""
