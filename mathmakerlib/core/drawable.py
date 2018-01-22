@@ -175,6 +175,19 @@ class Drawable(Colored, metaclass=ABCMeta):
                 .format(**{'drawing_comment{}'.format(i): c,
                            'drawing{}'.format(i): d})
         body_format.update({'drawing_section': drawing_section})
+
+        section_attr_prefix = 'tikzsection_'
+        sections = [attr for attr in dir(self)
+                    if attr.startswith(section_attr_prefix)]
+        for s in sections:
+            body_format.update({s[len(section_attr_prefix):] + '_section':
+                                getattr(self, s)()})
+        return r"""
+\begin{{tikzpicture}}{pic_options}{body}\end{{tikzpicture}}
+""".format(pic_options=self.tikz_picture_options(),
+           body=self.tikz_picture_body().format(**body_format))
+
+    def tikz_picture_options(self):
         # Prepare possible picture's options
         scale_option = ''
         if self.scale != 1:
@@ -188,17 +201,7 @@ class Drawable(Colored, metaclass=ABCMeta):
         pic_options = ', '.join(pic_options_list)
         if pic_options:
             pic_options = '[{}]'.format(pic_options)
-
-        section_attr_prefix = 'tikzsection_'
-        sections = [attr for attr in dir(self)
-                    if attr.startswith(section_attr_prefix)]
-        for s in sections:
-            body_format.update({s[len(section_attr_prefix):] + '_section':
-                                getattr(self, s)()})
-        return r"""
-\begin{{tikzpicture}}{pic_options}{body}\end{{tikzpicture}}
-""".format(pic_options=pic_options,
-           body=self.tikz_picture_body().format(**body_format))
+        return pic_options
 
     def tikz_picture_body(self):
         return r"""
