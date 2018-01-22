@@ -201,6 +201,34 @@ class Drawable(Colored, metaclass=ABCMeta):
 {labeling_section}{boundingbox_section}
 """
 
+    def tikzsection_declarations(self):
+        return '''{declaring_comment}
+{declarations}'''.format(declaring_comment=self.tikz_declaring_comment(),
+                         declarations=self.tikz_declarations())
+
+    def tikzsection_drawing(self):
+        drawing_section = ''
+        for (i, (c, d)) in enumerate(zip(self.tikz_drawing_comment(),
+                                     self.tikz_draw())):
+            drawing_section += ('{{drawing_comment{}}}\n{{drawing{}}}\n'
+                                .format(i, i))\
+                .format(**{'drawing_comment{}'.format(i): c,
+                           'drawing{}'.format(i): d})
+        return drawing_section
+
+    def tikzsection_labeling(self):
+        return '''{labeling_comment}
+{labels}'''.format(labeling_comment=self.tikz_labeling_comment(),
+                   labels=self.tikz_points_labels())
+
+    def tikzsection_boundingbox(self):
+        boundingbox_section = ''
+        if self.boundingbox is not None:
+            boundingbox_section = '\n\n' \
+                + (r'\useasboundingbox ({},{}) rectangle ({},{});'
+                   .format(*self.boundingbox))
+        return boundingbox_section
+
     def tikz_declaring_comment(self):
         """
         Default declaring comment, '% Declare Points'.
@@ -257,34 +285,6 @@ class Drawable(Colored, metaclass=ABCMeta):
     @abstractmethod
     def tikz_points_labels(self):
         """Return the command to write the object's points' labels."""
-
-    def tikzsection_declarations(self):
-        return '''{declaring_comment}
-{declarations}'''.format(declaring_comment=self.tikz_declaring_comment(),
-                         declarations=self.tikz_declarations())
-
-    def tikzsection_boundingbox(self):
-        boundingbox_section = ''
-        if self.boundingbox is not None:
-            boundingbox_section = '\n\n' \
-                + (r'\useasboundingbox ({},{}) rectangle ({},{});'
-                   .format(*self.boundingbox))
-        return boundingbox_section
-
-    def tikzsection_drawing(self):
-        drawing_section = ''
-        for (i, (c, d)) in enumerate(zip(self.tikz_drawing_comment(),
-                                     self.tikz_draw())):
-            drawing_section += ('{{drawing_comment{}}}\n{{drawing{}}}\n'
-                                .format(i, i))\
-                .format(**{'drawing_comment{}'.format(i): c,
-                           'drawing{}'.format(i): d})
-        return drawing_section
-
-    def tikzsection_labeling(self):
-        return '''{labeling_comment}
-{labels}'''.format(labeling_comment=self.tikz_labeling_comment(),
-                   labels=self.tikz_points_labels())
 
     @property
     def drawn(self):
