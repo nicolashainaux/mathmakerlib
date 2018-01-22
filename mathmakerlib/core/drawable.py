@@ -190,7 +190,6 @@ class Drawable(Colored, metaclass=ABCMeta):
         pic_options = ', '.join(pic_options_list)
         if pic_options:
             pic_options = '[{}]'.format(pic_options)
-        picture_format.update({'pic_options': pic_options})
 
         section_attr_prefix = 'tikzsection_'
         sections = [attr for attr in dir(self)
@@ -199,15 +198,19 @@ class Drawable(Colored, metaclass=ABCMeta):
             picture_format.update({s[len(section_attr_prefix):] + '_section':
                                    getattr(self, s)()})
         return r"""
-\begin{{tikzpicture}}{pic_options}
+\begin{{tikzpicture}}{pic_options}{body}\end{{tikzpicture}}
+""".format(pic_options=pic_options,
+           body=self.tikz_picture_body().format(**picture_format))
+
+    def tikz_picture_body(self):
+        return r"""
 {declaring_comment}
 {declarations}
 
 {drawing_section}
 {labeling_comment}
 {labels}{boundingbox_section}
-\end{{tikzpicture}}
-""".format(**picture_format)
+"""
 
     def tikz_declaring_comment(self):
         """
