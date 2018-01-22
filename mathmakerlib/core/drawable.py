@@ -192,13 +192,13 @@ class Drawable(Colored, metaclass=ABCMeta):
         if pic_options:
             pic_options = '[{}]'.format(pic_options)
         picture_format.update({'pic_options': pic_options})
-        boundingbox_section = ''
-        if self.boundingbox is not None:
-            boundingbox_section = '\n\n' \
-                + (r'\useasboundingbox ({},{}) rectangle ({},{});'
-                   .format(*self.boundingbox))
 
-        picture_format.update({'boundingbox_section': boundingbox_section})
+        section_attr_prefix = 'tikzsection_'
+        sections = [attr for attr in dir(self)
+                    if attr.startswith(section_attr_prefix)]
+        for s in sections:
+            picture_format.update({s[len(section_attr_prefix):] + '_section':
+                                   getattr(self, s)()})
         return r"""
 \begin{{tikzpicture}}{pic_options}{header}
 {declaring_comment}
@@ -275,6 +275,14 @@ class Drawable(Colored, metaclass=ABCMeta):
     @abstractmethod
     def tikz_points_labels(self):
         """Return the command to write the object's points' labels."""
+
+    def tikzsection_boundingbox(self):
+        boundingbox_section = ''
+        if self.boundingbox is not None:
+            boundingbox_section = '\n\n' \
+                + (r'\useasboundingbox ({},{}) rectangle ({},{});'
+                   .format(*self.boundingbox))
+        return boundingbox_section
 
     @property
     def drawn(self):
