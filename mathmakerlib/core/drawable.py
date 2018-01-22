@@ -167,15 +167,6 @@ class Drawable(Colored, metaclass=ABCMeta):
         required.package['tikz'] = True
         body_format = {'labeling_comment': self.tikz_labeling_comment(),
                        'labels': self.tikz_points_labels()}
-        drawing_section = ''
-        for (i, (c, d)) in enumerate(zip(self.tikz_drawing_comment(),
-                                         self.tikz_draw())):
-            drawing_section += ('{{drawing_comment{}}}\n{{drawing{}}}\n'
-                                .format(i, i))\
-                .format(**{'drawing_comment{}'.format(i): c,
-                           'drawing{}'.format(i): d})
-        body_format.update({'drawing_section': drawing_section})
-
         section_attr_prefix = 'tikzsection_'
         sections = [attr for attr in dir(self)
                     if attr.startswith(section_attr_prefix)]
@@ -281,6 +272,16 @@ class Drawable(Colored, metaclass=ABCMeta):
                 + (r'\useasboundingbox ({},{}) rectangle ({},{});'
                    .format(*self.boundingbox))
         return boundingbox_section
+
+    def tikzsection_drawing(self):
+        drawing_section = ''
+        for (i, (c, d)) in enumerate(zip(self.tikz_drawing_comment(),
+                                     self.tikz_draw())):
+            drawing_section += ('{{drawing_comment{}}}\n{{drawing{}}}\n'
+                                .format(i, i))\
+                .format(**{'drawing_comment{}'.format(i): c,
+                           'drawing{}'.format(i): d})
+        return drawing_section
 
     @property
     def drawn(self):
