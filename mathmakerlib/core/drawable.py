@@ -165,9 +165,7 @@ class Drawable(Colored, metaclass=ABCMeta):
         modify it later), once it's ready, draw it.
         """
         required.package['tikz'] = True
-        body_format = {'declaring_comment': self.tikz_declaring_comment(),
-                       'declarations': self.tikz_declarations(),
-                       'labeling_comment': self.tikz_labeling_comment(),
+        body_format = {'labeling_comment': self.tikz_labeling_comment(),
                        'labels': self.tikz_points_labels()}
         drawing_section = ''
         for (i, (c, d)) in enumerate(zip(self.tikz_drawing_comment(),
@@ -204,8 +202,7 @@ class Drawable(Colored, metaclass=ABCMeta):
 
     def tikz_picture_body(self):
         return r"""
-{declaring_comment}
-{declarations}
+{declarations_section}
 
 {drawing_section}
 {labeling_comment}
@@ -268,6 +265,11 @@ class Drawable(Colored, metaclass=ABCMeta):
     @abstractmethod
     def tikz_points_labels(self):
         """Return the command to write the object's points' labels."""
+
+    def tikzsection_declarations(self):
+        return '''{declaring_comment}
+{declarations}'''.format(declaring_comment=self.tikz_declaring_comment(),
+                         declarations=self.tikz_declarations())
 
     def tikzsection_boundingbox(self):
         boundingbox_section = ''
