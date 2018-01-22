@@ -165,8 +165,7 @@ class Drawable(Colored, metaclass=ABCMeta):
         modify it later), once it's ready, draw it.
         """
         required.package['tikz'] = True
-        picture_format = {'header': self.tikz_header(),
-                          'declaring_comment': self.tikz_declaring_comment(),
+        picture_format = {'declaring_comment': self.tikz_declaring_comment(),
                           'declarations': self.tikz_declarations(),
                           'labeling_comment': self.tikz_labeling_comment(),
                           'labels': self.tikz_points_labels()}
@@ -200,7 +199,7 @@ class Drawable(Colored, metaclass=ABCMeta):
             picture_format.update({s[len(section_attr_prefix):] + '_section':
                                    getattr(self, s)()})
         return r"""
-\begin{{tikzpicture}}{pic_options}{header}
+\begin{{tikzpicture}}{pic_options}
 {declaring_comment}
 {declarations}
 
@@ -209,15 +208,6 @@ class Drawable(Colored, metaclass=ABCMeta):
 {labels}{boundingbox_section}
 \end{{tikzpicture}}
 """.format(**picture_format)
-
-    def tikz_header(self):
-        r"""
-        Can be overriden to define some setup here.
-
-        Take care, if you actually override it, to start with a \n, to avoid
-        starting displaying it right after the \begin.
-        """
-        return ''
 
     def tikz_declaring_comment(self):
         """
