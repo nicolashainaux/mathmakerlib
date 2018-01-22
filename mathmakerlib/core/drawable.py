@@ -165,8 +165,7 @@ class Drawable(Colored, metaclass=ABCMeta):
         modify it later), once it's ready, draw it.
         """
         required.package['tikz'] = True
-        body_format = {'labeling_comment': self.tikz_labeling_comment(),
-                       'labels': self.tikz_points_labels()}
+        body_format = {}
         section_attr_prefix = 'tikzsection_'
         sections = [attr for attr in dir(self)
                     if attr.startswith(section_attr_prefix)]
@@ -199,8 +198,7 @@ class Drawable(Colored, metaclass=ABCMeta):
 {declarations_section}
 
 {drawing_section}
-{labeling_comment}
-{labels}{boundingbox_section}
+{labeling_section}{boundingbox_section}
 """
 
     def tikz_declaring_comment(self):
@@ -282,6 +280,11 @@ class Drawable(Colored, metaclass=ABCMeta):
                 .format(**{'drawing_comment{}'.format(i): c,
                            'drawing{}'.format(i): d})
         return drawing_section
+
+    def tikzsection_labeling(self):
+        return '''{labeling_comment}
+{labels}'''.format(labeling_comment=self.tikz_labeling_comment(),
+                   labels=self.tikz_points_labels())
 
     @property
     def drawn(self):
