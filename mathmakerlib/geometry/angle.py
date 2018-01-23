@@ -333,7 +333,7 @@ class Angle(Drawable, HasThickness):
             raise TypeError('label_armspoints must be a boolean; '
                             'got {} instead.'.format(type(value)))
 
-    def tikz_angle_mark(self):
+    def tikz_angle_mark_and_label(self):
         if self.mark is None or self.mark_right:
             return ''
         required.tikz_library['angles'] = True
@@ -428,13 +428,13 @@ class Angle(Drawable, HasThickness):
 
         :rtype: list
         """
-        mark = self.tikz_angle_mark()
-        if mark != '':
-            mark = '\n' + mark
+        mark_and_label = self.tikz_angle_mark_and_label()
+        if mark_and_label != '':
+            mark_and_label = '\n' + mark_and_label
         commands = ['\draw{} ({}) -- ({}) -- ({}){};'
                     .format(tikz_options_list('draw', self),
                             *[p.name for p in self.points],
-                            mark)
+                            mark_and_label)
                     ]
         if self.draw_vertex:
             commands.append(self._tikz_draw_vertex())

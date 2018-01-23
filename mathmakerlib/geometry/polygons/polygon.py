@@ -359,9 +359,9 @@ class Polygon(Drawable, Colored, HasThickness, Oriented):
             return '\n'.join([s.tikz_draw_section() for s in self.sides])
 
     def _tikz_draw_angles_marks(self):
-        marks = '\n'.join([a.tikz_angle_mark()
+        marks = '\n'.join([a.tikz_angle_mark_and_label()
                           for a in self.angles
-                          if a.tikz_angle_mark() != ''])
+                          if a.tikz_angle_mark_and_label() != ''])
         if marks == '':
             return ''
         else:
