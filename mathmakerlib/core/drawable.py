@@ -106,6 +106,27 @@ def tikz_options_list(options_list, source=None):
         return ''
 
 
+class Labeled(object, metaclass=ABCMeta):
+
+    @property
+    def label_value(self):
+        return self._label_value
+
+    @property
+    def label(self):
+        return self._label
+
+    @label.setter
+    def label(self, value):
+        if value in ['', None]:
+            self._label = self._label_value = None
+        elif isinstance(value, Printable):
+            self._label = value.printed
+            self._label_value = value
+        else:
+            self._label = self._label_value = str(value)
+
+
 class Colored(object, metaclass=ABCMeta):
     @property
     def color(self):
@@ -154,7 +175,7 @@ class HasThickness(object, metaclass=ABCMeta):
                              .format(str(value), str(THICKNESS_VALUES)))
 
 
-class Drawable(Colored, metaclass=ABCMeta):
+class Drawable(Colored, Labeled, metaclass=ABCMeta):
 
     def draw(self):
         """
@@ -290,24 +311,6 @@ class Drawable(Colored, metaclass=ABCMeta):
     def drawn(self):
         """self.drawn is same as self.draw() (no arguments)."""
         return self.draw()
-
-    @property
-    def label_value(self):
-        return self._label_value
-
-    @property
-    def label(self):
-        return self._label
-
-    @label.setter
-    def label(self, value):
-        if value in ['', None]:
-            self._label = self._label_value = None
-        elif isinstance(value, Printable):
-            self._label = value.printed
-            self._label_value = value
-        else:
-            self._label = self._label_value = str(value)
 
     @property
     def scale(self):
