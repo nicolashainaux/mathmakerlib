@@ -134,6 +134,10 @@ def test_instanciation_errors(pointO, pointI, pointJ):
         Angle(pointO, pointI, pointJ, armspoints=[('1', '2', '3'), ('2', )])
     assert str(excinfo.value) == 'Each arm\'s point must be defined by a ' \
         'tuple of 1 or 2 elements. Found 3 elements instead.'
+    with pytest.raises(TypeError) as excinfo:
+        Angle(pointO, pointI, pointJ, eccentricity='a')
+    assert str(excinfo.value) == 'The eccentricity of an Angle must be a '\
+        'Number. Found <class \'str\'> instead.'
 
 
 def test_instanciation(pointO, pointI, pointJ, pointA):
@@ -301,6 +305,29 @@ def test_drawing_angles():
 \draw (A) node[below left] {A};
 \draw (X) node[below right] {X};
 \draw (Y) node[above left] {Y};
+\end{tikzpicture}
+"""
+
+
+def test_drawing_labeled_angles():
+    """Check drawing standalone Angles."""
+    A = Point(0, 0, 'A')
+    X = Point(6, 1, 'X')
+    Y = Point(3, 5, 'Y')
+    α = Angle(X, A, Y, label=Number(38, unit=r'\textdegree'))
+    assert α.drawn == r"""
+\begin{tikzpicture}
+% Declare Points
+\coordinate (X) at (6,1);
+\coordinate (A) at (0,0);
+\coordinate (Y) at (3,5);
+
+% Draw Angle
+\draw[thick] (X) -- (A) -- (Y)
+pic ["\ang{38}", angle eccentricity=2.15] {angle = X--A--Y};
+
+% Label Points
+
 \end{tikzpicture}
 """
 
@@ -503,6 +530,49 @@ pic [draw, tripledash, thick, angle radius = 0.5 cm] {angle = X--A--Y};
 pic [draw, doubledash, thick, angle radius = 0.5 cm] {angle = X--A--Y}
 pic [draw, doubledash, thick, angle radius = 0.58 cm] {angle = X--A--Y}
 pic [draw, doubledash, thick, angle radius = 0.66 cm] {angle = X--A--Y};
+
+% Label Points
+
+\end{tikzpicture}
+"""
+
+
+def test_drawing_marked_labeled_angles():
+    """Check drawing standalone Angles."""
+    A = Point(0, 0, 'A')
+    X = Point(6, 1, 'X')
+    Y = Point(3, 5, 'Y')
+    α = Angle(X, A, Y, label=Number(38, unit=r'\textdegree'))
+    α.mark = AngleMark(radius=Number('0.5', unit='cm'))
+    assert α.drawn == r"""
+\begin{tikzpicture}
+% Declare Points
+\coordinate (X) at (6,1);
+\coordinate (A) at (0,0);
+\coordinate (Y) at (3,5);
+
+% Draw Angle
+\draw[thick] (X) -- (A) -- (Y)
+pic ["\ang{38}", angle eccentricity=2.15, draw, thick, """\
+r"""angle radius = 0.5 cm] {angle = X--A--Y};
+
+% Label Points
+
+\end{tikzpicture}
+"""
+    α.mark.variety = 'double'
+    assert α.drawn == r"""
+\begin{tikzpicture}
+% Declare Points
+\coordinate (X) at (6,1);
+\coordinate (A) at (0,0);
+\coordinate (Y) at (3,5);
+
+% Draw Angle
+\draw[thick] (X) -- (A) -- (Y)
+pic ["\ang{38}", angle eccentricity=2.15, draw, thick, """\
+r"""angle radius = 0.5 cm] {angle = X--A--Y}
+pic [draw, thick, angle radius = 0.58 cm] {angle = X--A--Y};
 
 % Label Points
 
