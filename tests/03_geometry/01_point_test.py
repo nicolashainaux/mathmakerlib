@@ -81,6 +81,11 @@ def test_automatic_naming():
     assert q.name == 'D'
 
 
+def test_str():
+    """Check __str__ is correct."""
+    assert str(Point(0, 0, 'A')) == 'A(0; 0)'
+
+
 def test_repr():
     """Check __repr__ is correct."""
     assert repr(Point(0, 0, 'A')) == 'Point A(0; 0)'

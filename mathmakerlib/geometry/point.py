@@ -98,6 +98,9 @@ class Point(Drawable):
             self.color = color
         self.shape_scale = shape_scale
 
+    def __str__(self):
+        return '{}({}; {})'.format(self.name, self.x, self.y)
+
     def __repr__(self):
         return 'Point {}({}; {})'.format(self.name, self.x, self.y)
 
