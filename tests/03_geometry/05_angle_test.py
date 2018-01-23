@@ -578,3 +578,37 @@ pic [draw, thick, angle radius = 0.58 cm] {angle = X--A--Y};
 
 \end{tikzpicture}
 """
+    A = Point(0, 0, 'A')
+    X1 = Point(6, 1, 'X1')
+    Y1 = Point(3, 5, 'Y1')
+    α = Angle(X1, A, Y1, armspoints=[('X', ), ('Y', )],
+              label_vertex=True, draw_vertex=True,
+              label=Number(38, unit=r'\textdegree'))
+    α.mark = AngleMark(radius=Number('0.5', unit='cm'), variety='double',
+                       decoration='singledash')
+    assert α.drawn == r"""
+\begin{tikzpicture}
+% Declare Points
+\coordinate (X1) at (6,1);
+\coordinate (A) at (0,0);
+\coordinate (Y1) at (3,5);
+\coordinate (X) at (4.8,0.8);
+\coordinate (Y) at (2.4,4.0);
+
+% Draw Angle
+\draw[thick] (X1) -- (A) -- (Y1)
+pic ["\ang{38}", angle eccentricity=2.15, draw, singledash, thick, """\
+r"""angle radius = 0.5 cm] {angle = X1--A--Y1}
+pic [draw, singledash, thick, angle radius = 0.58 cm] {angle = X1--A--Y1};
+% Draw Vertex
+\draw (A) node[scale=0.67] {$\times$};
+% Draw Arms' Points
+\draw (X) node[scale=0.67] {$\times$};
+\draw (Y) node[scale=0.67] {$\times$};
+
+% Label Points
+\draw (A) node[below left] {A};
+\draw (X) node[below right] {X};
+\draw (Y) node[above left] {Y};
+\end{tikzpicture}
+"""
