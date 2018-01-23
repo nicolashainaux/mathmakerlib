@@ -486,3 +486,134 @@ class Angle(Drawable, HasThickness):
             labels.append(self.armspoints[0].tikz_label())
             labels.append(self.armspoints[1].tikz_label())
         return '\n'.join(labels)
+
+
+class AnglesSet(Drawable):
+
+    def __init__(self, *angles):
+        self.angles = angles
+
+    @property
+    def angles(self):
+        return self._angles
+
+    @angles.setter
+    def angles(self, *angles):
+        for α in angles:
+            if not isinstance(α, Angle):
+                raise TypeError('Any element of an AnglesSet must be an '
+                                'Angle. Found {} instead.'.format(type(α)))
+        self._angles = angles
+
+    def tikz_declarations(self):
+        """
+        Return the necessary declarations (e.g. Points declarations).
+
+        :rtype: str
+        """
+        points = []
+        for α in self.angles:
+            if α.vertex not in points:
+                points.append(α.vertex)
+            for p in α.endpoints:
+                if p not in points:
+                    points.append(p)
+            for p in α.armspoints:
+                if p not in points:
+                    if α.draw_armspoints or α.label_armspoints:
+                        points.append(p)
+        points_names = [p.name for p in points]
+        if len(points_names) != len(set(points_names)):
+            raise RuntimeError('Two different Points have been provided the '
+                               'same name in this list: {}'
+                               .format(';'.join([str(p) for p in points])))
+        return '\n'.join([p.tikz_declarations() for p in points])
+
+    def _tikz_draw_options(self):
+        """
+        Each Angle will have its own options, so nothing to return.
+
+        :rtype: list
+        """
+        return []
+
+    def tikz_drawing_comment(self):
+        """
+        Return the comments matching each drawing category.
+
+        :rtype: list
+        """
+        comments = ['% Draw Angles']
+        vertices_to_draw = len([α.draw_vertex
+                                for α in self.angles if α.draw_vertex])
+        if vertices_to_draw:
+            if vertices_to_draw == 1:
+                comments.append('% Draw Vertex')
+            else:
+                comments.append('% Draw Vertices')
+        if any([α.draw_armspoints and len(α.armspoints)
+                for α in self.angles]):
+            comments.append('% Draw Arms\' Points')
+        if any([α.draw_endpoints for α in self.angles]):
+            comments.append('% Draw End Points')
+        return comments
+
+    def tikz_label(self):
+        """All labels are included in the Angles' draw commands."""
+
+    def tikz_points_labels(self):
+        """Return the command to write the Angles' points' labels."""
+        labels = []
+        for α in self.angles:
+            if α.label_vertex:
+                labels.append(α.vertex.tikz_label())
+            if α.label_endpoints:
+                labels.append(α.endpoints[0].tikz_label())
+                labels.append(α.endpoints[1].tikz_label())
+            if α.label_armspoints:
+                labels.append(α.armspoints[0].tikz_label())
+                labels.append(α.armspoints[1].tikz_label())
+        return '\n'.join(labels)
+
+    def tikz_draw(self):
+        """
+        Return the commands to actually draw the Angles.
+
+        :rtype: list
+        """
+        angles_cmd = []
+        for α in self.angles:
+            mark_and_label = α.tikz_angle_mark_and_label()
+            if mark_and_label != '':
+                mark_and_label = '\n' + mark_and_label
+            angles_cmd.append('\draw{} ({}) -- ({}) -- ({}){};'
+                              .format(tikz_options_list('draw', α),
+                                      *[p.name for p in α.points],
+                                      mark_and_label))
+        commands = ['\n'.join(angles_cmd)]
+
+        vertices_cmd = []
+        for α in self.angles:
+            if α.draw_vertex:
+                vertices_cmd.append(α._tikz_draw_vertex())
+        vertices_cmd = '\n'.join(vertices_cmd)
+        if vertices_cmd != '':
+            commands.append(vertices_cmd)
+
+        armspoints_cmd = []
+        for α in self.angles:
+            if α.draw_armspoints and len(α.armspoints):
+                armspoints_cmd.append(α._tikz_draw_armspoints())
+        armspoints_cmd = '\n'.join(armspoints_cmd)
+        if armspoints_cmd != '':
+            commands.append(armspoints_cmd)
+
+        endpoints_cmd = []
+        for α in self.angles:
+            if α.draw_endpoints and len(α.endpoints):
+                endpoints_cmd.append(α._tikz_draw_endpoints())
+        endpoints_cmd = '\n'.join(endpoints_cmd)
+        if endpoints_cmd != '':
+            commands.append(endpoints_cmd)
+
+        return commands
