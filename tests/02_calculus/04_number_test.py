@@ -239,6 +239,8 @@ def test_printing():
         == r'\SI{3.60}{mL}'
     assert Number('0.70', unit=r'\officialeuro').quantize(Number('0.01'))\
         .printed == r'\SI{0.70}{\officialeuro}'
+    n = Number('38', unit=r'\textdegree')
+    assert n.printed == r'\ang{38}'
 
 
 def test_sign():

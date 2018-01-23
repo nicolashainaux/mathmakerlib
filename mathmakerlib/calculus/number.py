@@ -27,6 +27,7 @@ from decimal import Decimal, ROUND_DOWN, ROUND_HALF_UP
 
 from mathmakerlib import required
 from mathmakerlib import locale_patch  # noqa
+from mathmakerlib.calculus.unit import physical_quantity
 from mathmakerlib.calculus.tools import is_number, is_integer
 from mathmakerlib.core.signed import Signed
 from mathmakerlib.core.printable import Printable
@@ -379,8 +380,11 @@ class Number(Decimal, Signed, Printable, Evaluable):
         else:
             if variant == 'latex':
                 required.package['siunitx'] = True
-                return extra_sign + r'\SI{' + self_str \
-                    + '}{' + self.unit.imprint(standalone=False) + '}'
+                if physical_quantity(self.unit) == 'angle':
+                    return extra_sign + r'\ang{' + self_str + '}'
+                else:
+                    return extra_sign + r'\SI{' + self_str \
+                        + '}{' + self.unit.imprint(standalone=False) + '}'
             else:  # 'user_input'
                 return extra_sign + self_str + ' ' + self.unit.uiprinted
 
