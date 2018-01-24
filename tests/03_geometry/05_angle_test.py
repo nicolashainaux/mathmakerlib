@@ -24,7 +24,7 @@ import pytest
 from mathmakerlib import required
 from mathmakerlib.calculus import Number, Unit
 from mathmakerlib.geometry import Point, PointsPair
-from mathmakerlib.geometry.angle import AngleMark, Angle
+from mathmakerlib.geometry.angle import AngleMark, Angle, AnglesSet
 
 
 @pytest.fixture()
@@ -610,5 +610,127 @@ pic [draw, singledash, thick, angle radius = 0.58 cm] {angle = X1--A--Y1};
 \draw (A) node[below left] {A};
 \draw (X) node[below right] {X};
 \draw (Y) node[above left] {Y};
+\end{tikzpicture}
+"""
+
+
+def test_AnglesSet_instanciation_errors(pointO, pointI, pointJ):
+    """Check AnglesSet's instanciation exceptions."""
+    with pytest.raises(TypeError) as excinfo:
+        AnglesSet(pointO)
+    assert str(excinfo.value) == 'Any element of an AnglesSet must be an ' \
+        'Angle. Found <class \'mathmakerlib.geometry.point.Point\'> instead.'
+
+
+def test_drawing_AnglesSets():
+    """Check drawing AnglesSets."""
+    A = Point(0, 0, 'A')
+    X1 = Point(6, 1, 'X1')
+    Y1 = Point(3, 5, 'Y1')
+    Z1 = Point(1, '6.5', 'Z1')
+    α = Angle(X1, A, Y1)
+    β = Angle(Y1, A, Z1)
+    S = AnglesSet(α, β)
+    assert S.drawn == r"""
+\begin{tikzpicture}
+% Declare Points
+\coordinate (A) at (0,0);
+\coordinate (X1) at (6,1);
+\coordinate (Y1) at (3,5);
+\coordinate (Z1) at (1,6.5);
+
+% Draw Angles
+\draw[thick] (X1) -- (A) -- (Y1);
+\draw[thick] (Y1) -- (A) -- (Z1);
+
+% Label Points
+
+\end{tikzpicture}
+"""
+    α.armspoints = [('X', ), ('Y', )]
+    α.label_vertex = True
+    α.draw_vertex = True
+    β.armspoints = [('Y', ), ('Z', )]
+    assert S.drawn == r"""
+\begin{tikzpicture}
+% Declare Points
+\coordinate (A) at (0,0);
+\coordinate (X1) at (6,1);
+\coordinate (Y1) at (3,5);
+\coordinate (X) at (4.8,0.8);
+\coordinate (Y) at (2.4,4.0);
+\coordinate (Z1) at (1,6.5);
+\coordinate (Z) at (0.8,5.20);
+
+% Draw Angles
+\draw[thick] (X1) -- (A) -- (Y1);
+\draw[thick] (Y1) -- (A) -- (Z1);
+% Draw Vertex
+\draw (A) node[scale=0.67] {$\times$};
+% Draw Arms' Points
+\draw (X) node[scale=0.67] {$\times$};
+\draw (Y) node[scale=0.67] {$\times$};
+\draw (Z) node[scale=0.67] {$\times$};
+
+% Label Points
+\draw (A) node[below] {A};
+\draw (X) node[below right] {X};
+\draw (Y) node[above left] {Y};
+\draw (Z) node[above left] {Z};
+\end{tikzpicture}
+"""
+    Point.reset_names()
+    A = Point(0, 0, 'A')
+    X1 = Point(6, 1, 'X1')
+    Y1 = Point(3, 5, 'Y1')
+    Z1 = Point(1, '6.5', 'Z1')
+    α = Angle(X1, A, Y1, armspoints=[('X', ), ('Y', )],
+              label_vertex=True, draw_vertex=True,
+              mark=AngleMark(color='RoyalBlue',
+                             radius=Number('0.5', unit='cm')),
+              label=Number(38, unit=r'\textdegree'))
+    β = Angle(Y1, A, Z1, armspoints=[('Y', ), ('Z', )],
+              mark=AngleMark(color='BurntOrange', variety='double',
+                             radius=Number('0.5', unit='cm')),
+              label=Number(9, unit=r'\textdegree'))
+    γ = Angle(X1, A, Z1, label='?',
+              eccentricity=Number('1.15'),
+              mark=AngleMark(color='BrickRed',
+                             radius=Number('2', unit='cm')))
+    S = AnglesSet(α, β, γ)
+    assert S.drawn == r"""
+\begin{tikzpicture}
+% Declare Points
+\coordinate (A) at (0,0);
+\coordinate (X1) at (6,1);
+\coordinate (Y1) at (3,5);
+\coordinate (X) at (4.8,0.8);
+\coordinate (Y) at (2.4,4.0);
+\coordinate (Z1) at (1,6.5);
+\coordinate (Z) at (0.8,5.20);
+
+% Draw Angles
+\draw[thick] (X1) -- (A) -- (Y1)
+pic ["\ang{38}", angle eccentricity=2.15, draw, RoyalBlue, thick, """\
+r"""angle radius = 0.5 cm] {angle = X1--A--Y1};
+\draw[thick] (Y1) -- (A) -- (Z1)
+pic ["\ang{9}", angle eccentricity=2.15, draw, BurntOrange, thick, """\
+r"""angle radius = 0.5 cm] {angle = Y1--A--Z1}
+pic [draw, BurntOrange, thick, angle radius = 0.58 cm] {angle = Y1--A--Z1};
+\draw[thick] (X1) -- (A) -- (Z1)
+pic ["?", angle eccentricity=1.15, draw, BrickRed, thick, """\
+r"""angle radius = 2 cm] {angle = X1--A--Z1};
+% Draw Vertex
+\draw (A) node[scale=0.67] {$\times$};
+% Draw Arms' Points
+\draw (X) node[scale=0.67] {$\times$};
+\draw (Y) node[scale=0.67] {$\times$};
+\draw (Z) node[scale=0.67] {$\times$};
+
+% Label Points
+\draw (A) node[below left] {A};
+\draw (X) node[below right] {X};
+\draw (Y) node[above left] {Y};
+\draw (Z) node[above left] {Z};
 \end{tikzpicture}
 """

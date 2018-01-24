@@ -423,11 +423,15 @@ class Angle(Drawable, HasThickness):
     def _tikz_draw_vertex(self):
         return self.vertex.tikz_draw()[0]
 
-    def _tikz_draw_armspoints(self):
-        return '\n'.join([p.tikz_draw()[0] for p in self.armspoints])
+    def _tikz_draw_armspoints(self, nb=None):
+        if nb is None:
+            nb = [n for n in range(len(self.armspoints))]
+        return '\n'.join([self.armspoints[n].tikz_draw()[0] for n in nb])
 
-    def _tikz_draw_endpoints(self):
-        return '\n'.join([p.tikz_draw()[0] for p in self.endpoints])
+    def _tikz_draw_endpoints(self, nb=None):
+        if nb is None:
+            nb = [0, 1]
+        return '\n'.join([self.endpoints[n].tikz_draw()[0] for n in nb])
 
     def tikz_drawing_comment(self):
         """
@@ -498,7 +502,7 @@ class AnglesSet(Drawable):
         return self._angles
 
     @angles.setter
-    def angles(self, *angles):
+    def angles(self, angles):
         for α in angles:
             if not isinstance(α, Angle):
                 raise TypeError('Any element of an AnglesSet must be an '
@@ -564,15 +568,21 @@ class AnglesSet(Drawable):
     def tikz_points_labels(self):
         """Return the command to write the Angles' points' labels."""
         labels = []
+        labeled_points_names = []
         for α in self.angles:
-            if α.label_vertex:
+            if α.label_vertex and α.vertex.name not in labeled_points_names:
                 labels.append(α.vertex.tikz_label())
+                labeled_points_names.append(α.vertex.name)
             if α.label_endpoints:
-                labels.append(α.endpoints[0].tikz_label())
-                labels.append(α.endpoints[1].tikz_label())
+                for p in α.endpoints:
+                    if p.name not in labeled_points_names:
+                        labels.append(p.tikz_label())
+                        labeled_points_names.append(p.name)
             if α.label_armspoints:
-                labels.append(α.armspoints[0].tikz_label())
-                labels.append(α.armspoints[1].tikz_label())
+                for p in α.armspoints:
+                    if p.name not in labeled_points_names:
+                        labels.append(p.tikz_label())
+                        labeled_points_names.append(p.name)
         return '\n'.join(labels)
 
     def tikz_draw(self):
@@ -592,10 +602,12 @@ class AnglesSet(Drawable):
                                       mark_and_label))
         commands = ['\n'.join(angles_cmd)]
 
+        labeled_points_names = []
         vertices_cmd = []
         for α in self.angles:
-            if α.draw_vertex:
+            if α.draw_vertex and α.vertex.name not in labeled_points_names:
                 vertices_cmd.append(α._tikz_draw_vertex())
+                labeled_points_names.append(α.vertex.name)
         vertices_cmd = '\n'.join(vertices_cmd)
         if vertices_cmd != '':
             commands.append(vertices_cmd)
@@ -603,7 +615,12 @@ class AnglesSet(Drawable):
         armspoints_cmd = []
         for α in self.angles:
             if α.draw_armspoints and len(α.armspoints):
-                armspoints_cmd.append(α._tikz_draw_armspoints())
+                nb = []
+                for i, p in enumerate(α.armspoints):
+                    if p.name not in labeled_points_names:
+                        nb.append(i)
+                        labeled_points_names.append(p.name)
+                armspoints_cmd.append(α._tikz_draw_armspoints(nb=nb))
         armspoints_cmd = '\n'.join(armspoints_cmd)
         if armspoints_cmd != '':
             commands.append(armspoints_cmd)
@@ -611,7 +628,12 @@ class AnglesSet(Drawable):
         endpoints_cmd = []
         for α in self.angles:
             if α.draw_endpoints and len(α.endpoints):
-                endpoints_cmd.append(α._tikz_draw_endpoints())
+                nb = []
+                for i, p in enumerate(α.endpoints):
+                    if p.name not in labeled_points_names:
+                        nb.append(i)
+                        labeled_points_names.append(p.name)
+                endpoints_cmd.append(α._tikz_draw_endpoints(nb=nb))
         endpoints_cmd = '\n'.join(endpoints_cmd)
         if endpoints_cmd != '':
             commands.append(endpoints_cmd)
