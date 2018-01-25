@@ -145,7 +145,9 @@ def test_instanciation(pointO, pointI, pointJ, pointA):
     """Check Angle's instanciation."""
     theta = Angle(pointI, pointO, pointJ, mark_right=True)
     assert theta.measure == Number('90')
-    assert theta.decoration is None
+    assert isinstance(theta.decoration, AngleDecoration)
+    assert theta.decoration.label is None
+    assert theta.decoration.variety is None
     assert theta.mark_right
     assert theta.vertex == pointO
     assert theta.points == [pointI, pointO, pointJ]
@@ -170,16 +172,16 @@ def test_marked_angles(pointO, pointI, pointJ, pointA):
     """Check Angle's instanciation."""
     required.tikz_library['angles'] = False
     theta = Angle(pointI, pointO, pointJ)
-    assert theta.tikz_angle_mark_and_label() == ''
+    assert theta.tikz_decoration() == ''
     theta.decoration = AngleDecoration(color='red', thickness='ultra thick',
                                        radius=Number(2))
-    assert theta.tikz_angle_mark_and_label() \
-        == 'pic [draw, red, ultra thick, angle radius = 2] {angle = I--O--J}'
+    assert theta.tikz_decoration() \
+        == 'pic [draw, angle radius = 2, red, ultra thick] {angle = I--O--J}'
     assert required.tikz_library['angles']
     required.tikz_library['angles'] = False
     theta.mark_right = True
     theta.decoration = AngleDecoration()
-    assert theta.tikz_angle_mark_and_label() == ''
+    assert theta.tikz_decoration() == ''
     assert not required.tikz_library['angles']
     assert theta.tikz_rightangle_mark() == \
         '\draw[thick, cm={cos(0), sin(0), -sin(0), cos(0), (O)}]' \

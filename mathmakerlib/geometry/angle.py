@@ -51,7 +51,7 @@ class AngleDecoration(Labeled, Colored, HasThickness, HasRadius):
             # Default gap of 0.4 cm between a mark and the label
             # TODO: let the user choose a default gap, for instance:
             # eccentricity='automatic_0.4' then split this to get the number
-            gap = Number('0.4', unit='cm')
+            gap = Number('0.4', unit=self.radius.unit)
             eccentricity = gap / self.radius + 1
         self.eccentricity = eccentricity
         self.variety = variety
@@ -120,9 +120,11 @@ class AngleDecoration(Labeled, Colored, HasThickness, HasRadius):
                 attributes.append(self.hatchmark)
                 required.tikz_library['hatchmarks.markings'] = True
                 required.tikzset[self.hatchmark + '_hatchmark'] = True
-        for attr in [self.color, self.thickness]:
-            if attr is not None:
-                attributes.append(attr)
+        if (self.variety is not None
+            or (do_label and self.label not in [None, 'default'])):
+            for attr in [self.color, self.thickness]:
+                if attr is not None:
+                    attributes.append(attr)
         return '[{}]'.format(', '.join(attributes))
 
     def generate_tikz(self, *points_names):
@@ -131,8 +133,11 @@ class AngleDecoration(Labeled, Colored, HasThickness, HasRadius):
                                'generate the AngleDecoration. Found {} '
                                'arguments instead.'.format(len(points_names)))
         required.tikz_library['angles'] = True
+        pic_attr = self.tikz_attributes()
+        if pic_attr == '[]':
+            return ''
         deco = ['pic {} {{angle = {}--{}--{}}}'
-                .format(self.tikz_attributes(), *points_names)]
+                .format(pic_attr, *points_names)]
         if self.variety in ['double', 'triple']:
             space_sep = Number('0.16')
             deco.append('pic {} {{angle = {}--{}--{}}}'
@@ -307,7 +312,7 @@ class Angle(Drawable, HasThickness):
         """
         The label of an Angle is handled internally by its AngleDecoration.
         """
-        if self.decoration is not None:
+        if hasattr(self, '_decoration') and self.decoration is not None:
             return self.decoration.label
         else:
             return None
