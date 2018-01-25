@@ -25,6 +25,7 @@ from math import acos, degrees
 from mathmakerlib import required, mmlib_setup
 from mathmakerlib.core.oriented import check_winding, shoelace_formula
 from mathmakerlib.core.drawable import Colored, HasThickness, HasRadius
+from mathmakerlib.core.drawable import Labeled
 from mathmakerlib.core.drawable import tikz_options_list, Drawable
 from mathmakerlib.core.drawable import tikz_approx_position
 from mathmakerlib.geometry.point import Point
@@ -35,16 +36,37 @@ from mathmakerlib.calculus.number import Number, is_number
 LOCALE_US = 'en' if sys.platform.startswith('win') else 'en_US.UTF-8'
 
 
-class AngleMark(Colored, HasThickness, HasRadius):
+class AngleDecoration(Labeled, Colored, HasThickness, HasRadius):
 
-    def __init__(self, color=None, thickness='thick',
+    def __init__(self, color=None, thickness='thick', label='default',
                  radius=Number('0.25', unit='cm'), variety='single',
-                 decoration=None):
+                 hatchmark=None, eccentricity='automatic'):
         self.color = color
         self.thickness = thickness
+        self.label = label
         self.radius = radius
+        # Eccentricity must be set *after* radius, in order to be able to
+        # calculate a reasonable default eccentricity based on the radius
+        if eccentricity == 'automatic':
+            # Default gap of 0.4 cm between a mark and the label
+            # TODO: let the user choose a default gap, for instance:
+            # eccentricity='automatic_0.4' then split this to get the number
+            gap = Number('0.4', unit='cm')
+            eccentricity = gap / self.radius + 1
+        self.eccentricity = eccentricity
         self.variety = variety
-        self.decoration = decoration
+        self.hatchmark = hatchmark
+
+    @property
+    def eccentricity(self):
+        return self._eccentricity
+
+    @eccentricity.setter
+    def eccentricity(self, value):
+        if not (value is None or is_number(value)):
+            raise TypeError('The eccentricity of an AngleDecoration must be '
+                            'a Number. Found {} instead.'.format(type(value)))
+        self._eccentricity = value
 
     @property
     def variety(self):
@@ -52,56 +74,80 @@ class AngleMark(Colored, HasThickness, HasRadius):
 
     @variety.setter
     def variety(self, value):
-        if value not in ['single', 'double', 'triple']:
-            raise TypeError('AngleMark\'s variety can be \'single\', '
-                            '\'double\' or \'triple\'. Found {} instead ('
-                            'type: {}).'
+        if value not in [None, 'single', 'double', 'triple']:
+            raise TypeError('AngleDecoration\'s variety can be None, '
+                            '\'single\', \'double\' or \'triple\'. '
+                            'Found {} instead (type: {}).'
                             .format(repr(value), type(value)))
         self._variety = value
 
     @property
-    def decoration(self):
-        return self._decoration
+    def hatchmark(self):
+        return self._hatchmark
 
-    @decoration.setter
-    def decoration(self, value):
+    @hatchmark.setter
+    def hatchmark(self, value):
         if value not in [None, 'singledash', 'doubledash', 'tripledash']:
-            raise TypeError('AngleMark\'s decoration can be None, '
+            raise TypeError('AngleDecoration\'s hatchmark can be None, '
                             '\'singledash\', \'doubledash\' or '
                             '\'tripledash\'. Found {} instead (type: {}).'
                             .format(repr(value), type(value)))
-        self._decoration = value
+        self._hatchmark = value
 
-    def tikz_mark_attributes(self, radius_coeff=1, label=None,
-                             eccentricity=None):
+    def tikz_attributes(self, radius_coeff=1, do_label=True):
         if not is_number(radius_coeff):
             raise TypeError('radius_coeff must be a number, found {} instead.'
                             .format(type(radius_coeff)))
         attributes = []
-        if label is not None:
-            attributes.append('"{}"'.format(label))
-            if eccentricity is not None:
-                attributes.append('angle eccentricity={}'.format(eccentricity))
-        attributes.append('draw')
-        for attr in [self.decoration, self.color, self.thickness]:
+        if do_label and self.label not in [None, 'default']:
+            attributes.append('"{}"'.format(self.label))
+            if self.eccentricity is not None:
+                attributes.append('angle eccentricity={}'
+                                  .format(self.eccentricity))
+        if self.variety is not None:
+            attributes.append('draw')
+            if self.radius is not None:
+                attributes.append('angle radius = {}'
+                                  .format((self.radius * radius_coeff)
+                                          .standardized().uiprinted))
+            if self.hatchmark is not None:
+                attributes.append(self.hatchmark)
+                required.tikz_library['hatchmarks.markings'] = True
+                required.tikzset[self.hatchmark + '_hatchmark'] = True
+        for attr in [self.color, self.thickness]:
             if attr is not None:
                 attributes.append(attr)
-        if self.decoration is not None:
-            required.tikz_library['decorations.markings'] = True
-            required.tikzset[self.decoration + '_decoration'] = True
-        if self.radius is not None:
-            attributes.append('angle radius = {}'
-                              .format((self.radius * radius_coeff)
-                                      .standardized().uiprinted))
         return '[{}]'.format(', '.join(attributes))
+
+    def generate_tikz(self, *points_names):
+        if not len(points_names) == 3:
+            raise RuntimeError('Three Points\' names must be provided to '
+                               'generate the AngleDecoration. Found {} '
+                               'arguments instead.'.format(len(points_names)))
+        required.tikz_library['angles'] = True
+        deco = ['pic {} {{angle = {}--{}--{}}}'
+                .format(self.tikz_attributes(), *points_names)]
+        if self.variety in ['double', 'triple']:
+            space_sep = Number('0.16')
+            deco.append('pic {} {{angle = {}--{}--{}}}'
+                        .format(self.tikz_attributes(
+                                radius_coeff=1 + space_sep,
+                                do_label=False),
+                                *points_names))
+            if self.variety == 'triple':
+                deco.append('pic {} {{angle = {}--{}--{}}}'
+                            .format(self.tikz_attributes(
+                                    radius_coeff=1 + 2 * space_sep,
+                                    do_label=False),
+                                    *points_names))
+        return deco
 
 
 class Angle(Drawable, HasThickness):
 
-    def __init__(self, point, vertex, point_or_measure, mark=None,
+    def __init__(self, point, vertex, point_or_measure, decoration=None,
                  mark_right=False, second_point_name='auto', label=None,
                  color=None, thickness='thick', armspoints=None,
-                 eccentricity=Number('2.15'),
                  label_vertex=False, draw_vertex=False,
                  label_armspoints=False, draw_armspoints=False,
                  label_endpoints=False, draw_endpoints=False,):
@@ -113,8 +159,8 @@ class Angle(Drawable, HasThickness):
         :param point_or_measure: either a Point of the other arm of the Angle,
         or the measure of the Angle
         :type point_or_measure: Point or number
-        :param mark: the mark of the Angle
-        :type mark: None or AngleMark
+        :param decoration: the decoration of the Angle
+        :type decoration: None or AngleDecoration
         :param mark_right: to tell whether to mark the angle as a right angle
         :type mark_right: bool
         :param second_point_name: Only used if point_or_measure is a measure,
@@ -128,10 +174,11 @@ class Angle(Drawable, HasThickness):
         :type color: str
         """
         self.color = color
-        self.label = label
-        self.eccentricity = eccentricity
         self.thickness = thickness
-        self.mark = mark
+        self.decoration = decoration
+        # The label must be set *after* the possible decoration, because it
+        # will actually be handled by self.decoration
+        self.label = label
         self.mark_right = mark_right
         self.label_vertex = label_vertex
         self.label_endpoints = label_endpoints
@@ -250,26 +297,47 @@ class Angle(Drawable, HasThickness):
         return self._measure
 
     @property
-    def eccentricity(self):
-        return self._eccentricity
+    def label(self):
+        """
+        The label of an Angle is handled internally by its AngleDecoration.
+        """
+        if self.decoration is not None:
+            return self.decoration.label
+        else:
+            return None
 
-    @eccentricity.setter
-    def eccentricity(self, value):
-        if not is_number(value):
-            raise TypeError('The eccentricity of an Angle must be a Number. '
-                            'Found {} instead.'.format(type(value)))
-        self._eccentricity = value
+    @label.setter
+    def label(self, value):
+        """
+        The label of an Angle is handled internally by its AngleDecoration.
+        """
+        if self.decoration is None:
+            self.decoration = AngleDecoration(variety=None, label=value)
+        else:
+            self.decoration.label = value
 
     @property
-    def mark(self):
-        return self._mark
+    def decoration(self):
+        return self._decoration
 
-    @mark.setter
-    def mark(self, value):
-        if not (value is None or isinstance(value, AngleMark)):
-            raise TypeError('An angle mark must belong to the AngleMark class.'
-                            ' Got {} instead.'.format(type(value)))
-        self._mark = value
+    @decoration.setter
+    def decoration(self, deco):
+        if not (deco is None or isinstance(deco, AngleDecoration)):
+            raise TypeError('An angle decoration must be None or belong to '
+                            'the AngleDecoration class. Got {} instead.'
+                            .format(type(deco)))
+        if deco is None:
+            if not hasattr(self, '_label') or self.label is None:
+                self._decoration = None
+            else:
+                self._decoration = AngleDecoration(variety=None,
+                                                   label=self.label)
+        else:  # deco is an AngleDecoration
+            # If the label has been set prior to an additional decoration,
+            # keep it:
+            if deco.label == 'default' and self.label is not None:
+                deco.label = self.label
+            self._decoration = deco
 
     @property
     def mark_right(self):
@@ -353,56 +421,30 @@ class Angle(Drawable, HasThickness):
             raise TypeError('label_armspoints must be a boolean; '
                             'got {} instead.'.format(type(value)))
 
-    def tikz_angle_mark_and_label(self):
-        if (self.mark is None or self.mark_right) and self.label is None:
+    def tikz_decoration(self):
+        if self.decoration is None or (self.mark_right and self.label is None):
             return ''
-        required.tikz_library['angles'] = True
-        if self.mark is None or self.mark_right:
-            mark_and_or_label = '["{}", angle eccentricity={}]'\
-                .format(self.label, self.eccentricity)
-        else:
-            mark_and_or_label = self.mark.tikz_mark_attributes(
-                label=self.label, eccentricity=self.eccentricity)
-        marks = ['pic {} {{angle = {}--{}--{}}}'
-                 .format(mark_and_or_label,
-                         self.points[0].name,
-                         self.vertex.name,
-                         self.points[2].name)]
-        if self.mark is not None:
-            space_sep = Number('0.16')
-            if self.mark.variety in ['double', 'triple']:
-                marks.append('pic {} {{angle = {}--{}--{}}}'
-                             .format(self.mark.tikz_mark_attributes(
-                                     radius_coeff=1 + space_sep),
-                                     self.points[0].name,
-                                     self.vertex.name,
-                                     self.points[2].name))
-            if self.mark.variety == 'triple':
-                marks.append('pic {} {{angle = {}--{}--{}}}'
-                             .format(self.mark.tikz_mark_attributes(
-                                     radius_coeff=1 + 2 * space_sep),
-                                     self.points[0].name,
-                                     self.vertex.name,
-                                     self.points[2].name))
-        return '\n'.join(marks)
+        return '\n'.join(self.decoration.generate_tikz(self.points[0].name,
+                                                       self.vertex.name,
+                                                       self.points[2].name))
 
     def tikz_rightangle_mark(self, winding='anticlockwise'):
-        if self.mark is None or not self.mark_right:
+        if self.decoration is None or not self.mark_right:
             return ''
         check_winding(winding)
         rt = 'cm={{cos({θ}), sin({θ}), -sin({θ}), cos({θ}), ({v})}}' \
             .format(θ=PointsPair(self.vertex, self.points[0])
                     .slope.imprint(mod_locale=LOCALE_US),
                     v=self.vertex.name)
-        draw_options = tikz_options_list([self.mark.thickness,
-                                          self.mark.color,
+        draw_options = tikz_options_list([self.decoration.thickness,
+                                          self.decoration.color,
                                           rt])
         if winding == 'anticlockwise':
             rightangle_shape = '({R}, 0) -- ({R}, {R}) -- (0, {R})'\
-                .format(R=self.mark.radius.uiprinted)
+                .format(R=self.decoration.radius.uiprinted)
         elif winding == 'clockwise':
             rightangle_shape = '({R}, 0) -- ({R}, -{R}) -- (0, -{R})'\
-                .format(R=self.mark.radius.uiprinted)
+                .format(R=self.decoration.radius.uiprinted)
         return '\draw{} {};'.format(draw_options, rightangle_shape)
 
     def tikz_declarations(self):
@@ -459,13 +501,13 @@ class Angle(Drawable, HasThickness):
 
         :rtype: list
         """
-        mark_and_label = self.tikz_angle_mark_and_label()
-        if mark_and_label != '':
-            mark_and_label = '\n' + mark_and_label
+        decoration = self.tikz_decoration()
+        if decoration != '':
+            decoration = '\n' + decoration
         commands = ['\draw{} ({}) -- ({}) -- ({}){};'
                     .format(tikz_options_list('draw', self),
                             *[p.name for p in self.points],
-                            mark_and_label)
+                            decoration)
                     ]
         if self.draw_vertex:
             commands.append(self._tikz_draw_vertex())
@@ -593,13 +635,13 @@ class AnglesSet(Drawable):
         """
         angles_cmd = []
         for α in self.angles:
-            mark_and_label = α.tikz_angle_mark_and_label()
-            if mark_and_label != '':
-                mark_and_label = '\n' + mark_and_label
+            decoration = α.tikz_decoration()
+            if decoration != '':
+                decoration = '\n' + decoration
             angles_cmd.append('\draw{} ({}) -- ({}) -- ({}){};'
                               .format(tikz_options_list('draw', α),
                                       *[p.name for p in α.points],
-                                      mark_and_label))
+                                      decoration))
         commands = ['\n'.join(angles_cmd)]
 
         labeled_points_names = []

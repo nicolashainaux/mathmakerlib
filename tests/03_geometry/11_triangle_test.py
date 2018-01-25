@@ -24,7 +24,7 @@ import locale
 import pytest
 
 from mathmakerlib.calculus import Number
-from mathmakerlib.geometry import Point, Triangle, AngleMark
+from mathmakerlib.geometry import Point, Triangle, AngleDecoration
 
 LOCALE_US = 'en' if sys.platform.startswith('win') else 'en_US.UTF-8'
 LOCALE_FR = 'fr' if sys.platform.startswith('win') else 'fr_FR.UTF-8'
@@ -156,7 +156,7 @@ def test_drawing_with_labeled_sides():
                            Number(5, unit='hm')])
     for s in t.sides:
         s.label_scale = '0.85'
-    t.angles[1].mark = AngleMark()
+    t.angles[1].mark = AngleDecoration()
     t.angles[1].mark_right = True
     locale.setlocale(locale.LC_ALL, LOCALE_FR)
     assert t.drawn == r"""

@@ -24,7 +24,7 @@ import pytest
 from mathmakerlib import required
 from mathmakerlib.calculus import Number, Unit
 from mathmakerlib.geometry import Point, PointsPair
-from mathmakerlib.geometry.angle import AngleMark, Angle, AnglesSet
+from mathmakerlib.geometry.angle import AngleDecoration, Angle, AnglesSet
 
 
 @pytest.fixture()
@@ -47,26 +47,30 @@ def pointA():
     return Point(1, 1, 'A')
 
 
-def test_angle_mark():
-    assert AngleMark().tikz_mark_attributes() \
-        == '[draw, thick, angle radius = 0.25 cm]'
-    assert AngleMark(color='green', thickness='thin').tikz_mark_attributes() \
-        == '[draw, green, thin, angle radius = 0.25 cm]'
-    assert AngleMark(radius=Number(0.5, unit=Unit('cm'))) \
-        .tikz_mark_attributes() == '[draw, thick, angle radius = 0.5 cm]'
+def test_AngleDecoration():
+    assert AngleDecoration().tikz_attributes() \
+        == '[draw, angle radius = 0.25 cm, thick]'
+    assert AngleDecoration(color='green', thickness='thin').tikz_attributes() \
+        == '[draw, angle radius = 0.25 cm, green, thin]'
+    assert AngleDecoration(radius=Number('0.5', unit=Unit('cm'))) \
+        .tikz_attributes() == '[draw, angle radius = 0.5 cm, thick]'
     with pytest.raises(TypeError) as excinfo:
-        AngleMark(radius='2 cm')
+        AngleDecoration(radius='2 cm')
     assert str(excinfo.value) == 'Expected a number as radius. Got ' \
         '<class \'str\'> instead.'
     with pytest.raises(TypeError) as excinfo:
-        AngleMark().tikz_mark_attributes(radius_coeff='a')
+        AngleDecoration().tikz_attributes(radius_coeff='a')
     assert str(excinfo.value) == 'radius_coeff must be a number, '\
         'found <class \'str\'> instead.'
     with pytest.raises(TypeError) as excinfo:
-        AngleMark(decoration='unknown')
-    assert str(excinfo.value) == 'AngleMark\'s decoration can be None, ' \
+        AngleDecoration(hatchmark='unknown')
+    assert str(excinfo.value) == 'AngleDecoration\'s hatchmark can be None, '\
         '\'singledash\', \'doubledash\' or \'tripledash\'. ' \
         'Found \'unknown\' instead (type: <class \'str\'>).'
+    with pytest.raises(TypeError) as excinfo:
+        AngleDecoration(eccentricity='a')
+    assert str(excinfo.value) == 'The eccentricity of an AngleDecoration '\
+        'must be a Number. Found <class \'str\'> instead.'
 
 
 def test_instanciation_errors(pointO, pointI, pointJ):
@@ -86,14 +90,15 @@ def test_instanciation_errors(pointO, pointI, pointJ):
         Angle(pointO, pointI, pointJ, mark_right=1)
     assert str(excinfo.value) == '\'mark_right\' must be a boolean'
     with pytest.raises(TypeError) as excinfo:
-        Angle(pointO, pointI, pointJ, mark='right')
-    assert str(excinfo.value) == 'An angle mark must belong to the ' \
-        'AngleMark class. Got <class \'str\'> instead.'
+        Angle(pointO, pointI, pointJ, decoration='right')
+    assert str(excinfo.value) == 'An angle decoration must be None or belong '\
+        'to the AngleDecoration class. Got <class \'str\'> instead.'
     with pytest.raises(TypeError) as excinfo:
-        Angle(pointO, pointI, pointJ, mark=AngleMark(variety='unknown'))
-    assert str(excinfo.value) == 'AngleMark\'s variety can be \'single\', ' \
-        '\'double\' or \'triple\'. Found \'unknown\' instead (type: ' \
-        '<class \'str\'>).'
+        Angle(pointO, pointI, pointJ,
+              decoration=AngleDecoration(variety='unknown'))
+    assert str(excinfo.value) == 'AngleDecoration\'s variety can be None, ' \
+        '\'single\', \'double\' or \'triple\'. Found \'unknown\' instead '\
+        '(type: <class \'str\'>).'
     with pytest.raises(TypeError) as excinfo:
         Angle(pointO, pointI, pointJ, draw_vertex='a')
     assert str(excinfo.value) == 'draw_vertex must be a boolean; ' \
@@ -134,21 +139,17 @@ def test_instanciation_errors(pointO, pointI, pointJ):
         Angle(pointO, pointI, pointJ, armspoints=[('1', '2', '3'), ('2', )])
     assert str(excinfo.value) == 'Each arm\'s point must be defined by a ' \
         'tuple of 1 or 2 elements. Found 3 elements instead.'
-    with pytest.raises(TypeError) as excinfo:
-        Angle(pointO, pointI, pointJ, eccentricity='a')
-    assert str(excinfo.value) == 'The eccentricity of an Angle must be a '\
-        'Number. Found <class \'str\'> instead.'
 
 
 def test_instanciation(pointO, pointI, pointJ, pointA):
     """Check Angle's instanciation."""
     theta = Angle(pointI, pointO, pointJ, mark_right=True)
     assert theta.measure == Number('90')
-    assert theta.mark is None
+    assert theta.decoration is None
     assert theta.mark_right
     assert theta.vertex == pointO
     assert theta.points == [pointI, pointO, pointJ]
-    theta = Angle(pointA, pointO, pointI, mark=AngleMark())
+    theta = Angle(pointA, pointO, pointI, decoration=AngleDecoration())
     assert theta.measure == Number('45')
     assert not theta.mark_right
     assert theta.vertex == pointO
@@ -170,14 +171,14 @@ def test_marked_angles(pointO, pointI, pointJ, pointA):
     required.tikz_library['angles'] = False
     theta = Angle(pointI, pointO, pointJ)
     assert theta.tikz_angle_mark_and_label() == ''
-    theta.mark = AngleMark(color='red', thickness='ultra thick',
-                           radius=Number(2))
+    theta.decoration = AngleDecoration(color='red', thickness='ultra thick',
+                                       radius=Number(2))
     assert theta.tikz_angle_mark_and_label() \
         == 'pic [draw, red, ultra thick, angle radius = 2] {angle = I--O--J}'
     assert required.tikz_library['angles']
     required.tikz_library['angles'] = False
     theta.mark_right = True
-    theta.mark = AngleMark()
+    theta.decoration = AngleDecoration()
     assert theta.tikz_angle_mark_and_label() == ''
     assert not required.tikz_library['angles']
     assert theta.tikz_rightangle_mark() == \
@@ -400,7 +401,7 @@ def test_drawing_marked_angles():
     X = Point(6, 1, 'X')
     Y = Point(3, 5, 'Y')
     α = Angle(X, A, Y)
-    α.mark = AngleMark(radius=Number('0.5', unit='cm'))
+    α.decoration = AngleDecoration(radius=Number('0.5', unit='cm'))
     assert α.drawn == r"""
 \begin{tikzpicture}
 % Declare Points
@@ -416,7 +417,7 @@ pic [draw, thick, angle radius = 0.5 cm] {angle = X--A--Y};
 
 \end{tikzpicture}
 """
-    α.mark.variety = 'double'
+    α.decoration.variety = 'double'
     assert α.drawn == r"""
 \begin{tikzpicture}
 % Declare Points
@@ -433,7 +434,7 @@ pic [draw, thick, angle radius = 0.58 cm] {angle = X--A--Y};
 
 \end{tikzpicture}
 """
-    α.mark.variety = 'triple'
+    α.decoration.variety = 'triple'
     assert α.drawn == r"""
 \begin{tikzpicture}
 % Declare Points
@@ -451,8 +452,8 @@ pic [draw, thick, angle radius = 0.66 cm] {angle = X--A--Y};
 
 \end{tikzpicture}
 """
-    α.mark.variety = 'single'
-    α.mark.decoration = 'singledash'
+    α.decoration.variety = 'single'
+    α.decoration.hatchmark = 'singledash'
     assert α.drawn == r"""
 \begin{tikzpicture}
 % Declare Points
@@ -469,12 +470,12 @@ pic [draw, singledash, thick, angle radius = 0.5 cm] {angle = X--A--Y};
 \end{tikzpicture}
 """
     assert required.tikz_library['decorations.markings']
-    assert required.tikzset['singledash_decoration']
-    assert not required.tikzset['doubledash_decoration']
-    assert not required.tikzset['tripledash_decoration']
+    assert required.tikzset['singledash_hatchmark']
+    assert not required.tikzset['doubledash_hatchmark']
+    assert not required.tikzset['tripledash_hatchmark']
     required.tikz_library['decorations.markings'] = False
-    required.tikzset['singledash_decoration'] = False
-    α.mark.decoration = 'doubledash'
+    required.tikzset['singledash_hatchmark'] = False
+    α.decoration.hatchmark = 'doubledash'
     assert α.drawn == r"""
 \begin{tikzpicture}
 % Declare Points
@@ -491,12 +492,12 @@ pic [draw, doubledash, thick, angle radius = 0.5 cm] {angle = X--A--Y};
 \end{tikzpicture}
 """
     assert required.tikz_library['decorations.markings']
-    assert not required.tikzset['singledash_decoration']
-    assert required.tikzset['doubledash_decoration']
-    assert not required.tikzset['tripledash_decoration']
+    assert not required.tikzset['singledash_hatchmark']
+    assert required.tikzset['doubledash_hatchmark']
+    assert not required.tikzset['tripledash_hatchmark']
     required.tikz_library['decorations.markings'] = False
-    required.tikzset['doubledash_decoration'] = False
-    α.mark.decoration = 'tripledash'
+    required.tikzset['doubledash_hatchmark'] = False
+    α.decoration.hatchmark = 'tripledash'
     assert α.drawn == r"""
 \begin{tikzpicture}
 % Declare Points
@@ -513,11 +514,11 @@ pic [draw, tripledash, thick, angle radius = 0.5 cm] {angle = X--A--Y};
 \end{tikzpicture}
 """
     assert required.tikz_library['decorations.markings']
-    assert not required.tikzset['singledash_decoration']
-    assert not required.tikzset['doubledash_decoration']
-    assert required.tikzset['tripledash_decoration']
-    α.mark.variety = 'triple'
-    α.mark.decoration = 'doubledash'
+    assert not required.tikzset['singledash_hatchmark']
+    assert not required.tikzset['doubledash_hatchmark']
+    assert required.tikzset['tripledash_hatchmark']
+    α.decoration.variety = 'triple'
+    α.decoration.hatchmark = 'doubledash'
     assert α.drawn == r"""
 \begin{tikzpicture}
 % Declare Points
@@ -543,7 +544,7 @@ def test_drawing_marked_labeled_angles():
     X = Point(6, 1, 'X')
     Y = Point(3, 5, 'Y')
     α = Angle(X, A, Y, label=Number(38, unit=r'\textdegree'))
-    α.mark = AngleMark(radius=Number('0.5', unit='cm'))
+    α.decoration = AngleDecoration(radius=Number('0.5', unit='cm'))
     assert α.drawn == r"""
 \begin{tikzpicture}
 % Declare Points
@@ -560,7 +561,7 @@ r"""angle radius = 0.5 cm] {angle = X--A--Y};
 
 \end{tikzpicture}
 """
-    α.mark.variety = 'double'
+    α.decoration.variety = 'double'
     assert α.drawn == r"""
 \begin{tikzpicture}
 % Declare Points
@@ -584,8 +585,9 @@ pic [draw, thick, angle radius = 0.58 cm] {angle = X--A--Y};
     α = Angle(X1, A, Y1, armspoints=[('X', ), ('Y', )],
               label_vertex=True, draw_vertex=True,
               label=Number(38, unit=r'\textdegree'))
-    α.mark = AngleMark(radius=Number('0.5', unit='cm'), variety='double',
-                       decoration='singledash')
+    α.decoration = AngleDecoration(radius=Number('0.5', unit='cm'),
+                                   variety='double',
+                                   hatchmark='singledash')
     assert α.drawn == r"""
 \begin{tikzpicture}
 % Declare Points
@@ -686,17 +688,17 @@ def test_drawing_AnglesSets():
     Z1 = Point(1, '6.5', 'Z1')
     α = Angle(X1, A, Y1, armspoints=[('X', ), ('Y', )],
               label_vertex=True, draw_vertex=True,
-              mark=AngleMark(color='RoyalBlue',
-                             radius=Number('0.5', unit='cm')),
+              decoration=AngleDecoration(color='RoyalBlue',
+                                         radius=Number('0.5', unit='cm')),
               label=Number(38, unit=r'\textdegree'))
     β = Angle(Y1, A, Z1, armspoints=[('Y', ), ('Z', )],
-              mark=AngleMark(color='BurntOrange', variety='double',
-                             radius=Number('0.5', unit='cm')),
+              decoration=AngleDecoration(color='BurntOrange', variety='double',
+                                         radius=Number('0.5', unit='cm')),
               label=Number(9, unit=r'\textdegree'))
     γ = Angle(X1, A, Z1, label='?',
               eccentricity=Number('1.15'),
-              mark=AngleMark(color='BrickRed',
-                             radius=Number('2', unit='cm')))
+              decoration=AngleDecoration(color='BrickRed',
+                                         radius=Number('2', unit='cm')))
     S = AnglesSet(α, β, γ)
     assert S.drawn == r"""
 \begin{tikzpicture}

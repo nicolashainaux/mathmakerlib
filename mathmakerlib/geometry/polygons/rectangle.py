@@ -21,7 +21,7 @@
 
 from mathmakerlib.calculus.number import Number
 from mathmakerlib.geometry.point import Point
-from mathmakerlib.geometry.angle import AngleMark
+from mathmakerlib.geometry.angle import AngleDecoration
 from . import Quadrilateral
 
 
@@ -84,7 +84,7 @@ class Rectangle(Quadrilateral):
         self._type = 'Rectangle'
         if mark_right_angles:
             for a in self.angles:
-                a.mark = AngleMark(thickness=thickness)
+                a.mark = AngleDecoration(thickness=thickness)
                 a.mark_right = True
 
     @property

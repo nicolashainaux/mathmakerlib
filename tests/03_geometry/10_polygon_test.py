@@ -25,7 +25,8 @@ import pytest
 
 from mathmakerlib import required, mmlib_setup
 from mathmakerlib.calculus import Number
-from mathmakerlib.geometry import Point, Polygon, AngleMark, shoelace_formula
+from mathmakerlib.geometry import Point, Polygon, AngleDecoration
+from mathmakerlib.geometry import shoelace_formula
 
 LOCALE_US = 'en' if sys.platform.startswith('win') else 'en_US.UTF-8'
 LOCALE_FR = 'fr' if sys.platform.startswith('win') else 'fr_FR.UTF-8'
@@ -646,7 +647,7 @@ def test_drawing_with_marked_angles(pointO, pointA, pointB, pointC, pointJ):
     """Check drawing a Polygon having some marked angles."""
     p = Polygon(pointO, pointA, pointB, pointC)
     p.label_vertices = False
-    p.angles[1].mark = AngleMark()
+    p.angles[1].mark = AngleDecoration()
     assert p.drawn == r"""
 \begin{tikzpicture}
 % Declare Points
@@ -667,8 +668,8 @@ pic [draw, thick, angle radius = 0.25 cm] {angle = B--A--O};
 
 \end{tikzpicture}
 """
-    p.angles[2].mark = AngleMark(color='red', thickness='thin',
-                                 radius=Number(8, unit='mm'))
+    p.angles[2].mark = AngleDecoration(color='red', thickness='thin',
+                                       radius=Number(8, unit='mm'))
     assert p.drawn == \
         r"""
 \begin{tikzpicture}
@@ -694,7 +695,7 @@ pic [draw, red, thin, angle radius = 8 mm] {angle = C--B--A};
     required.tikz_library['angles'] = False
     p = Polygon(pointO, pointA, pointB, pointJ)
     p.label_vertices = False
-    p.angles[0].mark = AngleMark()
+    p.angles[0].mark = AngleDecoration()
     p.angles[0].mark_right = True
     assert p.drawn == \
         r"""

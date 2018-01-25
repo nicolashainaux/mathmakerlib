@@ -22,7 +22,7 @@
 from mathmakerlib import mmlib_setup
 from mathmakerlib.calculus.number import Number
 from mathmakerlib.geometry.point import Point
-from mathmakerlib.geometry.angle import AngleMark
+from mathmakerlib.geometry.angle import AngleDecoration
 from . import Triangle
 
 
@@ -85,7 +85,7 @@ class RightTriangle(Triangle):
                           winding=winding)
         self._type = 'RightTriangle'
         if mark_right_angle:
-            self.right_angle.mark = AngleMark()
+            self.right_angle.mark = AngleDecoration()
             self.right_angle.mark_right = True
 
     @property
