@@ -57,6 +57,12 @@ class AngleDecoration(Labeled, Colored, HasThickness, HasRadius):
         self.variety = variety
         self.hatchmark = hatchmark
 
+    def __repr__(self):
+        return 'AngleDecoration(variety={}; hatchmark={}; label={}; '\
+            'color={}; thickness={}; radius={}; eccentricity={})'\
+            .format(self.variety, self.hatchmark, self.label, self.color,
+                    self.thickness, self.radius, self.eccentricity)
+
     @property
     def eccentricity(self):
         return self._eccentricity
