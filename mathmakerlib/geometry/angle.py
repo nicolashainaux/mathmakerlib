@@ -61,7 +61,7 @@ class AngleDecoration(Labeled, Colored, HasThickness, HasRadius):
         return 'AngleDecoration(variety={}; hatchmark={}; label={}; '\
             'color={}; thickness={}; radius={}; eccentricity={})'\
             .format(self.variety, self.hatchmark, self.label, self.color,
-                    self.thickness, self.radius, self.eccentricity)
+                    self.thickness, str(self.radius), self.eccentricity)
 
     @property
     def eccentricity(self):
@@ -339,7 +339,7 @@ class Angle(Drawable, HasThickness):
                             'the AngleDecoration class. Got {} instead.'
                             .format(type(deco)))
         if deco is None:
-            if not hasattr(self, '_label') or self.label is None:
+            if not hasattr(self, '_decoration') or self.label is None:
                 self._decoration = None
             else:
                 self._decoration = AngleDecoration(variety=None,
@@ -584,7 +584,7 @@ class AnglesSet(Drawable):
         if len(points_names) != len(set(points_names)):
             raise RuntimeError('Two different Points have been provided the '
                                'same name in this list: {}'
-                               .format(';'.join([str(p) for p in points])))
+                               .format('; '.join([str(p) for p in points])))
         return '\n'.join([p.tikz_declarations() for p in points])
 
     def _tikz_draw_options(self):

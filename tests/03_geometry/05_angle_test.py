@@ -48,6 +48,13 @@ def pointA():
 
 
 def test_AngleDecoration():
+    assert repr(AngleDecoration()) == 'AngleDecoration(variety=single; '\
+        'hatchmark=None; label=default; color=None; thickness=thick; '\
+        'radius=0.25 cm; eccentricity=2.6)'
+    assert repr(AngleDecoration(radius=Number(1, unit='cm'))) == \
+        'AngleDecoration(variety=single; '\
+        'hatchmark=None; label=default; color=None; thickness=thick; '\
+        'radius=1 cm; eccentricity=1.4)'
     assert AngleDecoration().tikz_attributes() \
         == '[draw, thick, angle radius = 0.25 cm]'
     assert AngleDecoration(color='green', thickness='thin').tikz_attributes() \
@@ -71,6 +78,10 @@ def test_AngleDecoration():
         AngleDecoration(eccentricity='a')
     assert str(excinfo.value) == 'The eccentricity of an AngleDecoration '\
         'must be a Number. Found <class \'str\'> instead.'
+    with pytest.raises(RuntimeError) as excinfo:
+        AngleDecoration().generate_tikz('A', 'B')
+    assert str(excinfo.value) == 'Three Points\' names must be provided to '\
+        'generate the AngleDecoration. Found 2 arguments instead.'
 
 
 def test_instanciation_errors(pointO, pointI, pointJ):
@@ -334,6 +345,13 @@ pic ["\ang{38}", angle eccentricity=2.6] {angle = X--A--Y};
 
 \end{tikzpicture}
 """
+    assert α.label == r'\ang{38}'
+    α.decoration = None
+    assert α.label == r'\ang{38}'
+    assert α.decoration is not None
+    assert repr(α.decoration) == r'AngleDecoration(variety=None; '\
+        r'hatchmark=None; label=\ang{38}; color=None; thickness=thick; '\
+        r'radius=0.25 cm; eccentricity=2.6)'
 
 
 def test_drawing_angles_with_armspoints():
@@ -627,7 +645,34 @@ def test_AnglesSet_instanciation_errors(pointO, pointI, pointJ):
         'Angle. Found <class \'mathmakerlib.geometry.point.Point\'> instead.'
 
 
-def test_drawing_AnglesSets():
+def test_AnglesSet_instanciation():
+    """Check AnglesSets instanciation."""
+    A = Point(0, 0, 'A')
+    X1 = Point(6, 1, 'X1')
+    Y1 = Point(3, 5, 'Y1')
+    Z1 = Point(1, '6.5', 'X1')
+    α = Angle(X1, A, Y1)
+    β = Angle(Y1, A, Z1)
+    S = AnglesSet(α, β)
+    assert S._tikz_draw_options() == []
+
+
+def test_drawing_AnglesSets_errors():
+    """Check errors when drawing AnglesSets."""
+    A = Point(0, 0, 'A')
+    X1 = Point(6, 1, 'X1')
+    Y1 = Point(3, 5, 'Y1')
+    Z1 = Point(1, '6.5', 'X1')
+    α = Angle(X1, A, Y1)
+    β = Angle(Y1, A, Z1)
+    S = AnglesSet(α, β)
+    with pytest.raises(RuntimeError) as excinfo:
+        S.drawn
+    assert str(excinfo.value) == 'Two different Points have been provided ' \
+        'the same name in this list: A(0; 0); X1(6; 1); Y1(3; 5); X1(1; 6.5)'
+
+
+def test_drawing_AnglesSets_of_same_vertex():
     """Check drawing AnglesSets."""
     A = Point(0, 0, 'A')
     X1 = Point(6, 1, 'X1')
@@ -737,5 +782,49 @@ r"""angle radius = 2 cm, BrickRed] {angle = X1--A--Z1};
 \draw (X) node[below right] {X};
 \draw (Y) node[above left] {Y};
 \draw (Z) node[above left] {Z};
+\end{tikzpicture}
+"""
+
+
+def test_drawing_scattered_AnglesSets():
+    """Check drawing AnglesSets."""
+    A = Point(0, 0, 'A')
+    X1 = Point(6, 1, 'X1')
+    Y1 = Point(3, 5, 'Y1')
+    U = Point(-1, 1, 'U')
+    W1 = Point(-2, 3, 'W1')
+    Z1 = Point(1, '6.5', 'Z1')
+    α = Angle(X1, A, Y1, draw_vertex=True, draw_endpoints=True,
+              label_endpoints=True)
+    β = Angle(W1, U, Z1, draw_vertex=True, draw_endpoints=True,
+              label_endpoints=True)
+    S = AnglesSet(α, β)
+    assert S.drawn == r"""
+\begin{tikzpicture}
+% Declare Points
+\coordinate (A) at (0,0);
+\coordinate (X1) at (6,1);
+\coordinate (Y1) at (3,5);
+\coordinate (U) at (-1,1);
+\coordinate (W1) at (-2,3);
+\coordinate (Z1) at (1,6.5);
+
+% Draw Angles
+\draw[thick] (X1) -- (A) -- (Y1);
+\draw[thick] (W1) -- (U) -- (Z1);
+% Draw Vertices
+\draw (A) node[scale=0.67] {$\times$};
+\draw (U) node[scale=0.67] {$\times$};
+% Draw End Points
+\draw (X1) node[scale=0.67] {$\times$};
+\draw (Y1) node[scale=0.67] {$\times$};
+\draw (W1) node[scale=0.67] {$\times$};
+\draw (Z1) node[scale=0.67] {$\times$};
+
+% Label Points
+\draw (X1) node[below right] {X1};
+\draw (Y1) node[above left] {Y1};
+\draw (W1) node[left] {W1};
+\draw (Z1) node[right] {Z1};
 \end{tikzpicture}
 """
