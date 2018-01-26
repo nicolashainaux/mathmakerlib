@@ -49,11 +49,11 @@ def pointA():
 
 def test_AngleDecoration():
     assert AngleDecoration().tikz_attributes() \
-        == '[draw, angle radius = 0.25 cm, thick]'
+        == '[draw, thick, angle radius = 0.25 cm]'
     assert AngleDecoration(color='green', thickness='thin').tikz_attributes() \
-        == '[draw, angle radius = 0.25 cm, green, thin]'
+        == '[draw, thin, angle radius = 0.25 cm, green]'
     assert AngleDecoration(radius=Number('0.5', unit=Unit('cm'))) \
-        .tikz_attributes() == '[draw, angle radius = 0.5 cm, thick]'
+        .tikz_attributes() == '[draw, thick, angle radius = 0.5 cm]'
     with pytest.raises(TypeError) as excinfo:
         AngleDecoration(radius='2 cm')
     assert str(excinfo.value) == 'Expected a number as radius. Got ' \
@@ -176,11 +176,12 @@ def test_marked_angles(pointO, pointI, pointJ, pointA):
     theta.decoration = AngleDecoration(color='red', thickness='ultra thick',
                                        radius=Number(2))
     assert theta.tikz_decoration() \
-        == 'pic [draw, angle radius = 2, red, ultra thick] {angle = I--O--J}'
+        == 'pic [draw, ultra thick, angle radius = 2, red] {angle = I--O--J}'
     assert required.tikz_library['angles']
     required.tikz_library['angles'] = False
     theta.mark_right = True
     theta.decoration = AngleDecoration()
+    assert theta.label is None
     assert theta.tikz_decoration() == ''
     assert not required.tikz_library['angles']
     assert theta.tikz_rightangle_mark() == \
@@ -327,7 +328,7 @@ def test_drawing_labeled_angles():
 
 % Draw Angle
 \draw[thick] (X) -- (A) -- (Y)
-pic ["\ang{38}", angle eccentricity=2.15] {angle = X--A--Y};
+pic ["\ang{38}", angle eccentricity=2.6] {angle = X--A--Y};
 
 % Label Points
 
@@ -465,7 +466,7 @@ pic [draw, thick, angle radius = 0.66 cm] {angle = X--A--Y};
 
 % Draw Angle
 \draw[thick] (X) -- (A) -- (Y)
-pic [draw, singledash, thick, angle radius = 0.5 cm] {angle = X--A--Y};
+pic [draw, thick, angle radius = 0.5 cm, singledash] {angle = X--A--Y};
 
 % Label Points
 
@@ -487,7 +488,7 @@ pic [draw, singledash, thick, angle radius = 0.5 cm] {angle = X--A--Y};
 
 % Draw Angle
 \draw[thick] (X) -- (A) -- (Y)
-pic [draw, doubledash, thick, angle radius = 0.5 cm] {angle = X--A--Y};
+pic [draw, thick, angle radius = 0.5 cm, doubledash] {angle = X--A--Y};
 
 % Label Points
 
@@ -509,7 +510,7 @@ pic [draw, doubledash, thick, angle radius = 0.5 cm] {angle = X--A--Y};
 
 % Draw Angle
 \draw[thick] (X) -- (A) -- (Y)
-pic [draw, tripledash, thick, angle radius = 0.5 cm] {angle = X--A--Y};
+pic [draw, thick, angle radius = 0.5 cm, tripledash] {angle = X--A--Y};
 
 % Label Points
 
@@ -530,9 +531,9 @@ pic [draw, tripledash, thick, angle radius = 0.5 cm] {angle = X--A--Y};
 
 % Draw Angle
 \draw[thick] (X) -- (A) -- (Y)
-pic [draw, doubledash, thick, angle radius = 0.5 cm] {angle = X--A--Y}
-pic [draw, doubledash, thick, angle radius = 0.58 cm] {angle = X--A--Y}
-pic [draw, doubledash, thick, angle radius = 0.66 cm] {angle = X--A--Y};
+pic [draw, thick, angle radius = 0.5 cm, doubledash] {angle = X--A--Y}
+pic [draw, thick, angle radius = 0.58 cm, doubledash] {angle = X--A--Y}
+pic [draw, thick, angle radius = 0.66 cm, doubledash] {angle = X--A--Y};
 
 % Label Points
 
@@ -556,7 +557,7 @@ def test_drawing_marked_labeled_angles():
 
 % Draw Angle
 \draw[thick] (X) -- (A) -- (Y)
-pic ["\ang{38}", angle eccentricity=2.15, draw, thick, """\
+pic ["\ang{38}", angle eccentricity=1.8, draw, thick, """\
 r"""angle radius = 0.5 cm] {angle = X--A--Y};
 
 % Label Points
@@ -573,7 +574,7 @@ r"""angle radius = 0.5 cm] {angle = X--A--Y};
 
 % Draw Angle
 \draw[thick] (X) -- (A) -- (Y)
-pic ["\ang{38}", angle eccentricity=2.15, draw, thick, """\
+pic ["\ang{38}", angle eccentricity=1.8, draw, thick, """\
 r"""angle radius = 0.5 cm] {angle = X--A--Y}
 pic [draw, thick, angle radius = 0.58 cm] {angle = X--A--Y};
 
@@ -601,9 +602,9 @@ pic [draw, thick, angle radius = 0.58 cm] {angle = X--A--Y};
 
 % Draw Angle
 \draw[thick] (X1) -- (A) -- (Y1)
-pic ["\ang{38}", angle eccentricity=2.15, draw, singledash, thick, """\
-r"""angle radius = 0.5 cm] {angle = X1--A--Y1}
-pic [draw, singledash, thick, angle radius = 0.58 cm] {angle = X1--A--Y1};
+pic ["\ang{38}", angle eccentricity=1.8, draw, thick, """\
+r"""angle radius = 0.5 cm, singledash] {angle = X1--A--Y1}
+pic [draw, thick, angle radius = 0.58 cm, singledash] {angle = X1--A--Y1};
 % Draw Vertex
 \draw (A) node[scale=0.67] {$\times$};
 % Draw Arms' Points
@@ -698,9 +699,9 @@ def test_drawing_AnglesSets():
                                          radius=Number('0.5', unit='cm')),
               label=Number(9, unit=r'\textdegree'))
     γ = Angle(X1, A, Z1, label='?',
-              eccentricity=Number('1.15'),
               decoration=AngleDecoration(color='BrickRed',
-                                         radius=Number('2', unit='cm')))
+                                         radius=Number('2', unit='cm'),
+                                         eccentricity=Number('1.15')))
     S = AnglesSet(α, β, γ)
     assert S.drawn == r"""
 \begin{tikzpicture}
@@ -715,15 +716,15 @@ def test_drawing_AnglesSets():
 
 % Draw Angles
 \draw[thick] (X1) -- (A) -- (Y1)
-pic ["\ang{38}", angle eccentricity=2.15, draw, RoyalBlue, thick, """\
-r"""angle radius = 0.5 cm] {angle = X1--A--Y1};
+pic ["\ang{38}", angle eccentricity=1.8, draw, thick, """\
+r"""angle radius = 0.5 cm, RoyalBlue] {angle = X1--A--Y1};
 \draw[thick] (Y1) -- (A) -- (Z1)
-pic ["\ang{9}", angle eccentricity=2.15, draw, BurntOrange, thick, """\
-r"""angle radius = 0.5 cm] {angle = Y1--A--Z1}
-pic [draw, BurntOrange, thick, angle radius = 0.58 cm] {angle = Y1--A--Z1};
+pic ["\ang{9}", angle eccentricity=1.8, draw, thick, """\
+r"""angle radius = 0.5 cm, BurntOrange] {angle = Y1--A--Z1}
+pic [draw, thick, angle radius = 0.58 cm, BurntOrange] {angle = Y1--A--Z1};
 \draw[thick] (X1) -- (A) -- (Z1)
-pic ["?", angle eccentricity=1.15, draw, BrickRed, thick, """\
-r"""angle radius = 2 cm] {angle = X1--A--Z1};
+pic ["?", angle eccentricity=1.15, draw, thick, """\
+r"""angle radius = 2 cm, BrickRed] {angle = X1--A--Z1};
 % Draw Vertex
 \draw (A) node[scale=0.67] {$\times$};
 % Draw Arms' Points

@@ -28,7 +28,7 @@ def init():
     options = {'xcolor': []}
     tikz_library = {'angles': False,
                     'decorations.markings': False}
-    tikzset = {'singledash_decoration': False,
-               'doubledash_decoration': False,
-               'tripledash_decoration': False}
+    tikzset = {'singledash_hatchmark': False,
+               'doubledash_hatchmark': False,
+               'tripledash_hatchmark': False}
     # hack = {'rightangle_mark': False}

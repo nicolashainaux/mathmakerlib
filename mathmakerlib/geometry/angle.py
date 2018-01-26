@@ -112,19 +112,20 @@ class AngleDecoration(Labeled, Colored, HasThickness, HasRadius):
                                   .format(self.eccentricity))
         if self.variety is not None:
             attributes.append('draw')
+            if self.thickness is not None:
+                attributes.append(self.thickness)
             if self.radius is not None:
                 attributes.append('angle radius = {}'
                                   .format((self.radius * radius_coeff)
                                           .standardized().uiprinted))
             if self.hatchmark is not None:
                 attributes.append(self.hatchmark)
-                required.tikz_library['hatchmarks.markings'] = True
+                required.tikz_library['decorations.markings'] = True
                 required.tikzset[self.hatchmark + '_hatchmark'] = True
         if (self.variety is not None
             or (do_label and self.label not in [None, 'default'])):
-            for attr in [self.color, self.thickness]:
-                if attr is not None:
-                    attributes.append(attr)
+            if self.color is not None:
+                attributes.append(self.color)
         return '[{}]'.format(', '.join(attributes))
 
     def generate_tikz(self, *points_names):
@@ -346,7 +347,7 @@ class Angle(Drawable, HasThickness):
         else:  # deco is an AngleDecoration
             # If the label has been set prior to an additional decoration,
             # keep it:
-            if deco.label == 'default' and self.label is not None:
+            if deco.label == 'default':
                 deco.label = self.label
             self._decoration = deco
 
