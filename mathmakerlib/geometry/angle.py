@@ -133,10 +133,10 @@ class AngleDecoration(Labeled, Colored, HasThickness, HasRadius):
             raise RuntimeError('Three Points\' names must be provided to '
                                'generate the AngleDecoration. Found {} '
                                'arguments instead.'.format(len(points_names)))
-        required.tikz_library['angles'] = True
         pic_attr = self.tikz_attributes()
         if pic_attr == '[]':
             return ''
+        required.tikz_library['angles'] = True
         deco = ['pic {} {{angle = {}--{}--{}}}'
                 .format(pic_attr, *points_names)]
         if self.variety in ['double', 'triple']:

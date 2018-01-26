@@ -156,7 +156,7 @@ def test_drawing_with_labeled_sides():
                            Number(5, unit='hm')])
     for s in t.sides:
         s.label_scale = '0.85'
-    t.angles[1].mark = AngleDecoration()
+    t.angles[1].decoration = AngleDecoration()
     t.angles[1].mark_right = True
     locale.setlocale(locale.LC_ALL, LOCALE_FR)
     assert t.drawn == r"""

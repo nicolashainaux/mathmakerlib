@@ -647,7 +647,7 @@ def test_drawing_with_marked_angles(pointO, pointA, pointB, pointC, pointJ):
     """Check drawing a Polygon having some marked angles."""
     p = Polygon(pointO, pointA, pointB, pointC)
     p.label_vertices = False
-    p.angles[1].mark = AngleDecoration()
+    p.angles[1].decoration = AngleDecoration()
     assert p.drawn == r"""
 \begin{tikzpicture}
 % Declare Points
@@ -668,8 +668,8 @@ pic [draw, thick, angle radius = 0.25 cm] {angle = B--A--O};
 
 \end{tikzpicture}
 """
-    p.angles[2].mark = AngleDecoration(color='red', thickness='thin',
-                                       radius=Number(8, unit='mm'))
+    p.angles[2].decoration = AngleDecoration(color='red', thickness='thin',
+                                             radius=Number(8, unit='mm'))
     assert p.drawn == \
         r"""
 \begin{tikzpicture}
@@ -686,7 +686,7 @@ pic [draw, thick, angle radius = 0.25 cm] {angle = B--A--O};
 -- (C)
 -- cycle
 pic [draw, thick, angle radius = 0.25 cm] {angle = B--A--O}
-pic [draw, red, thin, angle radius = 8 mm] {angle = C--B--A};
+pic [draw, thin, angle radius = 8 mm, red] {angle = C--B--A};
 
 % Label Points
 
@@ -695,7 +695,7 @@ pic [draw, red, thin, angle radius = 8 mm] {angle = C--B--A};
     required.tikz_library['angles'] = False
     p = Polygon(pointO, pointA, pointB, pointJ)
     p.label_vertices = False
-    p.angles[0].mark = AngleDecoration()
+    p.angles[0].decoration = AngleDecoration()
     p.angles[0].mark_right = True
     assert p.drawn == \
         r"""

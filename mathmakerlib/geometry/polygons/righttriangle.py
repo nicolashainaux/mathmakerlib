@@ -85,7 +85,7 @@ class RightTriangle(Triangle):
                           winding=winding)
         self._type = 'RightTriangle'
         if mark_right_angle:
-            self.right_angle.mark = AngleDecoration()
+            self.right_angle.decoration = AngleDecoration()
             self.right_angle.mark_right = True
 
     @property
