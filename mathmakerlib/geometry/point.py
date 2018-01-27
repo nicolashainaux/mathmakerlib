@@ -21,6 +21,7 @@
 
 import string
 import decimal
+import weakref
 from math import cos, sin, radians
 
 from mathmakerlib.core.drawable import Drawable, check_scale, tikz_options_list
@@ -37,24 +38,27 @@ OPPOSITE_LABEL_POSITIONS = {'right': 'left',
                             'below right': 'above left'}
 
 
-def _auto_name():
-    if not Point.available_names:
-        Point.names_layer += 1
-        Point.available_names = [_ + '$_{}$'.format(str(Point.names_layer))
-                                 for _ in string.ascii_uppercase][::-1]
-    n = Point.available_names.pop()
-    if n not in Point.names_in_use:
-        Point.names_in_use.append(n)
-        return n
-    else:
-        return _auto_name()
-
-
 class Point(Drawable):
+    instances = weakref.WeakSet()
 
-    available_names = [_ for _ in string.ascii_uppercase][::-1]
-    names_in_use = []
-    names_layer = 0
+    @classmethod
+    def names_in_use(cls):
+        return {p.name for p in Point.instances}
+
+    @classmethod
+    def automatic_names(cls):
+        use = Point.names_in_use()
+        names = [letter
+                 for letter in string.ascii_uppercase
+                 if letter not in use][::-1]
+        if not names:
+            layer = 1
+            while not names:
+                names = ['{}$_{}$'.format(letter, layer)
+                         for letter in string.ascii_uppercase
+                         if '{}$_{}$'.format(letter, layer)
+                         not in use][::-1]
+        return names
 
     def __init__(self, x=None, y=None, name='automatic', shape=r'$\times$',
                  label='default', label_position='below', color=None,
@@ -97,12 +101,16 @@ class Point(Drawable):
         if color is not None:
             self.color = color
         self.shape_scale = shape_scale
+        Point.instances.add(self)
 
     def __str__(self):
         return '{}({}; {})'.format(self.name, self.x, self.y)
 
     def __repr__(self):
         return 'Point {}({}; {})'.format(self.name, self.x, self.y)
+
+    def __hash__(self):
+        return hash(repr(self))
 
     def __eq__(self, other):
         if isinstance(other, Point):
@@ -125,26 +133,17 @@ class Point(Drawable):
                             'place. Got a {} instead.'.format(type(other)))
         return self.coordinates == other.coordinates
 
-    def reset_names():
-        Point.available_names = [_ for _ in string.ascii_uppercase][::-1]
-        Point.names_in_use = []
-        Point.names_layer = 0
-
     @property
     def name(self):
         return self._name
 
     @name.setter
-    def name(self, other):
-        if other == 'automatic':
-            self._name = _auto_name()
+    def name(self, value):
+        value = str(value)
+        if value == 'automatic':
+            self._name = Point.automatic_names().pop()
         else:
-            if str(other) not in Point.names_in_use:
-                Point.names_in_use.append(str(other))
-            if self.name in Point.names_in_use:
-                Point.available_names.append(self.name)
-                Point.names_in_use.remove(self.name)
-            self._name = str(other)
+            self._name = value
 
     @property
     def x(self):

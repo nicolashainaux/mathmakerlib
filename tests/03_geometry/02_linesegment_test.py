@@ -185,16 +185,12 @@ def test_slope(A, B, D, E, J):
 
 def test_midpoint():
     """Check midpoint is correct."""
-    Point.reset_names()
     s = LineSegment(Point(0, 0, 'A'), Point(1, 1, 'B'))
-    assert s.midpoint() == Point(Number('0.5'), Number('0.5'), 'C')
-    s = LineSegment(Point(0, 0, 'A'), Point(1, 1, 'B'))
-    assert s.midpoint(name='M') == Point(Number('0.5'), Number('0.5'), 'M')
+    assert s.midpoint().same_as(Point(Number('0.5'), Number('0.5')))
 
 
 def test_point_at():
     """Check point_at is correct."""
-    Point.reset_names()
     s = LineSegment(Point(0, 0, 'A'), Point(1, 1, 'B'))
     with pytest.raises(TypeError) as excinfo:
         s.point_at('a')
@@ -206,7 +202,6 @@ def test_point_at():
     assert s.point_at(0).same_as(Point(0, 0))
     assert s.point_at(1).same_as(Point(1, 1))
     assert s.point_at(-2).same_as(Point(-2, -2))
-    Point.reset_names()
     s = LineSegment(Point(1, 1, 'A'), Point(3, 4, 'B'))
     assert s.point_at(Number('0.8')).same_as(Point('2.6', '3.4'))
     assert s.point_at(2).same_as(Point(5, 7))

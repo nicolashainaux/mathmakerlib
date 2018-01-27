@@ -384,10 +384,6 @@ def test_drawing_angles_with_armspoints():
 \draw (Y) node[above left] {Y};
 \end{tikzpicture}
 """
-    Point.reset_names()
-    A = Point(0, 0, 'A')
-    X1 = Point(6, 1, 'X1')
-    Y1 = Point(3, 5, 'Y1')
     α = Angle(X1, A, Y1, armspoints=[('X', ), ('Y', )],
               label_vertex=True, draw_vertex=True)
     α.armspoints = [('', ), (None, )]
@@ -397,21 +393,21 @@ def test_drawing_angles_with_armspoints():
 \coordinate (X1) at (6,1);
 \coordinate (A) at (0,0);
 \coordinate (Y1) at (3,5);
-\coordinate (E) at (4.8,0.8);
-\coordinate (F) at (2.4,4.0);
+\coordinate (B) at (4.8,0.8);
+\coordinate (C) at (2.4,4.0);
 
 % Draw Angle
 \draw[thick] (X1) -- (A) -- (Y1);
 % Draw Vertex
 \draw (A) node[scale=0.67] {$\times$};
 % Draw Arms' Points
-\draw (E) node[scale=0.67] {$\times$};
-\draw (F) node[scale=0.67] {$\times$};
+\draw (B) node[scale=0.67] {$\times$};
+\draw (C) node[scale=0.67] {$\times$};
 
 % Label Points
 \draw (A) node[below left] {A};
-\draw (E) node[below right] {E};
-\draw (F) node[above left] {F};
+\draw (B) node[below right] {B};
+\draw (C) node[above left] {C};
 \end{tikzpicture}
 """
 
@@ -729,7 +725,6 @@ def test_drawing_AnglesSets_of_same_vertex():
 \draw (Z) node[above left] {Z};
 \end{tikzpicture}
 """
-    Point.reset_names()
     A = Point(0, 0, 'A')
     X1 = Point(6, 1, 'X1')
     Y1 = Point(3, 5, 'Y1')
