@@ -27,11 +27,11 @@ from .polygons import Polygon, shoelace_formula
 from .polygons import Triangle, RightTriangle, EquilateralTriangle
 from .polygons import IsoscelesTriangle
 from .polygons import Quadrilateral, Rectangle, Rhombus, Square
-from .angle import AngleDecoration, Angle
+from .angle import AngleDecoration, Angle, AnglesSet
 
 __all__ = ['Point', 'PointsPair', 'LineSegment', 'DividedLineSegment',
            'Polygon', 'shoelace_formula',
            'Triangle', 'RightTriangle', 'EquilateralTriangle',
            'IsoscelesTriangle',
            'Quadrilateral', 'Rectangle', 'Rhombus', 'Square',
-           'AngleDecoration', 'Angle']
+           'AngleDecoration', 'Angle', 'AnglesSet']
