@@ -49,37 +49,39 @@ def test_instanciation():
     p = Point('0.1', '0.7', 'B')
     assert p.x == Number('0.1')
     assert p.y == Number('0.7')
+    p = Point(0, 0, None)
+    assert p.name is None
 
 
 def test_automatic_naming():
     """Check automatic naming of Points."""
+    Point.reset_names()
     Point(0, 0, 'A')
-    assert Point.names_in_use() == set()
     q = Point(1, 1)
-    assert Point.names_in_use() == {'A'}
-    assert q.name == 'A'
-    q = Point(1, 1)
-    assert len(Point.instances) == 1
-    assert Point.names_in_use() == {'B'}
     assert q.name == 'B'
+    Point.reset_names()
     q = Point(1, 1)
     assert q.name == 'A'
     q = Point(1, 1, 'C')
     q = Point(1, 1)
-    assert q.name == 'A'
-    L = []
-    for i in range(26):
-        L.append(Point(1, 1))
-    assert L[-1].name == 'A$_1$'
-    del q
-    del L
+    assert q.name == 'B'
+    q = Point(1, 1)
+    assert q.name == 'D'
+    for _ in range(23):
+        q = Point(1, 1)
+    assert q.name == 'A$_1$'
+    for _ in range(26):
+        q = Point(1, 1)
+    assert q.name == 'A$_2$'
+    Point.reset_names()
     p = Point(1, 1)  # 'A'
-    assert Point.names_in_use() == {'A'}
     q = Point(1, 1)  # 'B'
     assert q.name == 'B'
-    assert Point.names_in_use() == {'A', 'B'}
     p.name = 'C'  # 'A' is free
-    assert Point.names_in_use() == {'B', 'C'}
+    q = Point(1, 1)
+    assert q.name == 'A'
+    q = Point(1, 1)
+    assert q.name == 'D'
 
 
 def test_str():
@@ -131,6 +133,11 @@ def test_rotation():
 
 def test_drawing():
     """Check drawing is correct."""
+    p = Point(0, 0, None)
+    with pytest.raises(RuntimeError) as excinfo:
+        p.drawn
+    assert str(excinfo.value) == 'Point at ({}, {}) has no name (None), '\
+        'cannot create TikZ picture using it.'
     p = Point(0, 0, 'A')
     assert p.drawn == r"""
 \begin{tikzpicture}

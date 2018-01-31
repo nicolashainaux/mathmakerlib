@@ -21,7 +21,6 @@
 
 import string
 import decimal
-import weakref
 from math import cos, sin, radians
 
 from mathmakerlib.core.drawable import Drawable, check_scale, tikz_options_list
@@ -39,15 +38,11 @@ OPPOSITE_LABEL_POSITIONS = {'right': 'left',
 
 
 class Point(Drawable):
-    instances = weakref.WeakSet()
-
-    @classmethod
-    def names_in_use(cls):
-        return {p.name for p in Point.instances}
+    names_in_use = set()
 
     @classmethod
     def automatic_names(cls):
-        use = Point.names_in_use()
+        use = Point.names_in_use
         names = [letter
                  for letter in string.ascii_uppercase
                  if letter not in use][::-1]
@@ -58,7 +53,12 @@ class Point(Drawable):
                          for letter in string.ascii_uppercase
                          if '{}$_{}$'.format(letter, layer)
                          not in use][::-1]
+                layer += 1
         return names
+
+    @classmethod
+    def reset_names(cls):
+        cls.names_in_use = set()
 
     def __init__(self, x=None, y=None, name='automatic', shape=r'$\times$',
                  label='default', label_position='below', color=None,
@@ -101,7 +101,6 @@ class Point(Drawable):
         if color is not None:
             self.color = color
         self.shape_scale = shape_scale
-        Point.instances.add(self)
 
     def __str__(self):
         return '{}({}; {})'.format(self.name, self.x, self.y)
@@ -139,11 +138,17 @@ class Point(Drawable):
 
     @name.setter
     def name(self, value):
-        value = str(value)
-        if value == 'automatic':
-            self._name = Point.automatic_names().pop()
+        if self._name is not None:
+            Point.names_in_use.discard(self._name)
+        if value is None:
+            self._name = None
         else:
-            self._name = value
+            value = str(value)
+            if value == 'automatic':
+                self._name = Point.automatic_names().pop()
+            else:
+                self._name = value
+            Point.names_in_use.add(self._name)
 
     @property
     def x(self):
@@ -248,6 +253,9 @@ class Point(Drawable):
 
     def tikz_declarations(self):
         """Return the Point declaration."""
+        if self.name is None:
+            raise RuntimeError('Point at ({}, {}) has no name (None), '
+                               'cannot create TikZ picture using it.')
         return r'\coordinate ({}) at ({},{});'\
             .format(self.name, self.x, self.y)
 
