@@ -39,6 +39,7 @@ def test_addition():
     i = Vector(pointO, pointI)
     j = Vector(pointO, pointJ)
     assert (i + j).same_as(Vector(pointO, pointA))
+    assert (i.add(j)).same_as(Vector(pointO, pointA))
 
 
 def test_unit_vector():

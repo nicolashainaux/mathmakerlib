@@ -374,6 +374,10 @@ def test_drawing_angles_with_armspoints():
 \draw (Y) node[above left] {Y};
 \end{tikzpicture}
 """
+    Point.reset_names()
+    A = Point(0, 0, 'A')
+    X1 = Point(6, 1, 'X1')
+    Y1 = Point(3, 5, 'Y1')
     α = Angle(X1, A, Y1, armspoints=[('X', ), ('Y', )],
               label_vertex=True, draw_vertex=True)
     α.armspoints = [('', ), (None, )]

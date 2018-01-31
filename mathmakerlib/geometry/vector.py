@@ -27,19 +27,24 @@ class Vector(PointsPair):
     """Vectors. Not Drawable yet. Not publicly available yet."""
 
     def __add__(self, other):
+        return self.add(other)
+
+    def add(self, other, new_endpoint_name='automatic'):
         if not isinstance(other, Vector):
             raise TypeError('Can only add a Vector to another Vector. '
                             'Got {} instead.'.format(type(other)))
         return Vector(self.points[0], Point(self.points[1].x + other.deltax,
-                                            self.points[1].y + other.deltay))
+                                            self.points[1].y + other.deltay,
+                                            name=new_endpoint_name))
 
-    def unit_vector(self):
+    def unit_vector(self, new_endpoint_name='automatic'):
         """Return the unit vector colinear (to self)."""
         return Vector(self.points[0],
                       Point(self.points[0].x + self.deltax / self.length,
-                            self.points[0].y + self.deltay / self.length))
+                            self.points[0].y + self.deltay / self.length,
+                            name=new_endpoint_name))
 
-    def bisector_vector(self, other):
+    def bisector_vector(self, other, new_endpoint_name='automatic'):
         """
         Return a vector colinear to the bisector of self and another vector.
 
@@ -49,4 +54,6 @@ class Vector(PointsPair):
         if not isinstance(other, Vector):
             raise TypeError('Can only create the bisector with another Vector.'
                             ' Got a {} instead.'.format(type(other)))
-        return self.unit_vector() + other.unit_vector()
+        return self.unit_vector(new_endpoint_name=new_endpoint_name)\
+            .add(other.unit_vector(new_endpoint_name=new_endpoint_name),
+                 new_endpoint_name=new_endpoint_name)

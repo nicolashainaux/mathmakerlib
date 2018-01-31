@@ -232,7 +232,8 @@ class Angle(Drawable, HasThickness):
 
         # Vertex' label positioning
         bisector = Vector(self._points[0], self.vertex)\
-            .bisector_vector(Vector(self._points[2], self.vertex))
+            .bisector_vector(Vector(self._points[2], self.vertex),
+                             new_endpoint_name=None)
         self._points[1].label_position = \
             tikz_approx_position(bisector.slope360)
 
