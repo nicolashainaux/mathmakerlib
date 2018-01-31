@@ -37,3 +37,8 @@ def test_str():
     ol = OptionsList('a4paper')
     ol.append('fleqn')
     assert str(ol) == '[a4paper, fleqn]'
+    al = AttrList('usenames', 'dvipsnames')
+    al2 = AttrList(al)
+    assert str(al2) == '{usenames, dvipsnames}'
+    al2.append('svgnames')
+    assert str(al2) == '{usenames, dvipsnames, svgnames}'
