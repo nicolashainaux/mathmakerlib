@@ -108,8 +108,8 @@ class Point(Drawable):
     def __repr__(self):
         return 'Point {}({}; {})'.format(self.name, self.x, self.y)
 
-    def __hash__(self):
-        return hash(repr(self))
+    # def __hash__(self):
+    #     return hash(repr(self))
 
     def __eq__(self, other):
         if isinstance(other, Point):
