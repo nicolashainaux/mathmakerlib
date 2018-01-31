@@ -34,8 +34,12 @@ def test_Command_class():
 
 def test_preset_commands():
     """Check turning preset commands into str."""
-    assert str(DocumentClass('article', options=('a4paper', 'fleqn', '12pt')))\
-        == r'\documentclass[a4paper, fleqn, 12pt]{article}'
+    dc = DocumentClass('article', options=('a4paper', 'fleqn', '12pt'))
+    assert str(dc) == r'\documentclass[a4paper, fleqn, 12pt]{article}'
+    assert str(dc.content) == '{article}'
+    assert str(dc.options) == '[a4paper, fleqn, 12pt]'
+    dc.options.append('landscape')
+    assert str(dc.options) == '[a4paper, fleqn, 12pt, landscape]'
     assert str(UsePackage('lxfonts')) == r'\usepackage{lxfonts}'
     assert str(UsePackage('fontspec', options='no-math'))\
         == r'\usepackage[no-math]{fontspec}'

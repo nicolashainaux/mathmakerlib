@@ -40,6 +40,14 @@ class Command(object):
                                                    options=str(self._options),
                                                    content=str(self._content))
 
+    @property
+    def content(self):
+        return self._content
+
+    @property
+    def options(self):
+        return self._options
+
 
 class DocumentClass(Command):
 
