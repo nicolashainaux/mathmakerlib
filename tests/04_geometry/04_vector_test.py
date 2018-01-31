@@ -26,28 +26,12 @@ from mathmakerlib.geometry import Point
 from mathmakerlib.geometry.vector import Vector
 
 
-@pytest.fixture()
-def pointO():
-    return Point(0, 0, 'O')
-
-
-@pytest.fixture()
-def pointI():
-    return Point(1, 0, 'I')
-
-
-@pytest.fixture()
-def pointJ():
-    return Point(0, 1, 'J')
-
-
-@pytest.fixture()
-def pointA():
-    return Point(1, 1, 'A')
-
-
-def test_addition(pointO, pointI, pointJ, pointA):
+def test_addition():
     """Check Vectors' additions."""
+    pointO = Point(0, 0, 'O')
+    pointI = Point(1, 0, 'I')
+    pointJ = Point(0, 1, 'J')
+    pointA = Point(1, 1, 'A')
     with pytest.raises(TypeError) as excinfo:
         Vector(pointO, pointI) + 'a'
     assert str(excinfo.value) == 'Can only add a Vector to another Vector. ' \
@@ -57,8 +41,11 @@ def test_addition(pointO, pointI, pointJ, pointA):
     assert (i + j).same_as(Vector(pointO, pointA))
 
 
-def test_unit_vector(pointO, pointI, pointA):
+def test_unit_vector():
     """Check unit vector creation."""
+    pointO = Point(0, 0, 'O')
+    pointI = Point(1, 0, 'I')
+    pointA = Point(1, 1, 'A')
     i = Vector(pointO, pointI)
     assert i.unit_vector().same_as(i)
     u = Vector(pointO, pointA)
@@ -67,8 +54,12 @@ def test_unit_vector(pointO, pointI, pointA):
                Point(Number('0.707'), Number('0.707'))))
 
 
-def test_bisector_vector(pointO, pointI, pointJ, pointA):
+def test_bisector_vector():
     """Check bisector of two vectors."""
+    pointO = Point(0, 0, 'O')
+    pointI = Point(1, 0, 'I')
+    pointJ = Point(0, 1, 'J')
+    pointA = Point(1, 1, 'A')
     i = Vector(pointO, pointI)
     j = Vector(pointO, pointJ)
     a = Vector(pointO, pointA)

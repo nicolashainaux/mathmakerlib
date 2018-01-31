@@ -24,18 +24,10 @@ import pytest
 from mathmakerlib.geometry import Point, DividedLineSegment
 
 
-@pytest.fixture()
-def A():
-    return Point(0, 0, 'A')
-
-
-@pytest.fixture()
-def B():
-    return Point(10, 0, 'B')
-
-
-def test_instanciation_errors(A, B):
+def test_instanciation_errors():
     """Check DividedLineSegment's instanciation exceptions."""
+    A = Point(0, 0, 'A')
+    B = Point(10, 0, 'B')
     with pytest.raises(TypeError) as excinfo:
         DividedLineSegment(A, B)
     assert str(excinfo.value) == 'n must be an integer >= 1, got None instead.'
@@ -45,8 +37,10 @@ def test_instanciation_errors(A, B):
         '3, got 4 instead.'
 
 
-def test_instanciation(A, B):
+def test_instanciation():
     """Check LineSegment's instanciation."""
+    A = Point(0, 0, 'A')
+    B = Point(10, 0, 'B')
     s = DividedLineSegment(A, B, n=5, fill=3)
     assert s.thickness == 'ultra thick'
     assert s.label is None
@@ -55,14 +49,18 @@ def test_instanciation(A, B):
     assert s.endpoints[1].shape == '|'
 
 
-def test_repr(A, B):
+def test_repr():
     """Check __repr__ is correct."""
+    A = Point(0, 0, 'A')
+    B = Point(10, 0, 'B')
     assert repr(DividedLineSegment(A, B, n=4, fill=3)) \
         == 'DividedLineSegment(Point A(0; 0), Point B(10; 0), 3/4, LimeGreen)'
 
 
-def test_drawing(A, B):
+def test_drawing():
     """Check drawing is correct."""
+    A = Point(0, 0, 'A')
+    B = Point(10, 0, 'B')
     ls = DividedLineSegment(A, B, n=5, fill=3, fillcolor='pink')
     assert ls.drawn == r"""
 \begin{tikzpicture}

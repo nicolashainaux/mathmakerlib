@@ -27,26 +27,6 @@ from mathmakerlib.geometry import Point, PointsPair
 from mathmakerlib.geometry.angle import AngleDecoration, Angle, AnglesSet
 
 
-@pytest.fixture()
-def pointO():
-    return Point(0, 0, 'O')
-
-
-@pytest.fixture()
-def pointI():
-    return Point(1, 0, 'I')
-
-
-@pytest.fixture()
-def pointJ():
-    return Point(0, 1, 'J')
-
-
-@pytest.fixture()
-def pointA():
-    return Point(1, 1, 'A')
-
-
 def test_AngleDecoration():
     assert repr(AngleDecoration()) == 'AngleDecoration(variety=single; '\
         'hatchmark=None; label=default; color=None; thickness=thick; '\
@@ -84,8 +64,11 @@ def test_AngleDecoration():
         'generate the AngleDecoration. Found 2 arguments instead.'
 
 
-def test_instanciation_errors(pointO, pointI, pointJ):
+def test_instanciation_errors():
     """Check Angle's instanciation exceptions."""
+    pointO = Point(0, 0, 'O')
+    pointI = Point(1, 0, 'I')
+    pointJ = Point(0, 1, 'J')
     with pytest.raises(TypeError) as excinfo:
         Angle(pointO, pointI)
     assert str(excinfo.value) == '__init__() missing 1 required positional ' \
@@ -152,8 +135,12 @@ def test_instanciation_errors(pointO, pointI, pointJ):
         'tuple of 1 or 2 elements. Found 3 elements instead.'
 
 
-def test_instanciation(pointO, pointI, pointJ, pointA):
+def test_instanciation():
     """Check Angle's instanciation."""
+    pointO = Point(0, 0, 'O')
+    pointI = Point(1, 0, 'I')
+    pointJ = Point(0, 1, 'J')
+    pointA = Point(1, 1, 'A')
     theta = Angle(pointI, pointO, pointJ, mark_right=True)
     assert theta.measure == Number('90')
     assert isinstance(theta.decoration, AngleDecoration)
@@ -179,8 +166,11 @@ def test_instanciation(pointO, pointI, pointJ, pointA):
     assert α.arms[1].same_as(PointsPair(A, Y))
 
 
-def test_marked_angles(pointO, pointI, pointJ, pointA):
+def test_marked_angles():
     """Check Angle's instanciation."""
+    pointO = Point(0, 0, 'O')
+    pointI = Point(1, 0, 'I')
+    pointJ = Point(0, 1, 'J')
     required.tikz_library['angles'] = False
     theta = Angle(pointI, pointO, pointJ)
     assert theta.tikz_decoration() == ''
@@ -633,8 +623,9 @@ pic [draw, thick, angle radius = 0.58 cm, singledash] {angle = X1--A--Y1};
 """
 
 
-def test_AnglesSet_instanciation_errors(pointO, pointI, pointJ):
+def test_AnglesSet_instanciation_errors():
     """Check AnglesSet's instanciation exceptions."""
+    pointO = Point(0, 0, 'O')
     with pytest.raises(TypeError) as excinfo:
         AnglesSet(pointO)
     assert str(excinfo.value) == 'Any element of an AnglesSet must be an ' \
