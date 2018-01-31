@@ -28,7 +28,7 @@ def test_Command_class():
     assert str(Command('RequirePackage', 'luatex85'))\
         == r'\RequirePackage{luatex85}'
     assert str(Command('sisetup',
-                       content=[('locale', 'FR'), ('mode', 'text')]))\
+                       content={'locale': 'FR', 'mode': 'text'}))\
         == r'\sisetup{locale=FR, mode=text}'
 
 

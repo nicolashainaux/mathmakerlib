@@ -40,8 +40,9 @@ class AttrList(object):
             return ''
         built_content = []
         for o in self._content:
-            if isinstance(o, (tuple, list)):
-                built_content.append('{}={}'.format(str(o[0]), str(o[1])))
+            if isinstance(o, dict):
+                for k in o:
+                    built_content.append('{}={}'.format(k, o[k]))
             else:
                 built_content.append(str(o))
         return '{}{}{}'.format(self._braces[0],

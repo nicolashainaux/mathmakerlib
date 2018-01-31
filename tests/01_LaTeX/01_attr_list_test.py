@@ -29,8 +29,7 @@ def test_str():
     assert str(OptionsList('usenames', 'dvipsnames'))\
         == '[usenames, dvipsnames]'
     assert str(OptionsList('20pt',
-                           ('xcolor',
-                            AttrList('usenames', 'dvipsnames'))))\
+                           {'xcolor': AttrList('usenames', 'dvipsnames')}))\
         == '[20pt, xcolor={usenames, dvipsnames}]'
     assert str(OptionsList('a4paper', 'fleqn', '12pt'))\
         == '[a4paper, fleqn, 12pt]'
