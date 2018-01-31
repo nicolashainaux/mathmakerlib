@@ -20,7 +20,6 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 import math
-from copy import deepcopy
 
 from mathmakerlib.geometry.point import Point
 from mathmakerlib.calculus.number import Number
@@ -47,7 +46,7 @@ class PointsPair(object):
             raise ValueError('Cannot instantiate any PointsPair if both '
                              'endpoints have the same coordinates: '
                              '({}; {}).'.format(point1.x, point1.y))
-        self._points = [deepcopy(point1), deepcopy(point2)]
+        self._points = [point1, point2]
         self._deltax = self.points[1].x - self.points[0].x
         self._deltay = self.points[1].y - self.points[0].y
 
