@@ -34,3 +34,6 @@ def test_str():
         == '[20pt, xcolor={usenames, dvipsnames}]'
     assert str(OptionsList('a4paper', 'fleqn', '12pt'))\
         == '[a4paper, fleqn, 12pt]'
+    ol = OptionsList('a4paper')
+    ol.append('fleqn')
+    assert str(ol) == '[a4paper, fleqn]'

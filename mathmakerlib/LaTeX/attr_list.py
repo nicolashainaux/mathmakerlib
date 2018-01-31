@@ -24,17 +24,19 @@ class AttrList(object):
 
     def __init__(self, *attrlist, braces='{}'):
         if all([o is None for o in attrlist]):
-            attrlist = None
+            attrlist = []
+        if attrlist is None:
+            attrlist = []
         if (attrlist is not None and len(attrlist) == 1
             and isinstance(attrlist[0], AttrList)):
-            self._content = attrlist[0]._content
+            self._content = list(attrlist[0]._content)
             self._braces = attrlist[0]._braces
         else:
-            self._content = attrlist
+            self._content = list(attrlist)
             self._braces = braces
 
     def __str__(self):
-        if self._content is None or not len(self._content):
+        if not len(self._content):
             return ''
         built_content = []
         for o in self._content:
@@ -45,6 +47,9 @@ class AttrList(object):
         return '{}{}{}'.format(self._braces[0],
                                ', '.join(built_content),
                                self._braces[1])
+
+    def append(self, value):
+        self._content.append(value)
 
 
 class OptionsList(AttrList):
