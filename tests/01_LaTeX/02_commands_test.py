@@ -20,7 +20,7 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 from mathmakerlib.LaTeX import Command, DocumentClass, UsePackage
-from mathmakerlib.LaTeX import UseTikzLibrary
+from mathmakerlib.LaTeX import UseTikzLibrary, AttrList
 
 
 def test_Command_class():
@@ -33,6 +33,10 @@ def test_Command_class():
     assert str(Command('command',
                        content=['content1', 'content2']))\
         == r'\command{content1, content2}'
+    assert str(Command('setkeys',
+                       options=AttrList({'variant': 'british'}),
+                       content='en'))\
+        == r'\setkeys{variant=british}{en}'
 
 
 def test_preset_commands():
