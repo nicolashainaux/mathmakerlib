@@ -135,6 +135,8 @@ class Unit(Exponented):
     def imprint(self, start_expr=True, variant='latex', standalone=True):
         if standalone and variant == 'latex':
             required.package['siunitx'] = True
+            if self.content in ['€', r'\officialeuro']:
+                required.package['eurosym'] = True
             return r'\si{' + super().imprint(start_expr=start_expr) + '}'
         else:
             return super().imprint(start_expr=start_expr, variant=variant)
