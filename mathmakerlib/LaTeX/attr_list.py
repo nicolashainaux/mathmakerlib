@@ -25,10 +25,7 @@ class AttrList(object):
     def __init__(self, *attrlist, braces='{}'):
         if all([o is None for o in attrlist]):
             attrlist = []
-        if attrlist is None:
-            attrlist = []
-        if (attrlist is not None and len(attrlist) == 1
-            and isinstance(attrlist[0], AttrList)):
+        if (len(attrlist) == 1 and isinstance(attrlist[0], AttrList)):
             self._content = list(attrlist[0]._content)
             self._braces = attrlist[0]._braces
         else:
