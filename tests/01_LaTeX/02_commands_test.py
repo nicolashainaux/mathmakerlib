@@ -30,6 +30,9 @@ def test_Command_class():
     assert str(Command('sisetup',
                        content={'locale': 'FR', 'mode': 'text'}))\
         == r'\sisetup{locale=FR, mode=text}'
+    assert str(Command('command',
+                       content=['content1', 'content2']))\
+        == r'\command{content1, content2}'
 
 
 def test_preset_commands():

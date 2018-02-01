@@ -24,6 +24,7 @@ from mathmakerlib.LaTeX import OptionsList, AttrList
 
 def test_str():
     """Check turning options into str."""
+    assert str(AttrList()) == ''
     assert str(OptionsList()) == ''
     assert str(OptionsList(None)) == ''
     assert str(OptionsList('usenames', 'dvipsnames'))\
