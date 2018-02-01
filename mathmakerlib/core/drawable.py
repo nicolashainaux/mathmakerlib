@@ -41,8 +41,7 @@ def check_color(value):
         pass
     elif value in colors_names.XCOLOR_DVIPSNAMES:
         required.package['xcolor'] = True
-        if 'dvipsnames' not in required.options['xcolor']:
-            required.options['xcolor'].append('dvipsnames')
+        required.options['xcolor'].add('dvipsnames')
     else:
         raise ValueError('Unknown color name: {}. Only colors from '
                          'xcolor\'s dvipsnames are yet supported.'

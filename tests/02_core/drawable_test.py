@@ -102,7 +102,7 @@ def test_scale(A, E):
 def test_colors():
     """Check colors setting and usage."""
     p = Point(0, 0, 'A')
-    required.options['xcolor'] = []
+    required.options['xcolor'] = set()
     required.package['xcolor'] = False
     p.color = 'blue'
     assert not required.package['xcolor']
