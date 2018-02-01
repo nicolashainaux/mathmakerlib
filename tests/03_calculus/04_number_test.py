@@ -237,8 +237,10 @@ def test_printing():
         == '60 cm^2'
     assert Number('3.6', unit='mL').quantize(Number('0.01')).printed \
         == r'\SI{3.60}{mL}'
+    required.package['eurosym'] = False
     assert Number('0.70', unit=r'\officialeuro').quantize(Number('0.01'))\
         .printed == r'\SI{0.70}{\officialeuro}'
+    assert required.package['eurosym']
     n = Number('38', unit=r'\textdegree')
     assert n.printed == r'\ang{38}'
 

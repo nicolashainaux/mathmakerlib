@@ -380,6 +380,8 @@ class Number(Decimal, Signed, Printable, Evaluable):
         else:
             if variant == 'latex':
                 required.package['siunitx'] = True
+                if self.unit.content in ['€', r'\officialeuro']:
+                    required.package['eurosym'] = True
                 if physical_quantity(self.unit) == 'angle':
                     return extra_sign + r'\ang{' + self_str + '}'
                 else:
