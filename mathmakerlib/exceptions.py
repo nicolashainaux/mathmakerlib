@@ -48,13 +48,15 @@ class ZeroLengthPointsPair(MathmakerLibError):
     """In case of abusive use of a zero-length PointsPair."""
     def __init__(self, msg=None):
         if msg is None:
-            msg = 'Abusive use of a zero-length {}'.format(type(self).__name__)
+            msg = 'Abusive use of a zero-length PointsPair.'
         super().__init__(msg=msg)
 
 
 class ZeroLengthLineSegment(ZeroLengthPointsPair):
     """In case of abusive use of a zero-length LineSegment."""
     def __init__(self, msg=None):
+        if msg is None:
+            msg = 'Abusive use of a zero-length LineSegment.'
         super().__init__(msg=msg)
 
 
@@ -62,7 +64,7 @@ class ZeroVector(ZeroLengthPointsPair):
     """In case of abusive use of a zero Vector."""
     def __init__(self, msg=None):
         if msg is None:
-            msg = 'Abusive use of a zero Vector'
+            msg = 'Abusive use of a zero Vector.'
         super().__init__(msg=msg)
 
 

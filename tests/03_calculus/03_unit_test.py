@@ -22,6 +22,7 @@
 import pytest
 from decimal import Decimal
 
+from mathmakerlib import required
 from mathmakerlib.calculus import Unit, physical_quantity, Number
 from mathmakerlib.calculus import difference_of_orders_of_magnitude
 
@@ -88,6 +89,9 @@ def test_printing():
     assert Unit('cm', exponent=2).printed == r'\si{cm^{2}}'
     assert str(Unit('cm')) == 'cm'
     assert str(Unit('cm', exponent=2)) == 'cm^2'
+    required.package['eurosym'] = False
+    Unit(r'\officialeuro').printed
+    assert required.package['eurosym']
 
 
 def test_repr():

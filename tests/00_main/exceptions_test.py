@@ -23,6 +23,9 @@ import pytest
 
 from mathmakerlib.calculus import Number
 from mathmakerlib.exceptions import MathmakerLibError, StopCalculation
+from mathmakerlib.exceptions import ZeroLengthPointsPair
+from mathmakerlib.exceptions import ZeroLengthLineSegment
+from mathmakerlib.exceptions import ZeroVector
 
 
 def test_MainError():
@@ -38,3 +41,24 @@ def test_StopCalculation():
         raise StopCalculation(Number('7.6'))
     assert str(excinfo.value) == 'No further calculation can be done on ' \
         'Number(\'7.6\').'
+
+
+def test_ZeroLengthPointsPair():
+    """Check ZeroLengthPointsPair exception."""
+    with pytest.raises(ZeroLengthPointsPair) as excinfo:
+        raise ZeroLengthPointsPair
+    assert str(excinfo.value) == 'Abusive use of a zero-length PointsPair.'
+
+
+def test_ZeroLengthLineSegment():
+    """Check ZeroLengthLineSegment exception."""
+    with pytest.raises(ZeroLengthLineSegment) as excinfo:
+        raise ZeroLengthLineSegment
+    assert str(excinfo.value) == 'Abusive use of a zero-length LineSegment.'
+
+
+def test_ZeroVector():
+    """Check ZeroVector exception."""
+    with pytest.raises(ZeroVector) as excinfo:
+        raise ZeroVector
+    assert str(excinfo.value) == 'Abusive use of a zero Vector.'
