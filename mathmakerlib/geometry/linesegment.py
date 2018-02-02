@@ -19,6 +19,7 @@
 # along with Mathmaker Lib; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
+from mathmakerlib.exceptions import ZeroLengthLineSegment
 from mathmakerlib.core.drawable import check_scale, Drawable, HasThickness
 from mathmakerlib.core.drawable import tikz_approx_position, tikz_options_list
 from mathmakerlib.geometry.pointspair import PointsPair
@@ -34,7 +35,7 @@ class LineSegment(Drawable, HasThickness, PointsPair):
                  label_position='anticlockwise', label_scale=None,
                  draw_endpoints=True, label_endpoints=True, color=None,
                  mark=None, mark_scale=Number('0.5'),
-                 locked_label=False):
+                 locked_label=False, allow_zero_length=True):
         """
         Initialize LineSegment
 
@@ -76,7 +77,7 @@ class LineSegment(Drawable, HasThickness, PointsPair):
             raise TypeError('Two Points are required to create a '
                             'LineSegment. Got {} object(s) instead.'
                             .format(len(points)))
-        PointsPair.__init__(self, *points)
+        PointsPair.__init__(self, *points, allow_zero_length=allow_zero_length)
         self._label = None
         self._thickness = None
         self._label_mask = None
@@ -93,7 +94,11 @@ class LineSegment(Drawable, HasThickness, PointsPair):
         self.label_endpoints = label_endpoints
         self.mark = mark
         self.mark_scale = mark_scale
-        self.endpoints[1].label_position = tikz_approx_position(self.slope360)
+        try:
+            self.endpoints[1].label_position = \
+                tikz_approx_position(self.slope360)
+        except ZeroLengthLineSegment:
+            self.endpoints[1].label_position = 'below left'
         self.endpoints[0].label_position = \
             OPPOSITE_LABEL_POSITIONS[self.endpoints[1].label_position]
         if label_position == 'anticlockwise':

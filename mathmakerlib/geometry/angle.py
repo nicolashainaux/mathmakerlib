@@ -23,6 +23,7 @@ import sys
 from math import acos, degrees
 
 from mathmakerlib import required, mmlib_setup
+from mathmakerlib.exceptions import ZeroVector
 from mathmakerlib.core.oriented import check_winding, shoelace_formula
 from mathmakerlib.core.drawable import Colored, HasThickness, HasRadius
 from mathmakerlib.core.drawable import Labeled
@@ -234,8 +235,16 @@ class Angle(Drawable, HasThickness):
         bisector = Vector(self._points[0], self.vertex)\
             .bisector_vector(Vector(self._points[2], self.vertex),
                              new_endpoint_name=None)
-        self._points[1].label_position = \
-            tikz_approx_position(bisector.slope360)
+        try:
+            self._points[1].label_position = \
+                tikz_approx_position(bisector.slope360)
+        except ZeroVector:
+            self._points[1].label_position = \
+                tikz_approx_position(
+                    Vector(self.vertex,
+                           self._points[0].rotate(self.vertex, -90,
+                                                  rename=None)
+                           ).slope360)
 
         # Endpoints labels positioning
         direction = 1 if self.winding == 'anticlockwise' else -1

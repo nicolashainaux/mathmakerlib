@@ -22,6 +22,7 @@
 import pytest
 from decimal import Decimal
 
+from mathmakerlib.exceptions import ZeroLengthLineSegment
 from mathmakerlib.core.drawable import THICKNESS_VALUES
 from mathmakerlib.calculus import Number
 from mathmakerlib.geometry import Point, LineSegment
@@ -80,10 +81,10 @@ def test_instanciation_errors(A, B):
         LineSegment(A, label='4 cm')
     assert str(excinfo.value) == 'Two Points are ' \
         'required to create a LineSegment. Got 1 object(s) instead.'
-    with pytest.raises(ValueError) as excinfo:
-        LineSegment(B, B)
-    assert str(excinfo.value) == 'Cannot instantiate any LineSegment if both '\
-        'endpoints have the same coordinates: (1; 1).'
+    with pytest.raises(ZeroLengthLineSegment) as excinfo:
+        LineSegment(B, B, allow_zero_length=False)
+    assert str(excinfo.value) == 'Explicitly disallowed creation of a '\
+        'zero-length LineSegment.'
     with pytest.raises(ValueError) as excinfo:
         LineSegment(A, B, draw_endpoints='undefined')
     assert str(excinfo.value) == 'draw_endpoints must be True or False; ' \
@@ -92,6 +93,15 @@ def test_instanciation_errors(A, B):
         LineSegment(A, B, label_endpoints='undefined')
     assert str(excinfo.value) == 'label_endpoints must be True or False; ' \
         'got \'undefined\' instead.'
+    ls = LineSegment(B, B)
+    with pytest.raises(ZeroLengthLineSegment) as excinfo:
+        ls.slope
+    assert str(excinfo.value) == 'Cannot calculate the slope of a '\
+        'zero-length LineSegment.'
+    with pytest.raises(ZeroLengthLineSegment) as excinfo:
+        ls.slope360
+    assert str(excinfo.value) == 'Cannot calculate the slope of a '\
+        'zero-length LineSegment.'
 
 
 def test_instanciation(A, B):

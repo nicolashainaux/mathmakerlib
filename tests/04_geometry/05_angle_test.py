@@ -164,6 +164,13 @@ def test_instanciation():
     assert α.winding == 'anticlockwise'
     assert α.arms[0].same_as(PointsPair(A, X))
     assert α.arms[1].same_as(PointsPair(A, Y))
+    Ω = Point(0, 0, 'Ω')
+    X = Point(12, 2, 'X')
+    Y = Point(-6, -1, 'Y')
+    α = Angle(X, Ω, Y)
+    X = Point(6, 1, 'X')
+    Y = Point(-6, -1, 'Y')
+    α = Angle(X, Ω, Y)
 
 
 def test_marked_angles():

@@ -21,6 +21,7 @@
 
 import math
 
+from mathmakerlib.exceptions import ZERO_OBJECTS_ERRORS
 from mathmakerlib.geometry.point import Point
 from mathmakerlib.calculus.number import Number
 from mathmakerlib.calculus.tools import is_number, is_integer
@@ -33,7 +34,7 @@ class PointsPair(object):
     This class won't ever need to get Drawable, but can be instanciated.
     """
 
-    def __init__(self, point1, point2):
+    def __init__(self, point1, point2, allow_zero_length=True):
         if not isinstance(point1, Point):
             raise TypeError('Both arguments should be Points, got a {} '
                             'as first argument instead.'
@@ -42,11 +43,11 @@ class PointsPair(object):
             raise TypeError('Both arguments should be Points, got a {} '
                             'as second argument instead.'
                             .format(type(point2)))
-        if point1.coordinates == point2.coordinates:
-            raise ValueError('Cannot instantiate any {} if both '
-                             'endpoints have the same coordinates: '
-                             '({}; {}).'.format(type(self).__name__,
-                                                point1.x, point1.y))
+        if (not allow_zero_length
+            and point1.coordinates == point2.coordinates):
+            msg = 'Explicitly disallowed creation of a zero-length {}.'\
+                .format(type(self).__name__)
+            raise ZERO_OBJECTS_ERRORS[type(self).__name__](msg)
         self._points = [point1, point2]
         self._deltax = self.points[1].x - self.points[0].x
         self._deltay = self.points[1].y - self.points[0].y
@@ -119,6 +120,10 @@ class PointsPair(object):
     @property
     def slope(self):
         """Slope of the pair of Points, from -180° to 180°."""
+        if self.length == 0:
+            msg = 'Cannot calculate the slope of a zero-length {}.'\
+                .format(type(self).__name__)
+            raise ZERO_OBJECTS_ERRORS[type(self).__name__](msg)
         theta = Number(
             str(math.degrees(math.acos(self.deltax / self.length))))\
             .rounded(Number('0.001'))
@@ -127,6 +132,10 @@ class PointsPair(object):
     @property
     def slope360(self):
         """Slope of the pair of Points, from 0° to 360°."""
+        if self.length == 0:
+            msg = 'Cannot calculate the slope of a zero-length {}.'\
+                .format(type(self).__name__)
+            raise ZERO_OBJECTS_ERRORS[type(self).__name__](msg)
         theta = Number(
             str(math.degrees(math.acos(self.deltax / self.length))))\
             .rounded(Number('0.001'))
