@@ -82,7 +82,7 @@ def test_instanciation_errors(A, B):
         'required to create a LineSegment. Got 1 object(s) instead.'
     with pytest.raises(ValueError) as excinfo:
         LineSegment(B, B)
-    assert str(excinfo.value) == 'Cannot instantiate any PointsPair if both ' \
+    assert str(excinfo.value) == 'Cannot instantiate any LineSegment if both '\
         'endpoints have the same coordinates: (1; 1).'
     with pytest.raises(ValueError) as excinfo:
         LineSegment(A, B, draw_endpoints='undefined')

@@ -43,9 +43,10 @@ class PointsPair(object):
                             'as second argument instead.'
                             .format(type(point2)))
         if point1.coordinates == point2.coordinates:
-            raise ValueError('Cannot instantiate any PointsPair if both '
+            raise ValueError('Cannot instantiate any {} if both '
                              'endpoints have the same coordinates: '
-                             '({}; {}).'.format(point1.x, point1.y))
+                             '({}; {}).'.format(type(self).__name__,
+                                                point1.x, point1.y))
         self._points = [point1, point2]
         self._deltax = self.points[1].x - self.points[0].x
         self._deltay = self.points[1].y - self.points[0].y
