@@ -235,7 +235,7 @@ class Point(Drawable):
         ry = (deltax * Number(str(sin(radians(angle))))
               + deltay * Number(str(cos(radians(angle))))
               + center.y).rounded(Number('1.000'))
-        if rename is None:
+        if rename == 'keep_name':
             rname = self.name
         elif rename == 'auto':
             rname = self.name + "'"

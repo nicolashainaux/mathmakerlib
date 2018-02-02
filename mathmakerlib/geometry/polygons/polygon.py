@@ -145,7 +145,7 @@ class Polygon(Drawable, Colored, HasThickness, Oriented):
                 self._vertices[i] = self._vertices[i].rotate(
                     center=center,
                     angle=rotation_angle,
-                    rename=None)
+                    rename='keep_name')
 
         self._sides = []
         shifted_vertices = deepcopy(self._vertices)

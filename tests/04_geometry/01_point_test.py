@@ -124,7 +124,8 @@ def test_rotation():
         'got <class \'str\'> instead.'
     assert pointO.rotate(pointA, Number(90)) == Point(1, -1, "O'")
     assert pointA.rotate(pointO, Number(90)) == Point(0, 1, "A'")
-    assert pointA.rotate(pointO, Number(90), rename=None) == Point(0, 1, 'A')
+    assert pointA.rotate(pointO, Number(90), rename='keep_name') \
+        == Point(0, 1, 'A')
     assert pointA.rotate(pointO, Number(90), rename='B') == Point(0, 1, 'B')
     assert pointA.rotate(pointO, Number(30)) == Point(Number('0.866'),
                                                       Number('0.5'),
