@@ -133,6 +133,13 @@ def test_instanciation_errors():
         Angle(pointO, pointI, pointJ, armspoints=[('1', '2', '3'), ('2', )])
     assert str(excinfo.value) == 'Each arm\'s point must be defined by a ' \
         'tuple of 1 or 2 elements. Found 3 elements instead.'
+    with pytest.raises(ValueError) as excinfo:
+        Angle(pointO, pointI, pointJ, label=Number(38, unit=r'\textdegree'),
+              decoration=AngleDecoration(label=Number(37,
+                                                      unit=r'\textdegree')))
+    assert str(excinfo.value) == r"The label has been set twice, as Angle's "\
+        r"keyword argument (Number('38 \textdegree')) and as its "\
+        r"AngleDecoration's keyword argument (Number('37 \textdegree'))."
 
 
 def test_instanciation():
@@ -349,6 +356,25 @@ pic ["\ang{38}", angle eccentricity=2.6] {angle = X--A--Y};
     assert repr(α.decoration) == r'AngleDecoration(variety=None; '\
         r'hatchmark=None; label=\ang{38}; color=None; thickness=thick; '\
         r'radius=0.25 cm; eccentricity=2.6)'
+    α = Angle(X, A, Y,
+              decoration=AngleDecoration(label=Number(38, unit=r'\textdegree'),
+                                         variety=None)
+              )
+    assert α.drawn == r"""
+\begin{tikzpicture}
+% Declare Points
+\coordinate (X) at (6,1);
+\coordinate (A) at (0,0);
+\coordinate (Y) at (3,5);
+
+% Draw Angle
+\draw[thick] (X) -- (A) -- (Y)
+pic ["\ang{38}", angle eccentricity=2.6] {angle = X--A--Y};
+
+% Label Points
+
+\end{tikzpicture}
+"""
 
 
 def test_drawing_angles_with_armspoints():

@@ -191,7 +191,16 @@ class Angle(Drawable, HasThickness):
         self.decoration = decoration
         # The label must be set *after* the possible decoration, because it
         # will actually be handled by self.decoration
-        self.label = label
+        if (self.decoration is None
+            or self.decoration.label in [None, 'default']):
+            self.label = label
+        else:
+            if label is not None:
+                raise ValueError('The label has been set twice, as Angle\'s '
+                                 'keyword argument ({}) and as its '
+                                 'AngleDecoration\'s keyword argument ({}).'
+                                 .format(repr(label),
+                                         repr(self.decoration.label_value)))
         self.mark_right = mark_right
         self.label_vertex = label_vertex
         self.label_endpoints = label_endpoints
