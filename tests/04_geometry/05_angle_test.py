@@ -334,6 +334,7 @@ def test_drawing_labeled_angles():
     X = Point(6, 1, 'X')
     Y = Point(3, 5, 'Y')
     α = Angle(X, A, Y, label=Number(38, unit=r'\textdegree'))
+    required.tikz_library['quotes'] = False
     assert α.drawn == r"""
 \begin{tikzpicture}
 % Declare Points
@@ -349,6 +350,7 @@ pic ["\ang{38}", angle eccentricity=2.6] {angle = X--A--Y};
 
 \end{tikzpicture}
 """
+    assert required.tikz_library['quotes']
     assert α.label == r'\ang{38}'
     α.decoration = None
     assert α.label == r'\ang{38}'

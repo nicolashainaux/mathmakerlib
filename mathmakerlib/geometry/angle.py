@@ -107,6 +107,7 @@ class AngleDecoration(Labeled, Colored, HasThickness, HasRadius):
                             .format(type(radius_coeff)))
         attributes = []
         if do_label and self.label not in [None, 'default']:
+            required.tikz_library['quotes'] = True
             attributes.append('"{}"'.format(self.label))
             if self.eccentricity is not None:
                 attributes.append('angle eccentricity={}'

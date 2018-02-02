@@ -27,7 +27,8 @@ def init():
                for pkg_name in ['tikz', 'siunitx', 'xcolor', 'eurosym']}
     options = {'xcolor': set()}
     tikz_library = {'angles': False,
-                    'decorations.markings': False}
+                    'decorations.markings': False,
+                    'quotes': False}
     tikzset = {'singledash_hatchmark': False,
                'doubledash_hatchmark': False,
                'tripledash_hatchmark': False}
