@@ -41,19 +41,15 @@ class AngleDecoration(Labeled, Colored, HasThickness, HasRadius):
 
     def __init__(self, color=None, thickness='thick', label='default',
                  radius=Number('0.25', unit='cm'), variety='single',
-                 hatchmark=None, eccentricity='automatic'):
+                 gap=Number('0.4', unit='cm'), eccentricity='automatic',
+                 hatchmark=None):
         self.color = color
         self.thickness = thickness
         self.label = label
+        self.gap = gap
         self.radius = radius
         # Eccentricity must be set *after* radius, in order to be able to
         # calculate a reasonable default eccentricity based on the radius
-        if eccentricity == 'automatic':
-            # Default gap of 0.4 cm between a mark and the label
-            # TODO: let the user choose a default gap, for instance:
-            # eccentricity='automatic_0.4' then split this to get the number
-            gap = Number('0.4', unit=self.radius.unit)
-            eccentricity = gap / self.radius + 1
         self.eccentricity = eccentricity
         self.variety = variety
         self.hatchmark = hatchmark
@@ -65,11 +61,31 @@ class AngleDecoration(Labeled, Colored, HasThickness, HasRadius):
                     self.thickness, str(self.radius), self.eccentricity)
 
     @property
+    def radius(self):
+        if not hasattr(self, '_radius'):
+            return None
+        return self._radius
+
+    @radius.setter
+    def radius(self, value):
+        if is_number(value):
+            self._radius = Number(value)
+        else:
+            raise TypeError('Expected a number as radius. Got {} instead.'
+                            .format(str(type(value))))
+        self.eccentricity = 'automatic'
+
+    @property
     def eccentricity(self):
         return self._eccentricity
 
     @eccentricity.setter
     def eccentricity(self, value):
+        if value == 'automatic':
+            if self.gap is None:
+                raise ValueError('Cannot calculate the eccentricity if gap '
+                                 'is None.')
+            value = self.gap / self.radius + 1
         if not (value is None or is_number(value)):
             raise TypeError('The eccentricity of an AngleDecoration must be '
                             'a Number. Found {} instead.'.format(type(value)))
@@ -87,6 +103,21 @@ class AngleDecoration(Labeled, Colored, HasThickness, HasRadius):
                             'Found {} instead (type: {}).'
                             .format(repr(value), type(value)))
         self._variety = value
+
+    @property
+    def gap(self):
+        return self._gap
+
+    @gap.setter
+    def gap(self, value):
+        if not (is_number(value) or value is None):
+            raise TypeError('The gap value must be None or a number. '
+                            'Found {} instead (type: {}).'
+                            .format(repr(value), type(value)))
+        if value is None:
+            self._gap = None
+        else:
+            self._gap = Number(value)
 
     @property
     def hatchmark(self):
