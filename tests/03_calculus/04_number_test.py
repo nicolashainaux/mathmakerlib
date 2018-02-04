@@ -51,6 +51,8 @@ def test_Number_instanciation():
     assert Number(Number(4), unit='cm').unit == Unit('cm')
     assert Number(Number(4, unit='dm'), unit='cm').unit == Unit('cm')
     assert Number(4, unit='cm').unit == Unit('cm')
+    assert Number(Number(4, unit='dm'), unit=None).unit is None
+    assert Number(Number(4, unit='dm'), unit='undefined').unit == Unit('dm')
 
 
 def test_Number_equality():

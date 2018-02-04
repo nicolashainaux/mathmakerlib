@@ -113,11 +113,13 @@ class Number(Decimal, Signed, Printable, Evaluable):
     """Extend Decimal with a bunch of useful methods."""
 
     # To keep immutability of Decimal, use __new__ not __init__
-    def __new__(cls, value='0', context=None, unit=None):
+    def __new__(cls, value='0', context=None, unit='undefined'):
         if isinstance(value, Sign):
             value = value.evaluate()
-        if isinstance(value, Number) and unit is None:
+        if isinstance(value, Number) and unit == 'undefined':
             unit = copy.deepcopy(value.unit)
+        if unit == 'undefined':
+            unit = None
         self = super().__new__(cls, value=value, context=context)
         if unit is None:
             self._unit = None
