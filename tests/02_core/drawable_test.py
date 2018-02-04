@@ -22,6 +22,7 @@
 import pytest
 
 from mathmakerlib import required
+from mathmakerlib.calculus import Number
 from mathmakerlib.core.drawable import HasRadius, HasThickness
 from mathmakerlib.core.drawable import tikz_options_list, tikz_approx_position
 from mathmakerlib.geometry import Point, LineSegment
@@ -60,6 +61,12 @@ def test_hasradius():
         pass
     o = FakeCircle()
     assert o.radius is None
+    o.radius = Number(3, unit='cm')
+    assert o.radius.printed == '\\SI{3}{cm}'
+    with pytest.raises(TypeError) as excinfo:
+        o.radius = '2'
+    assert str(excinfo.value) == 'Expected a number as radius. Got '\
+        '<class \'str\'> instead.'
 
 
 def test_hasthickness():

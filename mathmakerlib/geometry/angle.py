@@ -47,6 +47,7 @@ class AngleDecoration(Labeled, Colored, HasThickness, HasRadius):
         self.thickness = thickness
         self.label = label
         self.radius = radius
+        self.gap = gap
         if gap is None:
             self.gap = None
         else:
@@ -65,8 +66,6 @@ class AngleDecoration(Labeled, Colored, HasThickness, HasRadius):
 
     @property
     def radius(self):
-        if not hasattr(self, '_radius'):
-            return None
         return self._radius
 
     @radius.setter

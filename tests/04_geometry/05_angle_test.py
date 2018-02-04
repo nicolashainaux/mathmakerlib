@@ -31,20 +31,34 @@ def test_AngleDecoration():
     assert repr(AngleDecoration()) == 'AngleDecoration(variety=single; '\
         'hatchmark=None; label=default; color=None; thickness=thick; '\
         'radius=0.25 cm; eccentricity=2.6)'
-    assert repr(AngleDecoration(radius=Number(1, unit='cm'))) == \
+    ad = AngleDecoration(radius=Number(1, unit='cm'))
+    assert repr(ad) == \
         'AngleDecoration(variety=single; '\
         'hatchmark=None; label=default; color=None; thickness=thick; '\
         'radius=1 cm; eccentricity=1.4)'
+    ad.radius = Number(2, unit='cm')
+    assert repr(ad) == \
+        'AngleDecoration(variety=single; '\
+        'hatchmark=None; label=default; color=None; thickness=thick; '\
+        'radius=2 cm; eccentricity=1.2)'
     assert AngleDecoration().tikz_attributes() \
         == '[draw, thick, angle radius = 0.25 cm]'
     assert AngleDecoration(color='green', thickness='thin').tikz_attributes() \
         == '[draw, thin, angle radius = 0.25 cm, green]'
     assert AngleDecoration(radius=Number('0.5', unit=Unit('cm'))) \
         .tikz_attributes() == '[draw, thick, angle radius = 0.5 cm]'
+    with pytest.raises(ValueError) as excinfo:
+        AngleDecoration(radius=Number(2, unit='cm'), gap=None)
+    assert str(excinfo.value) == 'Cannot calculate the eccentricity if gap '\
+        'is None.'
     with pytest.raises(TypeError) as excinfo:
         AngleDecoration(radius='2 cm')
     assert str(excinfo.value) == 'Expected a number as radius. Got ' \
         '<class \'str\'> instead.'
+    with pytest.raises(TypeError) as excinfo:
+        AngleDecoration(gap='2 cm')
+    assert str(excinfo.value) == 'The gap value must be None or a number. '\
+        'Found \'2 cm\' instead (type: <class \'str\'>).'
     with pytest.raises(TypeError) as excinfo:
         AngleDecoration().tikz_attributes(radius_coeff='a')
     assert str(excinfo.value) == 'radius_coeff must be a number, '\
