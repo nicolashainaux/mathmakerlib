@@ -46,8 +46,11 @@ class AngleDecoration(Labeled, Colored, HasThickness, HasRadius):
         self.color = color
         self.thickness = thickness
         self.label = label
-        self.gap = gap
         self.radius = radius
+        if gap is None:
+            self.gap = None
+        else:
+            self.gap = Number(gap, unit=self.radius.unit)
         # Eccentricity must be set *after* radius, in order to be able to
         # calculate a reasonable default eccentricity based on the radius
         self.eccentricity = eccentricity
@@ -73,7 +76,8 @@ class AngleDecoration(Labeled, Colored, HasThickness, HasRadius):
         else:
             raise TypeError('Expected a number as radius. Got {} instead.'
                             .format(str(type(value))))
-        self.eccentricity = 'automatic'
+        if hasattr(self, '_eccentricity') and hasattr(self, '_gap'):
+            self.eccentricity = 'automatic'
 
     @property
     def eccentricity(self):
