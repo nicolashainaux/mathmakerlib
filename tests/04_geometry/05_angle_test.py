@@ -57,7 +57,7 @@ def test_AngleDecoration():
     with pytest.raises(TypeError) as excinfo:
         AngleDecoration(eccentricity='a')
     assert str(excinfo.value) == 'The eccentricity of an AngleDecoration '\
-        'must be a Number. Found <class \'str\'> instead.'
+        'must be None or a Number. Found <class \'str\'> instead.'
     with pytest.raises(RuntimeError) as excinfo:
         AngleDecoration().generate_tikz('A', 'B')
     assert str(excinfo.value) == 'Three Points\' names must be provided to '\

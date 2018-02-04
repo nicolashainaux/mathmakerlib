@@ -92,7 +92,8 @@ class AngleDecoration(Labeled, Colored, HasThickness, HasRadius):
             value = self.gap / self.radius + 1
         if not (value is None or is_number(value)):
             raise TypeError('The eccentricity of an AngleDecoration must be '
-                            'a Number. Found {} instead.'.format(type(value)))
+                            'None or a Number. Found {} instead.'
+                            .format(type(value)))
         self._eccentricity = value
 
     @property
