@@ -24,7 +24,8 @@ def init():
     global package, options, tikz_library, tikzset
 
     package = {pkg_name: False
-               for pkg_name in ['tikz', 'siunitx', 'xcolor', 'eurosym']}
+               for pkg_name in ['tikz', 'siunitx', 'xcolor', 'eurosym',
+                                'amsmath']}
     options = {'xcolor': set()}
     tikz_library = {'angles': False,
                     'decorations.markings': False,
