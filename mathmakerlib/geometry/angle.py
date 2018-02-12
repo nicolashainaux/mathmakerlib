@@ -36,6 +36,7 @@ from mathmakerlib.geometry.vector import Vector
 from mathmakerlib.calculus.number import Number, is_number
 
 LOCALE_US = 'en' if sys.platform.startswith('win') else 'en_US.UTF-8'
+AVAILABLE_NAMING_MODES = ['from_endpoints', 'from_armspoints', 'from_vertex']
 
 
 class AngleDecoration(Labeled, Colored, HasThickness, HasRadius):
@@ -502,10 +503,9 @@ class Angle(Drawable, HasThickness):
 
     @naming_mode.setter
     def naming_mode(self, value):
-        available_modes = ['from_endpoints', 'from_armspoints', 'from_vertex']
-        if value not in available_modes:
-            raise ValueError('naming_mode must belong to {}'
-                             .format(available_modes))
+        if value not in AVAILABLE_NAMING_MODES:
+            raise ValueError('naming_mode must belong to {}. Found {} instead.'
+                             .format(AVAILABLE_NAMING_MODES, repr(value)))
         self._naming_mode = value
 
     @property
@@ -519,10 +519,10 @@ class Angle(Drawable, HasThickness):
                                       self.vertex.name,
                                       self.endpoints[1].name)
         elif self.naming_mode == 'from_armspoints':
-            if self.armspoints is None:
+            if not self.armspoints:
                 raise RuntimeError('The naming mode of this Angle is '
                                    '\'from_armspoints\' but the armspoints '
-                                   'are not defined (None).')
+                                   'are not defined (empty list).')
             content = '{}{}{}'.format(self.armspoints[0].name,
                                       self.vertex.name,
                                       self.armspoints[1].name)

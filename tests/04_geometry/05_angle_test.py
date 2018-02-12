@@ -25,6 +25,7 @@ from mathmakerlib import required, mmlib_setup
 from mathmakerlib.calculus import Number, Unit
 from mathmakerlib.geometry import Point, PointsPair
 from mathmakerlib.geometry.angle import AngleDecoration, Angle, AnglesSet
+from mathmakerlib.geometry.angle import AVAILABLE_NAMING_MODES
 
 
 def test_AngleDecoration():
@@ -206,9 +207,18 @@ def test_naming():
     mmlib_setup.language = 'en'
     α.naming_mode = 'from_vertex'
     assert α.name == r'\angle A'
-    α.armspoints = [('Z', ), ('T', )]
     α.naming_mode = 'from_armspoints'
+    with pytest.raises(RuntimeError) as excinfo:
+        α.name
+    assert str(excinfo.value) == 'The naming mode of this Angle is '\
+        '\'from_armspoints\' but the armspoints '\
+        'are not defined (empty list).'
+    α.armspoints = [('Z', ), ('T', )]
     assert α.name == r'\angle ZAT'
+    with pytest.raises(ValueError) as excinfo:
+        α.naming_mode = 'undefined'
+    assert str(excinfo.value) == 'naming_mode must belong to {}. '\
+        'Found \'undefined\' instead.'.format(AVAILABLE_NAMING_MODES)
 
 
 def test_marked_angles():
