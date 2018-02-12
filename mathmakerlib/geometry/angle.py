@@ -528,8 +528,13 @@ class Angle(Drawable, HasThickness):
                                       self.armspoints[1].name)
         elif self.naming_mode == 'from_vertex':
             content = self.vertex.name
-        return MATHEMATICAL_NOTATIONS[loc]['angle_name']\
+        _name = MATHEMATICAL_NOTATIONS[loc]['angle_name']\
             .format(content=content)
+        if 'stackon' in _name:
+            required.package['stackengine'] = True
+        if 'hstretch' in _name or 'vstretch' in _name:
+            required.package['scalerel'] = True
+        return _name
 
     def tikz_decoration(self):
         if self.decoration is None or (self.mark_right and self.label is None):

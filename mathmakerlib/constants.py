@@ -36,6 +36,9 @@ with { \draw (-2pt,-2.5pt) -- (-2pt,2.5pt);
 } }, pic actions/.append code=\tikzset{postaction=decorate}}}"""
            }
 
-MATHEMATICAL_NOTATIONS = {'en': {'angle_name': r'\angle {content}'},
-                          'fr': {'angle_name': r'\widehat{{{content}}}'}
-                          }
+MATHEMATICAL_NOTATIONS = \
+    {'en': {'angle_name': r'\angle {content}'},
+     'fr': {'angle_name': r'\stackon[-5pt]{{{content}}}{{\vstretch{{1.5}}'
+                          r'{{\hstretch{{1.6}}{{\widehat{{\phantom{{\;\;\;\;'
+                          r'}}}}}}}}}}'}
+     }

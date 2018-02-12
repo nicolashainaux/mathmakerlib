@@ -202,8 +202,13 @@ def test_naming():
     Y = Point(3, 5, 'Y')
     α = Angle(X, A, Y)
     assert α.name == r'\angle XAY'
+    required.package['stackengine'] = required.package['scalerel'] = False
     mmlib_setup.language = 'fr'
-    assert α.name == r'\widehat{XAY}'
+    assert α.name == r'\stackon[-5pt]{XAY}{\vstretch{1.5}{\hstretch{1.6}'\
+        '{\widehat{\phantom{\;\;\;\;}}}}}'
+    assert required.package['stackengine']
+    assert required.package['scalerel']
+    required.package['stackengine'] = required.package['scalerel'] = False
     mmlib_setup.language = 'en'
     α.naming_mode = 'from_vertex'
     assert α.name == r'\angle A'
