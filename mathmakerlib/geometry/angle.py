@@ -23,6 +23,7 @@ import sys
 from math import acos, degrees
 
 from mathmakerlib import required, mmlib_setup
+from mathmakerlib.constants import MATHEMATICAL_NOTATIONS
 from mathmakerlib.exceptions import ZeroVector
 from mathmakerlib.core.oriented import check_winding, shoelace_formula
 from mathmakerlib.core.drawable import Colored, HasThickness, HasRadius
@@ -199,7 +200,8 @@ class Angle(Drawable, HasThickness):
                  color=None, thickness='thick', armspoints=None,
                  label_vertex=False, draw_vertex=False,
                  label_armspoints=False, draw_armspoints=False,
-                 label_endpoints=False, draw_endpoints=False,):
+                 label_endpoints=False, draw_endpoints=False,
+                 naming_mode='from_endpoints'):
         """
         :param point: a Point of an arm of the Angle
         :type point: Point
@@ -221,9 +223,15 @@ class Angle(Drawable, HasThickness):
         :type thickness: str
         :param color: the color of the Angle's arms.
         :type color: str
+        :param naming_mode: how to build the name. Possible modes are:
+        'from_endpoints', 'from_armspoints', 'from_vertex'. Note that if no
+        armspoints are defined, then trying to get the Angle.name will raise an
+        error
+        :type naming_mode: str
         """
         self.color = color
         self.thickness = thickness
+        self.naming_mode = naming_mode
         self.decoration = decoration
         # The label must be set *after* the possible decoration, because it
         # will actually be handled by self.decoration
@@ -487,6 +495,41 @@ class Angle(Drawable, HasThickness):
         else:
             raise TypeError('label_armspoints must be a boolean; '
                             'got {} instead.'.format(type(value)))
+
+    @property
+    def naming_mode(self):
+        return self._naming_mode
+
+    @naming_mode.setter
+    def naming_mode(self, value):
+        available_modes = ['from_endpoints', 'from_armspoints', 'from_vertex']
+        if value not in available_modes:
+            raise ValueError('naming_mode must belong to {}'
+                             .format(available_modes))
+        self._naming_mode = value
+
+    @property
+    def name(self):
+        loc = None
+        for l in ['fr', 'en']:
+            if mmlib_setup.language.startswith(l):
+                loc = l
+        if self.naming_mode == 'from_endpoints':
+            content = '{}{}{}'.format(self.endpoints[0].name,
+                                      self.vertex.name,
+                                      self.endpoints[1].name)
+        elif self.naming_mode == 'from_armspoints':
+            if self.armspoints is None:
+                raise RuntimeError('The naming mode of this Angle is '
+                                   '\'from_armspoints\' but the armspoints '
+                                   'are not defined (None).')
+            content = '{}{}{}'.format(self.armspoints[0].name,
+                                      self.vertex.name,
+                                      self.armspoints[1].name)
+        elif self.naming_mode == 'from_vertex':
+            content = self.vertex.name
+        return MATHEMATICAL_NOTATIONS[loc]['angle_name']\
+            .format(content=content)
 
     def tikz_decoration(self):
         if self.decoration is None or (self.mark_right and self.label is None):

@@ -35,3 +35,7 @@ with { \draw (-2pt,-2.5pt) -- (-2pt,2.5pt);
        \draw (2pt,-2.5pt) -- (2pt,2.5pt);
 } }, pic actions/.append code=\tikzset{postaction=decorate}}}"""
            }
+
+MATHEMATICAL_NOTATIONS = {'en': {'angle_name': r'\angle {content}'},
+                          'fr': {'angle_name': r'\widehat{{{content}}}'}
+                          }

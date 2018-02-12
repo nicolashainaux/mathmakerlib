@@ -21,7 +21,7 @@
 
 import pytest
 
-from mathmakerlib import required
+from mathmakerlib import required, mmlib_setup
 from mathmakerlib.calculus import Number, Unit
 from mathmakerlib.geometry import Point, PointsPair
 from mathmakerlib.geometry.angle import AngleDecoration, Angle, AnglesSet
@@ -192,6 +192,23 @@ def test_instanciation():
     X = Point(6, 1, 'X')
     Y = Point(-6, -1, 'Y')
     α = Angle(X, Ω, Y)
+
+
+def test_naming():
+    """Check Angle's naming."""
+    A = Point(0, 0, 'A')
+    X = Point(6, 1, 'X')
+    Y = Point(3, 5, 'Y')
+    α = Angle(X, A, Y)
+    assert α.name == r'\angle XAY'
+    mmlib_setup.language = 'fr'
+    assert α.name == r'\widehat{XAY}'
+    mmlib_setup.language = 'en'
+    α.naming_mode = 'from_vertex'
+    assert α.name == r'\angle A'
+    α.armspoints = [('Z', ), ('T', )]
+    α.naming_mode = 'from_armspoints'
+    assert α.name == r'\angle ZAT'
 
 
 def test_marked_angles():

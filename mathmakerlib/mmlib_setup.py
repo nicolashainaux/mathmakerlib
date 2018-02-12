@@ -91,8 +91,12 @@ class AnglesSetup(object):
         self._DEFAULT_ARMSPOINTS_POSITION = value
 
 
+SUPPORTED_LANGUAGES = ['en', 'en_US', 'en_GB', 'fr', 'fr_FR']
+
+
 def init():
-    global polygons, angles
+    global polygons, angles, language
 
     polygons = PolygonsSetup()
     angles = AnglesSetup()
+    language = 'en'
