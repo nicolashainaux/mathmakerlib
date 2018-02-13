@@ -23,7 +23,7 @@ import sys
 from math import acos, degrees
 
 from mathmakerlib import required, mmlib_setup
-from mathmakerlib.constants import MATHEMATICAL_NOTATIONS
+from mathmakerlib.LaTeX import MATHEMATICAL_NOTATIONS
 from mathmakerlib.exceptions import ZeroVector
 from mathmakerlib.core.oriented import check_winding, shoelace_formula
 from mathmakerlib.core.drawable import Colored, HasThickness, HasRadius

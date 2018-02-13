@@ -22,5 +22,29 @@
 from .attr_list import AttrList, OptionsList
 from .commands import Command, DocumentClass, UsePackage, UseTikzLibrary
 
+TIKZSET = {'singledash_hatchmark': r"""
+\tikzset{singledash/.style={decoration={ markings, mark= at position 0.5
+with { \draw (0pt,-2.5pt) -- (0pt,2.5pt);
+} }, pic actions/.append code=\tikzset{postaction=decorate}}}""",
+           'doubledash_hatchmark': r"""
+\tikzset{doubledash/.style={decoration={ markings, mark= at position 0.5
+with { \draw (-1pt,-2.5pt) -- (-1pt,2.5pt);
+       \draw (1pt,-2.5pt) -- (1pt,2.5pt);
+} }, pic actions/.append code=\tikzset{postaction=decorate}}}""",
+           'tripledash_hatchmark': r"""
+\tikzset{tripledash/.style={decoration={ markings, mark= at position 0.5
+with { \draw (-2pt,-2.5pt) -- (-2pt,2.5pt);
+       \draw (0pt,-2.5pt) -- (0pt,2.5pt);
+       \draw (2pt,-2.5pt) -- (2pt,2.5pt);
+} }, pic actions/.append code=\tikzset{postaction=decorate}}}"""
+           }
+
+MATHEMATICAL_NOTATIONS = \
+    {'en': {'angle_name': r'\angle {content}'},
+     'fr': {'angle_name': r'\stackon[-5pt]{{{content}}}{{\vstretch{{1.5}}'
+                          r'{{\hstretch{{1.6}}{{\widehat{{\phantom{{\;\;\;\;'
+                          r'}}}}}}}}}}'}
+     }
+
 __all__ = ['AttrList', 'OptionsList', 'Command', 'DocumentClass',
            'UsePackage', 'UseTikzLibrary']
