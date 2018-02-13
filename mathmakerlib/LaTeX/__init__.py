@@ -22,6 +22,29 @@
 from .attr_list import AttrList, OptionsList
 from .commands import Command, DocumentClass, UsePackage, UseTikzLibrary
 
+DEFAULT_COLOR_NAMES = ['white', 'black', 'red', 'green', 'blue', 'cyan',
+                       'magenta', 'yellow']
+
+# Colors' names from xcolor package
+XCOLOR_BASE = ['black', 'blue', 'brown', 'cyan', 'darkgray', 'gray', 'green',
+               'lightgray', 'lime', 'magenta', 'olive', 'orange', 'pink',
+               'purple', 'red', 'teal', 'violet', 'white', 'yellow']
+XCOLOR_DVIPSNAMES = ['Apricot', 'Aquamarine', 'Bittersweet', 'Black', 'Blue',
+                     'BlueGreen', 'BlueViolet', 'BrickRed', 'Brown',
+                     'BurntOrange', 'CadetBlue', 'CarnationPink', 'Cerulean',
+                     'CornflowerBlue', 'Cyan', 'Dandelion', 'DarkOrchid',
+                     'Emerald', 'ForestGreen', 'Fuchsia', 'Goldenrod', 'Gray',
+                     'Green', 'GreenYellow', 'JungleGreen', 'Lavender',
+                     'LimeGreen', 'Magenta', 'Mahogany', 'Maroon', 'Melon',
+                     'MidnightBlue', 'Mulberry', 'NavyBlue', 'OliveGreen',
+                     'Orange', 'OrangeRed', 'Orchid', 'Peach', 'Periwinkle',
+                     'PineGreen', 'Plum', 'ProcessBlue', 'Purple', 'RawSienna',
+                     'Red', 'RedOrange', 'RedViolet', 'Rhodamine', 'RoyalBlue',
+                     'RoyalPurple', 'RubineRed', 'Salmon', 'SeaGreen', 'Sepia',
+                     'SkyBlue', 'SpringGreen', 'Tan', 'TealBlue', 'Thistle',
+                     'Turquoise', 'Violet', 'VioletRed', 'White',
+                     'WildStrawberry', 'Yellow', 'YellowGreen', 'YellowOrange']
+
 TIKZSET = {'singledash_hatchmark': r"""
 \tikzset{singledash/.style={decoration={ markings, mark= at position 0.5
 with { \draw (0pt,-2.5pt) -- (0pt,2.5pt);

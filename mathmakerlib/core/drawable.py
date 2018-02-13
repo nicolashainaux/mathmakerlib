@@ -22,7 +22,9 @@
 from decimal import Decimal, InvalidOperation
 from abc import ABCMeta, abstractmethod
 
-from mathmakerlib import required, colors_names
+from mathmakerlib import required
+from mathmakerlib.LaTeX import DEFAULT_COLOR_NAMES, XCOLOR_BASE
+from mathmakerlib.LaTeX import XCOLOR_DVIPSNAMES
 from mathmakerlib.core.printable import Printable
 from mathmakerlib.calculus.tools import is_number
 from mathmakerlib.calculus.number import Number
@@ -33,13 +35,12 @@ THICKNESS_VALUES = [None, 'thin', 'very thin', 'ultra thin', 'thick',
 
 
 def check_color(value):
-    if (value is None or value in colors_names.LATEX
-        or value in colors_names.XCOLOR_BASE):
+    if value is None or value in DEFAULT_COLOR_NAMES or value in XCOLOR_BASE:
         # Base LaTeX colors do not need to be explicitely loaded.
         # As tikz package already loads xcolor base names, it's not
         # necessary to explicitely load them neither.
         pass
-    elif value in colors_names.XCOLOR_DVIPSNAMES:
+    elif value in XCOLOR_DVIPSNAMES:
         required.package['xcolor'] = True
         required.options['xcolor'].add('dvipsnames')
     else:
