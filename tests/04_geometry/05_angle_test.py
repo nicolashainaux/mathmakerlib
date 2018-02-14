@@ -423,6 +423,24 @@ pic ["\ang{38}", angle eccentricity=2.6] {angle = X--A--Y};
 
 \end{tikzpicture}
 """
+    α = Angle(X, A, Y, label=Number(38, unit=r'\textdegree'),
+              decoration=AngleDecoration(radius=Number('0.9', unit='cm')))
+    assert α.drawn == r"""
+\begin{tikzpicture}
+% Declare Points
+\coordinate (X) at (6,1);
+\coordinate (A) at (0,0);
+\coordinate (Y) at (3,5);
+
+% Draw Angle
+\draw[thick] (X) -- (A) -- (Y)
+pic ["\ang{38}", angle eccentricity=1.444, draw, thick, """\
+r"""angle radius = 0.9 cm] {angle = X--A--Y};
+
+% Label Points
+
+\end{tikzpicture}
+"""
 
 
 def test_drawing_angles_with_armspoints():
