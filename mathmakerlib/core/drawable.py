@@ -23,6 +23,7 @@ from decimal import Decimal, InvalidOperation
 from abc import ABCMeta, abstractmethod
 
 from mathmakerlib import required
+from mathmakerlib.LaTeX import DEFAULT_FONT_SIZES
 from mathmakerlib.LaTeX import DEFAULT_COLOR_NAMES, XCOLOR_BASE
 from mathmakerlib.LaTeX import XCOLOR_DVIPSNAMES
 from mathmakerlib.core.printable import Printable
@@ -193,6 +194,11 @@ class Drawable(Colored, Labeled, metaclass=ABCMeta):
         for s in sections:
             body_format.update({s[len(section_attr_prefix):] + '_section':
                                 getattr(self, s)()})
+        fontsizecomment = 'Text font size'
+        body_format.update({'fontsize': '% {}\n{}\n'.format(fontsizecomment,
+                                                            self.fontsize)
+                                        if self.fontsize
+                                        else ''})
         return r"""
 \begin{{tikzpicture}}{pic_options}{body}\end{{tikzpicture}}
 """.format(pic_options=self.tikz_picture_options(),
@@ -216,7 +222,7 @@ class Drawable(Colored, Labeled, metaclass=ABCMeta):
 
     def tikz_picture_body(self):
         return r"""
-{declarations_section}
+{fontsize}{declarations_section}
 
 {drawing_section}
 {labeling_section}{boundingbox_section}
@@ -335,6 +341,23 @@ class Drawable(Colored, Labeled, metaclass=ABCMeta):
     def baseline(self, value):
         if value is not None:
             setattr(self, '_baseline', str(value))
+
+    @property
+    def fontsize(self):
+        if not hasattr(self, '_fontsize'):
+            return None
+        else:
+            return self._fontsize
+
+    @fontsize.setter
+    def fontsize(self, value):
+        if value is not None:
+            if value in DEFAULT_FONT_SIZES:
+                setattr(self, '_fontsize', value)
+            else:
+                raise ValueError('TikZ font size must be None '
+                                 'or belong to {}. Found {} instead.'
+                                 .format(DEFAULT_FONT_SIZES, repr(value)))
 
     @property
     def boundingbox(self):

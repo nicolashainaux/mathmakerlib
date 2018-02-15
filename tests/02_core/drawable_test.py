@@ -25,7 +25,7 @@ from mathmakerlib import required
 from mathmakerlib.calculus import Number
 from mathmakerlib.core.drawable import HasRadius, HasThickness
 from mathmakerlib.core.drawable import tikz_options_list, tikz_approx_position
-from mathmakerlib.geometry import Point, LineSegment
+from mathmakerlib.geometry import Point, LineSegment, Angle, AngleDecoration
 
 
 @pytest.fixture()
@@ -178,6 +178,43 @@ def test_baseline(A, E):
 % Label Points
 \draw (A) node[left] {A};
 \draw (E) node[right] {E};
+\end{tikzpicture}
+"""
+
+
+def test_fontsize():
+    """Check fontsize is taken into account, if it exists."""
+    A = Point(0, 0, 'A')
+    X = Point(2, '0.33', 'X')
+    Y = Point(1, '1.67', 'Y')
+    α = Angle(X, A, Y, label=Number(38, unit=r'\textdegree'),
+              label_vertex=True)
+    assert α.fontsize is None
+    with pytest.raises(ValueError) as excinfo:
+        α.fontsize = 'undefined'
+    assert str(excinfo.value) == "TikZ font size must be None or belong to "\
+        r"['\\tiny', '\\scriptsize', '\\footnotesize', '\\small', "\
+        r"'\\normalsize', '\\large', '\\Large', '\\LARGE', '\\huge', "\
+        r"'\\Huge']. Found 'undefined' instead."
+    assert α.fontsize is None
+    α.decoration = AngleDecoration(radius=None,
+                                   eccentricity=Number('1.8'))
+    α.fontsize = r'\scriptsize'
+    assert α.drawn == r"""
+\begin{tikzpicture}
+% Text font size
+\scriptsize
+% Declare Points
+\coordinate (X) at (2,0.33);
+\coordinate (A) at (0,0);
+\coordinate (Y) at (1,1.67);
+
+% Draw Angle
+\draw[thick] (X) -- (A) -- (Y)
+pic ["\ang{38}", angle eccentricity=1.8, draw, thick] {angle = X--A--Y};
+
+% Label Points
+\draw (A) node[below left] {A};
 \end{tikzpicture}
 """
 
