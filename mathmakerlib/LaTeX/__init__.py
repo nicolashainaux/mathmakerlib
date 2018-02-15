@@ -22,6 +22,10 @@
 from .attr_list import AttrList, OptionsList
 from .commands import Command, DocumentClass, UsePackage, UseTikzLibrary
 
+DEFAULT_FONT_SIZES = [r'\tiny', r'\scriptsize', r'\footnotesize', r'\small',
+                      r'\normalsize', r'\large', r'\Large', r'\LARGE',
+                      r'\huge', r'\Huge']
+
 DEFAULT_COLOR_NAMES = ['white', 'black', 'red', 'green', 'blue', 'cyan',
                        'magenta', 'yellow']
 
