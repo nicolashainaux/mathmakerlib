@@ -25,6 +25,7 @@ from math import acos, degrees
 from mathmakerlib import required, mmlib_setup
 from mathmakerlib.LaTeX import MATHEMATICAL_NOTATIONS
 from mathmakerlib.exceptions import ZeroVector
+from mathmakerlib.core.oriented import Oriented
 from mathmakerlib.core.oriented import check_winding, shoelace_formula
 from mathmakerlib.core.drawable import Colored, HasThickness, HasRadius
 from mathmakerlib.core.drawable import Labeled
@@ -198,7 +199,7 @@ class AngleDecoration(Labeled, Colored, HasThickness, HasRadius):
         return deco
 
 
-class Angle(Drawable, HasThickness):
+class Angle(Drawable, Oriented, HasThickness):
 
     def __init__(self, point, vertex, point_or_measure, decoration=None,
                  mark_right=False, second_point_name='auto', label=None,
@@ -607,6 +608,8 @@ class Angle(Drawable, HasThickness):
             comments.append('% Draw Arms\' Points')
         if self.draw_endpoints:
             comments.append('% Draw End Points')
+        if self.mark_right:
+            comments.append('\n% Mark right angle')
         return comments
 
     def tikz_draw(self):
@@ -634,6 +637,8 @@ class Angle(Drawable, HasThickness):
             commands.append(self._tikz_draw_armspoints())
         if self.draw_endpoints:
             commands.append(self._tikz_draw_endpoints())
+        if self.mark_right:
+            commands.append(self.tikz_rightangle_mark())
         return commands
 
     def tikz_label(self):
@@ -721,6 +726,8 @@ class AnglesSet(Drawable):
             comments.append('% Draw Arms\' Points')
         if any([α.draw_endpoints for α in self.angles]):
             comments.append('% Draw End Points')
+        if any([θ.mark_right for θ in self.angles]):
+            comments.append('% Mark right Angles')
         return comments
 
     def tikz_label(self):
@@ -745,6 +752,11 @@ class AnglesSet(Drawable):
                         labels.append(p.tikz_label())
                         labeled_points_names.append(p.name)
         return '\n'.join(labels)
+
+    def _tikz_draw_right_angles_marks(self):
+        return '\n'.join([θ.tikz_rightangle_mark(θ.winding)
+                          for θ in self.angles
+                          if θ.tikz_rightangle_mark(θ.winding) != ''])
 
     def tikz_draw(self):
         """
@@ -798,5 +810,8 @@ class AnglesSet(Drawable):
         endpoints_cmd = '\n'.join(endpoints_cmd)
         if endpoints_cmd != '':
             commands.append(endpoints_cmd)
+
+        if any([θ.mark_right for θ in self.angles]):
+            commands.append(self._tikz_draw_right_angles_marks())
 
         return commands

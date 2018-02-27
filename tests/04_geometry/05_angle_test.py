@@ -648,6 +648,34 @@ pic [draw, thick, angle radius = 0.66 cm, doubledash] {angle = X--A--Y};
 """
 
 
+def test_drawing_marked_rightangles():
+    """Check drawing standalone Angles."""
+    A = Point(0, 0, 'A')
+    X = Point(6, 1, 'X')
+    Y = Point(-1, 6, 'Y')
+    α = Angle(X, A, Y)
+    α.decoration = AngleDecoration(radius=Number('0.5', unit='cm'))
+    α.mark_right = True
+    assert α.drawn == r"""
+\begin{tikzpicture}
+% Declare Points
+\coordinate (X) at (6,1);
+\coordinate (A) at (0,0);
+\coordinate (Y) at (-1,6);
+
+% Draw Angle
+\draw[thick] (X) -- (A) -- (Y);
+
+% Mark right angle
+\draw[thick, cm={cos(9.462), sin(9.462), -sin(9.462), cos(9.462), (A)}]"""\
+r""" (0.5 cm, 0) -- (0.5 cm, 0.5 cm) -- (0, 0.5 cm);
+
+% Label Points
+
+\end{tikzpicture}
+"""
+
+
 def test_drawing_marked_labeled_angles():
     """Check drawing standalone Angles."""
     A = Point(0, 0, 'A')
@@ -871,6 +899,37 @@ r"""angle radius = 2 cm, BrickRed] {angle = X1--A--Z1};
 \draw (X) node[below right] {X};
 \draw (Y) node[above left] {Y};
 \draw (Z) node[above left] {Z};
+\end{tikzpicture}
+"""
+
+
+def test_drawing_AngleSet_same_vertex_and_markright():
+    """Check drawing AnglesSets."""
+    A = Point(0, 0, 'A')
+    X1 = Point(6, 1, 'X1')
+    Y1 = Point(-1, 6, 'Y1')
+    Z1 = Point(-3, 1, 'Z1')
+    α = Angle(X1, A, Y1)
+    α.mark_right = True
+    β = Angle(Y1, A, Z1)
+    S = AnglesSet(α, β)
+    assert S.drawn == r"""
+\begin{tikzpicture}
+% Declare Points
+\coordinate (A) at (0,0);
+\coordinate (X1) at (6,1);
+\coordinate (Y1) at (-1,6);
+\coordinate (Z1) at (-3,1);
+
+% Draw Angles
+\draw[thick] (X1) -- (A) -- (Y1);
+\draw[thick] (Y1) -- (A) -- (Z1);
+% Mark right Angles
+\draw[thick, cm={cos(9.462), sin(9.462), -sin(9.462), cos(9.462), (A)}]"""\
+r""" (0.25 cm, 0) -- (0.25 cm, 0.25 cm) -- (0, 0.25 cm);
+
+% Label Points
+
 \end{tikzpicture}
 """
 
