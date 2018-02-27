@@ -172,7 +172,8 @@ def test_instanciation():
     assert theta.vertex == pointO
     assert theta.points == [pointI, pointO, pointJ]
     theta = Angle(pointA, pointO, pointI, decoration=AngleDecoration())
-    assert theta.measure == Number('45')
+    assert theta.measure == Number('315')
+    assert Angle(pointI, pointO, pointA).measure == Number('45')
     assert not theta.mark_right
     assert theta.vertex == pointO
     assert theta.points == [pointA, pointO, pointI]
@@ -193,6 +194,8 @@ def test_instanciation():
     X = Point(6, 1, 'X')
     Y = Point(-6, -1, 'Y')
     α = Angle(X, Ω, Y)
+    β = Angle(X, Ω, Point(1, -6, 'Z'))
+    assert β.measure.rounded(Number('0.001')) == Number(270)
 
 
 def test_naming():
@@ -370,6 +373,46 @@ def test_drawing_angles():
 \draw (A) node[below left] {A};
 \draw (X) node[below right] {X};
 \draw (Y) node[above left] {Y};
+\end{tikzpicture}
+"""
+
+
+def test_drawing_angles_with_labeled_vertex():
+    """Check drawing standalone Angles."""
+    A = Point(0, 0, 'A')
+    X = Point(6, 1, 'X')
+    Y = Point(3, 5, 'Y')
+    α = Angle(X, A, Y)
+    α.label_vertex = True
+    assert α.drawn == r"""
+\begin{tikzpicture}
+% Declare Points
+\coordinate (X) at (6,1);
+\coordinate (A) at (0,0);
+\coordinate (Y) at (3,5);
+
+% Draw Angle
+\draw[thick] (X) -- (A) -- (Y);
+
+% Label Points
+\draw (A) node[below left] {A};
+\end{tikzpicture}
+"""
+    Z = Point(-6, -3, 'Z')
+    α = Angle(X, A, Z)
+    α.label_vertex = True
+    assert α.drawn == r"""
+\begin{tikzpicture}
+% Declare Points
+\coordinate (X) at (6,1);
+\coordinate (A) at (0,0);
+\coordinate (Z) at (-6,-3);
+
+% Draw Angle
+\draw[thick] (X) -- (A) -- (Z);
+
+% Label Points
+\draw (A) node[below] {A};
 \end{tikzpicture}
 """
 

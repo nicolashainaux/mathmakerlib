@@ -20,7 +20,7 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 import sys
-from math import acos, degrees
+from math import atan2, degrees
 
 from mathmakerlib import required, mmlib_setup
 from mathmakerlib.LaTeX import MATHEMATICAL_NOTATIONS
@@ -31,7 +31,7 @@ from mathmakerlib.core.drawable import Colored, HasThickness, HasRadius
 from mathmakerlib.core.drawable import Labeled
 from mathmakerlib.core.drawable import tikz_options_list, Drawable
 from mathmakerlib.core.drawable import tikz_approx_position
-from mathmakerlib.geometry.point import Point
+from mathmakerlib.geometry.point import Point, OPPOSITE_LABEL_POSITIONS
 from mathmakerlib.geometry.pointspair import PointsPair
 from mathmakerlib.geometry.vector import Vector
 from mathmakerlib.calculus.number import Number, is_number
@@ -274,12 +274,17 @@ class Angle(Drawable, Oriented, HasThickness):
             self._points.append(point.rotate(vertex, point_or_measure,
                                              rename=second_point_name))
         # Measure of the angle:
-        arm0 = PointsPair(self._points[1], self._points[0])
-        arm1 = PointsPair(self._points[1], self._points[2])
-        pp2 = PointsPair(self._points[2], self._points[0])
-        n = arm0.length ** 2 + arm1.length ** 2 - pp2.length ** 2
-        d = 2 * arm0.length * arm1.length
-        self._measure = Number(str(degrees(acos(n / d))))
+        p0 = Point(self._points[0].x - self._points[1].x,
+                   self._points[0].y - self._points[1].y,
+                   None)
+        p2 = Point(self._points[2].x - self._points[1].x,
+                   self._points[2].y - self._points[1].y,
+                   None)
+        α0 = Number(str(degrees(atan2(p0.y, p0.x))))
+        α2 = Number(str(degrees(atan2(p2.y, p2.x))))
+        self._measure = α2 - α0
+        if self._measure < 0:
+            self._measure += 360
 
         # This is not like the matching Triangle!
         if shoelace_formula(*self.points) > 0:
@@ -287,6 +292,8 @@ class Angle(Drawable, Oriented, HasThickness):
         else:
             self.winding = 'anticlockwise'
 
+        arm0 = PointsPair(self._points[1], self._points[0])
+        arm1 = PointsPair(self._points[1], self._points[2])
         self._arms = [arm0, arm1]
         self.armspoints = armspoints
 
@@ -304,6 +311,9 @@ class Angle(Drawable, Oriented, HasThickness):
                            self._points[0].rotate(self.vertex, -90,
                                                   rename=None)
                            ).slope360)
+        if self.measure > 180:
+            self._points[1].label_position = \
+                OPPOSITE_LABEL_POSITIONS[self._points[1].label_position]
 
         # Endpoints labels positioning
         direction = 1 if self.winding == 'anticlockwise' else -1
