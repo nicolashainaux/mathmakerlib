@@ -174,7 +174,7 @@ def test_drawing_with_labeled_sides():
 
 % Mark right angles
 \draw[thick, """\
-r"""cm={cos(149.353), sin(149.353), -sin(149.353), cos(149.353), (B)}] """\
+r"""cm={cos(149.35), sin(149.35), -sin(149.35), cos(149.35), (B)}] """\
                       r"""(0.25 cm, 0) -- (0.25 cm, 0.25 cm) -- (0, 0.25 cm);
 
 % Label Points

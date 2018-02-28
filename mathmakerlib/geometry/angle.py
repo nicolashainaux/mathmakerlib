@@ -564,7 +564,8 @@ class Angle(Drawable, Oriented, HasThickness):
         check_winding(winding)
         rt = 'cm={{cos({θ}), sin({θ}), -sin({θ}), cos({θ}), ({v})}}' \
             .format(θ=PointsPair(self.vertex, self.points[0])
-                    .slope.imprint(mod_locale=LOCALE_US),
+                    .slope.rounded(Number('0.01'))
+                    .imprint(mod_locale=LOCALE_US),
                     v=self.vertex.name)
         draw_options = tikz_options_list([self.decoration.thickness,
                                           self.decoration.color,

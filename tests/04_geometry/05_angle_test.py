@@ -710,7 +710,7 @@ def test_drawing_marked_rightangles():
 \draw[thick] (X) -- (A) -- (Y);
 
 % Mark right angle
-\draw[thick, cm={cos(9.462), sin(9.462), -sin(9.462), cos(9.462), (A)}]"""\
+\draw[thick, cm={cos(9.46), sin(9.46), -sin(9.46), cos(9.46), (A)}]"""\
 r""" (0.5 cm, 0) -- (0.5 cm, 0.5 cm) -- (0, 0.5 cm);
 
 % Label Points
@@ -968,7 +968,7 @@ def test_drawing_AngleSet_same_vertex_and_markright():
 \draw[thick] (X1) -- (A) -- (Y1);
 \draw[thick] (Y1) -- (A) -- (Z1);
 % Mark right Angles
-\draw[thick, cm={cos(9.462), sin(9.462), -sin(9.462), cos(9.462), (A)}]"""\
+\draw[thick, cm={cos(9.46), sin(9.46), -sin(9.46), cos(9.46), (A)}]"""\
 r""" (0.25 cm, 0) -- (0.25 cm, 0.25 cm) -- (0, 0.25 cm);
 
 % Label Points
