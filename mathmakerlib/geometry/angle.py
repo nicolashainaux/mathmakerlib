@@ -95,7 +95,7 @@ class AngleDecoration(Labeled, Colored, HasThickness, HasRadius):
                 raise ValueError('Cannot calculate the eccentricity if gap '
                                  'is None.')
             value = (self.gap / self.radius + 1)\
-                .rounded(Number('0.001')).standardized()
+                .rounded(Number('0.01')).standardized()
         if not (value is None or is_number(value)):
             raise TypeError('The eccentricity of an AngleDecoration must be '
                             'None or a Number. Found {} instead.'

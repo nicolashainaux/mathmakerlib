@@ -477,7 +477,7 @@ pic ["\ang{38}", angle eccentricity=2.6] {angle = X--A--Y};
 
 % Draw Angle
 \draw[thick] (X) -- (A) -- (Y)
-pic ["\ang{38}", angle eccentricity=1.444, draw, thick, """\
+pic ["\ang{38}", angle eccentricity=1.44, draw, thick, """\
 r"""angle radius = 0.9 cm] {angle = X--A--Y};
 
 % Label Points
