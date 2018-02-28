@@ -161,7 +161,7 @@ class AngleDecoration(Labeled, Colored, HasThickness, HasRadius):
             if self.radius is not None:
                 attributes.append('angle radius = {}'
                                   .format((self.radius * radius_coeff)
-                                          .standardized().uiprinted))
+                                          .rounded(Number('0.01')).uiprinted))
             if self.hatchmark is not None:
                 attributes.append(self.hatchmark)
                 required.tikz_library['decorations.markings'] = True
