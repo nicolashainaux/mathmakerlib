@@ -1,6 +1,16 @@
 Changelog
 =========
 
+Version 0.6 (2018-02-..)
+------------------------
+
+* A standalone Angle or AnglesSet can be drawn. Enrich Angles' decorations (hatch marks, labeling etc.).
+* An integer Number can be split as a sum of integers ± 0.5 (or ± 0.25)
+* Add Number.lowest_nonzero_digit_index()
+* Patch Number.split() to get a consistent behaviour for integers too (default split will be done at lowest non zero digit place: 500 will be split as 100 + 400, or 200 + 300 etc. and with dig=1, it will be split as 10 + 490, or 20 + 480 etc.).
+* Fix: Numbers with an angle's unit should be displayed as \\ang{...} rather than \\SI{...}{\\textdegree}.
+* Add basic classes to handle LaTeX commands and options' lists.
+
 Version 0.5 (2018-01-10)
 ------------------------
 
