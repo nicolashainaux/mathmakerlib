@@ -500,7 +500,7 @@ def test_drawing_angles_with_armspoints():
 \coordinate (A) at (0,0);
 \coordinate (Y1) at (3,5);
 \coordinate (X) at (4.8,0.8);
-\coordinate (Y) at (2.4,4.0);
+\coordinate (Y) at (2.4,4);
 
 % Draw Angle
 \draw[thick] (X1) -- (A) -- (Y1);
@@ -530,7 +530,7 @@ def test_drawing_angles_with_armspoints():
 \coordinate (A) at (0,0);
 \coordinate (Y1) at (3,5);
 \coordinate (B) at (4.8,0.8);
-\coordinate (C) at (2.4,4.0);
+\coordinate (C) at (2.4,4);
 
 % Draw Angle
 \draw[thick] (X1) -- (A) -- (Y1);
@@ -776,7 +776,7 @@ pic [draw, thick, angle radius = 0.58 cm] {angle = X--A--Y};
 \coordinate (A) at (0,0);
 \coordinate (Y1) at (3,5);
 \coordinate (X) at (4.8,0.8);
-\coordinate (Y) at (2.4,4.0);
+\coordinate (Y) at (2.4,4);
 
 % Draw Angle
 \draw[thick] (X1) -- (A) -- (Y1)
@@ -869,9 +869,9 @@ def test_drawing_AnglesSets_of_same_vertex():
 \coordinate (X1) at (6,1);
 \coordinate (Y1) at (3,5);
 \coordinate (X) at (4.8,0.8);
-\coordinate (Y) at (2.4,4.0);
+\coordinate (Y) at (2.4,4);
 \coordinate (Z1) at (1,6.5);
-\coordinate (Z) at (0.8,5.20);
+\coordinate (Z) at (0.8,5.2);
 
 % Draw Angles
 \draw[thick] (X1) -- (A) -- (Y1);
@@ -915,9 +915,9 @@ def test_drawing_AnglesSets_of_same_vertex():
 \coordinate (X1) at (6,1);
 \coordinate (Y1) at (3,5);
 \coordinate (X) at (4.8,0.8);
-\coordinate (Y) at (2.4,4.0);
+\coordinate (Y) at (2.4,4);
 \coordinate (Z1) at (1,6.5);
-\coordinate (Z) at (0.8,5.20);
+\coordinate (Z) at (0.8,5.2);
 
 % Draw Angles
 \draw[thick] (X1) -- (A) -- (Y1)

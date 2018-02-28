@@ -257,7 +257,9 @@ class Point(Drawable):
             raise RuntimeError('Point at ({}, {}) has no name (None), '
                                'cannot create TikZ picture using it.')
         return r'\coordinate ({}) at ({},{});'\
-            .format(self.name, self.x, self.y)
+            .format(self.name,
+                    self.x.rounded(Number('0.001')),
+                    self.y.rounded(Number('0.001')))
 
     def tikz_drawing_comment(self):
         """Return the comment preceding the Point's drawing."""
