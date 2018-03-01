@@ -28,7 +28,8 @@ def init():
     # provided in LaTeX module.
     package = {pkg_name: False
                for pkg_name in ['tikz', 'siunitx', 'xcolor', 'eurosym',
-                                'amsmath', 'stackengine', 'scalerel']}
+                                'amsmath', 'stackengine', 'scalerel',
+                                'cancel']}
     options = {'xcolor': set()}
     tikz_library = {'angles': False,
                     'decorations.markings': False,
