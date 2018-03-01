@@ -177,7 +177,9 @@ class AngleDecoration(Labeled, Colored, HasThickness, HasRadius):
             raise RuntimeError('Three Points\' names must be provided to '
                                'generate the AngleDecoration. Found {} '
                                'arguments instead.'.format(len(points_names)))
-        pic_attr = self.tikz_attributes()
+        last_layer = {None: 1, 'single': 1, 'double': 2,
+                      'triple': 3}[self.variety]
+        pic_attr = self.tikz_attributes(do_label=last_layer == 1)
         if pic_attr == '[]':
             return ''
         required.tikz_library['angles'] = True
@@ -188,13 +190,13 @@ class AngleDecoration(Labeled, Colored, HasThickness, HasRadius):
             deco.append('pic {} {{angle = {}--{}--{}}}'
                         .format(self.tikz_attributes(
                                 radius_coeff=1 + space_sep,
-                                do_label=False),
+                                do_label=last_layer == 2),
                                 *points_names))
             if self.variety == 'triple':
                 deco.append('pic {} {{angle = {}--{}--{}}}'
                             .format(self.tikz_attributes(
                                     radius_coeff=1 + 2 * space_sep,
-                                    do_label=False),
+                                    do_label=last_layer == 3),
                                     *points_names))
         return deco
 

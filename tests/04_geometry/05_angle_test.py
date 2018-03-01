@@ -752,9 +752,9 @@ r"""angle radius = 0.5 cm] {angle = X--A--Y};
 
 % Draw Angle
 \draw[thick] (X) -- (A) -- (Y)
+pic [draw, thick, angle radius = 0.5 cm] {angle = X--A--Y}
 pic ["\ang{38}", angle eccentricity=1.8, draw, thick, """\
-r"""angle radius = 0.5 cm] {angle = X--A--Y}
-pic [draw, thick, angle radius = 0.58 cm] {angle = X--A--Y};
+r"""angle radius = 0.58 cm] {angle = X--A--Y};
 
 % Label Points
 
@@ -780,9 +780,9 @@ pic [draw, thick, angle radius = 0.58 cm] {angle = X--A--Y};
 
 % Draw Angle
 \draw[thick] (X1) -- (A) -- (Y1)
+pic [draw, thick, angle radius = 0.5 cm, singledash] {angle = X1--A--Y1}
 pic ["\ang{38}", angle eccentricity=1.8, draw, thick, """\
-r"""angle radius = 0.5 cm, singledash] {angle = X1--A--Y1}
-pic [draw, thick, angle radius = 0.58 cm, singledash] {angle = X1--A--Y1};
+r"""angle radius = 0.58 cm, singledash] {angle = X1--A--Y1};
 % Draw Vertex
 \draw (A) node[scale=0.67] {$\times$};
 % Draw Arms' Points
@@ -924,9 +924,9 @@ def test_drawing_AnglesSets_of_same_vertex():
 pic ["\ang{38}", angle eccentricity=1.8, draw, thick, """\
 r"""angle radius = 0.5 cm, RoyalBlue] {angle = X1--A--Y1};
 \draw[thick] (Y1) -- (A) -- (Z1)
+pic [draw, thick, angle radius = 0.5 cm, BurntOrange] {angle = Y1--A--Z1}
 pic ["\ang{9}", angle eccentricity=1.8, draw, thick, """\
-r"""angle radius = 0.5 cm, BurntOrange] {angle = Y1--A--Z1}
-pic [draw, thick, angle radius = 0.58 cm, BurntOrange] {angle = Y1--A--Z1};
+r"""angle radius = 0.58 cm, BurntOrange] {angle = Y1--A--Z1};
 \draw[thick] (X1) -- (A) -- (Z1)
 pic ["?", angle eccentricity=1.15, draw, thick, """\
 r"""angle radius = 2 cm, BrickRed] {angle = X1--A--Z1};
