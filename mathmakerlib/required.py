@@ -23,6 +23,9 @@
 def init():
     global package, options, tikz_library, tikzset
 
+    # It's difficult to track amssymb, that could show up almost anywhere.
+    # This is left to mathmakerlib's user. A (yet short) list of symbols is
+    # provided in LaTeX module.
     package = {pkg_name: False
                for pkg_name in ['tikz', 'siunitx', 'xcolor', 'eurosym',
                                 'amsmath', 'stackengine', 'scalerel']}

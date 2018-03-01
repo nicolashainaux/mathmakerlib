@@ -73,5 +73,7 @@ MATHEMATICAL_NOTATIONS = \
                           r'}}}}}}}}}}'}
      }
 
+KNOWN_AMSSYMB_SYMBOLS = [r'\triangle', r'\square', r'\lozenge', r'\bigstar']
+
 __all__ = ['AttrList', 'OptionsList', 'Command', 'DocumentClass',
            'UsePackage', 'UseTikzLibrary']
