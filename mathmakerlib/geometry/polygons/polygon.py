@@ -219,7 +219,8 @@ class Polygon(Drawable, Colored, HasThickness, Oriented):
                                'labels.')
         else:
             return sum([s.label_value for s in self.sides],
-                       Number(0, unit=self.sides[0].label_value.unit))
+                       Number(0, unit=self.sides[0].label_value.unit))\
+                .standardized()
 
     def setup_labels(self, labels=None, linesegments=None, masks=None):
         """
