@@ -51,3 +51,7 @@ def test_preset_commands():
     assert str(UsePackage('fontspec', options='no-math'))\
         == r'\usepackage[no-math]{fontspec}'
     assert str(UseTikzLibrary('calc')) == r'\usetikzlibrary{calc}'
+    dc = DocumentClass('beamer', options='20pt')
+    dc.options.append({'xcolor': AttrList(*['dvipsnames', 'svgnames'])})
+    assert str(dc) == r'\documentclass[20pt, xcolor={dvipsnames, svgnames}]'\
+        '{beamer}'
