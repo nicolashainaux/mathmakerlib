@@ -28,7 +28,7 @@ class Quadrilateral(Polygon):
     def __init__(self, *vertices, name=None,
                  draw_vertices=False, label_vertices=True,
                  thickness='thick', color=None, rotation_angle=0,
-                 winding=None):
+                 winding=None, sloped_sides_labels=True):
         r"""
         Initialize Quadrilateral
 
@@ -60,7 +60,8 @@ class Quadrilateral(Polygon):
                          label_vertices=label_vertices,
                          thickness=thickness, color=color,
                          rotation_angle=rotation_angle,
-                         winding=winding)
+                         winding=winding,
+                         sloped_sides_labels=sloped_sides_labels)
         self._type = 'Quadrilateral'
 
     def setup_labels(self, labels=None, linesegments=None, masks=None):

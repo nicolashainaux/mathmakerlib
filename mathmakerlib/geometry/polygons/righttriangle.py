@@ -34,7 +34,7 @@ class RightTriangle(Triangle):
                  mark_right_angle=True,
                  draw_vertices=False, label_vertices=True,
                  thickness='thick', color=None, rotation_angle=0,
-                 winding=None):
+                 winding=None, sloped_sides_labels=True):
         r"""
         Initialize Right Triangle
 
@@ -82,7 +82,8 @@ class RightTriangle(Triangle):
                           label_vertices=label_vertices,
                           thickness=thickness, color=color,
                           rotation_angle=rotation_angle,
-                          winding=winding)
+                          winding=winding,
+                          sloped_sides_labels=sloped_sides_labels)
         self._type = 'RightTriangle'
         if mark_right_angle:
             self.right_angle.decoration = AngleDecoration()
