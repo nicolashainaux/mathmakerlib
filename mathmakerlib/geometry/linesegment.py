@@ -103,18 +103,7 @@ class LineSegment(Drawable, HasThickness, PointsPair):
             self.endpoints[1].label_position = 'below left'
         self.endpoints[0].label_position = \
             OPPOSITE_LABEL_POSITIONS[self.endpoints[1].label_position]
-        if label_position == 'anticlockwise':
-            if self.deltax >= 0:
-                self.label_position = 'below'
-            else:
-                self.label_position = 'above'
-        elif label_position == 'clockwise':
-            if self.deltax >= 0:
-                self.label_position = 'above'
-            else:
-                self.label_position = 'below'
-        else:
-            self.label_position = label_position
+        self.label_position = label_position
         if color is not None:
             self.color = color
         self._comment_designation = 'Line Segment'
@@ -219,7 +208,18 @@ class LineSegment(Drawable, HasThickness, PointsPair):
 
     @label_position.setter
     def label_position(self, value):
-        self._label_position = str(value)
+        if value == 'anticlockwise':
+            if self.deltax >= 0:
+                self._label_position = 'below'
+            else:
+                self._label_position = 'above'
+        elif value == 'clockwise':
+            if self.deltax >= 0:
+                self._label_position = 'above'
+            else:
+                self._label_position = 'below'
+        else:
+            self._label_position = str(value)
 
     @property
     def label_mask(self):
