@@ -154,6 +154,18 @@ class LineSegment(Drawable, HasThickness, PointsPair):
                              'got \'{}\' instead.'.format(value))
 
     @property
+    def label_endpoints(self):
+        return self._label_endpoints
+
+    @label_endpoints.setter
+    def label_endpoints(self, value):
+        if value in [True, False]:
+            self._label_endpoints = value
+        else:
+            raise ValueError('label_endpoints must be True or False; '
+                             'got \'{}\' instead.'.format(value))
+
+    @property
     def draw_endpoints(self):
         return self._draw_endpoints
 
@@ -200,18 +212,6 @@ class LineSegment(Drawable, HasThickness, PointsPair):
                             'first explicitely unlock the LineSegment.')
         else:
             super(LineSegment, self.__class__).label.fset(self, value)
-
-    @property
-    def label_endpoints(self):
-        return self._label_endpoints
-
-    @label_endpoints.setter
-    def label_endpoints(self, value):
-        if value in [True, False]:
-            self._label_endpoints = value
-        else:
-            raise ValueError('label_endpoints must be True or False; '
-                             'got \'{}\' instead.'.format(value))
 
     @property
     def label_mask(self):
