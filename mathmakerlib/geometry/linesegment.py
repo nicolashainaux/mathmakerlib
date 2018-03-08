@@ -142,18 +142,6 @@ class LineSegment(Drawable, HasThickness, PointsPair):
             return True
 
     @property
-    def sloped_label(self):
-        return self._sloped_label
-
-    @sloped_label.setter
-    def sloped_label(self, value):
-        if value in [True, False]:
-            self._sloped_label = value
-        else:
-            raise ValueError('sloped_label must be True or False; '
-                             'got \'{}\' instead.'.format(value))
-
-    @property
     def label_endpoints(self):
         return self._label_endpoints
 
@@ -197,6 +185,18 @@ class LineSegment(Drawable, HasThickness, PointsPair):
     def unlock_label(self):
         """Allow modifications of LineSegment's label."""
         self._locked_label = False
+
+    @property
+    def sloped_label(self):
+        return self._sloped_label
+
+    @sloped_label.setter
+    def sloped_label(self, value):
+        if value in [True, False]:
+            self._sloped_label = value
+        else:
+            raise ValueError('sloped_label must be True or False; '
+                             'got \'{}\' instead.'.format(value))
 
     @property
     def label(self):
