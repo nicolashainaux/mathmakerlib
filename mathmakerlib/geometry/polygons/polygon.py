@@ -49,7 +49,7 @@ class Polygon(Drawable, Colored, HasThickness, Oriented):
     def __init__(self, *vertices, name=None,
                  draw_vertices=False, label_vertices=True,
                  thickness='thick', color=None, rotation_angle=0,
-                 winding=None, do_cycle=True):
+                 winding=None, do_cycle=True, sloped_sides_labels=True):
         r"""
         Initialize Polygon
 
@@ -174,6 +174,8 @@ class Polygon(Drawable, Colored, HasThickness, Oriented):
             self._type = \
                 '{n}-sided Polygon'.format(n=str(len(self._sides)))
 
+        self.sloped_sides_labels = sloped_sides_labels
+
         if (self._reverted_winding
             and mmlib_setup.polygons.ENABLE_MISMATCH_WINDING_WARNING):
             warnings.warn('Changed the order of Points to comply with forced '
@@ -296,6 +298,20 @@ class Polygon(Drawable, Colored, HasThickness, Oriented):
         if marks is not None and len(marks) == len(linesegments):
             for s, m in zip(linesegments, marks):
                 s.mark = m
+
+    @property
+    def sloped_sides_labels(self):
+        return self._sloped_sides_labels
+
+    @sloped_sides_labels.setter
+    def sloped_sides_labels(self, value):
+        if isinstance(value, bool):
+            self._sloped_sides_labels = value
+            for s in self.sides:
+                s.sloped_label = value
+        else:
+            raise TypeError('sloped_sides_labels must be a boolean; '
+                            'got {} instead.'.format(type(value)))
 
     @property
     def do_cycle(self):

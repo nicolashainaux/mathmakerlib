@@ -100,6 +100,10 @@ def test_instanciation_errors(pointO, pointI, pointJ):
         Polygon(pointO, pointI, pointJ, do_cycle=0)
     assert str(excinfo.value) == 'do_cycle must be a boolean; ' \
         'got <class \'int\'> instead.'
+    with pytest.raises(TypeError) as excinfo:
+        Polygon(pointO, pointI, pointJ, sloped_sides_labels=0)
+    assert str(excinfo.value) == 'sloped_sides_labels must be a boolean; ' \
+        'got <class \'int\'> instead.'
 
 
 def test_instanciation(pointO, pointA, pointB, pointC):
@@ -555,6 +559,27 @@ def test_drawing_with_labeled_sides(pointO, pointA, pointB, pointC):
 \end{tikzpicture}
 """
     locale.setlocale(locale.LC_ALL, LOCALE_US)
+    p.sloped_sides_labels = False
+    p.setup_labels([Number('7.5'), None, None, None])
+    assert p.drawn == r"""
+\begin{tikzpicture}
+% Declare Points
+\coordinate (C) at (1,3);
+\coordinate (B) at (3,2);
+\coordinate (A) at (4,0);
+\coordinate (O) at (0,0);
+
+% Draw Quadrilateral
+\draw[thick] (C)
+-- (B) node[midway, above] {7.5}
+-- (A)
+-- (O)
+-- cycle;
+
+% Label Points
+
+\end{tikzpicture}
+"""
 
 
 def test_drawing_with_marked_sides(pointO, pointA, pointB, pointC):
