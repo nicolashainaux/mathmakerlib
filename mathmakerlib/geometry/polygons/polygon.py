@@ -309,6 +309,7 @@ class Polygon(Drawable, Colored, HasThickness, Oriented):
             self._sloped_sides_labels = value
             for s in self.sides:
                 s.sloped_label = value
+                s.label_position = 'automatic'
         else:
             raise TypeError('sloped_sides_labels must be a boolean; '
                             'got {} instead.'.format(type(value)))
