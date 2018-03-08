@@ -562,7 +562,7 @@ def test_drawing_with_linesegment_labels(A, B, E):
 \draw (B) node[above] {B};
 \end{tikzpicture}
 """
-    ls = LineSegment(A, E, label='4 cm', label_position='clockwise')
+    ls = LineSegment(A, E, label='4 cm', label_winding='clockwise')
     assert ls.drawn == r"""
 \begin{tikzpicture}
 % Declare Points
@@ -581,7 +581,7 @@ def test_drawing_with_linesegment_labels(A, B, E):
 \draw (E) node[right] {E};
 \end{tikzpicture}
 """
-    ls = LineSegment(E, A, label='4 cm', label_position='clockwise')
+    ls = LineSegment(E, A, label='4 cm', label_winding='clockwise')
     assert ls.drawn == r"""
 \begin{tikzpicture}
 % Declare Points
@@ -601,7 +601,7 @@ def test_drawing_with_linesegment_labels(A, B, E):
 \end{tikzpicture}
 """
     ls = LineSegment(E, A, label='4 cm', thickness=None,
-                     label_position='clockwise')
+                     label_winding='clockwise')
     assert ls.drawn == r"""
 \begin{tikzpicture}
 % Declare Points
@@ -620,7 +620,7 @@ def test_drawing_with_linesegment_labels(A, B, E):
 \draw (A) node[left] {A};
 \end{tikzpicture}
 """
-    ls = LineSegment(E, A, label='4 cm', label_position='clockwise',
+    ls = LineSegment(E, A, label='4 cm', label_winding='clockwise',
                      label_mask='?')
     assert ls.drawn == r"""
 \begin{tikzpicture}
@@ -640,7 +640,7 @@ def test_drawing_with_linesegment_labels(A, B, E):
 \draw (A) node[left] {A};
 \end{tikzpicture}
 """
-    ls = LineSegment(E, A, label='4 cm', label_position='clockwise',
+    ls = LineSegment(E, A, label='4 cm', label_winding='clockwise',
                      label_scale='0.67')
     assert ls.drawn == r"""
 \begin{tikzpicture}
@@ -658,6 +658,55 @@ def test_drawing_with_linesegment_labels(A, B, E):
 % Label Points
 \draw (E) node[right] {E};
 \draw (A) node[left] {A};
+\end{tikzpicture}
+"""
+
+
+def test_drawing_with_linesegment_not_sloped_labels():
+    """Check drawing is correct."""
+    A = Point(0, 0, 'A')
+    B = Point(1, 0, 'B')
+    ls = LineSegment(A, B, label='4 cm')
+    ls.sloped_label = False
+    ls.label_position = 'automatic'
+    assert ls.drawn == r"""
+\begin{tikzpicture}
+% Declare Points
+\coordinate (A) at (0,0);
+\coordinate (B) at (1,0);
+
+% Draw Points
+\draw (A) node[scale=0.67] {$\times$};
+\draw (B) node[scale=0.67] {$\times$};
+
+% Draw Line Segment
+\draw[thick] (A) -- (B) node[midway, below] {4 cm};
+
+% Label Points
+\draw (A) node[left] {A};
+\draw (B) node[right] {B};
+\end{tikzpicture}
+"""
+    B = Point(1, 1, 'B')
+    ls = LineSegment(A, B, label='4 cm')
+    ls.sloped_label = False
+    ls.label_position = 'automatic'
+    assert ls.drawn == r"""
+\begin{tikzpicture}
+% Declare Points
+\coordinate (A) at (0,0);
+\coordinate (B) at (1,1);
+
+% Draw Points
+\draw (A) node[scale=0.67] {$\times$};
+\draw (B) node[scale=0.67] {$\times$};
+
+% Draw Line Segment
+\draw[thick] (A) -- (B) node[midway, below right] {4 cm};
+
+% Label Points
+\draw (A) node[below left] {A};
+\draw (B) node[above right] {B};
 \end{tikzpicture}
 """
 

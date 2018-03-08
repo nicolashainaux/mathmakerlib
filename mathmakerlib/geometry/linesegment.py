@@ -32,9 +32,9 @@ LABEL_MASK_VALUES = [None, ' ', '?']
 class LineSegment(Drawable, HasThickness, PointsPair):
 
     def __init__(self, *points, thickness='thick', label=None, label_mask=None,
-                 label_position='anticlockwise', label_scale=None,
+                 label_winding='anticlockwise', label_position=None,
+                 label_scale=None, mark=None, mark_scale=Number('0.5'),
                  draw_endpoints=True, label_endpoints=True, color=None,
-                 mark=None, mark_scale=Number('0.5'),
                  locked_label=False, allow_zero_length=True,
                  sloped_label=True):
         """
@@ -82,7 +82,6 @@ class LineSegment(Drawable, HasThickness, PointsPair):
         self._label = None
         self._thickness = None
         self._label_mask = None
-        self._label_position = None
         self._label_scale = None
         self._draw_endpoints = None
         self._label_endpoints = None
@@ -93,6 +92,7 @@ class LineSegment(Drawable, HasThickness, PointsPair):
         self.thickness = thickness
         self.draw_endpoints = draw_endpoints
         self.sloped_label = sloped_label
+        self.label_winding = label_winding
         self.label_endpoints = label_endpoints
         self.mark = mark
         self.mark_scale = mark_scale
@@ -103,6 +103,8 @@ class LineSegment(Drawable, HasThickness, PointsPair):
             self.endpoints[1].label_position = 'below left'
         self.endpoints[0].label_position = \
             OPPOSITE_LABEL_POSITIONS[self.endpoints[1].label_position]
+        if label_position is None:
+            label_position = 'automatic'
         self.label_position = label_position
         if color is not None:
             self.color = color
@@ -176,6 +178,19 @@ class LineSegment(Drawable, HasThickness, PointsPair):
         self._locked_label = False
 
     @property
+    def label_winding(self):
+        return self._label_winding
+
+    @label_winding.setter
+    def label_winding(self, value):
+        if value in ['clockwise', 'anticlockwise']:
+            self._label_winding = value
+        else:
+            raise ValueError("label_winding must be 'clockwise' or "
+                             "'anticlockwise'; got '{}' instead."
+                             .format(value))
+
+    @property
     def sloped_label(self):
         return self._sloped_label
 
@@ -208,18 +223,26 @@ class LineSegment(Drawable, HasThickness, PointsPair):
 
     @label_position.setter
     def label_position(self, value):
-        if value == 'anticlockwise':
-            if self.deltax >= 0:
-                self._label_position = 'below'
+        if self.sloped_label:
+            if value == 'automatic':
+                if self.label_winding == 'anticlockwise':
+                    if self.deltax >= 0:
+                        self._label_position = 'below'
+                    else:
+                        self._label_position = 'above'
+                elif self.label_winding == 'clockwise':
+                    if self.deltax >= 0:
+                        self._label_position = 'above'
+                    else:
+                        self._label_position = 'below'
             else:
-                self._label_position = 'above'
-        elif value == 'clockwise':
-            if self.deltax >= 0:
-                self._label_position = 'above'
-            else:
-                self._label_position = 'below'
+                self._label_position = str(value)
         else:
-            self._label_position = str(value)
+            if value == 'automatic':
+                ω = {'anticlockwise': -90, 'clockwise': 90}[self.label_winding]
+                self._label_position = tikz_approx_position(self.slope360 + ω)
+            else:
+                self._label_position = str(value)
 
     @property
     def label_mask(self):
