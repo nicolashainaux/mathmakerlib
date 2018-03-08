@@ -214,6 +214,14 @@ class LineSegment(Drawable, HasThickness, PointsPair):
             super(LineSegment, self.__class__).label.fset(self, value)
 
     @property
+    def label_position(self):
+        return self._label_position
+
+    @label_position.setter
+    def label_position(self, value):
+        self._label_position = str(value)
+
+    @property
     def label_mask(self):
         return self._label_mask
 
@@ -244,14 +252,6 @@ class LineSegment(Drawable, HasThickness, PointsPair):
     def mark_scale(self, value):
         check_scale(value, 'LineSegment\'s mark')
         self._mark_scale = Number(value)
-
-    @property
-    def label_position(self):
-        return self._label_position
-
-    @label_position.setter
-    def label_position(self, value):
-        self._label_position = str(value)
 
     @property
     def label_scale(self):
