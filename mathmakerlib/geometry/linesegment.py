@@ -35,7 +35,8 @@ class LineSegment(Drawable, HasThickness, PointsPair):
                  label_position='anticlockwise', label_scale=None,
                  draw_endpoints=True, label_endpoints=True, color=None,
                  mark=None, mark_scale=Number('0.5'),
-                 locked_label=False, allow_zero_length=True):
+                 locked_label=False, allow_zero_length=True,
+                 sloped_label=True):
         """
         Initialize LineSegment
 
@@ -91,6 +92,7 @@ class LineSegment(Drawable, HasThickness, PointsPair):
         self.label_scale = label_scale
         self.thickness = thickness
         self.draw_endpoints = draw_endpoints
+        self.sloped_label = sloped_label
         self.label_endpoints = label_endpoints
         self.mark = mark
         self.mark_scale = mark_scale
@@ -138,6 +140,18 @@ class LineSegment(Drawable, HasThickness, PointsPair):
                     or self.endpoints[1] != other.endpoints[1])
         else:
             return True
+
+    @property
+    def sloped_label(self):
+        return self._sloped_label
+
+    @sloped_label.setter
+    def sloped_label(self, value):
+        if value in [True, False]:
+            self._sloped_label = value
+        else:
+            raise ValueError('sloped_label must be True or False; '
+                             'got \'{}\' instead.'.format(value))
 
     @property
     def draw_endpoints(self):
@@ -275,7 +289,9 @@ class LineSegment(Drawable, HasThickness, PointsPair):
             return []
 
     def _tikz_label_options(self):
-        options = ['midway', self.label_position, 'sloped']
+        options = ['midway', self.label_position]
+        if self.sloped_label:
+            options.append('sloped')
         if self.label_scale is not None:
             options.append('scale={}'.format(self.label_scale))
         return options

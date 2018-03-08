@@ -90,6 +90,10 @@ def test_instanciation_errors(A, B):
     assert str(excinfo.value) == 'draw_endpoints must be True or False; ' \
         'got \'undefined\' instead.'
     with pytest.raises(ValueError) as excinfo:
+        LineSegment(A, B, sloped_label='undefined')
+    assert str(excinfo.value) == 'sloped_label must be True or False; ' \
+        'got \'undefined\' instead.'
+    with pytest.raises(ValueError) as excinfo:
         LineSegment(A, B, label_endpoints='undefined')
     assert str(excinfo.value) == 'label_endpoints must be True or False; ' \
         'got \'undefined\' instead.'
