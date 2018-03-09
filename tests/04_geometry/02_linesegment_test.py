@@ -125,6 +125,10 @@ def test_some_setters(A, B):
     assert str(excinfo.value) == 'Incorrect thickness value: \'undefined\'. ' \
         'Available values belong to: {}.'.format(THICKNESS_VALUES)
     with pytest.raises(ValueError) as excinfo:
+        s.label_winding = 'undefined'
+    assert str(excinfo.value) == "label_winding must be 'clockwise' or " \
+        "'anticlockwise'; found 'undefined' instead."
+    with pytest.raises(ValueError) as excinfo:
         s.label_mask = 'undefined'
     assert str(excinfo.value).startswith('label_mask must be in '
                                          '[None, \' \', \'?\']; '
@@ -703,6 +707,25 @@ def test_drawing_with_linesegment_not_sloped_labels():
 
 % Draw Line Segment
 \draw[thick] (A) -- (B) node[midway, below right] {4 cm};
+
+% Label Points
+\draw (A) node[below left] {A};
+\draw (B) node[above right] {B};
+\end{tikzpicture}
+"""
+    ls.label_position = 'above left'
+    assert ls.drawn == r"""
+\begin{tikzpicture}
+% Declare Points
+\coordinate (A) at (0,0);
+\coordinate (B) at (1,1);
+
+% Draw Points
+\draw (A) node[scale=0.67] {$\times$};
+\draw (B) node[scale=0.67] {$\times$};
+
+% Draw Line Segment
+\draw[thick] (A) -- (B) node[midway, above left] {4 cm};
 
 % Label Points
 \draw (A) node[below left] {A};

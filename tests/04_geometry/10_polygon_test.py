@@ -113,6 +113,7 @@ def test_instanciation(pointO, pointA, pointB, pointC):
     assert p.color is None
     assert not p.draw_vertices
     assert p.label_vertices
+    assert p.sloped_sides_labels
     assert p.type == 'Quadrilateral'
     assert p.name == 'OABC'
     assert repr(p) == 'Quadrilateral OABC'

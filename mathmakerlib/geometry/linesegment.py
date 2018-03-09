@@ -187,8 +187,8 @@ class LineSegment(Drawable, HasThickness, PointsPair):
             self._label_winding = value
         else:
             raise ValueError("label_winding must be 'clockwise' or "
-                             "'anticlockwise'; got '{}' instead."
-                             .format(value))
+                             "'anticlockwise'; found {} instead."
+                             .format(repr(value)))
 
     @property
     def sloped_label(self):
