@@ -571,7 +571,7 @@ def test_drawing_with_labeled_sides(pointO, pointA, pointB, pointC):
 
 % Draw Quadrilateral
 \draw[thick] (C)
--- (B) node[midway, above] {7.5}
+-- (B) node[midway, above right] {7.5}
 -- (A)
 -- (O)
 -- cycle;
