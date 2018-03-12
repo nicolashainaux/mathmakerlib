@@ -29,7 +29,7 @@ def init():
     package = {pkg_name: False
                for pkg_name in ['tikz', 'siunitx', 'xcolor', 'eurosym',
                                 'amsmath', 'stackengine', 'scalerel',
-                                'cancel', 'multicol']}
+                                'cancel', 'multicol', 'placeins']}
     options = {'xcolor': set()}
     tikz_library = {'angles': False,
                     'decorations.markings': False,
