@@ -86,7 +86,7 @@ class RightTriangle(Triangle):
                           sloped_sides_labels=sloped_sides_labels)
         self._type = 'RightTriangle'
         if mark_right_angle:
-            self.right_angle.decoration = AngleDecoration()
+            self.right_angle.decoration = AngleDecoration(thickness=thickness)
             self.right_angle.mark_right = True
 
     @property
