@@ -75,5 +75,7 @@ MATHEMATICAL_NOTATIONS = \
 
 KNOWN_AMSSYMB_SYMBOLS = [r'\triangle', r'\square', r'\lozenge', r'\bigstar']
 
+KNOWN_TEXTCOMP_SYMBOLS = [r'\textdegree', r'\textdollar', r'\textsterling']
+
 __all__ = ['AttrList', 'OptionsList', 'Command', 'DocumentClass',
            'UsePackage', 'UseTikzLibrary']
