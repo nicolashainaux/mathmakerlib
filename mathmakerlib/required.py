@@ -30,7 +30,7 @@ def init():
                for pkg_name in ['tikz', 'siunitx', 'xcolor', 'eurosym',
                                 'amsmath', 'stackengine', 'scalerel',
                                 'cancel', 'multicol', 'placeins', 'ulem',
-                                'textcomp', 'array', 'graphicx']}
+                                'textcomp', 'array', 'graphicx', 'epstopdf']}
     options = {'xcolor': set()}
     tikz_library = {'angles': False,
                     'decorations.markings': False,
