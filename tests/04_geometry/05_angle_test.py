@@ -546,6 +546,36 @@ def test_drawing_angles_with_armspoints():
 \draw (C) node[above left] {C};
 \end{tikzpicture}
 """
+    Point.reset_names()
+    Ω = Point(0, 0, 'O')
+    A1 = Point('2.5', 0, 'A1')
+    D1 = Point(-2, '1.5', 'D1')
+    α = Angle(A1, Ω, D1, armspoints=[('C', ), ('E', )],
+              label_vertex=True, draw_vertex=True,
+              label_armspoints=True, draw_armspoints=True)
+    assert α.drawn == r"""
+\begin{tikzpicture}
+% Declare Points
+\coordinate (A1) at (2.5,0);
+\coordinate (O) at (0,0);
+\coordinate (D1) at (-2,1.5);
+\coordinate (C) at (2,0);
+\coordinate (E) at (-1.6,1.2);
+
+% Draw Angle
+\draw[thick] (A1) -- (O) -- (D1);
+% Draw Vertex
+\draw (O) node[scale=0.67] {$\times$};
+% Draw Arms' Points
+\draw (C) node[scale=0.67] {$\times$};
+\draw (E) node[scale=0.67] {$\times$};
+
+% Label Points
+\draw (O) node[below] {O};
+\draw (C) node[below right] {C};
+\draw (E) node[below left] {E};
+\end{tikzpicture}
+"""
 
 
 def test_drawing_marked_angles():

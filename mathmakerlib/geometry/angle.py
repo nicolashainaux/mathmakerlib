@@ -378,7 +378,7 @@ class Angle(Drawable, Oriented, HasThickness):
             xdir = -1 if i == 0 else 1
             self.armspoints[i].label_position = \
                 tikz_approx_position(self.arms[i].slope360
-                                     + xdir * direction * 55)
+                                     + xdir * direction * 60)
 
     @property
     def arms(self):
