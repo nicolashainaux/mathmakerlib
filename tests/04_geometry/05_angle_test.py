@@ -77,6 +77,10 @@ def test_AngleDecoration():
         AngleDecoration().generate_tikz('A', 'B')
     assert str(excinfo.value) == 'Three Points\' names must be provided to '\
         'generate the AngleDecoration. Found 2 arguments instead.'
+    with pytest.raises(TypeError) as excinfo:
+        AngleDecoration(do_draw='a')
+    assert str(excinfo.value) == 'do_draw must be a boolean; '\
+        'got <class \'str\'> instead.'
 
 
 def test_instanciation_errors():
@@ -100,6 +104,10 @@ def test_instanciation_errors():
     assert str(excinfo.value) == '\'mark_right\' must be a boolean'
     with pytest.raises(TypeError) as excinfo:
         Angle(pointO, pointI, pointJ, decoration='right')
+    assert str(excinfo.value) == 'An angle decoration must be None or belong '\
+        'to the AngleDecoration class. Got <class \'str\'> instead.'
+    with pytest.raises(TypeError) as excinfo:
+        Angle(pointO, pointI, pointJ, decoration2='right')
     assert str(excinfo.value) == 'An angle decoration must be None or belong '\
         'to the AngleDecoration class. Got <class \'str\'> instead.'
     with pytest.raises(TypeError) as excinfo:
@@ -164,6 +172,7 @@ def test_instanciation():
     pointJ = Point(0, 1, 'J')
     pointA = Point(1, 1, 'A')
     theta = Angle(pointI, pointO, pointJ, mark_right=True)
+    assert repr(theta) == 'Angle(I, O, J)'
     assert theta.measure == Number('90')
     assert isinstance(theta.decoration, AngleDecoration)
     assert theta.decoration.label is None
