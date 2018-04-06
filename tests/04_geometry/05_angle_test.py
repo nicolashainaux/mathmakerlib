@@ -236,17 +236,17 @@ def test_marked_angles():
     pointJ = Point(0, 1, 'J')
     required.tikz_library['angles'] = False
     theta = Angle(pointI, pointO, pointJ)
-    assert theta.tikz_decoration() == ''
+    assert theta.tikz_decorations() == ''
     theta.decoration = AngleDecoration(color='red', thickness='ultra thick',
                                        radius=Number(2))
-    assert theta.tikz_decoration() \
+    assert theta.tikz_decorations() \
         == 'pic [draw, ultra thick, angle radius = 2, red] {angle = I--O--J}'
     assert required.tikz_library['angles']
     required.tikz_library['angles'] = False
     theta.mark_right = True
     theta.decoration = AngleDecoration()
     assert theta.label is None
-    assert theta.tikz_decoration() == ''
+    assert theta.tikz_decorations() == ''
     assert not required.tikz_library['angles']
     assert theta.tikz_rightangle_mark() == \
         '\draw[thick, cm={cos(0), sin(0), -sin(0), cos(0), (O)}]' \

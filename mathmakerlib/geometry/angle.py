@@ -209,7 +209,7 @@ class Angle(Drawable, Oriented, HasThickness):
                  label_vertex=False, draw_vertex=False,
                  label_armspoints=False, draw_armspoints=False,
                  label_endpoints=False, draw_endpoints=False,
-                 naming_mode='from_endpoints'):
+                 naming_mode='from_endpoints', decoration2=None):
         """
         :param point: a Point of an arm of the Angle
         :type point: Point
@@ -241,6 +241,7 @@ class Angle(Drawable, Oriented, HasThickness):
         self.thickness = thickness
         self.naming_mode = naming_mode
         self.decoration = decoration
+        self.decoration2 = decoration2
         # The label must be set *after* the possible decoration, because it
         # will actually be handled by self.decoration
         if (self.decoration is None
@@ -433,6 +434,18 @@ class Angle(Drawable, Oriented, HasThickness):
             self._decoration = deco
 
     @property
+    def decoration2(self):
+        return self._decoration2
+
+    @decoration2.setter
+    def decoration2(self, deco):
+        if not (deco is None or isinstance(deco, AngleDecoration)):
+            raise TypeError('An angle decoration must be None or belong to '
+                            'the AngleDecoration class. Got {} instead.'
+                            .format(type(deco)))
+        self._decoration2 = deco
+
+    @property
     def mark_right(self):
         return self._mark_right
 
@@ -553,12 +566,20 @@ class Angle(Drawable, Oriented, HasThickness):
             required.package['scalerel'] = True
         return _name
 
-    def tikz_decoration(self):
-        if self.decoration is None or (self.mark_right and self.label is None):
-            return ''
-        return '\n'.join(self.decoration.generate_tikz(self.points[0].name,
-                                                       self.vertex.name,
-                                                       self.points[2].name))
+    def tikz_decorations(self):
+        output_elements = []
+        if not(self.decoration is None
+               or (self.mark_right and self.label is None)):
+            output_elements = \
+                self.decoration.generate_tikz(self.points[0].name,
+                                              self.vertex.name,
+                                              self.points[2].name)
+        if self.decoration2 is not None:
+            output_elements += \
+                self.decoration2.generate_tikz(self.points[0].name,
+                                               self.vertex.name,
+                                               self.points[2].name)
+        return '\n'.join(output_elements)
 
     def tikz_rightangle_mark(self, winding='anticlockwise'):
         if self.decoration is None or not self.mark_right:
@@ -636,7 +657,7 @@ class Angle(Drawable, Oriented, HasThickness):
 
         :rtype: list
         """
-        decoration = self.tikz_decoration()
+        decoration = self.tikz_decorations()
         if decoration != '':
             decoration = '\n' + decoration
         commands = ['\draw{} ({}) -- ({}) -- ({}){};'
@@ -779,7 +800,7 @@ class AnglesSet(Drawable):
         """
         angles_cmd = []
         for α in self.angles:
-            decoration = α.tikz_decoration()
+            decoration = α.tikz_decorations()
             if decoration != '':
                 decoration = '\n' + decoration
             angles_cmd.append('\draw{} ({}) -- ({}) -- ({}){};'
