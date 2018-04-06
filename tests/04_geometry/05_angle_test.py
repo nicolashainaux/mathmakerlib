@@ -827,6 +827,47 @@ r"""angle radius = 0.58 cm, singledash] {angle = X1--A--Y1};
 """
 
 
+def test_drawing_double_decorated_angles():
+    P = Point(0, 0, 'P')
+    L = Point(0, 2, 'L')
+    E = Point('-1.84', '0.8', 'E')
+    α = Angle(L, P, E, label_vertex=True, draw_vertex=True,
+              label_endpoints=True, draw_endpoints=True,
+              label=Number(39, unit=r'\textdegree'))
+    α.decoration = AngleDecoration(radius=Number('0.7', unit='cm'),
+                                   eccentricity=Number('1.6'))
+    α.decoration2 = AngleDecoration(radius=Number('1.6', unit='cm'),
+                                    eccentricity=Number('1.3'),
+                                    label=Number(42, unit=r'\textdegree'),
+                                    color='NavyBlue', do_draw=False,
+                                    thickness=None)
+    assert α.drawn == r"""
+\begin{tikzpicture}
+% Declare Points
+\coordinate (L) at (0,2);
+\coordinate (P) at (0,0);
+\coordinate (E) at (-1.84,0.8);
+
+% Draw Angle
+\draw[thick] (L) -- (P) -- (E)
+pic ["\ang{39}", angle eccentricity=1.6, draw, thick, angle """\
+r"""radius = 0.7 cm] {angle = L--P--E}
+pic ["\ang{42}", angle eccentricity=1.3, angle radius = 1.6 cm, """\
+r"""NavyBlue] {angle = L--P--E};
+% Draw Vertex
+\draw (P) node[scale=0.67] {$\times$};
+% Draw End Points
+\draw (L) node[scale=0.67] {$\times$};
+\draw (E) node[scale=0.67] {$\times$};
+
+% Label Points
+\draw (P) node[below right] {P};
+\draw (L) node[above right] {L};
+\draw (E) node[below left] {E};
+\end{tikzpicture}
+"""
+
+
 def test_AnglesSet_instanciation_errors():
     """Check AnglesSet's instanciation exceptions."""
     pointO = Point(0, 0, 'O')
