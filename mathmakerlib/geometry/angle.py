@@ -45,7 +45,8 @@ class AngleDecoration(Labeled, Colored, HasThickness, HasRadius):
     def __init__(self, color=None, thickness='thick', label='default',
                  radius=Number('0.25', unit='cm'), variety='single',
                  gap=Number('0.4', unit='cm'), eccentricity='automatic',
-                 hatchmark=None):
+                 hatchmark=None, do_draw=True):
+        self.do_draw = do_draw
         self.color = color
         self.thickness = thickness
         self.label = label
@@ -67,6 +68,18 @@ class AngleDecoration(Labeled, Colored, HasThickness, HasRadius):
             'color={}; thickness={}; radius={}; eccentricity={})'\
             .format(self.variety, self.hatchmark, self.label, self.color,
                     self.thickness, str(self.radius), self.eccentricity)
+
+    @property
+    def do_draw(self):
+        return self._do_draw
+
+    @do_draw.setter
+    def do_draw(self, value):
+        if isinstance(value, bool):
+            self._do_draw = value
+        else:
+            raise TypeError('do_draw must be a boolean; '
+                            'got {} instead.'.format(type(value)))
 
     @property
     def radius(self):
@@ -155,7 +168,8 @@ class AngleDecoration(Labeled, Colored, HasThickness, HasRadius):
                 attributes.append('angle eccentricity={}'
                                   .format(self.eccentricity))
         if self.variety is not None:
-            attributes.append('draw')
+            if self.do_draw:
+                attributes.append('draw')
             if self.thickness is not None:
                 attributes.append(self.thickness)
             if self.radius is not None:
