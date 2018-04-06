@@ -23,7 +23,8 @@ import pytest
 
 from mathmakerlib import required
 from mathmakerlib.calculus import Number
-from mathmakerlib.core.drawable import HasRadius, HasThickness
+from mathmakerlib.core.drawable import ARROW_TIPS
+from mathmakerlib.core.drawable import HasRadius, HasThickness, HasArrowTips
 from mathmakerlib.core.drawable import tikz_options_list, tikz_approx_position
 from mathmakerlib.geometry import Point, LineSegment, Angle, AngleDecoration
 
@@ -75,6 +76,18 @@ def test_hasthickness():
         pass
     o = FakeLineSegment()
     assert o.thickness is None
+
+
+def test_hasarrowtips():
+    """Check abstract class HasArrowTips"""
+    class FakeLineSegment(HasArrowTips):
+        pass
+    o = FakeLineSegment()
+    assert o.arrow_tips is None
+    with pytest.raises(ValueError) as excinfo:
+        o.arrow_tips = '2'
+    assert str(excinfo.value) == 'Incorrect arrow_tips value: \'2\'. '\
+        'Available values belong to: {}.'.format(str(ARROW_TIPS))
 
 
 def test_scale(A, E):

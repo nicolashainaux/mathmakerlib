@@ -28,7 +28,7 @@ from mathmakerlib.exceptions import ZeroVector
 from mathmakerlib.core.oriented import Oriented
 from mathmakerlib.core.oriented import check_winding, shoelace_formula
 from mathmakerlib.core.drawable import Colored, HasThickness, HasRadius
-from mathmakerlib.core.drawable import Labeled
+from mathmakerlib.core.drawable import Labeled, HasArrowTips
 from mathmakerlib.core.drawable import tikz_options_list, Drawable
 from mathmakerlib.core.drawable import tikz_approx_position
 from mathmakerlib.geometry.point import Point, OPPOSITE_LABEL_POSITIONS
@@ -40,13 +40,14 @@ LOCALE_US = 'en' if sys.platform.startswith('win') else 'en_US.UTF-8'
 AVAILABLE_NAMING_MODES = ['from_endpoints', 'from_armspoints', 'from_vertex']
 
 
-class AngleDecoration(Labeled, Colored, HasThickness, HasRadius):
+class AngleDecoration(Labeled, Colored, HasThickness, HasRadius, HasArrowTips):
 
     def __init__(self, color=None, thickness='thick', label='default',
                  radius=Number('0.25', unit='cm'), variety='single',
                  gap=Number('0.4', unit='cm'), eccentricity='automatic',
-                 hatchmark=None, do_draw=True):
+                 hatchmark=None, do_draw=True, arrow_tips=None):
         self.do_draw = do_draw
+        self.arrow_tips = arrow_tips
         self.color = color
         self.thickness = thickness
         self.label = label
@@ -170,6 +171,8 @@ class AngleDecoration(Labeled, Colored, HasThickness, HasRadius):
         if self.variety is not None:
             if self.do_draw:
                 attributes.append('draw')
+            if self.arrow_tips is not None:
+                attributes.append(self.arrow_tips)
             if self.thickness is not None:
                 attributes.append(self.thickness)
             if self.radius is not None:

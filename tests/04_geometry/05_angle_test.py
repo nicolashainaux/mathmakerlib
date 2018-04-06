@@ -33,6 +33,7 @@ def test_AngleDecoration():
         'hatchmark=None; label=default; color=None; thickness=thick; '\
         'radius=0.25 cm; eccentricity=2.6)'
     ad = AngleDecoration(radius=Number(1, unit='cm'))
+    assert ad.arrow_tips is None
     assert repr(ad) == \
         'AngleDecoration(variety=single; '\
         'hatchmark=None; label=default; color=None; thickness=thick; '\
@@ -723,6 +724,30 @@ pic [draw, thick, angle radius = 0.5 cm, tripledash] {angle = X--A--Y};
 pic [draw, thick, angle radius = 0.5 cm, doubledash] {angle = X--A--Y}
 pic [draw, thick, angle radius = 0.58 cm, doubledash] {angle = X--A--Y}
 pic [draw, thick, angle radius = 0.66 cm, doubledash] {angle = X--A--Y};
+
+% Label Points
+
+\end{tikzpicture}
+"""
+
+
+def test_drawing_angles_with_arrowtips():
+    """Check drawing standalone Angles."""
+    A = Point(0, 0, 'A')
+    X = Point(6, 1, 'X')
+    Y = Point(3, 5, 'Y')
+    α = Angle(X, A, Y)
+    α.decoration = AngleDecoration(arrow_tips='<->')
+    assert α.drawn == r"""
+\begin{tikzpicture}
+% Declare Points
+\coordinate (X) at (6,1);
+\coordinate (A) at (0,0);
+\coordinate (Y) at (3,5);
+
+% Draw Angle
+\draw[thick] (X) -- (A) -- (Y)
+pic [draw, <->, thick, angle radius = 0.25 cm] {angle = X--A--Y};
 
 % Label Points
 

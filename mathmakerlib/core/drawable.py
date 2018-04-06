@@ -35,6 +35,9 @@ THICKNESS_VALUES = [None, 'thin', 'very thin', 'ultra thin', 'thick',
                     'very thick', 'ultra thick']
 
 
+ARROW_TIPS = [None, '<->', '<-', '->', '-']
+
+
 def check_color(value):
     if value is None or value in DEFAULT_COLOR_NAMES or value in XCOLOR_BASE:
         # Base LaTeX colors do not need to be explicitely loaded.
@@ -174,6 +177,25 @@ class HasThickness(object, metaclass=ABCMeta):
             raise ValueError('Incorrect thickness value: \'{}\'. '
                              'Available values belong to: {}.'
                              .format(str(value), str(THICKNESS_VALUES)))
+
+
+class HasArrowTips(object, metaclass=ABCMeta):
+    @property
+    def arrow_tips(self):
+        if not hasattr(self, '_arrow_tips'):
+            return None
+        return self._arrow_tips
+
+    @arrow_tips.setter
+    def arrow_tips(self, value):
+        # TODO: use another mechanism to check possible arrow tips
+        # (as it is now, only too few arrow tips are allowed)
+        if value in ARROW_TIPS:
+            self._arrow_tips = value
+        else:
+            raise ValueError('Incorrect arrow_tips value: \'{}\'. '
+                             'Available values belong to: {}.'
+                             .format(str(value), str(ARROW_TIPS)))
 
 
 class Drawable(Colored, Labeled, metaclass=ABCMeta):
