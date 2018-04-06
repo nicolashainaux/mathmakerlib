@@ -325,6 +325,11 @@ class Angle(Drawable, Oriented, HasThickness):
         self.endpoints[1].label_position = \
             tikz_approx_position(arm1.slope360 + direction * 55)
 
+    def __repr__(self):
+        return 'Angle({}, {}, {})'\
+            .format(self.points[0].name, self.points[1].name,
+                    self.points[2].name)
+
     @property
     def vertex(self):
         return self._points[1]
