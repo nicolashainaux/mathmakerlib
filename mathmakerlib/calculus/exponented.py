@@ -19,6 +19,12 @@
 # along with Mathmaker Lib; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
+"""
+Exponented objects are any calculable objects that have an exponent, like in
+7³ or x².
+"""
+
+
 import copy
 
 from mathmakerlib.core.printable import Printable
@@ -26,6 +32,11 @@ from mathmakerlib.core.signed import Signed
 
 
 class Exponented(Printable):
+    """
+    Exponented objects are any calculable objects that have an exponent, like
+    in 7³ or x². The lower part is called content, the higher part is the
+    exponent.
+    """
 
     def __init__(self, content, exponent=None):
         self._content = None
@@ -48,6 +59,7 @@ class Exponented(Printable):
 
     @property
     def content(self):
+        """The lower part of the Exponented object."""
         return self._content
 
     @content.setter
@@ -64,6 +76,7 @@ class Exponented(Printable):
 
     @property
     def exponent(self):
+        """The exponent part of the Exponented object."""
         return self._exponent
 
     @exponent.setter

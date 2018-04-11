@@ -19,6 +19,8 @@
 # along with Mathmaker Lib; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
+"""Fractions."""
+
 from math import gcd
 
 from mathmakerlib.calculus.number import Sign, Number
@@ -112,10 +114,12 @@ class Fraction(Signed, Printable, Evaluable):
 
     @property
     def numerator(self):
+        """Numerator of the Fraction."""
         return self._numerator
 
     @property
     def denominator(self):
+        """Denominator of the Fraction."""
         return self._denominator
 
     def imprint(self, start_expr=True, variant='latex'):
@@ -134,6 +138,7 @@ class Fraction(Signed, Printable, Evaluable):
             * self.numerator.evaluate() / self.denominator.evaluate()
 
     def is_reducible(self):
+        """True if the Fraction is reducible."""
         return gcd(int(self.numerator), int(self.denominator)) > 1
 
     def reduced(self):
