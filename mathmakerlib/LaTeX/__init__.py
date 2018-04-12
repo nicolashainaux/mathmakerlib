@@ -19,6 +19,9 @@
 # along with Mathmaker Lib; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
+"""Constants and LaTeX-related stuff."""
+
+
 from .attr_list import AttrList, OptionsList
 from .commands import Command, DocumentClass, UsePackage, UseTikzLibrary
 
@@ -74,6 +77,7 @@ MATHEMATICAL_NOTATIONS = \
      }
 
 KNOWN_AMSSYMB_SYMBOLS = [r'\triangle', r'\square', r'\lozenge', r'\bigstar']
+KNOWN_AMSMATH_SYMBOLS = [r'\text{']
 
 KNOWN_TEXTCOMP_SYMBOLS = [r'\textdegree', r'\textdollar', r'\textsterling']
 
