@@ -11,6 +11,11 @@ Version 0.6 (2018-04-12)
 * Fix: Numbers with an angle's unit should be displayed as \\ang{...} rather than \\SI{...}{\\textdegree}.
 * Add basic classes to handle LaTeX commands and options' lists.
 
+Patch 0.6.1 (2017-04-12)
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+* Add a constant in LaTeX module
+
 Version 0.5 (2018-01-10)
 ------------------------
 
