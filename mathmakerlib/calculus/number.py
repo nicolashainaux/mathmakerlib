@@ -470,6 +470,11 @@ class Number(Decimal, Signed, Printable, Evaluable):
         temp = len(str((n - n.rounded(Decimal(1), rounding=ROUND_DOWN)))) - 2
         return temp if temp >= 0 else 0
 
+    def digits_sum(self):
+        """Return the sum of all digits."""
+        _, digits, e = self.standardized().as_tuple()
+        return sum(list(digits))
+
     def is_power_of_10(self):
         """Check if n is a power of ten."""
         n = Number(abs(self))

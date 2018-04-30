@@ -190,6 +190,12 @@ def test_fracdigits_nb():
         == 1
 
 
+def test_digits_sum():
+    """Check digits_sum() in different cases."""
+    assert Number(56789).digits_sum() == 35
+    assert Number('56.789').digits_sum() == 35
+
+
 def test_quantize():
     """Check quantize() is correct."""
     assert Number(2).quantize(Decimal('0.01')) == Number('2.00')
@@ -224,7 +230,7 @@ def test_printing():
     assert Number('8.6').uiprinted == '8.6'
     assert Number('8.6').imprint(mod_locale=LOCALE_US) == '8.6'
     assert Number('8.6').printed == '8,6'
-    assert Number('8.6', unit='cm').printed == '\SI{8,6}{cm}'
+    assert Number('8.6', unit='cm').printed == r'\SI{8,6}{cm}'
     locale.setlocale(locale.LC_ALL, LOCALE_US)
     assert Number('8.6').imprint(start_expr=False) == '+8.6'
     required.package['siunitx'] = False
