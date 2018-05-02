@@ -21,6 +21,11 @@ Patch 0.6.2 (2018-04-30)
 
 * Add Number.digits_sum()
 
+Patch 0.6.3 (2018-05-02)
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+* Add Number.digits and Number.digit()
+
 Version 0.5 (2018-01-10)
 ------------------------
 

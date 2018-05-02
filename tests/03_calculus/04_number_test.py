@@ -548,6 +548,25 @@ def test_isolated_zeros():
     assert Number('0.3006').isolated_zeros() == 2
 
 
+def test_digits():
+    """Check Number.digits()"""
+    assert Number('569.72').digits == {Decimal('100'): 5,
+                                       Decimal('10'): 6,
+                                       Decimal('1'): 9,
+                                       Decimal('0.1'): 7,
+                                       Decimal('0.01'): 2}
+
+
+def test_digit():
+    """Check Number.digit"""
+    assert Number('569.72').digit(Decimal('10')) == 6
+    assert Number('569.72').digit(Decimal('0.001')) == 0
+    assert Number('569.72').digit(Decimal('1000')) == 0
+    with pytest.raises(ValueError) as excinfo:
+        Number('569.72').digit(40)
+    assert str(excinfo.value) == 'Expect a power of ten, found 40 instead.'
+
+
 def test_atomized():
     """Check atomized()."""
     assert Number('0').atomized() == [Number('0')]

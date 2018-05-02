@@ -499,6 +499,28 @@ class Number(Decimal, Signed, Printable, Evaluable):
         """True if fractional part is .25 or .75"""
         return self % 1 in (Number('0.25'), Number('0.75'))
 
+    @property
+    def digits(self):
+        """Break down the number into a dictionary."""
+        _, digits, e = self.standardized().as_tuple()
+        return {Number(10) ** (e + len(digits) - 1 - i): d
+                for i, d in enumerate(digits)}
+
+    def digit(self, digitplace):
+        """
+        Return the digit matching digitplace.
+
+        :param digitplace: a power of ten matching the digit to get
+        :type digitplace: Decimal
+        """
+        if not Number(digitplace).is_power_of_10():
+            raise ValueError('Expect a power of ten, found {} instead.'
+                             .format(repr(digitplace)))
+        if digitplace in self.digits:
+            return self.digits[digitplace]
+        else:
+            return 0
+
     def atomized(self, keep_zeros=False):
         """Split abs(self) in as many Numbers as digits."""
         _, digits, e = self.standardized().as_tuple()
