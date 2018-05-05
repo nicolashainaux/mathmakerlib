@@ -77,7 +77,8 @@ MATHEMATICAL_NOTATIONS = \
      }
 
 KNOWN_AMSSYMB_SYMBOLS = [r'\triangle', r'\square', r'\lozenge', r'\bigstar']
-KNOWN_AMSMATH_SYMBOLS = [r'\text{']
+KNOWN_AMSMATH_SYMBOLS = [r'\text{', r'\negthickspace', r'\dfrac', r'\tfrac',
+                         r'\mathstrut']
 
 KNOWN_TEXTCOMP_SYMBOLS = [r'\textdegree', r'\textdollar', r'\textsterling']
 

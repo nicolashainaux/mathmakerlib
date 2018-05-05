@@ -26,6 +26,11 @@ Patch 0.6.3 (2018-05-02)
 
 * Add Number.digits and Number.digit()
 
+Patch 0.6.4 (2018-05-05)
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+* Add some amsmath symbols.
+
 Version 0.5 (2018-01-10)
 ------------------------
 
