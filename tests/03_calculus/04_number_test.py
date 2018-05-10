@@ -131,8 +131,10 @@ def test_copyability():
 
 def test__repr__():
     """Check __repr__ is correct."""
+    assert repr(Number(8.6)) == 'Number(\'8.6\')'
     assert repr(Number('8.6')) == 'Number(\'8.6\')'
     assert repr(Number('8.6', unit='cm')) == 'Number(\'8.6 cm\')'
+    assert repr(Number(8.6, unit='cm')) == 'Number(\'8.6 cm\')'
 
 
 def test_sqrt():

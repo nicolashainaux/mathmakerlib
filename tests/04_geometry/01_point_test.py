@@ -51,6 +51,9 @@ def test_instanciation():
     assert p.y == Number('0.7')
     p = Point(0, 0, None)
     assert p.name is None
+    p = Point(0.1, 0.7, 'B')
+    assert p.x == Number('0.1')
+    assert p.y == Number('0.7')
 
 
 def test_automatic_naming():

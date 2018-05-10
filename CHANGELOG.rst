@@ -1,6 +1,11 @@
 Changelog
 =========
 
+Version 0.7 (2018-05-  )
+------------------------
+
+* Accept floats to initialize Numbers (the float being converted to str).
+
 Version 0.6 (2018-04-12)
 ------------------------
 
@@ -11,24 +16,12 @@ Version 0.6 (2018-04-12)
 * Fix: Numbers with an angle's unit should be displayed as \\ang{...} rather than \\SI{...}{\\textdegree}.
 * Add basic classes to handle LaTeX commands and options' lists.
 
-Patch 0.6.1 (2018-04-13)
-^^^^^^^^^^^^^^^^^^^^^^^^
+Patches 0.6.1 to 0.6.4 (2018-04-13, 2018-04-30, 2018-05-02 and 2018-05-05)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 * Add a constant in LaTeX module
-
-Patch 0.6.2 (2018-04-30)
-^^^^^^^^^^^^^^^^^^^^^^^^
-
 * Add Number.digits_sum()
-
-Patch 0.6.3 (2018-05-02)
-^^^^^^^^^^^^^^^^^^^^^^^^
-
 * Add Number.digits and Number.digit()
-
-Patch 0.6.4 (2018-05-05)
-^^^^^^^^^^^^^^^^^^^^^^^^
-
 * Add some amsmath symbols.
 
 Version 0.5 (2018-01-10)

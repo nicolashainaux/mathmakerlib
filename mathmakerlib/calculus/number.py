@@ -116,6 +116,8 @@ class Number(Decimal, Signed, Printable, Evaluable):
     def __new__(cls, value='0', context=None, unit='undefined'):
         if isinstance(value, Sign):
             value = value.evaluate()
+        if isinstance(value, float):
+            value = str(value)
         if isinstance(value, Number) and unit == 'undefined':
             unit = copy.deepcopy(value.unit)
         if unit == 'undefined':
