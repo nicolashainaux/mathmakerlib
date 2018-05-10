@@ -69,8 +69,8 @@ class Point(Drawable):
         :type x: anything that can be turned to a Number
         :param y: the Point's ordinate
         :type y: anything that can be turned to a Number
-        :param name: the Point's name (e.g. 'A'). If it's left to None, a yet
-        unused name will be set.
+        :param name: the Point's name (e.g. 'A'). If it's left to 'automatic',
+        a yet unused name will be set.
         :type name: str
         :param shape: the symbol that will be drawn at the Point's position.
         Default value is '$\times$', what draws a cross.
@@ -155,24 +155,24 @@ class Point(Drawable):
         return self._x
 
     @x.setter
-    def x(self, other):
+    def x(self, value):
         try:
-            self._x = Number(other)
+            self._x = Number(value)
         except (TypeError, decimal.InvalidOperation) as excinfo:
-            raise TypeError('Expected a number as abscissa, got \'{}\' '
-                            'instead.'.format(other))
+            raise TypeError('Expected a number as abscissa, found {} '
+                            'instead.'.format(repr(value)))
 
     @property
     def y(self):
         return self._y
 
     @y.setter
-    def y(self, other):
+    def y(self, value):
         try:
-            self._y = Number(other)
+            self._y = Number(value)
         except (TypeError, decimal.InvalidOperation) as excinfo:
-            raise TypeError('Expected a number as ordinate, got \'{}\' '
-                            'instead.'.format(other))
+            raise TypeError('Expected a number as ordinate, found {} '
+                            'instead.'.format(repr(value)))
 
     @property
     def coordinates(self):

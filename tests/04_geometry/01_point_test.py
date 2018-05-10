@@ -30,11 +30,11 @@ def test_instanciation_errors():
     with pytest.raises(TypeError) as excinfo:
         Point('A', 0, 0)
     assert str(excinfo.value) == 'Expected a number as abscissa, ' \
-        'got \'A\' instead.'
+        'found \'A\' instead.'
     with pytest.raises(TypeError) as excinfo:
         Point(0, 'A', 0)
     assert str(excinfo.value) == 'Expected a number as ordinate, ' \
-        'got \'A\' instead.'
+        'found \'A\' instead.'
 
 
 def test_instanciation():
