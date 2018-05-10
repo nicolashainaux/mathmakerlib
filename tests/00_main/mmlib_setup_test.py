@@ -30,3 +30,11 @@ def test_setup_errors():
         mmlib_setup.angles.DEFAULT_ARMSPOINTS_POSITION = 'a'
     assert str(excinfo.value) == 'DEFAULT_ARMSPOINTS_POSITION must be a '\
         'number, found <class \'str\'> instead.'
+    with pytest.raises(TypeError) as excinfo:
+        mmlib_setup.oblique_projection.RECEDING_AXIS_ANGLE = 'a'
+    assert str(excinfo.value) == 'RECEDING_AXIS_ANGLE must be a '\
+        'number, found \'a\' instead.'
+    with pytest.raises(TypeError) as excinfo:
+        mmlib_setup.oblique_projection.RATIO = 'a'
+    assert str(excinfo.value) == 'RATIO must be a '\
+        'number, found \'a\' instead.'

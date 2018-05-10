@@ -91,12 +91,42 @@ class AnglesSetup(object):
         self._DEFAULT_ARMSPOINTS_POSITION = value
 
 
+class ObliqueProjectionSetup(object):
+
+    def __init__(self):
+        self.RECEDING_AXIS_ANGLE = Number(45)
+        self.RATIO = Number(0.67)
+
+    @property
+    def RECEDING_AXIS_ANGLE(self):
+        return self._RECEDING_AXIS_ANGLE
+
+    @RECEDING_AXIS_ANGLE.setter
+    def RECEDING_AXIS_ANGLE(self, value):
+        if not is_number(value):
+            raise TypeError('RECEDING_AXIS_ANGLE must be a number, '
+                            'found {} instead.'.format(repr(value)))
+        self._RECEDING_AXIS_ANGLE = value
+
+    @property
+    def RATIO(self):
+        return self._RATIO
+
+    @RATIO.setter
+    def RATIO(self, value):
+        if not is_number(value):
+            raise TypeError('RATIO must be a number, found {} instead.'
+                            .format(repr(value)))
+        self._RATIO = value
+
+
 SUPPORTED_LANGUAGES = ['en', 'en_US', 'en_GB', 'fr', 'fr_FR']
 
 
 def init():
-    global polygons, angles, language
+    global polygons, angles, oblique_projection, language
 
     polygons = PolygonsSetup()
     angles = AnglesSetup()
+    oblique_projection = ObliqueProjectionSetup()
     language = 'en'
