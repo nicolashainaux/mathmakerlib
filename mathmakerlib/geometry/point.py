@@ -91,7 +91,7 @@ class Point(Drawable):
         draw it. Available values are TikZ's ones ('above', 'below left'...).
         :type label_position: str
         """
-        self.__3D = False
+        self._three_dimensional = False
         self._name = None
         self._x = None
         self._y = None
@@ -108,7 +108,7 @@ class Point(Drawable):
             # 2D geometry and the value is actually simply the name, implying
             # z should be set to 0.
             self.z = 0
-            self.__3D = False
+            self._three_dimensional = False
             self.name = z
         else:
             self.name = name
@@ -123,14 +123,14 @@ class Point(Drawable):
         self.shape_scale = shape_scale
 
     def __str__(self):
-        if not self._3D:
+        if not self.three_dimensional:
             s = '{}({}; {})'.format(self.name, self.x, self.y)
         else:
             s = '{}({}; {}; {})'.format(self.name, self.x, self.y, self.z)
         return s
 
     def __repr__(self):
-        if not self._3D:
+        if not self.three_dimensional:
             s = 'Point {}({}; {})'.format(self.name, self.x, self.y)
         else:
             s = 'Point {}({}; {}; {})'.format(self.name,
@@ -204,8 +204,8 @@ class Point(Drawable):
                             'instead.'.format(repr(value)))
 
     @property
-    def _3D(self):
-        return self.__3D
+    def three_dimensional(self):
+        return self._three_dimensional
 
     @property
     def z(self):
@@ -213,16 +213,16 @@ class Point(Drawable):
 
     @z.setter
     def z(self, value):
-        _3D = True
+        three_dimensional = True
         if value is 'undefined':
             value = 0
-            _3D = False
+            three_dimensional = False
         try:
             self._z = Number(value)
         except (TypeError, decimal.InvalidOperation) as excinfo:
             raise TypeError('Expected a number as applicate, found {} '
                             'instead.'.format(repr(value)))
-        self.__3D = _3D
+        self._three_dimensional = three_dimensional
 
     @property
     def coordinates(self):

@@ -40,7 +40,7 @@ def test_instanciation_errors():
 def test_instanciation():
     """Check Point's instanciation."""
     p = Point(0, 0, 'A')
-    assert not p._3D
+    assert not p.three_dimensional
     assert p.x == p.y == 0
     assert p.name == 'A'
     assert p.label == 'A'
@@ -56,7 +56,7 @@ def test_instanciation():
     assert p.x == Number('0.1')
     assert p.y == Number('0.7')
     p = Point(0, 0, 0, 'O')
-    assert p._3D
+    assert p.three_dimensional
 
 
 def test_automatic_naming():
