@@ -6,6 +6,7 @@ Version 0.7 (2018-05-  )
 
 * Accept floats to initialize Numbers (the float being converted to str).
 * Now Points may be 2D or 3D.
+* Add first three-dimensional objects: Polyhedron and RightCuboid.
 * Internal change: PointsPair and Vector are merged into a new Bipoint object.
 
 Version 0.6 (2018-04-12)
