@@ -23,51 +23,50 @@ import pytest
 
 from mathmakerlib.calculus import Number
 from mathmakerlib.geometry import Point
-from mathmakerlib.geometry.vector import Vector
+from mathmakerlib.geometry.bipoint import Bipoint
 
 
 def test_addition():
-    """Check Vectors' additions."""
+    """Check Bipoints' additions."""
     pointO = Point(0, 0, 'O')
     pointI = Point(1, 0, 'I')
     pointJ = Point(0, 1, 'J')
     pointA = Point(1, 1, 'A')
     with pytest.raises(TypeError) as excinfo:
-        Vector(pointO, pointI) + 'a'
-    assert str(excinfo.value) == 'Can only add a Vector to another Vector. ' \
-        'Got <class \'str\'> instead.'
-    i = Vector(pointO, pointI)
-    j = Vector(pointO, pointJ)
-    assert (i + j).same_as(Vector(pointO, pointA))
-    assert (i.add(j)).same_as(Vector(pointO, pointA))
+        Bipoint(pointO, pointI) + 'a'
+    assert str(excinfo.value) == 'Can only add a Bipoint to another '\
+        'Bipoint. Found \'a\' instead.'
+    i = Bipoint(pointO, pointI)
+    j = Bipoint(pointO, pointJ)
+    assert (i + j).same_as(Bipoint(pointO, pointA))
+    assert (i.add(j)).same_as(Bipoint(pointO, pointA))
 
 
-def test_unit_vector():
-    """Check unit vector creation."""
+def test_normalized():
+    """Check unit bipoint creation."""
     pointO = Point(0, 0, 'O')
     pointI = Point(1, 0, 'I')
     pointA = Point(1, 1, 'A')
-    i = Vector(pointO, pointI)
-    assert i.unit_vector().same_as(i)
-    u = Vector(pointO, pointA)
-    assert u.unit_vector().same_as(
-        Vector(pointO,
-               Point(Number('0.707'), Number('0.707'))))
+    i = Bipoint(pointO, pointI)
+    assert i.normalized().same_as(i)
+    u = Bipoint(pointO, pointA)
+    assert u.normalized().same_as(
+        Bipoint(pointO, Point(Number('0.707'), Number('0.707'))))
 
 
-def test_bisector_vector():
-    """Check bisector of two vectors."""
+def test_bisector():
+    """Check bisector of two bipoints."""
     pointO = Point(0, 0, 'O')
     pointI = Point(1, 0, 'I')
     pointJ = Point(0, 1, 'J')
     pointA = Point(1, 1, 'A')
-    i = Vector(pointO, pointI)
-    j = Vector(pointO, pointJ)
-    a = Vector(pointO, pointA)
-    assert i.bisector_vector(j).same_as(a)
-    k = Vector(pointO, Point(2, 0))
-    assert k.bisector_vector(j).same_as(a)
+    i = Bipoint(pointO, pointI)
+    j = Bipoint(pointO, pointJ)
+    a = Bipoint(pointO, pointA)
+    assert i.bisector(j).same_as(a)
+    k = Bipoint(pointO, Point(2, 0))
+    assert k.bisector(j).same_as(a)
     with pytest.raises(TypeError) as excinfo:
-        k.bisector_vector('j')
+        k.bisector('j')
     assert str(excinfo.value) == 'Can only create the bisector with another ' \
-        'Vector. Got a <class \'str\'> instead.'
+        'Bipoint. Found \'j\' instead.'

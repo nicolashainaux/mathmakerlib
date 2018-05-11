@@ -22,7 +22,7 @@
 import pytest
 
 from mathmakerlib.calculus import Number
-from mathmakerlib.geometry import Point
+from mathmakerlib.geometry import Point, Bipoint
 
 
 def test_instanciation_errors():
@@ -40,6 +40,7 @@ def test_instanciation_errors():
 def test_instanciation():
     """Check Point's instanciation."""
     p = Point(0, 0, 'A')
+    assert not p._3D
     assert p.x == p.y == 0
     assert p.name == 'A'
     assert p.label == 'A'
@@ -54,6 +55,8 @@ def test_instanciation():
     p = Point(0.1, 0.7, 'B')
     assert p.x == Number('0.1')
     assert p.y == Number('0.7')
+    p = Point(0, 0, 0, 'O')
+    assert p._3D
 
 
 def test_automatic_naming():
@@ -90,11 +93,13 @@ def test_automatic_naming():
 def test_str():
     """Check __str__ is correct."""
     assert str(Point(0, 0, 'A')) == 'A(0; 0)'
+    assert str(Point(0, 0, 1, 'A')) == 'A(0; 0; 1)'
 
 
 def test_repr():
     """Check __repr__ is correct."""
     assert repr(Point(0, 0, 'A')) == 'Point A(0; 0)'
+    assert repr(Point(0, 0, 2, 'A')) == 'Point A(0; 0; 2)'
 
 
 def test_equality():
@@ -133,6 +138,24 @@ def test_rotation():
     assert pointA.rotate(pointO, Number(30)) == Point(Number('0.866'),
                                                       Number('0.5'),
                                                       "A'")
+
+
+def test_rotation3D():
+    """Check 3D rotating."""
+    pointO = Point(0, 0, 0, 'O')
+    pointA = Point(1, 0, 0, 'A')
+    with pytest.raises(TypeError) as excinfo:
+        pointA.rotate(pointO, Number(30), pointO)
+    assert str(excinfo.value) == 'Expected either None or a Bipoint as '\
+        'axis, found Point O(0; 0; 0) instead.'
+    pointZ = Point(0, 0, 1, 'Z')
+    vz = Bipoint(pointO, pointZ)
+    assert pointA.rotate(pointO, Number(30), vz).coordinates \
+        == (Number('0.866'), Number('0.5'), Number('0'))
+    pointY = Point(0, 1, 0, 'Y')
+    vy = Bipoint(pointO, pointY)
+    assert pointA.rotate(pointO, Number(30), vy).coordinates \
+        == (Number('0.866'), Number('0'), Number('-0.5'))
 
 
 def test_drawing():

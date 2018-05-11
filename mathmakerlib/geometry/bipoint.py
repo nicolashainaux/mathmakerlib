@@ -27,30 +27,46 @@ from mathmakerlib.calculus.number import Number
 from mathmakerlib.calculus.tools import is_number, is_integer
 
 
-class PointsPair(object):
+class Bipoint(object):
     """
     A pair of Points. Gather methods common to LineSegment, Line, Vector.
+
+    This is quite close but not exactly the same as a euclidean vector.
 
     This class won't ever need to get Drawable, but can be instanciated.
     """
 
-    def __init__(self, point1, point2, allow_zero_length=True):
-        if not isinstance(point1, Point):
+    def __init__(self, tail, head, allow_zero_length=True):
+        if not isinstance(tail, Point):
             raise TypeError('Both arguments should be Points, got a {} '
                             'as first argument instead.'
-                            .format(type(point1)))
-        if not isinstance(point2, Point):
+                            .format(type(tail)))
+        if not isinstance(head, Point):
             raise TypeError('Both arguments should be Points, got a {} '
                             'as second argument instead.'
-                            .format(type(point2)))
+                            .format(type(head)))
         if (not allow_zero_length
-            and point1.coordinates == point2.coordinates):
+            and tail.coordinates == head.coordinates):
             msg = 'Explicitly disallowed creation of a zero-length {}.'\
                 .format(type(self).__name__)
             raise ZERO_OBJECTS_ERRORS[type(self).__name__](msg)
-        self._points = [point1, point2]
-        self._deltax = self.points[1].x - self.points[0].x
-        self._deltay = self.points[1].y - self.points[0].y
+        self._points = [tail, head]
+        self._x = self.points[1].x - self.points[0].x
+        self._y = self.points[1].y - self.points[0].y
+        self._z = self.points[1].z - self.points[0].z
+
+    def __add__(self, other):
+        return self.add(other)
+
+    def add(self, other, new_endpoint_name='automatic'):
+        if not isinstance(other, Bipoint):
+            raise TypeError('Can only add a Bipoint to another Bipoint. '
+                            'Found {} instead.'.format(repr(other)))
+        return Bipoint(self.points[0],
+                       Point(self.points[1].x + other.x,
+                             self.points[1].y + other.y,
+                             self.points[1].z + other.z,
+                             name=new_endpoint_name))
 
     def same_as(self, other):
         """Test geometric equality."""
@@ -58,39 +74,61 @@ class PointsPair(object):
                 == other.points[0].coordinates[0].rounded(Number('0.001'))
                 and self.points[0].coordinates[1].rounded(Number('0.001'))
                 == other.points[0].coordinates[1].rounded(Number('0.001'))
+                and self.points[0].coordinates[2].rounded(Number('0.001'))
+                == other.points[0].coordinates[2].rounded(Number('0.001'))
                 and self.points[1].coordinates[0].rounded(Number('0.001'))
                 == other.points[1].coordinates[0].rounded(Number('0.001'))
                 and self.points[1].coordinates[1].rounded(Number('0.001'))
-                == other.points[1].coordinates[1].rounded(Number('0.001')))
+                == other.points[1].coordinates[1].rounded(Number('0.001'))
+                and self.points[1].coordinates[2].rounded(Number('0.001'))
+                == other.points[1].coordinates[2].rounded(Number('0.001')))
 
     @property
     def points(self):
         return self._points
 
     @property
-    def deltax(self):
-        return self._deltax
+    def x(self):
+        return self._x
 
     @property
-    def deltay(self):
-        return self._deltay
+    def y(self):
+        return self._y
+
+    @property
+    def z(self):
+        return self._z
+
+    @property
+    def coordinates(self):
+        return (self._x, self._y, self._z)
 
     @property
     def length(self):
         """Length between the two Points."""
-        return Number(self.deltax ** 2 + self.deltay ** 2).sqrt()
+        return Number(self.x ** 2 + self.y ** 2 + self.z ** 2)\
+            .sqrt()
+
+    def normalized(self, new_endpoint_name='automatic'):
+        """Return the unit Bipoint colinear (to self)."""
+        return Bipoint(self.points[0],
+                       Point(self.points[0].x + self.x / self.length,
+                             self.points[0].y + self.y / self.length,
+                             self.points[0].z + self.z / self.length,
+                             name=new_endpoint_name))
 
     def midpoint(self, name='automatic'):
-        """PointsPair's midpoint."""
+        """Bipoint's midpoint."""
         return Point((self.points[0].x + self.points[1].x) / 2,
                      (self.points[0].y + self.points[1].y) / 2,
+                     (self.points[0].z + self.points[1].z) / 2,
                      name=name)
 
     def point_at(self, position, name='automatic'):
         """
-        A Point aligned with the PointsPair, at provided position.
+        A Point aligned with the Bipoint, at provided position.
 
-        The PointsPair's length is the length unit of position.
+        The Bipoint's length is the length unit of position.
         Hence, position 0 matches points[0], position 1 matches points[1],
         position 0.5 matches the midpoint, position 0.75 is three quarters
         on the way from points[0] to points[1], position 2 is a Point that
@@ -115,6 +153,8 @@ class PointsPair(object):
                           + (self.points[1].x - self.points[0].x) * k),
                          (self.points[0].y
                           + (self.points[1].y - self.points[0].y) * k),
+                         (self.points[0].z
+                          + (self.points[1].z - self.points[0].z) * k),
                          name=name)
 
     @property
@@ -125,9 +165,9 @@ class PointsPair(object):
                 .format(type(self).__name__)
             raise ZERO_OBJECTS_ERRORS[type(self).__name__](msg)
         theta = Number(
-            str(math.degrees(math.acos(self.deltax / self.length))))\
+            str(math.degrees(math.acos(self.x / self.length))))\
             .rounded(Number('0.001'))
-        return theta if self.deltay >= 0 else -theta
+        return theta if self.y >= 0 else -theta
 
     @property
     def slope360(self):
@@ -137,13 +177,13 @@ class PointsPair(object):
                 .format(type(self).__name__)
             raise ZERO_OBJECTS_ERRORS[type(self).__name__](msg)
         theta = Number(
-            str(math.degrees(math.acos(self.deltax / self.length))))\
+            str(math.degrees(math.acos(self.x / self.length))))\
             .rounded(Number('0.001'))
-        return theta if self.deltay >= 0 else Number('360') - theta
+        return theta if self.y >= 0 else Number('360') - theta
 
     def dividing_points(self, n=None, prefix='a'):
         """
-        Create the list of Points that divide the PointsPair in n parts.
+        Create the list of Points that divide the Bipoint in n parts.
 
         :param n: the number of parts (so it will create n - 1 points)
         n must be greater or equal to 1
@@ -161,5 +201,24 @@ class PointsPair(object):
         y1 = self.points[1].y
         ystep = (y1 - y0) / n
         y_list = [y0 + (i + 1) * ystep for i in range(int(n - 1))]
-        return [Point(x, y, prefix + str(i + 1))
-                for i, (x, y) in enumerate(zip(x_list, y_list))]
+        z0 = self.points[0].z
+        z1 = self.points[1].z
+        zstep = (z1 - z0) / n
+        z_list = [z0 + (i + 1) * zstep for i in range(int(n - 1))]
+        return [Point(x, y, z, prefix + str(i + 1))
+                for i, (x, y, z) in enumerate(zip(x_list, y_list, z_list))]
+
+    def bisector(self, other, new_endpoint_name='automatic'):
+        """
+        Return a bipoint colinear to the bisector of self and another bipoint.
+
+        :param arg: the other Bipoint
+        :type arg: Bipoint
+        """
+        if not isinstance(other, Bipoint):
+            raise TypeError('Can only create the bisector with another '
+                            'Bipoint. Found {} instead.'
+                            .format(repr(other)))
+        return self.normalized(new_endpoint_name=new_endpoint_name)\
+            .add(other.normalized(new_endpoint_name=new_endpoint_name),
+                 new_endpoint_name=new_endpoint_name)

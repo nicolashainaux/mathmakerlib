@@ -20,7 +20,7 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 from .point import Point
-from .pointspair import PointsPair
+from .bipoint import Bipoint
 from .linesegment import LineSegment
 from .dividedlinesegment import DividedLineSegment
 from .polygons import Polygon, shoelace_formula
@@ -29,7 +29,7 @@ from .polygons import IsoscelesTriangle
 from .polygons import Quadrilateral, Rectangle, Rhombus, Square
 from .angle import AngleDecoration, Angle, AnglesSet
 
-__all__ = ['Point', 'PointsPair', 'LineSegment', 'DividedLineSegment',
+__all__ = ['Point', 'Bipoint', 'LineSegment', 'DividedLineSegment',
            'Polygon', 'shoelace_formula',
            'Triangle', 'RightTriangle', 'EquilateralTriangle',
            'IsoscelesTriangle',

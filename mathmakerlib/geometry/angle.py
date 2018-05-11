@@ -24,7 +24,7 @@ from math import atan2, degrees
 
 from mathmakerlib import required, mmlib_setup
 from mathmakerlib.LaTeX import MATHEMATICAL_NOTATIONS
-from mathmakerlib.exceptions import ZeroVector
+from mathmakerlib.exceptions import ZeroBipoint
 from mathmakerlib.core.oriented import Oriented
 from mathmakerlib.core.oriented import check_winding, shoelace_formula
 from mathmakerlib.core.drawable import Colored, HasThickness, HasRadius
@@ -32,8 +32,7 @@ from mathmakerlib.core.drawable import Labeled, HasArrowTips
 from mathmakerlib.core.drawable import tikz_options_list, Drawable
 from mathmakerlib.core.drawable import tikz_approx_position
 from mathmakerlib.geometry.point import Point, OPPOSITE_LABEL_POSITIONS
-from mathmakerlib.geometry.pointspair import PointsPair
-from mathmakerlib.geometry.vector import Vector
+from mathmakerlib.geometry.bipoint import Bipoint
 from mathmakerlib.calculus.number import Number, is_number
 
 LOCALE_US = 'en' if sys.platform.startswith('win') else 'en_US.UTF-8'
@@ -312,25 +311,25 @@ class Angle(Drawable, Oriented, HasThickness):
         else:
             self.winding = 'anticlockwise'
 
-        arm0 = PointsPair(self._points[1], self._points[0])
-        arm1 = PointsPair(self._points[1], self._points[2])
+        arm0 = Bipoint(self._points[1], self._points[0])
+        arm1 = Bipoint(self._points[1], self._points[2])
         self._arms = [arm0, arm1]
         self.armspoints = armspoints
 
         # Vertex' label positioning
-        bisector = Vector(self._points[0], self.vertex)\
-            .bisector_vector(Vector(self._points[2], self.vertex),
-                             new_endpoint_name=None)
+        bisector = Bipoint(self._points[0], self.vertex)\
+            .bisector(Bipoint(self._points[2], self.vertex),
+                      new_endpoint_name=None)
         try:
             self._points[1].label_position = \
                 tikz_approx_position(bisector.slope360)
-        except ZeroVector:
+        except ZeroBipoint:
             self._points[1].label_position = \
                 tikz_approx_position(
-                    Vector(self.vertex,
-                           self._points[0].rotate(self.vertex, -90,
-                                                  rename=None)
-                           ).slope360)
+                    Bipoint(self.vertex,
+                            self._points[0].rotate(self.vertex, -90,
+                                                   rename=None)
+                            ).slope360)
         if self.measure > 180:
             self._points[1].label_position = \
                 OPPOSITE_LABEL_POSITIONS[self._points[1].label_position]
@@ -608,7 +607,7 @@ class Angle(Drawable, Oriented, HasThickness):
             return ''
         check_winding(winding)
         rt = 'cm={{cos({θ}), sin({θ}), -sin({θ}), cos({θ}), ({v})}}' \
-            .format(θ=PointsPair(self.vertex, self.points[0])
+            .format(θ=Bipoint(self.vertex, self.points[0])
                     .slope.rounded(Number('0.01'))
                     .imprint(mod_locale=LOCALE_US),
                     v=self.vertex.name)

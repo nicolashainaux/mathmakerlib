@@ -44,15 +44,15 @@ class StopFractionReduction(StopCalculation):
                          msg='{} can no further be reduced.'.format(repr(f)))
 
 
-class ZeroLengthPointsPair(MathmakerLibError):
-    """In case of abusive use of a zero-length PointsPair."""
+class ZeroBipoint(MathmakerLibError):
+    """In case of abusive use of a zero-length Bipoint."""
     def __init__(self, msg=None):
         if msg is None:
-            msg = 'Abusive use of a zero-length PointsPair.'
+            msg = 'Abusive use of a zero Bipoint.'
         super().__init__(msg=msg)
 
 
-class ZeroLengthLineSegment(ZeroLengthPointsPair):
+class ZeroLengthLineSegment(ZeroBipoint):
     """In case of abusive use of a zero-length LineSegment."""
     def __init__(self, msg=None):
         if msg is None:
@@ -60,14 +60,5 @@ class ZeroLengthLineSegment(ZeroLengthPointsPair):
         super().__init__(msg=msg)
 
 
-class ZeroVector(ZeroLengthPointsPair):
-    """In case of abusive use of a zero Vector."""
-    def __init__(self, msg=None):
-        if msg is None:
-            msg = 'Abusive use of a zero Vector.'
-        super().__init__(msg=msg)
-
-
-ZERO_OBJECTS_ERRORS = {'PointsPair': ZeroLengthPointsPair,
-                       'LineSegment': ZeroLengthLineSegment,
-                       'Vector': ZeroVector}
+ZERO_OBJECTS_ERRORS = {'Bipoint': ZeroBipoint,
+                       'LineSegment': ZeroLengthLineSegment}

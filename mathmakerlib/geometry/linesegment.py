@@ -22,14 +22,14 @@
 from mathmakerlib.exceptions import ZeroLengthLineSegment
 from mathmakerlib.core.drawable import check_scale, Drawable, HasThickness
 from mathmakerlib.core.drawable import tikz_approx_position, tikz_options_list
-from mathmakerlib.geometry.pointspair import PointsPair
+from mathmakerlib.geometry.bipoint import Bipoint
 from mathmakerlib.calculus.number import Number
 from mathmakerlib.geometry.point import OPPOSITE_LABEL_POSITIONS
 
 LABEL_MASK_VALUES = [None, ' ', '?']
 
 
-class LineSegment(Drawable, HasThickness, PointsPair):
+class LineSegment(Drawable, HasThickness, Bipoint):
 
     def __init__(self, *points, thickness='thick', label=None, label_mask=None,
                  label_winding='anticlockwise', label_position=None,
@@ -54,7 +54,7 @@ class LineSegment(Drawable, HasThickness, PointsPair):
         :param label_position: tells where to put the LineSegment's label.
         Can be a value used by TikZ or 'clockwise' or 'anticlockwise'.
         'anticlockwise' (default) will automatically set the label_position to
-        'above' if deltax < 0 and to 'below' if deltax > 0. This is useful to
+        'above' if Δx < 0 and to 'below' if Δx > 0. This is useful to
         put all LineSegments' labels outside a Polygon that is drawn in an
         anticlockwise manner. Same for 'clockwise', in the reversed direction.
         :type label_position: str
@@ -78,7 +78,7 @@ class LineSegment(Drawable, HasThickness, PointsPair):
             raise TypeError('Two Points are required to create a '
                             'LineSegment. Got {} object(s) instead.'
                             .format(len(points)))
-        PointsPair.__init__(self, *points, allow_zero_length=allow_zero_length)
+        Bipoint.__init__(self, *points, allow_zero_length=allow_zero_length)
         self._label = None
         self._thickness = None
         self._label_mask = None
@@ -131,6 +131,18 @@ class LineSegment(Drawable, HasThickness, PointsPair):
                     or self.endpoints[1] != other.endpoints[1])
         else:
             return True
+
+    @property
+    def Δx(self):
+        return self._x
+
+    @property
+    def Δy(self):
+        return self._y
+
+    @property
+    def Δz(self):
+        return self._z
 
     @property
     def label_endpoints(self):
@@ -226,12 +238,12 @@ class LineSegment(Drawable, HasThickness, PointsPair):
         if self.sloped_label:
             if value == 'automatic':
                 if self.label_winding == 'anticlockwise':
-                    if self.deltax >= 0:
+                    if self.Δx >= 0:
                         self._label_position = 'below'
                     else:
                         self._label_position = 'above'
                 elif self.label_winding == 'clockwise':
-                    if self.deltax >= 0:
+                    if self.Δx >= 0:
                         self._label_position = 'above'
                     else:
                         self._label_position = 'below'

@@ -60,15 +60,23 @@ class Point(Drawable):
     def reset_names(cls):
         cls.names_in_use = set()
 
-    def __init__(self, x=None, y=None, name='automatic', shape=r'$\times$',
-                 label='default', label_position='below', color=None,
-                 shape_scale=Number('0.67')):
+    def __init__(self, x=None, y=None, z='undefined', name='automatic',
+                 color=None, shape=r'$\times$', shape_scale=Number('0.67'),
+                 label='default', label_position='below'):
         r"""
         Initialize Point
+
+        When not naming the keyword arguments, it is possible to not mention
+        the applicate, z:
+        Point(3, 2, 'A') is equivalent to Point(3, 2, 0, 'A').
+        (but then, all subsequent keyword arguments must be named).
+
         :param x: the Point's abscissa
         :type x: anything that can be turned to a Number
         :param y: the Point's ordinate
         :type y: anything that can be turned to a Number
+        :param z: the Point's applicate
+        :type z: anything that can be turned to a Number
         :param name: the Point's name (e.g. 'A'). If it's left to 'automatic',
         a yet unused name will be set.
         :type name: str
@@ -83,15 +91,27 @@ class Point(Drawable):
         draw it. Available values are TikZ's ones ('above', 'below left'...).
         :type label_position: str
         """
+        self.__3D = False
         self._name = None
         self._x = None
         self._y = None
+        self._z = None
         self._shape = None
         self._label = None
         self._label_position = None
-        self.name = name
         self.x = x
         self.y = y
+        try:
+            self.z = z
+        except (TypeError, decimal.InvalidOperation):
+            # The third value cannot be used as z; let's assume it is actually
+            # 2D geometry and the value is actually simply the name, implying
+            # z should be set to 0.
+            self.z = 0
+            self.__3D = False
+            self.name = z
+        else:
+            self.name = name
         self.shape = shape
         if label is 'default':
             self.label = self.name
@@ -103,10 +123,19 @@ class Point(Drawable):
         self.shape_scale = shape_scale
 
     def __str__(self):
-        return '{}({}; {})'.format(self.name, self.x, self.y)
+        if not self._3D:
+            s = '{}({}; {})'.format(self.name, self.x, self.y)
+        else:
+            s = '{}({}; {}; {})'.format(self.name, self.x, self.y, self.z)
+        return s
 
     def __repr__(self):
-        return 'Point {}({}; {})'.format(self.name, self.x, self.y)
+        if not self._3D:
+            s = 'Point {}({}; {})'.format(self.name, self.x, self.y)
+        else:
+            s = 'Point {}({}; {}; {})'.format(self.name,
+                                              self.x, self.y, self.z)
+        return s
 
     # def __hash__(self):
     #     return hash(repr(self))
@@ -175,8 +204,29 @@ class Point(Drawable):
                             'instead.'.format(repr(value)))
 
     @property
+    def _3D(self):
+        return self.__3D
+
+    @property
+    def z(self):
+        return self._z
+
+    @z.setter
+    def z(self, value):
+        _3D = True
+        if value is 'undefined':
+            value = 0
+            _3D = False
+        try:
+            self._z = Number(value)
+        except (TypeError, decimal.InvalidOperation) as excinfo:
+            raise TypeError('Expected a number as applicate, found {} '
+                            'instead.'.format(repr(value)))
+        self.__3D = _3D
+
+    @property
     def coordinates(self):
-        return (self._x, self._y)
+        return (self._x, self._y, self._z)
 
     @property
     def shape(self):
@@ -206,14 +256,17 @@ class Point(Drawable):
         else:
             self._label_position = str(other)
 
-    def rotate(self, center, angle, rename='auto'):
+    def rotate(self, center, angle, axis=None, rename='auto'):
         """
-        Return a Point rotated around center of the provided angle.
+        Rotate around center (or axis going through center).
 
         :param center: the center of the rotation
         :type center: Point
         :param angle: the angle of the rotation
         :type angle: a number
+        :param axis: the axis of the rotation for 3D rotation. If left to None,
+        the rotation happens around the center, in the plane.
+        :type axis: Bipoint
         :param rename: if set to 'auto', will name the rotated Point after the
         original, adding a ' (like A.rotate(...) creates a Point A'). If set
         to None, keep the original name. Otherwise, the provided str will be
@@ -221,27 +274,56 @@ class Point(Drawable):
         :type rename: None or str
         :rtype: Point
         """
+        from mathmakerlib.geometry.bipoint import Bipoint
         if not isinstance(center, Point):
             raise TypeError('Expected a Point as rotation center, got {} '
                             'instead.'.format(type(center)))
         if not is_number(angle):
             raise TypeError('Expected a number as rotation angle, got {} '
                             'instead.'.format(type(angle)))
-        deltax = self.x - center.x
-        deltay = self.y - center.y
-        rx = (deltax * Number(str(cos(radians(angle))))
-              - deltay * Number(str(sin(radians(angle))))
-              + center.x).rounded(Number('1.000'))
-        ry = (deltax * Number(str(sin(radians(angle))))
-              + deltay * Number(str(cos(radians(angle))))
-              + center.y).rounded(Number('1.000'))
+        if not (axis is None or isinstance(axis, Bipoint)):
+            raise TypeError('Expected either None or a Bipoint as axis, '
+                            'found {} instead.'.format(repr(axis)))
+        Δx = self.x - center.x
+        Δy = self.y - center.y
+        Δz = self.z - center.z
+        cosθ = Number(str(cos(radians(angle))))
+        sinθ = Number(str(sin(radians(angle))))
+        if axis is None:
+            rx = (Δx * cosθ - Δy * sinθ + center.x).rounded(Number('1.000'))
+            ry = (Δx * sinθ + Δy * cosθ + center.y).rounded(Number('1.000'))
+            rz = 0
+        else:
+            ux, uy, uz = axis.normalized().coordinates
+            rotation_matrix = [[cosθ + (1 - cosθ) * ux ** 2,
+                                ux * uy * (1 - cosθ) - uz * sinθ,
+                                ux * uz * (1 - cosθ) + uy * sinθ],
+                               [uy * ux * (1 - cosθ) + uz * sinθ,
+                                cosθ + (1 - cosθ) * uy ** 2,
+                                uy * uz * (1 - cosθ) - ux * sinθ],
+                               [uz * ux * (1 - cosθ) - uy * sinθ,
+                                uz * uy * (1 - cosθ) + ux * sinθ,
+                                cosθ + (1 - cosθ) * uz ** 2]]
+            rx = sum([rc * coord
+                      for rc, coord in zip(rotation_matrix[0], [Δx, Δy, Δz])])
+            ry = sum([rc * coord
+                      for rc, coord in zip(rotation_matrix[1], [Δx, Δy, Δz])])
+            rz = sum([rc * coord
+                      for rc, coord in zip(rotation_matrix[2], [Δx, Δy, Δz])])
+            rx += center.x
+            ry += center.y
+            rz += center.z
+            rx = rx.rounded(Number('1.000'))
+            ry = ry.rounded(Number('1.000'))
+            rz = rz.rounded(Number('1.000'))
+
         if rename == 'keep_name':
             rname = self.name
         elif rename == 'auto':
             rname = self.name + "'"
         else:
             rname = rename
-        return Point(rx, ry, rname)
+        return Point(rx, ry, rz, rname)
 
     def tikz_declaring_comment(self):
         """
