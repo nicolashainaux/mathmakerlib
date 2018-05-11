@@ -115,6 +115,9 @@ def test_instanciation(A, B):
     assert s.label is None
     assert s.endpoints[0] == A
     assert s.endpoints[1] == B
+    assert s.Δx == 1
+    assert s.Δy == 1
+    assert s.Δz == 0
 
 
 def test_some_setters(A, B):
