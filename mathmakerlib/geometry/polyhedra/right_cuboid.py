@@ -20,11 +20,10 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 from mathmakerlib.geometry.point import Point
-from mathmakerlib.core.drawable import Drawable
 from mathmakerlib.geometry.polyhedra.polyhedron import Polyhedron
 
 
-class RightCuboid(Drawable, Polyhedron):
+class RightCuboid(Polyhedron):
     """Right Cuboids."""
 
     def __init__(self, start_vertex=None, dimensions=None, name=None,
@@ -80,42 +79,3 @@ class RightCuboid(Drawable, Polyhedron):
                             draw_vertices=draw_vertices,
                             label_vertices=label_vertices,
                             thickness=thickness, color=color)
-
-    def tikz_declarations(self):
-        """
-        Return the necessary declarations (e.g. Points declarations).
-
-        :rtype: str
-        """
-
-    def _tikz_draw_options(self):
-        """
-        The list of possible options for draw command.
-
-        :rtype: list
-        """
-
-    def tikz_drawing_comment(self):
-        """
-        Return the comments matching each drawing category.
-
-        :rtype: list
-        """
-
-    def tikz_draw(self):
-        """
-        Return the commands to actually draw the object.
-
-        They should be grouped in categories (the Points, the Segments etc.).
-        Caution, this method must return a list (containing one string per
-        category). tikz_drawing_comment() must return a list containing as many
-        elements as this one.
-
-        :rtype: list
-        """
-
-    def tikz_label(self):
-        """Return the command to write the object's label."""
-
-    def tikz_points_labels(self):
-        """Return the command to write the object's points' labels."""
