@@ -19,12 +19,13 @@
 # along with Mathmaker Lib; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
+from abc import ABCMeta, abstractmethod
 
 from mathmakerlib.geometry.point import Point
 from mathmakerlib.core.drawable import HasThickness, Colored
 
 
-class Polyhedron(Colored, HasThickness):
+class Polyhedron(Colored, HasThickness, metaclass=ABCMeta):
     """Polyhedra (not drawables yet)."""
 
     def __init__(self, *vertices, name=None,
@@ -96,6 +97,8 @@ class Polyhedron(Colored, HasThickness):
                                         shape=v.shape,
                                         label=lbl, color=v.color,
                                         shape_scale=v.shape_scale))
+        self._init_edges()
+        self._init_faces()
 
     @property
     def vertices(self):
@@ -104,6 +107,18 @@ class Polyhedron(Colored, HasThickness):
     @property
     def edges(self):
         return self._edges
+
+    @property
+    def faces(self):
+        return self._faces
+
+    @abstractmethod
+    def _init_edges(self):
+        """Each new Polyhedron must define its edges."""
+
+    @abstractmethod
+    def _init_faces(self):
+        """Each new Polyhedron must define its faces."""
 
     @property
     def name(self):
