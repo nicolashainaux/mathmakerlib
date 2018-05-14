@@ -21,6 +21,7 @@
 
 from mathmakerlib.calculus.number import Number
 from mathmakerlib.geometry.point import Point
+from mathmakerlib.geometry.bipoint import Bipoint
 from mathmakerlib.geometry.angle import AngleDecoration
 from . import Quadrilateral
 
@@ -28,15 +29,21 @@ from . import Quadrilateral
 class Rectangle(Quadrilateral):
     """Rectangles."""
 
-    def __init__(self, start_vertex=None, name=None,
+    def __init__(self, *points, start_vertex=None, name=None,
                  width=Number(1), length=Number(2),
                  mark_right_angles=True,
                  draw_vertices=False, label_vertices=True,
                  thickness='thick', color=None, rotation_angle=0,
                  winding=None, sloped_sides_labels=True):
         r"""
-        Initialize Rectangle
+        Initialize Rectangle.
 
+        This will be done either using the points (if provided) of the points
+        parameter or using the keyword arguments start_vertex, width...
+
+        :param points: a list of 4 points that will be the vertices of the
+        Rectangle. It is possible to provide no Point at all.
+        :type points: a list of Points
         :param start_vertex: the vertex to start to draw the Rectangle
         (default (0; 0))
         :type start_vertex: Point
@@ -66,16 +73,22 @@ class Rectangle(Quadrilateral):
         :param rotate: the angle of rotation around isobarycenter
         :type rotate: int
         """
-        if start_vertex is None:
-            start_vertex = Point(0, 0)
-        # Accepted type for width and length is number, will be checked at
-        # vertices' instanciations.
-        self._width = width
-        self._length = length
-        v1 = Point(length + start_vertex.x, start_vertex.y)
-        v2 = Point(length + start_vertex.x, width + start_vertex.y)
-        v3 = Point(start_vertex.x, width + start_vertex.y)
-        Quadrilateral.__init__(self, start_vertex, v1, v2, v3, name=name,
+        if points:
+            (v0, v1, v2, v3) = points
+            self._length = Bipoint(v0, v1).length
+            self._width = Bipoint(v1, v2).length
+        else:
+            if start_vertex is None:
+                start_vertex = Point(0, 0)
+            # Accepted type for width and length is number, will be checked at
+            # vertices' instanciations.
+            self._width = width
+            self._length = length
+            v0 = start_vertex
+            v1 = Point(length + start_vertex.x, start_vertex.y)
+            v2 = Point(length + start_vertex.x, width + start_vertex.y)
+            v3 = Point(start_vertex.x, width + start_vertex.y)
+        Quadrilateral.__init__(self, v0, v1, v2, v3, name=name,
                                draw_vertices=draw_vertices,
                                label_vertices=label_vertices,
                                thickness=thickness, color=color,
