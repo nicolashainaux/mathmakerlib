@@ -20,6 +20,8 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 from mathmakerlib.geometry.point import Point
+from mathmakerlib.geometry.linesegment import LineSegment
+from mathmakerlib.geometry.rectangle import Rectangle
 from mathmakerlib.geometry.polyhedra.polyhedron import Polyhedron
 
 
@@ -79,3 +81,35 @@ class RightCuboid(Polyhedron):
                             draw_vertices=draw_vertices,
                             label_vertices=label_vertices,
                             thickness=thickness, color=color)
+
+    def _init_edges(self):
+        """Edges of the RightCuboid."""
+        self._edges = [LineSegment(self.vertices[0], self.vertices[1]),
+                       LineSegment(self.vertices[1], self.vertices[2]),
+                       LineSegment(self.vertices[2], self.vertices[3]),
+                       LineSegment(self.vertices[3], self.vertices[0]),
+                       LineSegment(self.vertices[0], self.vertices[4]),
+                       LineSegment(self.vertices[1], self.vertices[5]),
+                       LineSegment(self.vertices[2], self.vertices[6]),
+                       LineSegment(self.vertices[3], self.vertices[7]),
+                       LineSegment(self.vertices[4], self.vertices[5]),
+                       LineSegment(self.vertices[5], self.vertices[6]),
+                       LineSegment(self.vertices[6], self.vertices[7]),
+                       LineSegment(self.vertices[7], self.vertices[4])
+                       ]
+
+    def _init_faces(self):
+        """Faces of the RightCuboid."""
+        self._faces = [Rectangle(self.vertices[0], self.vertices[1],
+                                 self.vertices[2], self.vertices[3]),
+                       Rectangle(self.vertices[0], self.vertices[1],
+                                 self.vertices[5], self.vertices[4]),
+                       Rectangle(self.vertices[1], self.vertices[2],
+                                 self.vertices[6], self.vertices[5]),
+                       Rectangle(self.vertices[2], self.vertices[3],
+                                 self.vertices[7], self.vertices[6]),
+                       Rectangle(self.vertices[3], self.vertices[0],
+                                 self.vertices[4], self.vertices[7]),
+                       Rectangle(self.vertices[4], self.vertices[5],
+                                 self.vertices[6], self.vertices[7]),
+                       ]
