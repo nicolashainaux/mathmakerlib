@@ -97,8 +97,12 @@ class Polyhedron(Colored, HasThickness, metaclass=ABCMeta):
                                         shape=v.shape,
                                         label=lbl, color=v.color,
                                         shape_scale=v.shape_scale))
-        self._init_edges()
         self._init_faces()
+        self._edges = []
+        for F in self.faces:
+            for s in F.sides:
+                if s not in self._edges:
+                    self._edges.append(s)
 
     @property
     def vertices(self):
@@ -111,10 +115,6 @@ class Polyhedron(Colored, HasThickness, metaclass=ABCMeta):
     @property
     def faces(self):
         return self._faces
-
-    @abstractmethod
-    def _init_edges(self):
-        """Each new Polyhedron must define its edges."""
 
     @abstractmethod
     def _init_faces(self):
