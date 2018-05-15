@@ -132,6 +132,16 @@ class LineSegment(Drawable, HasThickness, Bipoint):
         else:
             return True
 
+    def same_as(self, other):
+        """
+        Geometric equality test.
+
+        The order of Points does not matter for LineSegments.
+        """
+        return (Bipoint.same_as(self, other)
+                or Bipoint.same_as(Bipoint(self.points[1], self.points[0]),
+                                   other))
+
     @property
     def Δx(self):
         return self._x

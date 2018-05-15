@@ -26,6 +26,17 @@ from mathmakerlib.geometry import Point
 from mathmakerlib.geometry.bipoint import Bipoint
 
 
+def test_geometric_equality():
+    """Check same_as() is correct."""
+    A = Point(0, 0, 'A')
+    B = Point(1, 1, 'B')
+    s = Bipoint(A, B)
+    t = Bipoint(B, A)
+    u = Bipoint(B, A)
+    assert not s.same_as(t)
+    assert t.same_as(u)
+
+
 def test_addition():
     """Check Bipoints' additions."""
     pointO = Point(0, 0, 'O')

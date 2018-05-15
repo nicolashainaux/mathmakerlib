@@ -172,6 +172,13 @@ def test_equality(A, B, C):
     assert s != u
 
 
+def test_geometric_equality(A, B, C):
+    """Check same_as() is correct."""
+    s = LineSegment(A, B)
+    t = LineSegment(B, A)
+    assert s.same_as(t)
+
+
 def test_length(A, B, D):
     """Check length is correct."""
     t = LineSegment(A, D)

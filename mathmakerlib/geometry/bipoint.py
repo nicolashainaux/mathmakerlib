@@ -69,7 +69,7 @@ class Bipoint(object):
                              name=new_endpoint_name))
 
     def same_as(self, other):
-        """Test geometric equality."""
+        """Geometric equality test. The order of Points matter for Bipoints."""
         return (self.points[0].coordinates[0].rounded(Number('0.001'))
                 == other.points[0].coordinates[0].rounded(Number('0.001'))
                 and self.points[0].coordinates[1].rounded(Number('0.001'))
