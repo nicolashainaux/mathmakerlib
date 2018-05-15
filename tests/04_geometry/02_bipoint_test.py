@@ -26,15 +26,15 @@ from mathmakerlib.geometry import Point
 from mathmakerlib.geometry.bipoint import Bipoint
 
 
-def test_geometric_equality():
-    """Check same_as() is correct."""
+def test_equality():
+    """Check __eq__() is correct."""
     A = Point(0, 0, 'A')
     B = Point(1, 1, 'B')
     s = Bipoint(A, B)
     t = Bipoint(B, A)
     u = Bipoint(B, A)
-    assert not s.same_as(t)
-    assert t.same_as(u)
+    assert s != t
+    assert t == u
 
 
 def test_addition():
@@ -49,8 +49,8 @@ def test_addition():
         'Bipoint. Found \'a\' instead.'
     i = Bipoint(pointO, pointI)
     j = Bipoint(pointO, pointJ)
-    assert (i + j).same_as(Bipoint(pointO, pointA))
-    assert (i.add(j)).same_as(Bipoint(pointO, pointA))
+    assert i + j == Bipoint(pointO, pointA)
+    assert i.add(j) == Bipoint(pointO, pointA)
 
 
 def test_normalized():
@@ -59,10 +59,10 @@ def test_normalized():
     pointI = Point(1, 0, 'I')
     pointA = Point(1, 1, 'A')
     i = Bipoint(pointO, pointI)
-    assert i.normalized().same_as(i)
+    assert i.normalized() == i
     u = Bipoint(pointO, pointA)
-    assert u.normalized().same_as(
-        Bipoint(pointO, Point(Number('0.707'), Number('0.707'))))
+    assert u.normalized() == \
+        Bipoint(pointO, Point(Number('0.707'), Number('0.707')))
 
 
 def test_bisector():
@@ -74,9 +74,9 @@ def test_bisector():
     i = Bipoint(pointO, pointI)
     j = Bipoint(pointO, pointJ)
     a = Bipoint(pointO, pointA)
-    assert i.bisector(j).same_as(a)
+    assert i.bisector(j) == a
     k = Bipoint(pointO, Point(2, 0))
-    assert k.bisector(j).same_as(a)
+    assert k.bisector(j) == a
     with pytest.raises(TypeError) as excinfo:
         k.bisector('j')
     assert str(excinfo.value) == 'Can only create the bisector with another ' \

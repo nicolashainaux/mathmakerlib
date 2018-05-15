@@ -172,13 +172,6 @@ def test_equality(A, B, C):
     assert s != u
 
 
-def test_geometric_equality(A, B, C):
-    """Check same_as() is correct."""
-    s = LineSegment(A, B)
-    t = LineSegment(B, A)
-    assert s.same_as(t)
-
-
 def test_length(A, B, D):
     """Check length is correct."""
     t = LineSegment(A, D)
@@ -214,7 +207,7 @@ def test_slope(A, B, D, E, J):
 def test_midpoint():
     """Check midpoint is correct."""
     s = LineSegment(Point(0, 0, 'A'), Point(1, 1, 'B'))
-    assert s.midpoint().same_as(Point(Number('0.5'), Number('0.5')))
+    assert s.midpoint() == Point(Number('0.5'), Number('0.5'))
 
 
 def test_point_at():
@@ -224,16 +217,16 @@ def test_point_at():
         s.point_at('a')
     assert str(excinfo.value) == 'position must be a number, found ' \
         '<class \'str\'> instead.'
-    assert s.point_at(Number('0.5')).same_as(s.midpoint())
-    assert s.point_at(Number('0.75')).same_as(Point('0.75', '0.75'))
-    assert s.point_at(Number(2)).same_as(Point(2, 2))
-    assert s.point_at(0).same_as(Point(0, 0))
-    assert s.point_at(1).same_as(Point(1, 1))
-    assert s.point_at(-2).same_as(Point(-2, -2))
+    assert s.point_at(Number('0.5')) == s.midpoint()
+    assert s.point_at(Number('0.75')) == Point('0.75', '0.75')
+    assert s.point_at(Number(2)) == Point(2, 2)
+    assert s.point_at(0) == Point(0, 0)
+    assert s.point_at(1) == Point(1, 1)
+    assert s.point_at(-2) == Point(-2, -2)
     s = LineSegment(Point(1, 1, 'A'), Point(3, 4, 'B'))
-    assert s.point_at(Number('0.8')).same_as(Point('2.6', '3.4'))
-    assert s.point_at(2).same_as(Point(5, 7))
-    assert s.point_at(Number('0.5')).same_as(s.midpoint())
+    assert s.point_at(Number('0.8')) == Point('2.6', '3.4')
+    assert s.point_at(2) == Point(5, 7)
+    assert s.point_at(Number('0.5')) == s.midpoint()
 
 
 def test_dividing_points_errors(A, B):

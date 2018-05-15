@@ -55,6 +55,12 @@ class Bipoint(object):
         self._y = self.points[1].y - self.points[0].y
         self._z = self.points[1].z - self.points[0].z
 
+    def __eq__(self, other):
+        if isinstance(other, Bipoint):
+            return self.head == other.head and self.tail == other.tail
+        else:
+            return False
+
     def __add__(self, other):
         return self.add(other)
 
@@ -68,24 +74,17 @@ class Bipoint(object):
                              self.points[1].z + other.z,
                              name=new_endpoint_name))
 
-    def same_as(self, other):
-        """Geometric equality test. The order of Points matter for Bipoints."""
-        return (self.points[0].coordinates[0].rounded(Number('0.001'))
-                == other.points[0].coordinates[0].rounded(Number('0.001'))
-                and self.points[0].coordinates[1].rounded(Number('0.001'))
-                == other.points[0].coordinates[1].rounded(Number('0.001'))
-                and self.points[0].coordinates[2].rounded(Number('0.001'))
-                == other.points[0].coordinates[2].rounded(Number('0.001'))
-                and self.points[1].coordinates[0].rounded(Number('0.001'))
-                == other.points[1].coordinates[0].rounded(Number('0.001'))
-                and self.points[1].coordinates[1].rounded(Number('0.001'))
-                == other.points[1].coordinates[1].rounded(Number('0.001'))
-                and self.points[1].coordinates[2].rounded(Number('0.001'))
-                == other.points[1].coordinates[2].rounded(Number('0.001')))
-
     @property
     def points(self):
         return self._points
+
+    @property
+    def tail(self):
+        return self.points[0]
+
+    @property
+    def head(self):
+        return self.points[1]
 
     @property
     def x(self):

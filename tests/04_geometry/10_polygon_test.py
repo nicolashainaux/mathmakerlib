@@ -117,7 +117,7 @@ def test_instanciation(pointO, pointA, pointB, pointC):
     assert p.type == 'Quadrilateral'
     assert p.name == 'OABC'
     assert repr(p) == 'Quadrilateral OABC'
-    assert p.isobarycenter().same_as(Point(2, Number('1.25')))
+    assert p.isobarycenter() == Point(2, Number('1.25'))
     pointA.label = 'U'
     p = Polygon(pointO, pointA, pointB, pointC, name='YOGA')
     assert p.name == 'YOGA'
@@ -151,10 +151,10 @@ def test_instanciation(pointO, pointA, pointB, pointC):
     assert q.type == '21-sided Polygon'
     q = Polygon(pointO, Point(4, 0), Point(4, 2), Point(0, 2),
                 rotation_angle=90)
-    assert q.vertices[0].same_as(Point(3, -1))
-    assert q.vertices[1].same_as(Point(3, 3))
-    assert q.vertices[2].same_as(Point(1, 3))
-    assert q.vertices[3].same_as(Point(1, -1))
+    assert q.vertices[0] == Point(3, -1)
+    assert q.vertices[1] == Point(3, 3)
+    assert q.vertices[2] == Point(1, 3)
+    assert q.vertices[3] == Point(1, -1)
 
 
 def test_sides_labeling(pointO, pointA, pointB, pointC):

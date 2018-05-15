@@ -195,8 +195,8 @@ def test_instanciation():
     Y = Point(3, 5, 'Y')
     α = Angle(X, A, Y)
     assert α.winding == 'anticlockwise'
-    assert α.arms[0].same_as(Bipoint(A, X))
-    assert α.arms[1].same_as(Bipoint(A, Y))
+    assert α.arms[0] == Bipoint(A, X)
+    assert α.arms[1] == Bipoint(A, Y)
     Ω = Point(0, 0, 'Ω')
     X = Point(12, 2, 'X')
     Y = Point(-6, -1, 'Y')

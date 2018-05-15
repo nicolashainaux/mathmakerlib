@@ -27,9 +27,9 @@ def test_instanciation():
     """Check RightTriangle's instanciation."""
     r = RightTriangle()
     assert r.type == 'RightTriangle'
-    assert r.hypotenuse.same_as(LineSegment(Point(2, 1), Point(0, 0)))
+    assert r.hypotenuse == LineSegment(Point(2, 1), Point(0, 0))
     assert r.right_angle.mark_right
-    assert r.right_angle.vertex.same_as(Point(2, 0))
+    assert r.right_angle.vertex == Point(2, 0)
 
 
 def test_simple_drawing():

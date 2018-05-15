@@ -103,19 +103,14 @@ def test_repr():
 
 
 def test_equality():
-    """Check __eq__, __ne__, coordinates and same_as() are correct."""
+    """Check __eq__, __ne__ and coordinates are correct."""
     p = Point(0, 0, 'A')
     assert p != 'A'
     assert not(p == 0)
+    assert p == Point(0, 0, 'B')
     assert p == Point(0, 0, 'A', shape=r'$\bullet$')
-    assert p != Point(0, 0, 'B')
     assert p == Point(0, 0, 'A', label='?')
     assert p.coordinates == Point(0, 0, 'B').coordinates
-    with pytest.raises(TypeError) as excinfo:
-        p.same_as('B')
-    assert str(excinfo.value) == 'Can only test if another Point is at the ' \
-        'same place. Got a <class \'str\'> instead.'
-    assert p.same_as(Point(0, 0, 'B'))
 
 
 def test_rotation():

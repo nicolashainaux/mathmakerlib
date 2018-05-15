@@ -120,27 +120,10 @@ class LineSegment(Drawable, HasThickness, Bipoint):
 
     def __eq__(self, other):
         if isinstance(other, LineSegment):
-            return (self.endpoints[0] == other.endpoints[0]
-                    and self.endpoints[1] == other.endpoints[1])
+            return ((self.tail == other.tail and self.head == other.head)
+                    or (self.tail == other.head and self.head == other.tail))
         else:
             return False
-
-    def __ne__(self, other):
-        if isinstance(other, LineSegment):
-            return (self.endpoints[0] != other.endpoints[0]
-                    or self.endpoints[1] != other.endpoints[1])
-        else:
-            return True
-
-    def same_as(self, other):
-        """
-        Geometric equality test.
-
-        The order of Points does not matter for LineSegments.
-        """
-        return (Bipoint.same_as(self, other)
-                or Bipoint.same_as(Bipoint(self.points[1], self.points[0]),
-                                   other))
 
     @property
     def Δx(self):

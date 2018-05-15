@@ -20,9 +20,10 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 import string
-import decimal
+from decimal import InvalidOperation
 from math import cos, sin, radians
 
+from mathmakerlib import mmlib_setup
 from mathmakerlib.core.drawable import Drawable, check_scale, tikz_options_list
 from mathmakerlib.calculus.number import Number
 from mathmakerlib.calculus.tools import is_number
@@ -103,7 +104,7 @@ class Point(Drawable):
         self.y = y
         try:
             self.z = z
-        except (TypeError, decimal.InvalidOperation):
+        except (TypeError, InvalidOperation):
             # The third value cannot be used as z; let's assume it is actually
             # 2D geometry and the value is actually simply the name, implying
             # z should be set to 0.
@@ -142,24 +143,12 @@ class Point(Drawable):
 
     def __eq__(self, other):
         if isinstance(other, Point):
-            return all([self.x == other.x, self.y == other.y,
-                        self.name == other.name])
+            p = mmlib_setup.points.DEFAULT_POSITION_PRECISION
+            return all([self.x.rounded(p) == other.x.rounded(p),
+                        self.y.rounded(p) == other.y.rounded(p),
+                        self.z.rounded(p) == other.z.rounded(p)])
         else:
             return False
-
-    def __ne__(self, other):
-        if isinstance(other, Point):
-            return any([self.x != other.x, self.y != other.y,
-                        self.name != other.name])
-        else:
-            return True
-
-    def same_as(self, other):
-        """Test geometric equality."""
-        if not isinstance(other, Point):
-            raise TypeError('Can only test if another Point is at the same '
-                            'place. Got a {} instead.'.format(type(other)))
-        return self.coordinates == other.coordinates
 
     @property
     def name(self):
@@ -187,7 +176,7 @@ class Point(Drawable):
     def x(self, value):
         try:
             self._x = Number(value)
-        except (TypeError, decimal.InvalidOperation) as excinfo:
+        except (TypeError, InvalidOperation) as excinfo:
             raise TypeError('Expected a number as abscissa, found {} '
                             'instead.'.format(repr(value)))
 
@@ -199,7 +188,7 @@ class Point(Drawable):
     def y(self, value):
         try:
             self._y = Number(value)
-        except (TypeError, decimal.InvalidOperation) as excinfo:
+        except (TypeError, InvalidOperation) as excinfo:
             raise TypeError('Expected a number as ordinate, found {} '
                             'instead.'.format(repr(value)))
 
@@ -219,7 +208,7 @@ class Point(Drawable):
             three_dimensional = False
         try:
             self._z = Number(value)
-        except (TypeError, decimal.InvalidOperation) as excinfo:
+        except (TypeError, InvalidOperation) as excinfo:
             raise TypeError('Expected a number as applicate, found {} '
                             'instead.'.format(repr(value)))
         self._three_dimensional = three_dimensional
