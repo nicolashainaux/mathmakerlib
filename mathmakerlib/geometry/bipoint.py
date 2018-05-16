@@ -77,6 +77,20 @@ class Bipoint(object):
                              self.points[1].z + other.z,
                              name=new_endpoint_name))
 
+    def cross_product(self, other, new_endpoint_name='automatic'):
+        if not isinstance(other, Bipoint):
+            raise TypeError('Can only calculate the cross product of a '
+                            'Bipoint by another Bipoint. Found {} instead.'
+                            .format(repr(other)))
+        return Bipoint(self.points[0],
+                       Point(self.points[0].x
+                             + self.y * other.z - self.z * other.y,
+                             self.points[0].y
+                             + self.z * other.x - self.x * other.z,
+                             self.points[0].z
+                             + self.x * other.y - self.y * other.x,
+                             name=new_endpoint_name))
+
     @property
     def points(self):
         return self._points

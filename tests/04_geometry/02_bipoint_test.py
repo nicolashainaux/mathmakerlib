@@ -88,3 +88,23 @@ def test_bisector():
         k.bisector('j')
     assert str(excinfo.value) == 'Can only create the bisector with another ' \
         'Bipoint. Found \'j\' instead.'
+
+
+def test_cross_product():
+    """Check cross product of two bipoints."""
+    pointO = Point(0, 0, 0, 'O')
+    pointI = Point(1, 0, 0, 'I')
+    pointJ = Point(0, 1, 0, 'J')
+    i = Bipoint(pointO, pointI)
+    j = Bipoint(pointO, pointJ)
+    assert i.cross_product(j) == Bipoint(Point(0, 0, 0), Point(0, 0, 1))
+    A = Point(2, 3, 4, 'A')
+    B = Point(7, 9, 11, 'B')
+    C = Point(5, 4, 6, 'C')
+    D = Point(3, 8, 9, 'C')
+    ab = Bipoint(A, B)
+    ac = Bipoint(A, C)
+    assert ab.cross_product(ac) == Bipoint(A, Point(7, 14, -9))
+    assert ab.cross_product(ac).coordinates == (5, 11, -13)
+    cd = Bipoint(C, D)
+    assert ab.cross_product(cd) == Bipoint(A, Point(-8, -26, 36))
