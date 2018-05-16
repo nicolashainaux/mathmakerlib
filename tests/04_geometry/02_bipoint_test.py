@@ -26,6 +26,13 @@ from mathmakerlib.geometry import Point
 from mathmakerlib.geometry.bipoint import Bipoint
 
 
+def test_repr():
+    """Check Bipoint.__repr__()"""
+    A = Point(0, 0, 'A')
+    B = Point(1, 1, 'B')
+    assert repr(Bipoint(A, B)) == 'Bipoint(Point A(0; 0); Point B(1; 1))'
+
+
 def test_equality():
     """Check __eq__() is correct."""
     A = Point(0, 0, 'A')

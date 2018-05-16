@@ -55,6 +55,9 @@ class Bipoint(object):
         self._y = self.points[1].y - self.points[0].y
         self._z = self.points[1].z - self.points[0].z
 
+    def __repr__(self):
+        return 'Bipoint({}; {})'.format(repr(self.tail), repr(self.head))
+
     def __eq__(self, other):
         if isinstance(other, Bipoint):
             return self.head == other.head and self.tail == other.tail
