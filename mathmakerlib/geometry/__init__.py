@@ -19,6 +19,7 @@
 # along with Mathmaker Lib; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
+from .tools import convex_hull
 from .point import Point
 from .bipoint import Bipoint
 from .linesegment import LineSegment
@@ -29,7 +30,8 @@ from .polygons import IsoscelesTriangle
 from .polygons import Quadrilateral, Rectangle, Rhombus, Square
 from .angle import AngleDecoration, Angle, AnglesSet
 
-__all__ = ['Point', 'Bipoint', 'LineSegment', 'DividedLineSegment',
+__all__ = ['convex_hull',
+           'Point', 'Bipoint', 'LineSegment', 'DividedLineSegment',
            'Polygon', 'shoelace_formula',
            'Triangle', 'RightTriangle', 'EquilateralTriangle',
            'IsoscelesTriangle',

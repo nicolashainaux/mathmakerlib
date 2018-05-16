@@ -21,6 +21,7 @@
 
 import pytest
 
+from mathmakerlib.geometry.tools import convex_hull
 from mathmakerlib.calculus import Number
 from mathmakerlib.geometry import Point, Bipoint
 
@@ -228,3 +229,12 @@ def test_drawing():
 
 \end{tikzpicture}
 """
+
+
+def test_convex_hull():
+    cv = convex_hull(Point(0, 0), Point(1, 0), Point(0.5, 0.5),
+                     Point(1, 1), Point(0, 1))
+    assert cv == [Point(0, 0), Point(1, 0), Point(1, 1), Point(0, 1)]
+    assert Point(0.5, 0.5) not in cv
+    cv = convex_hull(Point(0, 0))
+    assert cv == [Point(0, 0)]
