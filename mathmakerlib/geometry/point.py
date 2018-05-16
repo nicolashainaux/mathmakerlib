@@ -138,8 +138,12 @@ class Point(Drawable):
                                               self.x, self.y, self.z)
         return s
 
-    # def __hash__(self):
-    #     return hash(repr(self))
+    def __hash__(self):
+        if not self.three_dimensional:
+            s = 'Point ({}; {})'.format(self.x, self.y)
+        else:
+            s = 'Point ({}; {}; {})'.format(self.x, self.y, self.z)
+        return hash(s)
 
     def __eq__(self, other):
         if isinstance(other, Point):

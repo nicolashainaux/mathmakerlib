@@ -111,6 +111,8 @@ def test_equality():
     assert p == Point(0, 0, 'A', shape=r'$\bullet$')
     assert p == Point(0, 0, 'A', label='?')
     assert p.coordinates == Point(0, 0, 'B').coordinates
+    assert len(set([p, Point(0, 0, 'B')])) == 1
+    assert len(set([Point(0, 0, 0, 'A'), Point(0, 0, 0, 'B')])) == 1
 
 
 def test_rotation():
