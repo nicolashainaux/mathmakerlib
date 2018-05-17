@@ -110,7 +110,7 @@ class Point(Drawable, Dimensional):
             # The third value cannot be used as z; let's assume it is actually
             # 2D geometry and the value is actually simply the name, implying
             # z should be set to 0.
-            self.z = 0
+            self.z = Number(0)
             self._three_dimensional = False
             self.name = z
         else:
