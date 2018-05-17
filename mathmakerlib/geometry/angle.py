@@ -292,6 +292,12 @@ class Angle(Drawable, Oriented, HasThickness):
         else:
             self._points.append(point.rotate(vertex, point_or_measure,
                                              rename=second_point_name))
+
+        if any([p.three_dimensional for p in self._points]):
+            self._three_dimensional = True
+        else:
+            self._three_dimensional = False
+
         # Measure of the angle:
         p0 = Point(self._points[0].x - self._points[1].x,
                    self._points[0].y - self._points[1].y,
@@ -316,35 +322,41 @@ class Angle(Drawable, Oriented, HasThickness):
         self._arms = [arm0, arm1]
         self.armspoints = armspoints
 
-        # Vertex' label positioning
-        bisector = Bipoint(self._points[0], self.vertex)\
-            .bisector(Bipoint(self._points[2], self.vertex),
-                      new_endpoint_name=None)
-        try:
-            self._points[1].label_position = \
-                tikz_approx_position(bisector.slope360)
-        except ZeroBipoint:
-            self._points[1].label_position = \
-                tikz_approx_position(
-                    Bipoint(self.vertex,
-                            self._points[0].rotate(self.vertex, -90,
-                                                   rename=None)
-                            ).slope360)
-        if self.measure > 180:
-            self._points[1].label_position = \
-                OPPOSITE_LABEL_POSITIONS[self._points[1].label_position]
+        # Only 2D: labels positioning
+        if not self.three_dimensional:
+            # Vertex' label positioning
+            bisector = Bipoint(self._points[0], self.vertex)\
+                .bisector(Bipoint(self._points[2], self.vertex),
+                          new_endpoint_name=None)
+            try:
+                self._points[1].label_position = \
+                    tikz_approx_position(bisector.slope360)
+            except ZeroBipoint:
+                self._points[1].label_position = \
+                    tikz_approx_position(
+                        Bipoint(self.vertex,
+                                self._points[0].rotate(self.vertex, -90,
+                                                       rename=None)
+                                ).slope360)
+            if self.measure > 180:
+                self._points[1].label_position = \
+                    OPPOSITE_LABEL_POSITIONS[self._points[1].label_position]
 
-        # Endpoints labels positioning
-        direction = 1 if self.winding == 'anticlockwise' else -1
-        self.endpoints[0].label_position = \
-            tikz_approx_position(arm0.slope360 - direction * 55)
-        self.endpoints[1].label_position = \
-            tikz_approx_position(arm1.slope360 + direction * 55)
+            # Endpoints labels positioning
+            direction = 1 if self.winding == 'anticlockwise' else -1
+            self.endpoints[0].label_position = \
+                tikz_approx_position(arm0.slope360 - direction * 55)
+            self.endpoints[1].label_position = \
+                tikz_approx_position(arm1.slope360 + direction * 55)
 
     def __repr__(self):
         return 'Angle({}, {}, {})'\
             .format(self.points[0].name, self.points[1].name,
                     self.points[2].name)
+
+    @property
+    def three_dimensional(self):
+        return self._three_dimensional
 
     @property
     def vertex(self):
