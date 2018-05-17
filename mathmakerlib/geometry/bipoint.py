@@ -24,10 +24,11 @@ import math
 from mathmakerlib.exceptions import ZERO_OBJECTS_ERRORS
 from mathmakerlib.geometry.point import Point
 from mathmakerlib.calculus.number import Number
+from mathmakerlib.core.dimensional import Dimensional
 from mathmakerlib.calculus.tools import is_number, is_integer
 
 
-class Bipoint(object):
+class Bipoint(Dimensional):
     """
     A pair of Points. Gather methods common to LineSegment, Line, Vector.
 
@@ -54,6 +55,8 @@ class Bipoint(object):
         self._x = self.points[1].x - self.points[0].x
         self._y = self.points[1].y - self.points[0].y
         self._z = self.points[1].z - self.points[0].z
+        self._three_dimensional = tail.three_dimensional \
+            or head.three_dimensional
 
     def __repr__(self):
         return 'Bipoint({}; {})'.format(repr(self.tail), repr(self.head))
@@ -71,10 +74,14 @@ class Bipoint(object):
         if not isinstance(other, Bipoint):
             raise TypeError('Can only add a Bipoint to another Bipoint. '
                             'Found {} instead.'.format(repr(other)))
+        if self.three_dimensional:
+            zval = self.points[1].z + other.z
+        else:
+            zval = 'undefined'
         return Bipoint(self.points[0],
                        Point(self.points[1].x + other.x,
                              self.points[1].y + other.y,
-                             self.points[1].z + other.z,
+                             z=zval,
                              name=new_endpoint_name))
 
     def cross_product(self, other, new_endpoint_name='automatic'):
@@ -127,17 +134,25 @@ class Bipoint(object):
 
     def normalized(self, new_endpoint_name='automatic'):
         """Return the unit Bipoint colinear (to self)."""
+        if self.three_dimensional:
+            zval = self.points[0].z + self.z / self.length
+        else:
+            zval = 'undefined'
         return Bipoint(self.points[0],
                        Point(self.points[0].x + self.x / self.length,
                              self.points[0].y + self.y / self.length,
-                             self.points[0].z + self.z / self.length,
+                             z=zval,
                              name=new_endpoint_name))
 
     def midpoint(self, name='automatic'):
         """Bipoint's midpoint."""
+        if self.three_dimensional:
+            zval = (self.points[0].z + self.points[1].z) / 2
+        else:
+            zval = 'undefined'
         return Point((self.points[0].x + self.points[1].x) / 2,
                      (self.points[0].y + self.points[1].y) / 2,
-                     (self.points[0].z + self.points[1].z) / 2,
+                     z=zval,
                      name=name)
 
     def point_at(self, position, name='automatic'):
@@ -165,12 +180,16 @@ class Bipoint(object):
         elif k == 1:
             return self.points[1]
         else:
+            if self.three_dimensional:
+                zval = (self.points[0].z
+                        + (self.points[1].z - self.points[0].z) * k)
+            else:
+                zval = 'undefined'
             return Point((self.points[0].x
                           + (self.points[1].x - self.points[0].x) * k),
                          (self.points[0].y
                           + (self.points[1].y - self.points[0].y) * k),
-                         (self.points[0].z
-                          + (self.points[1].z - self.points[0].z) * k),
+                         z=zval,
                          name=name)
 
     @property
@@ -217,10 +236,13 @@ class Bipoint(object):
         y1 = self.points[1].y
         ystep = (y1 - y0) / n
         y_list = [y0 + (i + 1) * ystep for i in range(int(n - 1))]
-        z0 = self.points[0].z
-        z1 = self.points[1].z
-        zstep = (z1 - z0) / n
-        z_list = [z0 + (i + 1) * zstep for i in range(int(n - 1))]
+        if self.three_dimensional:
+            z0 = self.points[0].z
+            z1 = self.points[1].z
+            zstep = (z1 - z0) / n
+            z_list = [z0 + (i + 1) * zstep for i in range(int(n - 1))]
+        else:
+            z_list = ['undefined' for i in range(int(n - 1))]
         return [Point(x, y, z, prefix + str(i + 1))
                 for i, (x, y, z) in enumerate(zip(x_list, y_list, z_list))]
 
