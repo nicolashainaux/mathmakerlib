@@ -29,6 +29,7 @@ from .polygons import Triangle, RightTriangle, EquilateralTriangle
 from .polygons import IsoscelesTriangle
 from .polygons import Quadrilateral, Rectangle, Rhombus, Square
 from .angle import AngleDecoration, Angle, AnglesSet
+from .polyhedra import Polyhedron, RightCuboid
 
 __all__ = ['convex_hull',
            'Point', 'Bipoint', 'LineSegment', 'DividedLineSegment',
@@ -36,4 +37,5 @@ __all__ = ['convex_hull',
            'Triangle', 'RightTriangle', 'EquilateralTriangle',
            'IsoscelesTriangle',
            'Quadrilateral', 'Rectangle', 'Rhombus', 'Square',
-           'AngleDecoration', 'Angle', 'AnglesSet']
+           'AngleDecoration', 'Angle', 'AnglesSet',
+           'Polyhedron', 'RightCuboid']
