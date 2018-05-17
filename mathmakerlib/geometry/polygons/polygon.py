@@ -30,6 +30,7 @@ from mathmakerlib.core.drawable import Drawable, HasThickness, Colored
 from mathmakerlib.core.oriented import Oriented, check_winding
 from mathmakerlib.core.oriented import shoelace_formula
 from mathmakerlib.core.drawable import tikz_approx_position, tikz_options_list
+from mathmakerlib.core.dimensional import Dimensional
 from mathmakerlib.geometry.point import Point
 from mathmakerlib.geometry.linesegment import LineSegment
 from mathmakerlib.geometry.bipoint import Bipoint
@@ -43,7 +44,7 @@ POLYGONS_TYPES = {3: 'Triangle', 4: 'Quadrilateral', 5: 'Pentagon',
                   18: 'Octodecagon', 19: 'Enneadecagon', 20: 'Icosagon'}
 
 
-class Polygon(Drawable, Colored, HasThickness, Oriented):
+class Polygon(Drawable, Colored, HasThickness, Oriented, Dimensional):
     """Polygons."""
 
     def __init__(self, *vertices, name=None,
@@ -127,6 +128,7 @@ class Polygon(Drawable, Colored, HasThickness, Oriented):
                 self.winding = 'anticlockwise'
 
         self._vertices = []
+        self._three_dimensional = False
         for i, v in enumerate(vertices):
             if name is None:
                 vname = v.name
@@ -136,7 +138,13 @@ class Polygon(Drawable, Colored, HasThickness, Oriented):
                 lbl = 'default'
             else:
                 lbl = v.label
-            self._vertices.append(Point(v.x, v.y, name=vname, shape=v.shape,
+            if v.three_dimensional:
+                self._three_dimensional = True
+                zval = 0
+            else:
+                zval = 'undefined'
+            self._vertices.append(Point(v.x, v.y, z=zval, name=vname,
+                                        shape=v.shape,
                                         label=lbl, color=v.color,
                                         shape_scale=v.shape_scale))
         if rotation_angle:
@@ -204,9 +212,14 @@ class Polygon(Drawable, Colored, HasThickness, Oriented):
         return self._type
 
     def isobarycenter(self, name='automatic'):
+        if self.three_dimensional:
+            zval = mean([v.z for v in self.vertices])
+        else:
+            zval = 'undefined'
         return Point(mean([v.x for v in self.vertices]),
                      mean([v.y for v in self.vertices]),
-                     name)
+                     z=zval,
+                     name=name)
 
     @property
     def perimeter(self):
