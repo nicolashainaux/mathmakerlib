@@ -71,7 +71,7 @@ class Polyhedron(Colored, HasThickness, metaclass=ABCMeta):
         if name is not None:
             if not isinstance(name, str):
                 raise TypeError('name must be a str, found {} instead.'
-                                .format(name))
+                                .format(repr(name)))
             if not len(name) == len(vertices):
                 raise ValueError('A polyhedron\'s name must contain as many '
                                  'letters as the polyhedron\'s number of '
