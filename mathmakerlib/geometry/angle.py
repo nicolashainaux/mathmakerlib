@@ -31,6 +31,7 @@ from mathmakerlib.core.drawable import Colored, HasThickness, HasRadius
 from mathmakerlib.core.drawable import Labeled, HasArrowTips
 from mathmakerlib.core.drawable import tikz_options_list, Drawable
 from mathmakerlib.core.drawable import tikz_approx_position
+from mathmakerlib.core.dimensional import Dimensional
 from mathmakerlib.geometry.point import Point, OPPOSITE_LABEL_POSITIONS
 from mathmakerlib.geometry.bipoint import Bipoint
 from mathmakerlib.calculus.number import Number, is_number
@@ -217,7 +218,7 @@ class AngleDecoration(Labeled, Colored, HasThickness, HasRadius, HasArrowTips):
         return deco
 
 
-class Angle(Drawable, Oriented, HasThickness):
+class Angle(Drawable, Oriented, HasThickness, Dimensional):
 
     def __init__(self, point, vertex, point_or_measure, decoration=None,
                  mark_right=False, second_point_name='auto', label=None,
@@ -353,10 +354,6 @@ class Angle(Drawable, Oriented, HasThickness):
         return 'Angle({}, {}, {})'\
             .format(self.points[0].name, self.points[1].name,
                     self.points[2].name)
-
-    @property
-    def three_dimensional(self):
-        return self._three_dimensional
 
     @property
     def vertex(self):

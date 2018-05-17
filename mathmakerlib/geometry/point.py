@@ -25,6 +25,7 @@ from math import cos, sin, radians
 
 from mathmakerlib import mmlib_setup
 from mathmakerlib.core.drawable import Drawable, check_scale, tikz_options_list
+from mathmakerlib.core.dimensional import Dimensional
 from mathmakerlib.calculus.number import Number
 from mathmakerlib.calculus.tools import is_number
 
@@ -38,7 +39,7 @@ OPPOSITE_LABEL_POSITIONS = {'right': 'left',
                             'below right': 'above left'}
 
 
-class Point(Drawable):
+class Point(Drawable, Dimensional):
     names_in_use = set()
 
     @classmethod
@@ -195,10 +196,6 @@ class Point(Drawable):
         except (TypeError, InvalidOperation) as excinfo:
             raise TypeError('Expected a number as ordinate, found {} '
                             'instead.'.format(repr(value)))
-
-    @property
-    def three_dimensional(self):
-        return self._three_dimensional
 
     @property
     def z(self):

@@ -19,13 +19,9 @@
 # along with Mathmaker Lib; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-from .drawable import Drawable
-from .oriented import Oriented
-from .evaluable import Evaluable
-from .dimensional import Dimensional
-from .printable import Printable
-from .signed import Signed
-from .word import Word
 
-__all__ = ['Drawable', 'Oriented', 'Evaluable', 'Dimensional', 'Printable',
-           'Signed', 'Word']
+class Dimensional(object):
+
+    @property
+    def three_dimensional(self):
+        return self._three_dimensional
