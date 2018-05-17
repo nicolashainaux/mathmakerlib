@@ -70,8 +70,9 @@ class Point(Drawable, Dimensional):
 
         When not naming the keyword arguments, it is possible to not mention
         the applicate, z:
-        Point(3, 2, 'A') is equivalent to Point(3, 2, 0, 'A').
-        (but then, all subsequent keyword arguments must be named).
+        Point(3, 2, 'A') is almost equivalent to Point(3, 2, 0, 'A'):
+        - all subsequent keyword arguments must be named
+        - the first version is a 2D Point, the second version a 3D Point.
 
         :param x: the Point's abscissa
         :type x: anything that can be turned to a Number
@@ -282,7 +283,7 @@ class Point(Drawable, Dimensional):
         if axis is None:
             rx = (Δx * cosθ - Δy * sinθ + center.x).rounded(Number('1.000'))
             ry = (Δx * sinθ + Δy * cosθ + center.y).rounded(Number('1.000'))
-            rz = 0
+            rz = 'undefined'
         else:
             ux, uy, uz = axis.normalized().coordinates
             rotation_matrix = [[cosθ + (1 - cosθ) * ux ** 2,
