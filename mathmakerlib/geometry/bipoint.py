@@ -30,9 +30,19 @@ from mathmakerlib.calculus.tools import is_number, is_integer
 
 class Bipoint(Dimensional):
     """
-    A pair of Points. Gather methods common to LineSegment, Line, Vector.
+    A pair of Points. Gather methods common to LineSegment, Line, Ray.
 
-    This is quite close but not exactly the same as a euclidean vector.
+    This is quite close but not exactly the same as a euclidean vector
+    (see Vector). For instance, if:
+    A = Point(0, 0); B = Point(1, 0); C = Point(0, 1) and D = Point(1, 1),
+    then: Bipoint(A, B) != Bipoint(C, D)
+    but: Vector(A, B) == Vector(C, D)
+
+    Bipoints and Vectors have some similar properties, but Bipoints are always
+    "bound" to Points, whereas Vectors are not. Bipoints look like "bound"
+    Vectors but also have some extra methods like midpoint or point_at.
+
+    Also, note that contrary to LineSegments, Bipoint(A, B) != Bipoint(B, A).
 
     This class won't ever need to get Drawable, but can be instanciated.
     """
@@ -52,9 +62,9 @@ class Bipoint(Dimensional):
                 .format(type(self).__name__)
             raise ZERO_OBJECTS_ERRORS[type(self).__name__](msg)
         self._points = [tail, head]
-        self._x = self.points[1].x - self.points[0].x
-        self._y = self.points[1].y - self.points[0].y
-        self._z = self.points[1].z - self.points[0].z
+        self._Δx = self.points[1].x - self.points[0].x
+        self._Δy = self.points[1].y - self.points[0].y
+        self._Δz = self.points[1].z - self.points[0].z
         self._three_dimensional = tail.three_dimensional \
             or head.three_dimensional
 
@@ -75,27 +85,13 @@ class Bipoint(Dimensional):
             raise TypeError('Can only add a Bipoint to another Bipoint. '
                             'Found {} instead.'.format(repr(other)))
         if self.three_dimensional:
-            zval = self.points[1].z + other.z
+            zval = self.points[1].z + other.Δz
         else:
             zval = 'undefined'
         return Bipoint(self.points[0],
-                       Point(self.points[1].x + other.x,
-                             self.points[1].y + other.y,
+                       Point(self.points[1].x + other.Δx,
+                             self.points[1].y + other.Δy,
                              z=zval,
-                             name=new_endpoint_name))
-
-    def cross_product(self, other, new_endpoint_name='automatic'):
-        if not isinstance(other, Bipoint):
-            raise TypeError('Can only calculate the cross product of a '
-                            'Bipoint by another Bipoint. Found {} instead.'
-                            .format(repr(other)))
-        return Bipoint(self.points[0],
-                       Point(self.points[0].x
-                             + self.y * other.z - self.z * other.y,
-                             self.points[0].y
-                             + self.z * other.x - self.x * other.z,
-                             self.points[0].z
-                             + self.x * other.y - self.y * other.x,
                              name=new_endpoint_name))
 
     @property
@@ -111,25 +107,25 @@ class Bipoint(Dimensional):
         return self.points[1]
 
     @property
-    def x(self):
-        return self._x
+    def Δx(self):
+        return self._Δx
 
     @property
-    def y(self):
-        return self._y
+    def Δy(self):
+        return self._Δy
 
     @property
-    def z(self):
-        return self._z
+    def Δz(self):
+        return self._Δz
 
     @property
     def coordinates(self):
-        return (self._x, self._y, self._z)
+        return (self._Δx, self._Δy, self._Δz)
 
     @property
     def length(self):
         """Length between the two Points."""
-        return Number(self.x ** 2 + self.y ** 2 + self.z ** 2)\
+        return Number(self.Δx ** 2 + self.Δy ** 2 + self.Δz ** 2)\
             .sqrt()
 
     def normalized(self, new_endpoint_name='automatic'):

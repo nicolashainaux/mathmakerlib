@@ -52,6 +52,14 @@ class ZeroBipoint(MathmakerLibError):
         super().__init__(msg=msg)
 
 
+class ZeroVector(MathmakerLibError):
+    """In case of abusive use of a zero-length Vector."""
+    def __init__(self, msg=None):
+        if msg is None:
+            msg = 'Abusive use of a zero Vector.'
+        super().__init__(msg=msg)
+
+
 class ZeroLengthLineSegment(ZeroBipoint):
     """In case of abusive use of a zero-length LineSegment."""
     def __init__(self, msg=None):
@@ -61,4 +69,5 @@ class ZeroLengthLineSegment(ZeroBipoint):
 
 
 ZERO_OBJECTS_ERRORS = {'Bipoint': ZeroBipoint,
-                       'LineSegment': ZeroLengthLineSegment}
+                       'LineSegment': ZeroLengthLineSegment,
+                       'Vector': ZeroVector}
