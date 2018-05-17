@@ -77,7 +77,7 @@ class Rectangle(Quadrilateral):
             (v0, v1, v2, v3) = points
             self._length = Bipoint(v0, v1).length
             self._width = Bipoint(v1, v2).length
-        else:
+        else:  # 2D Rectangles only (so far)
             if start_vertex is None:
                 start_vertex = Point(0, 0)
             # Accepted type for width and length is number, will be checked at
