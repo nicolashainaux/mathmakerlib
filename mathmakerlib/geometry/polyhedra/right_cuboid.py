@@ -20,7 +20,7 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 from mathmakerlib.geometry.point import Point
-from mathmakerlib.geometry.rectangle import Rectangle
+from mathmakerlib.geometry.polygons.rectangle import Rectangle
 from mathmakerlib.geometry.polyhedra.polyhedron import Polyhedron
 
 
