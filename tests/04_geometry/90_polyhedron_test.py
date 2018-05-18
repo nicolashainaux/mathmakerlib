@@ -21,7 +21,7 @@
 
 import pytest
 
-from mathmakerlib.geometry import Point, Polyhedron, Triangle
+from mathmakerlib.geometry import Point, Polyhedron, Triangle, LineSegment
 
 
 class Tetrahedron(Polyhedron):
@@ -75,3 +75,21 @@ def test_instanciation():
     t = Tetrahedron(Point(0, 0, 0), Point(1, 0, 0), Point(0, 1, 0),
                     Point(0, 0, 1))
     assert t.name == 'ABCD'
+    assert t.label_vertices
+    assert not t.draw_vertices
+    assert t.vertices == [Point(0, 0, 0), Point(1, 0, 0), Point(0, 1, 0),
+                          Point(0, 0, 1)]
+    assert t.edges == [LineSegment(Point(0, 0, 0), Point(1, 0, 0)),
+                       LineSegment(Point(1, 0, 0), Point(0, 1, 0)),
+                       LineSegment(Point(0, 1, 0), Point(0, 0, 0)),
+                       LineSegment(Point(0, 1, 0), Point(0, 0, 1)),
+                       LineSegment(Point(0, 0, 1), Point(0, 0, 0)),
+                       LineSegment(Point(0, 0, 1), Point(1, 0, 0))]
+    assert t.faces == [Triangle(Point(0, 0, 0, 'A'), Point(1, 0, 0, 'B'),
+                                Point(0, 1, 0, 'C')),
+                       Triangle(Point(0, 0, 0, 'A'), Point(0, 1, 0, 'C'),
+                                Point(0, 0, 1, 'D')),
+                       Triangle(Point(0, 0, 0, 'A'), Point(0, 0, 1, 'D'),
+                                Point(1, 0, 0, 'B')),
+                       Triangle(Point(1, 0, 0, 'B'), Point(0, 1, 0, 'C'),
+                                Point(0, 0, 1, 'D'))]
