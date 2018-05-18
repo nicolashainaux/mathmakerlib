@@ -56,7 +56,7 @@ def test_instanciation_errors():
                     Point(0, 0, 1))
     assert str(excinfo.value) == 'Points used to build a Polyhedron must '\
         'be three-dimensional Points. Found a two-dimensional Point '\
-        'instead: Point A(0; 0).'
+        'instead: Point A(0, 0).'
     with pytest.raises(TypeError) as excinfo:
         Tetrahedron(Point(0, 0, 0), Point(1, 0, 0), Point(0, 1, 0),
                     Point(0, 0, 1), name=1234)
