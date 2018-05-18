@@ -935,7 +935,7 @@ def test_drawing_AnglesSets_errors():
     with pytest.raises(RuntimeError) as excinfo:
         S.drawn
     assert str(excinfo.value) == 'Two different Points have been provided ' \
-        'the same name in this list: A(0; 0); X1(6; 1); Y1(3; 5); X1(1; 6.5)'
+        'the same name in this list: A(0, 0); X1(6, 1); Y1(3, 5); X1(1, 6.5)'
 
 
 def test_drawing_AnglesSets_of_same_vertex():

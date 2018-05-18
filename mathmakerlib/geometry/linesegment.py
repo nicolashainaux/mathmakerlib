@@ -126,18 +126,6 @@ class LineSegment(Drawable, HasThickness, Bipoint):
             return False
 
     @property
-    def Δx(self):
-        return self._x
-
-    @property
-    def Δy(self):
-        return self._y
-
-    @property
-    def Δz(self):
-        return self._z
-
-    @property
     def label_endpoints(self):
         return self._label_endpoints
 

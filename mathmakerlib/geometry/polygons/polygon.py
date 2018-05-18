@@ -33,7 +33,7 @@ from mathmakerlib.core.drawable import tikz_approx_position, tikz_options_list
 from mathmakerlib.core.dimensional import Dimensional
 from mathmakerlib.geometry.point import Point
 from mathmakerlib.geometry.linesegment import LineSegment
-from mathmakerlib.geometry.bipoint import Bipoint
+from mathmakerlib.geometry.vector import Vector
 from mathmakerlib.geometry.angle import Angle
 
 POLYGONS_TYPES = {3: 'Triangle', 4: 'Quadrilateral', 5: 'Pentagon',
@@ -170,8 +170,8 @@ class Polygon(Drawable, Colored, HasThickness, Oriented, Dimensional):
                                 shifted_vertices):
             self._angles += [Angle(v2, v1, v0)]
         for i in range(len(self._vertices)):
-            bisector = Bipoint(shifted_vertices[i], self._vertices[i])\
-                .bisector(Bipoint(left_shifted_vertices[i], self._vertices[i]))
+            bisector = Vector(shifted_vertices[i], self._vertices[i])\
+                .bisector(Vector(left_shifted_vertices[i], self._vertices[i]))
             self._vertices[i].label_position = \
                 tikz_approx_position(bisector.slope360)
 

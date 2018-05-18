@@ -23,7 +23,7 @@ import pytest
 
 from mathmakerlib.geometry.tools import convex_hull
 from mathmakerlib.calculus import Number
-from mathmakerlib.geometry import Point, Bipoint
+from mathmakerlib.geometry import Point, Vector
 
 
 def test_instanciation_errors():
@@ -93,14 +93,14 @@ def test_automatic_naming():
 
 def test_str():
     """Check __str__ is correct."""
-    assert str(Point(0, 0, 'A')) == 'A(0; 0)'
-    assert str(Point(0, 0, 1, 'A')) == 'A(0; 0; 1)'
+    assert str(Point(0, 0, 'A')) == 'A(0, 0)'
+    assert str(Point(0, 0, 1, 'A')) == 'A(0, 0, 1)'
 
 
 def test_repr():
     """Check __repr__ is correct."""
-    assert repr(Point(0, 0, 'A')) == 'Point A(0; 0)'
-    assert repr(Point(0, 0, 2, 'A')) == 'Point A(0; 0; 2)'
+    assert repr(Point(0, 0, 'A')) == 'Point A(0, 0)'
+    assert repr(Point(0, 0, 2, 'A')) == 'Point A(0, 0, 2)'
 
 
 def test_equality():
@@ -144,14 +144,14 @@ def test_rotation3D():
     pointA = Point(1, 0, 0, 'A')
     with pytest.raises(TypeError) as excinfo:
         pointA.rotate(pointO, Number(30), pointO)
-    assert str(excinfo.value) == 'Expected either None or a Bipoint as '\
-        'axis, found Point O(0; 0; 0) instead.'
+    assert str(excinfo.value) == 'Expected either None or a Vector as '\
+        'axis, found Point O(0, 0, 0) instead.'
     pointZ = Point(0, 0, 1, 'Z')
-    vz = Bipoint(pointO, pointZ)
+    vz = Vector(pointO, pointZ)
     assert pointA.rotate(pointO, Number(30), vz).coordinates \
         == (Number('0.866'), Number('0.5'), Number('0'))
     pointY = Point(0, 1, 0, 'Y')
-    vy = Bipoint(pointO, pointY)
+    vy = Vector(pointO, pointY)
     assert pointA.rotate(pointO, Number(30), vy).coordinates \
         == (Number('0.866'), Number('0'), Number('-0.5'))
 

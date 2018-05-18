@@ -19,10 +19,9 @@
 # along with Mathmaker Lib; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-import math
-
-from mathmakerlib.exceptions import ZERO_OBJECTS_ERRORS
+from mathmakerlib.exceptions import ZERO_OBJECTS_ERRORS, ZeroVector
 from mathmakerlib.geometry.point import Point
+from mathmakerlib.geometry.vector import Vector
 from mathmakerlib.calculus.number import Number
 from mathmakerlib.core.dimensional import Dimensional
 from mathmakerlib.calculus.tools import is_number, is_integer
@@ -32,15 +31,13 @@ class Bipoint(Dimensional):
     """
     A pair of Points. Gather methods common to LineSegment, Line, Ray.
 
-    This is quite close but not exactly the same as a euclidean vector
-    (see Vector). For instance, if:
+    Bipoints are quite close to, but not completely the same as, bound vectors.
+    For free vectors, see Vector.
+
+    Notice that if:
     A = Point(0, 0); B = Point(1, 0); C = Point(0, 1) and D = Point(1, 1),
     then: Bipoint(A, B) != Bipoint(C, D)
     but: Vector(A, B) == Vector(C, D)
-
-    Bipoints and Vectors have some similar properties, but Bipoints are always
-    "bound" to Points, whereas Vectors are not. Bipoints look like "bound"
-    Vectors but also have some extra methods like midpoint or point_at.
 
     Also, note that contrary to LineSegments, Bipoint(A, B) != Bipoint(B, A).
 
@@ -48,14 +45,33 @@ class Bipoint(Dimensional):
     """
 
     def __init__(self, tail, head, allow_zero_length=True):
+        """
+        A Bipoint can be created from a pair of Points or a Point + a Vector.
+
+        :param tail: the first Point of the Bipoint
+        :type tail: Point
+        :param head: the second Point of the Bipoint. If a Vector is provided,
+        the second Point will be calculated using the first Point and this
+        Vector.
+        :type head: Point or Vector
+        :param allow_zero_length: whether zero length Bipoints are allowed or
+        not (default True).
+        :type allow_zero_length: bool
+        """
         if not isinstance(tail, Point):
-            raise TypeError('Both arguments should be Points, got a {} '
-                            'as first argument instead.'
-                            .format(type(tail)))
-        if not isinstance(head, Point):
-            raise TypeError('Both arguments should be Points, got a {} '
-                            'as second argument instead.'
-                            .format(type(head)))
+            raise TypeError('First argument must be a Point, found {} '
+                            'instead.'.format(repr(tail)))
+        if not isinstance(head, (Point, Vector)):
+            raise TypeError('Second argument must be a Point or a Vector, '
+                            'found {} instead.'.format(repr(head)))
+        self._three_dimensional = tail.three_dimensional \
+            or head.three_dimensional
+        if isinstance(head, Vector):
+            if self._three_dimensional:
+                zval = tail.z + head.z
+            else:
+                zval = 'undefined'
+            head = Point(tail.x + head.x, tail.y + head.y, zval)
         if (not allow_zero_length
             and tail.coordinates == head.coordinates):
             msg = 'Explicitly disallowed creation of a zero-length {}.'\
@@ -65,11 +81,9 @@ class Bipoint(Dimensional):
         self._Δx = self.points[1].x - self.points[0].x
         self._Δy = self.points[1].y - self.points[0].y
         self._Δz = self.points[1].z - self.points[0].z
-        self._three_dimensional = tail.three_dimensional \
-            or head.three_dimensional
 
     def __repr__(self):
-        return 'Bipoint({}; {})'.format(repr(self.tail), repr(self.head))
+        return 'Bipoint({}, {})'.format(repr(self.tail), repr(self.head))
 
     def __eq__(self, other):
         if isinstance(other, Bipoint):
@@ -128,17 +142,25 @@ class Bipoint(Dimensional):
         return Number(self.Δx ** 2 + self.Δy ** 2 + self.Δz ** 2)\
             .sqrt()
 
-    def normalized(self, new_endpoint_name='automatic'):
-        """Return the unit Bipoint colinear (to self)."""
-        if self.three_dimensional:
-            zval = self.points[0].z + self.z / self.length
-        else:
-            zval = 'undefined'
-        return Bipoint(self.points[0],
-                       Point(self.points[0].x + self.x / self.length,
-                             self.points[0].y + self.y / self.length,
-                             z=zval,
-                             name=new_endpoint_name))
+    @property
+    def slope(self):
+        """Slope of the pair of Points, from -180° to 180°."""
+        try:
+            return Vector(self).slope
+        except ZeroVector:
+            msg = 'Cannot calculate the slope of a zero-length {}.'\
+                .format(type(self).__name__)
+            raise ZERO_OBJECTS_ERRORS[type(self).__name__](msg)
+
+    @property
+    def slope360(self):
+        """Slope of the pair of Points, from 0° to 360°."""
+        try:
+            return Vector(self).slope360
+        except ZeroVector:
+            msg = 'Cannot calculate the slope of a zero-length {}.'\
+                .format(type(self).__name__)
+            raise ZERO_OBJECTS_ERRORS[type(self).__name__](msg)
 
     def midpoint(self, name='automatic'):
         """Bipoint's midpoint."""
@@ -188,30 +210,6 @@ class Bipoint(Dimensional):
                          z=zval,
                          name=name)
 
-    @property
-    def slope(self):
-        """Slope of the pair of Points, from -180° to 180°."""
-        if self.length == 0:
-            msg = 'Cannot calculate the slope of a zero-length {}.'\
-                .format(type(self).__name__)
-            raise ZERO_OBJECTS_ERRORS[type(self).__name__](msg)
-        theta = Number(
-            str(math.degrees(math.acos(self.x / self.length))))\
-            .rounded(Number('0.001'))
-        return theta if self.y >= 0 else -theta
-
-    @property
-    def slope360(self):
-        """Slope of the pair of Points, from 0° to 360°."""
-        if self.length == 0:
-            msg = 'Cannot calculate the slope of a zero-length {}.'\
-                .format(type(self).__name__)
-            raise ZERO_OBJECTS_ERRORS[type(self).__name__](msg)
-        theta = Number(
-            str(math.degrees(math.acos(self.x / self.length))))\
-            .rounded(Number('0.001'))
-        return theta if self.y >= 0 else Number('360') - theta
-
     def dividing_points(self, n=None, prefix='a'):
         """
         Create the list of Points that divide the Bipoint in n parts.
@@ -241,18 +239,3 @@ class Bipoint(Dimensional):
             z_list = ['undefined' for i in range(int(n - 1))]
         return [Point(x, y, z, prefix + str(i + 1))
                 for i, (x, y, z) in enumerate(zip(x_list, y_list, z_list))]
-
-    def bisector(self, other, new_endpoint_name='automatic'):
-        """
-        Return a bipoint colinear to the bisector of self and another bipoint.
-
-        :param arg: the other Bipoint
-        :type arg: Bipoint
-        """
-        if not isinstance(other, Bipoint):
-            raise TypeError('Can only create the bisector with another '
-                            'Bipoint. Found {} instead.'
-                            .format(repr(other)))
-        return self.normalized(new_endpoint_name=new_endpoint_name)\
-            .add(other.normalized(new_endpoint_name=new_endpoint_name),
-                 new_endpoint_name=new_endpoint_name)

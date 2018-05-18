@@ -67,12 +67,12 @@ def test_instanciation_errors(A, B):
     """Check LineSegment's instanciation exceptions."""
     with pytest.raises(TypeError) as excinfo:
         LineSegment('A', B)
-    assert str(excinfo.value) == 'Both arguments should be Points, got a ' \
-        '<class \'str\'> as first argument instead.'
+    assert str(excinfo.value) == 'First argument must be a Point, found '\
+        '\'A\' instead.'
     with pytest.raises(TypeError) as excinfo:
-        LineSegment(A, lambda x: 2 * x)
-    assert str(excinfo.value) == 'Both arguments should be Points, got a ' \
-        '<class \'function\'> as second argument instead.'
+        LineSegment(A, 'B')
+    assert str(excinfo.value) == 'Second argument must be a Point or a '\
+        'Vector, found \'B\' instead.'
     with pytest.raises(TypeError) as excinfo:
         LineSegment(A, B, '4 cm')
     assert str(excinfo.value) == 'Two Points are ' \
@@ -158,7 +158,7 @@ def test_some_setters(A, B):
 def test_repr(A, B):
     """Check __repr__ is correct."""
     assert repr(LineSegment(A, B)) \
-        == 'LineSegment(Point A(0; 0), Point B(1; 1))'
+        == 'LineSegment(Point A(0, 0), Point B(1, 1))'
 
 
 def test_equality(A, B, C):
@@ -183,7 +183,7 @@ def test_length(A, B, D):
 
 
 def test_slope(A, B, D, E, J):
-    """Check length is correct."""
+    """Check slope is correct."""
     s = LineSegment(A, D)
     assert s.slope360 == Number(0)
     assert s.slope == Number(0)

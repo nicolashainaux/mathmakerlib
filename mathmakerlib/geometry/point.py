@@ -127,24 +127,24 @@ class Point(Drawable, Dimensional):
 
     def __str__(self):
         if not self.three_dimensional:
-            s = '{}({}; {})'.format(self.name, self.x, self.y)
+            s = '{}({}, {})'.format(self.name, self.x, self.y)
         else:
-            s = '{}({}; {}; {})'.format(self.name, self.x, self.y, self.z)
+            s = '{}({}, {}, {})'.format(self.name, self.x, self.y, self.z)
         return s
 
     def __repr__(self):
         if not self.three_dimensional:
-            s = 'Point {}({}; {})'.format(self.name, self.x, self.y)
+            s = 'Point {}({}, {})'.format(self.name, self.x, self.y)
         else:
-            s = 'Point {}({}; {}; {})'.format(self.name,
+            s = 'Point {}({}, {}, {})'.format(self.name,
                                               self.x, self.y, self.z)
         return s
 
     def __hash__(self):
         if not self.three_dimensional:
-            s = 'Point ({}; {})'.format(self.x, self.y)
+            s = 'Point ({}, {})'.format(self.x, self.y)
         else:
-            s = 'Point ({}; {}; {})'.format(self.x, self.y, self.z)
+            s = 'Point ({}, {}, {})'.format(self.x, self.y, self.z)
         return hash(s)
 
     def __eq__(self, other):
@@ -257,7 +257,7 @@ class Point(Drawable, Dimensional):
         :type angle: a number
         :param axis: the axis of the rotation for 3D rotation. If left to None,
         the rotation happens around the center, in the plane.
-        :type axis: Bipoint
+        :type axis: Vector
         :param rename: if set to 'auto', will name the rotated Point after the
         original, adding a ' (like A.rotate(...) creates a Point A'). If set
         to None, keep the original name. Otherwise, the provided str will be
@@ -265,15 +265,15 @@ class Point(Drawable, Dimensional):
         :type rename: None or str
         :rtype: Point
         """
-        from mathmakerlib.geometry.bipoint import Bipoint
+        from mathmakerlib.geometry.vector import Vector
         if not isinstance(center, Point):
             raise TypeError('Expected a Point as rotation center, got {} '
                             'instead.'.format(type(center)))
         if not is_number(angle):
             raise TypeError('Expected a number as rotation angle, got {} '
                             'instead.'.format(type(angle)))
-        if not (axis is None or isinstance(axis, Bipoint)):
-            raise TypeError('Expected either None or a Bipoint as axis, '
+        if not (axis is None or isinstance(axis, Vector)):
+            raise TypeError('Expected either None or a Vector as axis, '
                             'found {} instead.'.format(repr(axis)))
         Δx = self.x - center.x
         Δy = self.y - center.y

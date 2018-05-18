@@ -24,7 +24,7 @@ from math import atan2, degrees
 
 from mathmakerlib import required, mmlib_setup
 from mathmakerlib.LaTeX import MATHEMATICAL_NOTATIONS
-from mathmakerlib.exceptions import ZeroBipoint
+from mathmakerlib.exceptions import ZeroVector
 from mathmakerlib.core.oriented import Oriented
 from mathmakerlib.core.oriented import check_winding, shoelace_formula
 from mathmakerlib.core.drawable import Colored, HasThickness, HasRadius
@@ -33,6 +33,7 @@ from mathmakerlib.core.drawable import tikz_options_list, Drawable
 from mathmakerlib.core.drawable import tikz_approx_position
 from mathmakerlib.core.dimensional import Dimensional
 from mathmakerlib.geometry.point import Point, OPPOSITE_LABEL_POSITIONS
+from mathmakerlib.geometry.vector import Vector
 from mathmakerlib.geometry.bipoint import Bipoint
 from mathmakerlib.calculus.number import Number, is_number
 
@@ -326,13 +327,13 @@ class Angle(Drawable, Oriented, HasThickness, Dimensional):
         # Only 2D: labels positioning
         if not self.three_dimensional:
             # Vertex' label positioning
-            bisector = Bipoint(self._points[0], self.vertex)\
-                .bisector(Bipoint(self._points[2], self.vertex),
+            bisector = Vector(self._points[0], self.vertex)\
+                .bisector(Vector(self._points[2], self.vertex),
                           new_endpoint_name=None)
             try:
                 self._points[1].label_position = \
                     tikz_approx_position(bisector.slope360)
-            except ZeroBipoint:
+            except ZeroVector:
                 self._points[1].label_position = \
                     tikz_approx_position(
                         Bipoint(self.vertex,

@@ -23,7 +23,6 @@ import math
 
 from mathmakerlib.exceptions import ZERO_OBJECTS_ERRORS
 from mathmakerlib.geometry.point import Point
-from mathmakerlib.geometry.bipoint import Bipoint
 from mathmakerlib.calculus.number import Number
 from mathmakerlib.core.dimensional import Dimensional
 from mathmakerlib.calculus.tools import is_number
@@ -31,7 +30,7 @@ from mathmakerlib.calculus.tools import is_number
 
 class Vector(Dimensional):
     """
-    A euclidean vector.
+    A euclidean (free) vector.
 
     Differences with Bipoints are discussed in Bipoint docstring.
 
@@ -41,14 +40,15 @@ class Vector(Dimensional):
     def __init__(self, *args, allow_zero_length=True):
         """
         It's possible to create a Vector giving:
-        - its coordinates x, y or x, y, z
         - a Bipoint: Bipoint(A, B)
         - a pair of Points: A, B
+        - its coordinates x, y or x, y, z
         """
         if not args or len(args) >= 4:
             raise TypeError('Vector() takes one, two or three arguments '
                             '({} given)'.format(len(args)))
         if len(args) == 1:
+            from mathmakerlib.geometry.bipoint import Bipoint
             if not isinstance(args[0], Bipoint):
                 raise TypeError('a Vector can be created from one Bipoint, '
                                 'found {} instead.'.format(repr(args[0])))
@@ -95,10 +95,10 @@ class Vector(Dimensional):
 
     def __repr__(self):
         if self.three_dimensional:
-            return 'Vector({}; {}; {})'.format(str(self.x), str(self.y),
+            return 'Vector({}, {}, {})'.format(str(self.x), str(self.y),
                                                str(self.z))
         else:
-            return 'Vector({}; {})'.format(str(self.x), str(self.y))
+            return 'Vector({}, {})'.format(str(self.x), str(self.y))
 
     def __eq__(self, other):
         if isinstance(other, Vector):
@@ -166,9 +166,7 @@ class Vector(Dimensional):
             return Vector(self.x / self.length,
                           self.y / self.length)
 
-    @property
-    def slope(self):
-        """Slope of the Vector, from -180° to 180°."""
+    def _slope(self, offset=0):
         if self.length == 0:
             msg = 'Cannot calculate the slope of a zero-length {}.'\
                 .format(type(self).__name__)
@@ -176,19 +174,17 @@ class Vector(Dimensional):
         theta = Number(
             str(math.degrees(math.acos(self.x / self.length))))\
             .rounded(Number('0.001'))
-        return theta if self.y >= 0 else -theta
+        return theta if self.y >= 0 else Number(offset) - theta
+
+    @property
+    def slope(self):
+        """Slope between the Vector and X-axis, from -180° to 180°."""
+        return self._slope()
 
     @property
     def slope360(self):
-        """Slope of the Vector, from 0° to 360°."""
-        if self.length == 0:
-            msg = 'Cannot calculate the slope of a zero-length {}.'\
-                .format(type(self).__name__)
-            raise ZERO_OBJECTS_ERRORS[type(self).__name__](msg)
-        theta = Number(
-            str(math.degrees(math.acos(self.x / self.length))))\
-            .rounded(Number('0.001'))
-        return theta if self.y >= 0 else Number('360') - theta
+        """Slope between the Vector and X-axis, from 0° to 360°."""
+        return self._slope(360)
 
     def bisector(self, other, new_endpoint_name='automatic'):
         """

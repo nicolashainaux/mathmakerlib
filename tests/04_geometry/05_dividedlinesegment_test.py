@@ -54,7 +54,7 @@ def test_repr():
     A = Point(0, 0, 'A')
     B = Point(10, 0, 'B')
     assert repr(DividedLineSegment(A, B, n=4, fill=3)) \
-        == 'DividedLineSegment(Point A(0; 0), Point B(10; 0), 3/4, LimeGreen)'
+        == 'DividedLineSegment(Point A(0, 0), Point B(10, 0), 3/4, LimeGreen)'
 
 
 def test_drawing():

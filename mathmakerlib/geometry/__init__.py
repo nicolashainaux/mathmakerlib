@@ -22,6 +22,7 @@
 from .tools import convex_hull
 from .point import Point
 from .bipoint import Bipoint
+from .vector import Vector
 from .linesegment import LineSegment
 from .dividedlinesegment import DividedLineSegment
 from .polygons import Polygon, shoelace_formula
@@ -32,7 +33,7 @@ from .angle import AngleDecoration, Angle, AnglesSet
 from .polyhedra import Polyhedron, RightCuboid
 
 __all__ = ['convex_hull',
-           'Point', 'Bipoint', 'LineSegment', 'DividedLineSegment',
+           'Point', 'Bipoint', 'Vector', 'LineSegment', 'DividedLineSegment',
            'Polygon', 'shoelace_formula',
            'Triangle', 'RightTriangle', 'EquilateralTriangle',
            'IsoscelesTriangle',
