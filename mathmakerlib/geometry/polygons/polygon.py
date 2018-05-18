@@ -140,7 +140,7 @@ class Polygon(Drawable, Colored, HasThickness, Oriented, Dimensional):
                 lbl = v.label
             if v.three_dimensional:
                 self._three_dimensional = True
-                zval = 0
+                zval = v.z
             else:
                 zval = 'undefined'
             self._vertices.append(Point(v.x, v.y, z=zval, name=vname,
@@ -170,10 +170,10 @@ class Polygon(Drawable, Colored, HasThickness, Oriented, Dimensional):
                                 shifted_vertices):
             self._angles += [Angle(v2, v1, v0)]
         for i in range(len(self._vertices)):
-            bisector = Vector(shifted_vertices[i], self._vertices[i])\
-                .bisector(Vector(left_shifted_vertices[i], self._vertices[i]))
+            u = Vector(shifted_vertices[i], self._vertices[i])
+            v = Vector(left_shifted_vertices[i], self._vertices[i])
             self._vertices[i].label_position = \
-                tikz_approx_position(bisector.slope360)
+                tikz_approx_position(u.bisector(v).slope360)
 
         if len(self._sides) in POLYGONS_TYPES:
             self._type = POLYGONS_TYPES[len(self._sides)]
