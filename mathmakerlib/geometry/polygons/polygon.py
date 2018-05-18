@@ -191,6 +191,19 @@ class Polygon(Drawable, Colored, HasThickness, Oriented, Dimensional):
     def __repr__(self):
         return '{} {}'.format(self.type, self.name)
 
+    def __eq__(self, other):
+        if isinstance(other, Polygon) and len(self.sides) == len(other.sides):
+            L = len(self.vertices)
+            for offset in range(L):
+                if all([self.vertices[(i + offset) % L] == other.vertices[i]
+                        for i in range(L)]):
+                    return True
+            for offset in range(L):
+                if all([self.vertices[(i + offset) % L] == other.vertices[-i]
+                        for i in range(L)]):
+                    return True
+        return False
+
     @property
     def vertices(self):
         return self._vertices

@@ -157,6 +157,16 @@ def test_instanciation(pointO, pointA, pointB, pointC):
     assert q.vertices[3] == Point(1, -1)
 
 
+def test_equality(pointO, pointA, pointB, pointC):
+    p = Polygon(pointO, pointA, pointB, pointC)
+    q = Polygon(pointA, pointB, pointC, pointO)
+    assert p == q
+    q = Polygon(pointC, pointA, pointB, pointO)
+    assert p != q
+    q = Polygon(pointC, pointB, pointA, pointO)
+    assert p == q
+
+
 def test_sides_labeling(pointO, pointA, pointB, pointC):
     """Check Polygon's sides' labeling."""
     p = Polygon(pointO, pointA, pointB, pointC)
