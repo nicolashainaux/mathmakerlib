@@ -197,6 +197,10 @@ def test_instanciation():
     assert α.winding == 'anticlockwise'
     assert α.arms[0] == Bipoint(A, X)
     assert α.arms[1] == Bipoint(A, Y)
+
+
+def test_measures_2D():
+    """Check Angle's measure."""
     Ω = Point(0, 0, 'Ω')
     X = Point(12, 2, 'X')
     Y = Point(-6, -1, 'Y')
@@ -204,8 +208,24 @@ def test_instanciation():
     X = Point(6, 1, 'X')
     Y = Point(-6, -1, 'Y')
     α = Angle(X, Ω, Y)
+    assert α.measure.rounded(Number('0.001')) == 180
     β = Angle(X, Ω, Point(1, -6, 'Z'))
     assert β.measure.rounded(Number('0.001')) == Number(270)
+
+
+def test_measures_3D():
+    """Check Angle's measure."""
+    Ω = Point(0, 0, 0, 'Ω')
+    A = Point(1, 0, 0, 'A')
+    B = Point(1, 1, 1, 'B')
+    α = Angle(A, Ω, B)
+    assert α.measure.rounded(Number('0.001')) == Number(54.736)
+    C = Point(-1, -1, -1, 'C')
+    β = Angle(B, Ω, C)
+    assert β.measure.rounded(Number('0.001')) == Number(180)
+    D = Point(0, 1, 1, 'D')
+    γ = Angle(A, Ω, D)
+    assert γ.measure.rounded(Number('0.001')) == Number(90)
 
 
 def test_naming():

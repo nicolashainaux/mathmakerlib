@@ -301,15 +301,22 @@ class Angle(Drawable, Oriented, HasThickness, Dimensional):
             self._three_dimensional = False
 
         # Measure of the angle:
-        p0 = Point(self._points[0].x - self._points[1].x,
-                   self._points[0].y - self._points[1].y,
-                   None)
-        p2 = Point(self._points[2].x - self._points[1].x,
-                   self._points[2].y - self._points[1].y,
-                   None)
-        α0 = Number(str(degrees(atan2(p0.y, p0.x))))
-        α2 = Number(str(degrees(atan2(p2.y, p2.x))))
-        self._measure = α2 - α0
+        if self._three_dimensional:
+            u = Vector(self.points[1], self.points[0])
+            v = Vector(self.points[1], self.points[2])
+            self._measure = Number(str(degrees(atan2(u.cross(v).length,
+                                                     u.dot(v)))))
+        else:  # 2D angles measure
+            p0 = Point(self._points[0].x - self._points[1].x,
+                       self._points[0].y - self._points[1].y,
+                       None)
+            p2 = Point(self._points[2].x - self._points[1].x,
+                       self._points[2].y - self._points[1].y,
+                       None)
+            α0 = Number(str(degrees(atan2(p0.y, p0.x))))
+            α2 = Number(str(degrees(atan2(p2.y, p2.x))))
+            self._measure = α2 - α0
+
         if self._measure < 0:
             self._measure += 360
 
