@@ -117,7 +117,6 @@ def test_instanciation(pointO, pointA, pointB, pointC):
     assert p.type == 'Quadrilateral'
     assert p.name == 'OABC'
     assert repr(p) == 'Quadrilateral OABC'
-    assert p.isobarycenter() == Point(2, Number('1.25'))
     pointA.label = 'U'
     p = Polygon(pointO, pointA, pointB, pointC, name='YOGA')
     assert p.name == 'YOGA'
@@ -155,6 +154,19 @@ def test_instanciation(pointO, pointA, pointB, pointC):
     assert q.vertices[1] == Point(3, 3)
     assert q.vertices[2] == Point(1, 3)
     assert q.vertices[3] == Point(1, -1)
+
+
+def test_isobarycenter2D(pointO, pointA, pointB, pointC):
+    """Check isobarycenter for 2D Polygons."""
+    p = Polygon(pointO, pointA, pointB, pointC)
+    assert p.isobarycenter() == Point(2, Number('1.25'))
+
+
+def test_isobarycenter3D():
+    """Check isobarycenter for 3D Polygons."""
+    p = Polygon(Point(0, 0, 0), Point(0, 1, 0),
+                Point(0, 1, 1), Point(0, 0, 1))
+    assert p.isobarycenter() == Point(0, 0.5, 0.5)
 
 
 def test_equality(pointO, pointA, pointB, pointC):
