@@ -38,3 +38,7 @@ def test_setup_errors():
         mmlib_setup.oblique_projection.RATIO = 'a'
     assert str(excinfo.value) == 'RATIO must be a '\
         'number, found \'a\' instead.'
+    with pytest.raises(TypeError) as excinfo:
+        mmlib_setup.points.DEFAULT_POSITION_PRECISION = 'a'
+    assert str(excinfo.value) == 'DEFAULT_POSITION_PRECISION must be a '\
+        'number, found <class \'str\'> instead.'
