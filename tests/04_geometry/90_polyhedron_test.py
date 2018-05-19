@@ -67,6 +67,16 @@ def test_instanciation_errors():
     assert str(excinfo.value) == 'A polyhedron\'s name must contain as many '\
         'letters as the polyhedron\'s number of vertices, yet found 5 '\
         'letters (name: \'ABCDE\') and 4 vertices.'
+    with pytest.raises(TypeError) as excinfo:
+        Tetrahedron(Point(0, 0, 0), Point(1, 0, 0), Point(0, 1, 0),
+                    Point(0, 0, 1), draw_vertices=1)
+    assert str(excinfo.value) == 'draw_vertices must be a boolean; ' \
+        'got <class \'int\'> instead.'
+    with pytest.raises(TypeError) as excinfo:
+        Tetrahedron(Point(0, 0, 0), Point(1, 0, 0), Point(0, 1, 0),
+                    Point(0, 0, 1), label_vertices=0)
+    assert str(excinfo.value) == 'label_vertices must be a boolean; ' \
+        'got <class \'int\'> instead.'
 
 
 def test_instanciation():
@@ -93,3 +103,9 @@ def test_instanciation():
                                 Point(1, 0, 0, 'B')),
                        Triangle(Point(1, 0, 0, 'B'), Point(0, 1, 0, 'C'),
                                 Point(0, 0, 1, 'D'))]
+    Point.reset_names()
+    t = Tetrahedron(Point(0, 0, 0), Point(1, 0, 0), Point(0, 1, 0),
+                    Point(0, 0, 1), name='SABC')
+    assert t.name == 'SABC'
+    t = Tetrahedron(Point(0, 0, 0, label='?'), Point(1, 0, 0), Point(0, 1, 0),
+                    Point(0, 0, 1), name='SABC')
