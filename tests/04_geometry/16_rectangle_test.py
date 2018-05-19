@@ -25,13 +25,20 @@ from mathmakerlib.calculus import Number, Unit
 from mathmakerlib.geometry import Point, Rectangle
 
 
-def test_instanciation():
+def test_default_instanciation():
     """Check Rectangle's instanciation."""
     r = Rectangle()
     assert r.type == 'Rectangle'
     assert r.width == Number(1)
     assert r.length == Number(2)
     assert r.area == Number(2)
+
+
+def test_instanciation_from_points():
+    """Check Rectangle's instanciation."""
+    r = Rectangle(Point(0, 0), Point(1, 0), Point(1, 1), Point(0, 1))
+    assert r.width == 1
+    assert r.length == 1
 
 
 def test_sides_labeling():
