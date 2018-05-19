@@ -21,8 +21,18 @@
 
 import pytest
 
-from mathmakerlib.geometry import Point
-from mathmakerlib.geometry.bipoint import Bipoint
+from mathmakerlib.geometry import Point, Bipoint, Vector
+
+
+def test_instanciation_from_point_and_vector_2D():
+    """Check Bipoints' instanciation."""
+    A = Point(0, 0, 'A')
+    v = Vector(1, 1)
+    assert Bipoint(A, v) == Bipoint(Point(0, 0), Point(1, 1))
+    A = Point(0, 0, 'A')
+    v = Vector(1, 1, 0)
+    assert Bipoint(A, v).three_dimensional
+    assert Bipoint(A, v) == Bipoint(Point(0, 0, 0), Point(1, 1, 0))
 
 
 def test_coordinates():
