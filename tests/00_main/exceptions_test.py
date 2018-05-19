@@ -23,7 +23,7 @@ import pytest
 
 from mathmakerlib.calculus import Number
 from mathmakerlib.exceptions import MathmakerLibError, StopCalculation
-from mathmakerlib.exceptions import ZeroBipoint
+from mathmakerlib.exceptions import ZeroBipoint, ZeroVector
 from mathmakerlib.exceptions import ZeroLengthLineSegment
 
 
@@ -47,6 +47,13 @@ def test_ZeroBipoint():
     with pytest.raises(ZeroBipoint) as excinfo:
         raise ZeroBipoint
     assert str(excinfo.value) == 'Abusive use of a zero Bipoint.'
+
+
+def test_ZeroVector():
+    """Check ZeroVector exception."""
+    with pytest.raises(ZeroVector) as excinfo:
+        raise ZeroVector
+    assert str(excinfo.value) == 'Abusive use of a zero Vector.'
 
 
 def test_ZeroLengthLineSegment():
