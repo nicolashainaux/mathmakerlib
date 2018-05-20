@@ -53,6 +53,8 @@ class RightCuboid(Polyhedron):
         :param color: the color of the RightCuboid's edges
         :type color: str
         """
+        if start_vertex is None:
+            start_vertex = Point(0, 0, 0)
         if not isinstance(start_vertex, Point):
             raise TypeError('start_vertex must be a Point; found {} instead.'
                             .format(repr(start_vertex)))
@@ -80,6 +82,7 @@ class RightCuboid(Polyhedron):
                             draw_vertices=draw_vertices,
                             label_vertices=label_vertices,
                             thickness=thickness, color=color)
+        self._width, self._depth, self._height = width, depth, height
 
     def _init_faces(self):
         """Faces of the RightCuboid."""
@@ -96,3 +99,15 @@ class RightCuboid(Polyhedron):
                        Rectangle(self.vertices[4], self.vertices[5],
                                  self.vertices[6], self.vertices[7]),
                        ]
+
+    @property
+    def width(self):
+        return self._width
+
+    @property
+    def depth(self):
+        return self._depth
+
+    @property
+    def height(self):
+        return self._height
