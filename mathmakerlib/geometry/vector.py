@@ -210,4 +210,7 @@ class Vector(Dimensional):
             raise TypeError('Can only create the bisector with another '
                             'Vector. Found {} instead.'
                             .format(repr(other)))
-        return self.normalized() + other.normalized()
+        result = self.normalized() + other.normalized()
+        if self.angle_measure(other) > 180:
+            result = -result
+        return result

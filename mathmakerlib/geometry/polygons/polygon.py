@@ -170,8 +170,10 @@ class Polygon(Drawable, Colored, HasThickness, Oriented, Dimensional):
                                 shifted_vertices):
             self._angles += [Angle(v2, v1, v0)]
         for i in range(len(self._vertices)):
-            u = Vector(shifted_vertices[i], self._vertices[i])
-            v = Vector(left_shifted_vertices[i], self._vertices[i])
+            u = Vector(self._vertices[i], left_shifted_vertices[i])
+            v = Vector(self._vertices[i], shifted_vertices[i])
+            if self.winding == 'clockwise':
+                u, v = v, u
             self._vertices[i].label_position = \
                 tikz_approx_position(u.bisector(v).slope360)
 

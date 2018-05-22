@@ -159,6 +159,7 @@ def test_bisector():
     j = Vector(Ω, J)
     a = Vector(Ω, A)
     assert i.bisector(j) == a
+    assert j.bisector(i) == -a
     k = Vector(Ω, Point(2, 0))
     assert k.bisector(j) == a
     with pytest.raises(TypeError) as excinfo:

@@ -347,9 +347,6 @@ class Angle(Drawable, Oriented, HasThickness, Dimensional):
                                 self._points[0].rotate(self.vertex, -90,
                                                        rename=None)
                                 ).slope360)
-            if self.measure > 180:
-                self._points[1].label_position = \
-                    OPPOSITE_LABEL_POSITIONS[self._points[1].label_position]
 
             # Endpoints labels positioning
             direction = 1 if self.winding == 'anticlockwise' else -1
