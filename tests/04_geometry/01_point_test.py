@@ -23,7 +23,7 @@ import pytest
 
 from mathmakerlib.geometry.tools import convex_hull
 from mathmakerlib.calculus import Number
-from mathmakerlib.geometry import Point, Vector
+from mathmakerlib.geometry import Point, Vector, LineSegment
 
 
 def test_instanciation_errors():
@@ -238,3 +238,10 @@ def test_convex_hull():
     assert Point(0.5, 0.5) not in cv
     cv = convex_hull(Point(0, 0))
     assert cv == [Point(0, 0)]
+
+
+def test_belongs_to():
+    s = LineSegment(Point(0, 0), Point(4, 4))
+    assert Point(1, 1).belongs_to(s)
+    assert not Point(3, 4).belongs_to(s)
+    assert not Point(5, 5).belongs_to(s)

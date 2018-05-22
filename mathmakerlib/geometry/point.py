@@ -316,6 +316,16 @@ class Point(Drawable, Dimensional):
             rname = rename
         return Point(rx, ry, rz, rname)
 
+    def belongs_to(self, other):
+        """Check if the Point belongs to a LineSegment."""
+        from mathmakerlib.geometry import LineSegment
+        if not isinstance(other, LineSegment):
+            raise TypeError('Argument \'other\' must be a LineSegment. '
+                            'Found {} instead.'.format(repr(other)))
+        d1 = LineSegment(self, other.endpoints[0]).length
+        d2 = LineSegment(self, other.endpoints[1]).length
+        return d1 + d2 == other.length
+
     def tikz_declaring_comment(self):
         """
         Replace plural by singular in the declaring comment.
