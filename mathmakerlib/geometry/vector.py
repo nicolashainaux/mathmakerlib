@@ -186,6 +186,10 @@ class Vector(Dimensional):
         """Slope between the Vector and X-axis, from 0° to 360°."""
         return self._slope(360)
 
+    def angle_measure(self, other):
+        """Angle between the Vector and another Vector."""
+        return other.slope360 - self.slope360
+
     def bisector(self, other, new_endpoint_name='automatic'):
         """
         Return the bisector vector of self and another vector.

@@ -142,7 +142,7 @@ def test_normalized():
 
 
 def test_bisector():
-    """Check bisector of two bipoints."""
+    """Check bisector of two Vectors."""
     Ω = Point(0, 0)
     pointI = Point(1, 0)
     J = Point(0, 1)
@@ -157,3 +157,13 @@ def test_bisector():
         k.bisector('j')
     assert str(excinfo.value) == 'Can only create the bisector with another ' \
         'Vector. Found \'j\' instead.'
+
+
+def test_angle_measure():
+    """Check angle measure between two Vectors."""
+    Ω = Point(0, 0)
+    pointI = Point(1, 0)
+    A = Point(1, 1)
+    i = Vector(Ω, pointI)
+    a = Vector(Ω, A)
+    assert i.angle_measure(a) == 45
