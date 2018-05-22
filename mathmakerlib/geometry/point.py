@@ -318,6 +318,11 @@ class Point(Drawable, Dimensional):
 
     def belongs_to(self, other):
         """Check if the Point belongs to a LineSegment."""
+        # This could be extended to Lines and Rays, later.
+        # Then check if self is different from the 2 known Points, and
+        # if it belongs to the Line, then:
+        # (x - x1) / (x2 - x1) = (y - y1) / (y2 - y1)
+        # also, if three_dimensional, all this = (z - z1) / (z2 - z1)
         from mathmakerlib.geometry import LineSegment
         if not isinstance(other, LineSegment):
             raise TypeError('Argument \'other\' must be a LineSegment. '
