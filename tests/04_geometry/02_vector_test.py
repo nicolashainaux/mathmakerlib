@@ -78,6 +78,14 @@ def test_repr():
     assert repr(u) == 'Vector(2, 5, 0)'
 
 
+def test_neg():
+    """Check Vector.__neg__()"""
+    u = Vector(2, 7)
+    assert -u == Vector(-2, -7)
+    u = Vector(-1, 8, -5)
+    assert -u == Vector(1, -8, 5)
+
+
 def test_equality():
     """Check __eq__() is correct."""
     assert Vector(1, 1) != Bipoint(Point(0, 0), Point(1, 1))

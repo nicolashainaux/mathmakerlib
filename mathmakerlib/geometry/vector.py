@@ -119,6 +119,12 @@ class Vector(Dimensional):
             return Vector(self.x + other.x,
                           self.y + other.y)
 
+    def __neg__(self):
+        if self.three_dimensional:
+            return Vector(-self.x, -self.y, -self.z)
+        else:
+            return Vector(-self.x, -self.y)
+
     def dot(self, other):
         if not isinstance(other, Vector):
             raise TypeError('Can only calculate the dot product of a '
