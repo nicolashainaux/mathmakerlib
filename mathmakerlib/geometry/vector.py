@@ -188,7 +188,10 @@ class Vector(Dimensional):
 
     def angle_measure(self, other):
         """Angle between the Vector and another Vector."""
-        return other.slope360 - self.slope360
+        result = other.slope360 - self.slope360
+        if result < 0:
+            result += 360
+        return result
 
     def bisector(self, other, new_endpoint_name='automatic'):
         """

@@ -167,3 +167,4 @@ def test_angle_measure():
     i = Vector(Ω, pointI)
     a = Vector(Ω, A)
     assert i.angle_measure(a) == 45
+    assert a.angle_measure(i) == 315
