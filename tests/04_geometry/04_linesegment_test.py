@@ -24,6 +24,7 @@ from decimal import Decimal
 
 from mathmakerlib.exceptions import ZeroLengthLineSegment
 from mathmakerlib.core.drawable import THICKNESS_VALUES
+from mathmakerlib.mmlib_setup import DASHPATTERN_VALUES
 from mathmakerlib.calculus import Number
 from mathmakerlib.geometry import Point, LineSegment
 
@@ -155,6 +156,17 @@ def test_some_setters(A, B):
         'this object. Otherwise, first explicitely unlock the LineSegment.'
 
 
+def test_dashpattern(A, B):
+    """Check dashpattern property."""
+    s = LineSegment(A, B)
+    assert s.dashpattern == 'solid'
+    with pytest.raises(ValueError) as excinfo:
+        s.dashpattern = 'undefined'
+    assert str(excinfo.value) == 'Incorrect dashpattern value: '\
+        '\'undefined\'. Available values belong to: {}.'\
+        .format(DASHPATTERN_VALUES)
+
+
 def test_repr(A, B):
     """Check __repr__ is correct."""
     assert repr(LineSegment(A, B)) \
@@ -260,6 +272,29 @@ def test_dividing_points():
         p = AB.dividing_points(n='4')
     with pytest.raises(ValueError):
         p = AB.dividing_points(n=0)
+
+
+def test_draw_dashpattern(A, E):
+    """Check drawing is correct."""
+    ls = LineSegment(A, E, dashpattern='dashed')
+    assert ls.drawn == r"""
+\begin{tikzpicture}
+% Declare Points
+\coordinate (A) at (0,0);
+\coordinate (E) at (1,0);
+
+% Draw Points
+\draw (A) node[scale=0.67] {$\times$};
+\draw (E) node[scale=0.67] {$\times$};
+
+% Draw Line Segment
+\draw[thick, dashed] (A) -- (E);
+
+% Label Points
+\draw (A) node[left] {A};
+\draw (E) node[right] {E};
+\end{tikzpicture}
+"""
 
 
 def test_drawing_without_linesegment_labels(A, E):

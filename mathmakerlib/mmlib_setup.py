@@ -33,6 +33,12 @@ from decimal import Decimal
 from mathmakerlib.core.oriented import check_winding
 from mathmakerlib.calculus.number import Number, is_number
 
+DASHPATTERN_VALUES = ['solid', 'dotted', 'densely dotted', 'loosely dotted',
+                      'dashed', 'densely dashed', 'loosely dashed',
+                      'dash dot', 'densely dash dot', 'loosely dash dot',
+                      'dash dot dot', 'densely dash dot dot',
+                      'loosely dash dot dot']
+
 
 class PolygonsSetup(object):
 
@@ -113,6 +119,7 @@ class ObliqueProjectionSetup(object):
     def __init__(self):
         self.RECEDING_AXIS_ANGLE = Number(45)
         self.RATIO = Number(0.67)
+        self._DASHPATTERN = 'dashed'
 
     @property
     def RECEDING_AXIS_ANGLE(self):
@@ -135,6 +142,20 @@ class ObliqueProjectionSetup(object):
             raise TypeError('RATIO must be a number, found {} instead.'
                             .format(repr(value)))
         self._RATIO = value
+
+    @property
+    def DASHPATTERN(self):
+        return self._DASHPATTERN
+
+    @DASHPATTERN.setter
+    def DASHPATTERN(self, value):
+        if value in DASHPATTERN_VALUES:
+            self._dashpattern = value
+        else:
+            raise ValueError('Incorrect dashpattern value: \'{}\'. '
+                             'Available values belong to: {}.'
+                             .format(str(value), str(DASHPATTERN_VALUES)))
+        self._DASHPATTERN = value
 
 
 SUPPORTED_LANGUAGES = ['en', 'en_US', 'en_GB', 'fr', 'fr_FR']

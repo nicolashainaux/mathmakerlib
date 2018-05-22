@@ -19,6 +19,7 @@
 # along with Mathmaker Lib; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
+from mathmakerlib.mmlib_setup import DASHPATTERN_VALUES
 from mathmakerlib.exceptions import ZeroLengthLineSegment
 from mathmakerlib.core.drawable import check_scale, Drawable, HasThickness
 from mathmakerlib.core.drawable import tikz_approx_position, tikz_options_list
@@ -31,10 +32,11 @@ LABEL_MASK_VALUES = [None, ' ', '?']
 
 class LineSegment(Drawable, HasThickness, Bipoint):
 
-    def __init__(self, *points, thickness='thick', label=None, label_mask=None,
-                 label_winding='anticlockwise', label_position=None,
-                 label_scale=None, mark=None, mark_scale=Number('0.5'),
-                 draw_endpoints=True, label_endpoints=True, color=None,
+    def __init__(self, *points, thickness='thick', dashpattern='solid',
+                 label=None, label_mask=None, label_winding='anticlockwise',
+                 label_position=None, label_scale=None, mark=None,
+                 mark_scale=Number('0.5'), color=None,
+                 draw_endpoints=True, label_endpoints=True,
                  locked_label=False, allow_zero_length=True,
                  sloped_label=True):
         """
@@ -90,6 +92,7 @@ class LineSegment(Drawable, HasThickness, Bipoint):
         self.label_mask = label_mask
         self.label_scale = label_scale
         self.thickness = thickness
+        self.dashpattern = dashpattern
         self.draw_endpoints = draw_endpoints
         self.sloped_label = sloped_label
         self.label_winding = label_winding
@@ -124,6 +127,19 @@ class LineSegment(Drawable, HasThickness, Bipoint):
                     or (self.tail == other.head and self.head == other.tail))
         else:
             return False
+
+    @property
+    def dashpattern(self):
+        return self._dashpattern
+
+    @dashpattern.setter
+    def dashpattern(self, value):
+        if value in DASHPATTERN_VALUES:
+            self._dashpattern = value
+        else:
+            raise ValueError('Incorrect dashpattern value: \'{}\'. '
+                             'Available values belong to: {}.'
+                             .format(str(value), str(DASHPATTERN_VALUES)))
 
     @property
     def label_endpoints(self):
@@ -295,7 +311,10 @@ class LineSegment(Drawable, HasThickness, Bipoint):
             return [ls_draw_comment]
 
     def _tikz_draw_options(self):
-        return [self.thickness, self.color]
+        output = [self.thickness, self.color]
+        if self.dashpattern != 'solid':
+            output.append(self.dashpattern)
+        return output
 
     def _tikz_draw_endpoints(self):
         if self.draw_endpoints:
