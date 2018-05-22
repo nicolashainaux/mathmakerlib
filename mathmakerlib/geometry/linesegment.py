@@ -128,6 +128,17 @@ class LineSegment(Drawable, HasThickness, Bipoint):
         else:
             return False
 
+    def __hash__(self):
+        points = sorted(set(self.endpoints),
+                        key=lambda point: point.coordinates)
+        if self.three_dimensional:
+            s = 'Point ({}, {}, {}) - Point ({}, {}, {})'\
+                .format(*points[0].coordinates, *points[1].coordinates)
+        else:
+            s = 'Point ({}, {}) - Point ({}, {})'\
+                .format(points[0].x, points[0].y, points[1].x, points[1].y)
+        return hash(s)
+
     @property
     def dashpattern(self):
         return self._dashpattern
