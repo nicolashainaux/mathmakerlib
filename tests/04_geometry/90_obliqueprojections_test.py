@@ -213,3 +213,147 @@ def test_bottomright_projection(rc):
 \draw (D) node[above] {D};
 \end{tikzpicture}
 """
+
+
+def test_topright_edges_labeling(rc):
+    """Check edges' labeling for a top-right projection."""
+    rc.setup_labels((4, 7, 25))
+    assert ObliqueProjection(rc).drawn == r"""
+\begin{tikzpicture}
+% Declare Points
+\coordinate (F) at (0,0);
+\coordinate (L) at (4,0);
+\coordinate (A) at (4,3);
+\coordinate (V) at (0,3);
+\coordinate (O) at (0.948,0.948);
+\coordinate (R) at (4.948,0.948);
+\coordinate (E) at (4.948,3.948);
+\coordinate (D) at (0.948,3.948);
+
+% Draw Oblique Projection of RightCuboid
+\draw[thick] (F) -- (L) node[midway, below] {4};
+\draw[thick] (L) -- (A);
+\draw[thick] (A) -- (V);
+\draw[thick] (V) -- (F);
+\draw[thick] (L) -- (R) node[midway, below right] {7};
+\draw[thick, dashed] (R) -- (O);
+\draw[thick, dashed] (O) -- (F);
+\draw[thick] (A) -- (E);
+\draw[thick] (E) -- (R) node[midway, right] {25};
+\draw[thick] (V) -- (D);
+\draw[thick] (D) -- (E);
+\draw[thick, dashed] (O) -- (D);
+
+
+% Label Points
+
+\end{tikzpicture}
+"""
+
+
+def test_topleft_edges_labeling(rc):
+    """Check edges' labeling for a top-left projection."""
+    rc.setup_labels((4, 7, 25))
+    assert ObliqueProjection(rc, direction='top-left').drawn == r"""
+\begin{tikzpicture}
+% Declare Points
+\coordinate (F) at (0,0);
+\coordinate (L) at (4,0);
+\coordinate (A) at (4,3);
+\coordinate (V) at (0,3);
+\coordinate (O) at (-0.948,0.948);
+\coordinate (R) at (3.052,0.948);
+\coordinate (E) at (3.052,3.948);
+\coordinate (D) at (-0.948,3.948);
+
+% Draw Oblique Projection of RightCuboid
+\draw[thick] (F) -- (L) node[midway, below] {4};
+\draw[thick] (L) -- (A);
+\draw[thick] (A) -- (V);
+\draw[thick] (V) -- (F);
+\draw[thick, dashed] (L) -- (R);
+\draw[thick, dashed] (R) -- (O);
+\draw[thick] (O) -- (F) node[midway, below left] {7};
+\draw[thick] (A) -- (E);
+\draw[thick, dashed] (E) -- (R);
+\draw[thick] (V) -- (D);
+\draw[thick] (D) -- (E);
+\draw[thick] (O) -- (D) node[midway, left] {25};
+
+
+% Label Points
+
+\end{tikzpicture}
+"""
+
+
+def test_bottomleft_edges_labeling(rc):
+    """Check edges' labeling for a bottom-left projection."""
+    rc.setup_labels((4, 7, 25))
+    assert ObliqueProjection(rc, direction='bottom-left').drawn == r"""
+\begin{tikzpicture}
+% Declare Points
+\coordinate (F) at (0,0);
+\coordinate (L) at (4,0);
+\coordinate (A) at (4,3);
+\coordinate (V) at (0,3);
+\coordinate (O) at (-0.948,-0.948);
+\coordinate (R) at (3.052,-0.948);
+\coordinate (E) at (3.052,2.052);
+\coordinate (D) at (-0.948,2.052);
+
+% Draw Oblique Projection of RightCuboid
+\draw[thick] (F) -- (L);
+\draw[thick] (L) -- (A) node[midway, right] {25};
+\draw[thick] (A) -- (V) node[midway, above] {4};
+\draw[thick] (V) -- (F);
+\draw[thick] (L) -- (R) node[midway, below right] {7};
+\draw[thick] (R) -- (O);
+\draw[thick] (O) -- (F);
+\draw[thick, dashed] (A) -- (E);
+\draw[thick, dashed] (E) -- (R);
+\draw[thick] (V) -- (D);
+\draw[thick, dashed] (D) -- (E);
+\draw[thick] (O) -- (D);
+
+
+% Label Points
+
+\end{tikzpicture}
+"""
+
+
+def test_bottomright_edges_labeling(rc):
+    """Check edges' labeling for a bottom-right projection."""
+    rc.setup_labels((4, 7, 25))
+    assert ObliqueProjection(rc, direction='bottom-right').drawn == r"""
+\begin{tikzpicture}
+% Declare Points
+\coordinate (F) at (0,0);
+\coordinate (L) at (4,0);
+\coordinate (A) at (4,3);
+\coordinate (V) at (0,3);
+\coordinate (O) at (0.948,-0.948);
+\coordinate (R) at (4.948,-0.948);
+\coordinate (E) at (4.948,2.052);
+\coordinate (D) at (0.948,2.052);
+
+% Draw Oblique Projection of RightCuboid
+\draw[thick] (F) -- (L);
+\draw[thick] (L) -- (A);
+\draw[thick] (A) -- (V) node[midway, above] {4};
+\draw[thick] (V) -- (F) node[midway, left] {25};
+\draw[thick] (L) -- (R);
+\draw[thick] (R) -- (O);
+\draw[thick] (O) -- (F) node[midway, below left] {7};
+\draw[thick] (A) -- (E);
+\draw[thick] (E) -- (R);
+\draw[thick, dashed] (V) -- (D);
+\draw[thick, dashed] (D) -- (E);
+\draw[thick, dashed] (O) -- (D);
+
+
+% Label Points
+
+\end{tikzpicture}
+"""

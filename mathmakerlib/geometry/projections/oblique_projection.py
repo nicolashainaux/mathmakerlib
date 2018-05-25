@@ -84,6 +84,32 @@ class ObliqueProjection(Drawable):
                              'Found {} instead.'
                              .format(mmlib_setup.DIRECTION_VALUES,
                                      repr(direction)))
+        self._direction = direction
+
+        # Setup the edges' labels
+        if object3D.labels is not None:
+            edges_to_label = object3D.edges_to_label['oblique_projection:{}'
+                                                     .format(direction)]
+            w_coord, d_coord, h_coord = edges_to_label
+            object3D.faces[w_coord[0]].sides[w_coord[1]].unlock_label()
+            object3D.faces[w_coord[0]].sides[w_coord[1]].label_winding = \
+                w_coord[2]
+            object3D.faces[w_coord[0]].sides[w_coord[1]].label = \
+                object3D.labels[0]
+            object3D.faces[w_coord[0]].sides[w_coord[1]].lock_label()
+            object3D.faces[d_coord[0]].sides[d_coord[1]].unlock_label()
+            object3D.faces[d_coord[0]].sides[d_coord[1]].label_winding = \
+                d_coord[2]
+            object3D.faces[d_coord[0]].sides[d_coord[1]].label = \
+                object3D.labels[1]
+            object3D.faces[d_coord[0]].sides[d_coord[1]].lock_label()
+            object3D.faces[h_coord[0]].sides[h_coord[1]].unlock_label()
+            object3D.faces[h_coord[0]].sides[h_coord[1]].label_winding = \
+                h_coord[2]
+            object3D.faces[h_coord[0]].sides[h_coord[1]].label = \
+                object3D.labels[2]
+            object3D.faces[h_coord[0]].sides[h_coord[1]].lock_label()
+
         matrix = {'top-right': [[1, 0, k * sin(radians(α))],
                                 [0, 1, k * cos(radians(α))]],
                   'bottom-right': [[1, 0, k * sin(radians(α))],
@@ -127,7 +153,9 @@ class ObliqueProjection(Drawable):
                                              allow_zero_length=False,
                                              locked_label=True,
                                              label=edge.label,
-                                             label_mask=edge.label_mask)
+                                             label_mask=edge.label_mask,
+                                             label_winding=edge.label_winding,
+                                             sloped_label=False)
             except ZeroBipoint:
                 pass
             else:

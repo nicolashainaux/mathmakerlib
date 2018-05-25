@@ -83,6 +83,8 @@ class RightCuboid(Polyhedron):
                             label_vertices=label_vertices,
                             thickness=thickness, color=color)
         self._width, self._depth, self._height = width, depth, height
+        self._labels = None
+        self._edges_to_label = {}
 
     def _init_faces(self):
         """Faces of the RightCuboid."""
@@ -100,6 +102,38 @@ class RightCuboid(Polyhedron):
                                  self.vertices[6], self.vertices[7]),
                        ]
 
+    def setup_labels(self, labels=None):
+        """
+        Easily setup RightCuboid's width, depth and height labels.
+
+        :param labels: the labels to store: (width, depth, height)
+        :type labels: tuple or list
+        """
+        if not (isinstance(labels, (tuple, list)) and len(labels) == 3):
+            raise TypeError('labels argument must be a list or tuple, '
+                            'of length 3. Found {} instead.'
+                            .format(repr(labels)))
+        self._labels = labels
+        # These coordinates represent the face number, then the edge number.
+        # Depends on _init_faces()
+        self._edges_to_label = {'oblique_projection:top-right':
+                                [(0, 0, 'anticlockwise'),
+                                 (1, 1, 'anticlockwise'),
+                                 (2, 2, 'clockwise')],
+                                'oblique_projection:top-left':
+                                [(0, 0, 'anticlockwise'),
+                                 (1, 3, 'anticlockwise'),
+                                 (4, 2, 'clockwise')],
+                                'oblique_projection:bottom-left':
+                                [(0, 2, 'anticlockwise'),
+                                 (1, 1, 'clockwise'),
+                                 (0, 1, 'anticlockwise')],
+                                'oblique_projection:bottom-right':
+                                [(0, 2, 'anticlockwise'),
+                                 (1, 3, 'clockwise'),
+                                 (0, 3, 'anticlockwise')],
+                                }
+
     @property
     def width(self):
         return self._width
@@ -111,3 +145,11 @@ class RightCuboid(Polyhedron):
     @property
     def height(self):
         return self._height
+
+    @property
+    def labels(self):
+        return self._labels
+
+    @property
+    def edges_to_label(self):
+        return self._edges_to_label
