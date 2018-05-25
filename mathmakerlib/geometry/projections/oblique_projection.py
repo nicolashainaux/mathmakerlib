@@ -98,7 +98,10 @@ class ObliqueProjection(Drawable):
                                              draw_endpoints=draw_vertices,
                                              label_endpoints=label_vertices,
                                              color=color,
-                                             allow_zero_length=False)
+                                             allow_zero_length=False,
+                                             locked_label=True,
+                                             label=edge.label,
+                                             label_mask=edge.label_mask)
             except ZeroBipoint:
                 pass
             else:
