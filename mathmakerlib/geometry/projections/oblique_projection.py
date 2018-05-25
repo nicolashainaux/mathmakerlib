@@ -148,10 +148,6 @@ class ObliqueProjection(Drawable):
                 tikz_approx_position(u.bisector(v).slope360)
 
     @property
-    def matrix(self):
-        return self._matrix
-
-    @property
     def edges(self):
         return self._edges
 
