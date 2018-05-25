@@ -40,8 +40,9 @@ class ObliqueProjection(Drawable):
     Introduced in version 0.7, supporting only Polyhedra projections yet.
     """
 
-    def __init__(self, object3D=None, k=None, α=None, thickness='thick',
-                 draw_vertices=False, label_vertices=False, color=None):
+    def __init__(self, object3D=None, k=None, α=None, direction=None,
+                 thickness='thick', color=None,
+                 draw_vertices=False, label_vertices=False):
         r"""
         Initialize ObliqueProjection.
 
@@ -51,6 +52,10 @@ class ObliqueProjection(Drawable):
         mmlib_setup.oblique_projection.RATIO
         :type k: Number
         :param α: the angle between the receding Z-axis, and X-axis.
+        :type α: Number
+        :param direction: 'top-left', 'top-right', 'bottom-left' or
+        'bottom-right'
+        :type direction: str
         """
         self.draw_vertices = draw_vertices
         self.label_vertices = label_vertices
@@ -62,26 +67,47 @@ class ObliqueProjection(Drawable):
                             .format(repr(k)))
         if α is None:
             α = mmlib_setup.oblique_projection.RECEDING_AXIS_ANGLE
+        if direction is None:
+            direction = mmlib_setup.oblique_projection.DIRECTION
         if not isinstance(α, Number):
             raise TypeError('Angle α must be a Number. Found {} instead.'
                             .format(repr(α)))
         if not isinstance(object3D, Polyhedron):
             raise TypeError('object3D must be a Polyhedron, found {} instead.'
                             .format(repr(object3D)))
-        self._matrix = [[1, 0, k * sin(radians(α))],
-                        [0, 1, k * cos(radians(α))]]
+        if not isinstance(direction, str):
+            raise TypeError('direction must be a string, found {} instead '
+                            '(type: {}).'
+                            .format(repr(direction), type(direction)))
+        if direction not in mmlib_setup.DIRECTION_VALUES:
+            raise ValueError('Allowed values for direction argument are {}. '
+                             'Found {} instead.'
+                             .format(mmlib_setup.DIRECTION_VALUES,
+                                     repr(direction)))
+        matrix = {'top-right': [[1, 0, k * sin(radians(α))],
+                                [0, 1, k * cos(radians(α))]],
+                  'bottom-right': [[1, 0, k * sin(radians(α))],
+                                   [0, 1, -k * cos(radians(α))]],
+                  'bottom-left': [[1, 0, -k * sin(radians(α))],
+                                  [0, 1, -k * cos(radians(α))]],
+                  'top-left': [[1, 0, -k * sin(radians(α))],
+                               [0, 1, k * cos(radians(α))]]}[direction]
         self._edges = []
         self._edges3D = {}
         self._vertices = []
         self._vertices_match = {}
-        for vertex in object3D.vertices:
+
+        def project(point, matrix):
             x = sum([pc * coord
-                     for pc, coord in zip(self._matrix[0],
-                                          vertex.coordinates)])
+                     for pc, coord in zip(matrix[0],
+                                          point.coordinates)])
             y = sum([pc * coord
-                     for pc, coord in zip(self._matrix[1],
-                                          vertex.coordinates)])
-            projected_point = Point(x, y, vertex.name)
+                     for pc, coord in zip(matrix[1],
+                                          point.coordinates)])
+            return Point(x, y, point.name)
+
+        for vertex in object3D.vertices:
+            projected_point = project(vertex, matrix)
             self._vertices.append(projected_point)
             self._vertices_match[vertex.name] = (vertex, projected_point)
 
@@ -127,11 +153,13 @@ class ObliqueProjection(Drawable):
             # Only edges not belonging to the convex hull may be hidden
             if not (edge.endpoints[0] in cvh and edge.endpoints[1] in cvh):
                 m = self._edges3D[edge].midpoint()
+                pm = project(m, matrix)  # projected midpoint
                 # Check if the midpoint of the tested edge is behind (i.e.
                 # deeper) than a face while being inside it
                 for f in object3D.faces:
+                    pface = [project(v, matrix) for v in f.vertices]
                     if (all([v.z <= m.z for v in f.vertices])
-                        and m not in convex_hull(m, *(f.vertices))
+                        and pm not in convex_hull(pm, *pface)
                         and not any(m.belongs_to(s) for s in f.sides)):
                         edge.dashpattern = \
                             mmlib_setup.oblique_projection.DASHPATTERN

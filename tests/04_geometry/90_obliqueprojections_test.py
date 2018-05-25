@@ -24,6 +24,10 @@ import pytest
 from mathmakerlib.geometry import RightCuboid, ObliqueProjection
 
 
+@pytest.fixture()
+def rc(): return RightCuboid(dimensions=(4, 3, 2), name='FLAVORED')
+
+
 def test_instanciation_errors():
     """Check errors when instanciating a new ObliqueProjection."""
     with pytest.raises(TypeError) as excinfo:
@@ -40,9 +44,8 @@ def test_instanciation_errors():
         '\'a\' instead.'
 
 
-def test_regular_right_cuboid():
-    """Check a regular projection of a right cuboid is correct."""
-    rc = RightCuboid(dimensions=(4, 3, 2), name='FLAVORED')
+def test_topright_projection(rc):
+    """Check the default projection of a right cuboid is correct."""
     assert ObliqueProjection(rc, label_vertices=True).drawn == r"""
 \begin{tikzpicture}
 % Declare Points
@@ -79,5 +82,134 @@ def test_regular_right_cuboid():
 \draw (R) node[right] {R};
 \draw (E) node[above right] {E};
 \draw (D) node[above left] {D};
+\end{tikzpicture}
+"""
+
+
+def test_topleft_projection(rc):
+    """Check top-left projection of a right cuboid is correct."""
+    assert ObliqueProjection(rc, label_vertices=True,
+                             direction='top-left').drawn == r"""
+\begin{tikzpicture}
+% Declare Points
+\coordinate (F) at (0,0);
+\coordinate (L) at (4,0);
+\coordinate (A) at (4,3);
+\coordinate (V) at (0,3);
+\coordinate (O) at (-0.948,0.948);
+\coordinate (R) at (3.052,0.948);
+\coordinate (E) at (3.052,3.948);
+\coordinate (D) at (-0.948,3.948);
+
+% Draw Oblique Projection of RightCuboid
+\draw[thick] (F) -- (L);
+\draw[thick] (L) -- (A);
+\draw[thick] (A) -- (V);
+\draw[thick] (V) -- (F);
+\draw[thick, dashed] (L) -- (R);
+\draw[thick, dashed] (R) -- (O);
+\draw[thick] (O) -- (F);
+\draw[thick] (A) -- (E);
+\draw[thick, dashed] (E) -- (R);
+\draw[thick] (V) -- (D);
+\draw[thick] (D) -- (E);
+\draw[thick] (O) -- (D);
+
+
+% Label Points
+\draw (F) node[below] {F};
+\draw (L) node[below right] {L};
+\draw (A) node[above right] {A};
+\draw (V) node[above] {V};
+\draw (O) node[below left] {O};
+\draw (R) node[below] {R};
+\draw (E) node[above] {E};
+\draw (D) node[above left] {D};
+\end{tikzpicture}
+"""
+
+
+def test_bottomleft_projection(rc):
+    """Check bottom-left projection of a right cuboid is correct."""
+    assert ObliqueProjection(rc, label_vertices=True,
+                             direction='bottom-left').drawn == r"""
+\begin{tikzpicture}
+% Declare Points
+\coordinate (F) at (0,0);
+\coordinate (L) at (4,0);
+\coordinate (A) at (4,3);
+\coordinate (V) at (0,3);
+\coordinate (O) at (-0.948,-0.948);
+\coordinate (R) at (3.052,-0.948);
+\coordinate (E) at (3.052,2.052);
+\coordinate (D) at (-0.948,2.052);
+
+% Draw Oblique Projection of RightCuboid
+\draw[thick] (F) -- (L);
+\draw[thick] (L) -- (A);
+\draw[thick] (A) -- (V);
+\draw[thick] (V) -- (F);
+\draw[thick] (L) -- (R);
+\draw[thick] (R) -- (O);
+\draw[thick] (O) -- (F);
+\draw[thick, dashed] (A) -- (E);
+\draw[thick, dashed] (E) -- (R);
+\draw[thick] (V) -- (D);
+\draw[thick, dashed] (D) -- (E);
+\draw[thick] (O) -- (D);
+
+
+% Label Points
+\draw (F) node[left] {F};
+\draw (L) node[right] {L};
+\draw (A) node[above right] {A};
+\draw (V) node[above left] {V};
+\draw (O) node[below left] {O};
+\draw (R) node[below right] {R};
+\draw (E) node[above left] {E};
+\draw (D) node[left] {D};
+\end{tikzpicture}
+"""
+
+
+def test_bottomright_projection(rc):
+    """Check bottom-right projection of a right cuboid is correct."""
+    assert ObliqueProjection(rc, label_vertices=True,
+                             direction='bottom-right').drawn == r"""
+\begin{tikzpicture}
+% Declare Points
+\coordinate (F) at (0,0);
+\coordinate (L) at (4,0);
+\coordinate (A) at (4,3);
+\coordinate (V) at (0,3);
+\coordinate (O) at (0.948,-0.948);
+\coordinate (R) at (4.948,-0.948);
+\coordinate (E) at (4.948,2.052);
+\coordinate (D) at (0.948,2.052);
+
+% Draw Oblique Projection of RightCuboid
+\draw[thick] (F) -- (L);
+\draw[thick] (L) -- (A);
+\draw[thick] (A) -- (V);
+\draw[thick] (V) -- (F);
+\draw[thick] (L) -- (R);
+\draw[thick] (R) -- (O);
+\draw[thick] (O) -- (F);
+\draw[thick] (A) -- (E);
+\draw[thick] (E) -- (R);
+\draw[thick, dashed] (V) -- (D);
+\draw[thick, dashed] (D) -- (E);
+\draw[thick, dashed] (O) -- (D);
+
+
+% Label Points
+\draw (F) node[below left] {F};
+\draw (L) node[below] {L};
+\draw (A) node[above] {A};
+\draw (V) node[above left] {V};
+\draw (O) node[below] {O};
+\draw (R) node[below right] {R};
+\draw (E) node[above right] {E};
+\draw (D) node[above] {D};
 \end{tikzpicture}
 """
