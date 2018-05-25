@@ -39,6 +39,8 @@ DASHPATTERN_VALUES = ['solid', 'dotted', 'densely dotted', 'loosely dotted',
                       'dash dot dot', 'densely dash dot dot',
                       'loosely dash dot dot']
 
+DIRECTION_VALUES = ['top-left', 'top-right', 'bottom-left', 'bottom-right']
+
 
 class PolygonsSetup(object):
 
@@ -119,7 +121,8 @@ class ObliqueProjectionSetup(object):
     def __init__(self):
         self.RECEDING_AXIS_ANGLE = Number(45)
         self.RATIO = Number(0.67)
-        self._DASHPATTERN = 'dashed'
+        self.DASHPATTERN = 'dashed'
+        self.DIRECTION = 'top-right'
 
     @property
     def RECEDING_AXIS_ANGLE(self):
@@ -149,13 +152,25 @@ class ObliqueProjectionSetup(object):
 
     @DASHPATTERN.setter
     def DASHPATTERN(self, value):
-        if value in DASHPATTERN_VALUES:
-            self._dashpattern = value
-        else:
+        if value not in DASHPATTERN_VALUES:
             raise ValueError('Incorrect dashpattern value: \'{}\'. '
                              'Available values belong to: {}.'
                              .format(str(value), str(DASHPATTERN_VALUES)))
         self._DASHPATTERN = value
+
+    @property
+    def DIRECTION(self):
+        return self._DIRECTION
+
+    @DIRECTION.setter
+    def DIRECTION(self, value):
+        if value in DIRECTION_VALUES:
+            self._direction = value
+        else:
+            raise ValueError('Incorrect direction value: \'{}\'. '
+                             'Available values belong to: {}.'
+                             .format(str(value), str(DIRECTION_VALUES)))
+        self._DIRECTION = value
 
 
 SUPPORTED_LANGUAGES = ['en', 'en_US', 'en_GB', 'fr', 'fr_FR']
