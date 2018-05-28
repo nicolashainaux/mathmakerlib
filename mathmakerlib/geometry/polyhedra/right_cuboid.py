@@ -126,12 +126,12 @@ class RightCuboid(Polyhedron):
                                  (4, 2, 'clockwise')],
                                 'oblique_projection:bottom-left':
                                 [(0, 2, 'anticlockwise'),
-                                 (1, 1, 'clockwise'),
-                                 (0, 1, 'anticlockwise')],
+                                 (3, 1, 'anticlockwise'),
+                                 (4, 2, 'clockwise')],
                                 'oblique_projection:bottom-right':
                                 [(0, 2, 'anticlockwise'),
-                                 (1, 3, 'clockwise'),
-                                 (0, 3, 'anticlockwise')],
+                                 (2, 1, 'clockwise'),
+                                 (2, 2, 'clockwise')],
                                 }
 
     @property

@@ -304,17 +304,17 @@ def test_bottomleft_edges_labeling(rc):
 
 % Draw Oblique Projection of RightCuboid
 \draw[thick] (F) -- (L);
-\draw[thick] (L) -- (A) node[midway, right] {25};
+\draw[thick] (L) -- (A);
 \draw[thick] (A) -- (V) node[midway, above] {4};
 \draw[thick] (V) -- (F);
-\draw[thick] (L) -- (R) node[midway, below right] {7};
+\draw[thick] (L) -- (R);
 \draw[thick] (R) -- (O);
 \draw[thick] (O) -- (F);
 \draw[thick, dashed] (A) -- (E);
 \draw[thick, dashed] (E) -- (R);
-\draw[thick] (V) -- (D);
+\draw[thick] (V) -- (D) node[midway, above left] {7};
 \draw[thick, dashed] (D) -- (E);
-\draw[thick] (O) -- (D);
+\draw[thick] (O) -- (D) node[midway, left] {25};
 
 
 % Label Points
@@ -342,12 +342,12 @@ def test_bottomright_edges_labeling(rc):
 \draw[thick] (F) -- (L);
 \draw[thick] (L) -- (A);
 \draw[thick] (A) -- (V) node[midway, above] {4};
-\draw[thick] (V) -- (F) node[midway, left] {25};
+\draw[thick] (V) -- (F);
 \draw[thick] (L) -- (R);
 \draw[thick] (R) -- (O);
-\draw[thick] (O) -- (F) node[midway, below left] {7};
-\draw[thick] (A) -- (E);
-\draw[thick] (E) -- (R);
+\draw[thick] (O) -- (F);
+\draw[thick] (A) -- (E) node[midway, above right] {7};
+\draw[thick] (E) -- (R) node[midway, right] {25};
 \draw[thick, dashed] (V) -- (D);
 \draw[thick, dashed] (D) -- (E);
 \draw[thick, dashed] (O) -- (D);
