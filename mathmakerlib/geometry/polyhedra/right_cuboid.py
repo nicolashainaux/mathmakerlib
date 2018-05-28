@@ -151,5 +151,21 @@ class RightCuboid(Polyhedron):
         return self._labels
 
     @property
+    def lbl_width(self):
+        return self.labels[0]
+
+    @property
+    def lbl_depth(self):
+        return self.labels[1]
+
+    @property
+    def lbl_height(self):
+        return self.labels[2]
+
+    @property
     def edges_to_label(self):
         return self._edges_to_label
+
+    @property
+    def lbl_volume(self):
+        return self.lbl_width * self.lbl_depth * self.lbl_height
