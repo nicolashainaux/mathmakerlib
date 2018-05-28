@@ -25,7 +25,7 @@ from mathmakerlib import mmlib_setup
 from mathmakerlib.exceptions import ZeroBipoint
 from mathmakerlib.core.drawable import Drawable, tikz_approx_position
 from mathmakerlib.geometry.tools import convex_hull
-from mathmakerlib.calculus.number import Number
+from mathmakerlib.calculus.tools import is_number
 from mathmakerlib.geometry.point import Point
 from mathmakerlib.geometry.linesegment import LineSegment
 from mathmakerlib.geometry.vector import Vector
@@ -50,9 +50,9 @@ class ObliqueProjection(Drawable):
         :type object3D: Polyhedron
         :param k: the ratio of the oblique projection. Defaults to
         mmlib_setup.oblique_projection.RATIO
-        :type k: Number
+        :type k: number
         :param α: the angle between the receding Z-axis, and X-axis.
-        :type α: Number
+        :type α: number
         :param direction: 'top-left', 'top-right', 'bottom-left' or
         'bottom-right'
         :type direction: str
@@ -62,15 +62,15 @@ class ObliqueProjection(Drawable):
         self._object3D_name = type(object3D).__name__
         if k is None:
             k = mmlib_setup.oblique_projection.RATIO
-        if not isinstance(k, Number):
-            raise TypeError('Ratio k must be a Number. Found {} instead.'
+        if not is_number(k):
+            raise TypeError('Ratio k must be a number. Found {} instead.'
                             .format(repr(k)))
         if α is None:
             α = mmlib_setup.oblique_projection.RECEDING_AXIS_ANGLE
         if direction is None:
             direction = mmlib_setup.oblique_projection.DIRECTION
-        if not isinstance(α, Number):
-            raise TypeError('Angle α must be a Number. Found {} instead.'
+        if not is_number(α):
+            raise TypeError('Angle α must be a number. Found {} instead.'
                             .format(repr(α)))
         if not isinstance(object3D, Polyhedron):
             raise TypeError('object3D must be a Polyhedron, found {} instead.'

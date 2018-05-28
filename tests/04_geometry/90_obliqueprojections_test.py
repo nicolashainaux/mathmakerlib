@@ -32,11 +32,11 @@ def test_instanciation_errors():
     """Check errors when instanciating a new ObliqueProjection."""
     with pytest.raises(TypeError) as excinfo:
         ObliqueProjection(k='a')
-    assert str(excinfo.value) == 'Ratio k must be a Number. Found '\
+    assert str(excinfo.value) == 'Ratio k must be a number. Found '\
         '\'a\' instead.'
     with pytest.raises(TypeError) as excinfo:
         ObliqueProjection(α='a')
-    assert str(excinfo.value) == 'Angle α must be a Number. Found '\
+    assert str(excinfo.value) == 'Angle α must be a number. Found '\
         '\'a\' instead.'
     with pytest.raises(TypeError) as excinfo:
         ObliqueProjection('a')
