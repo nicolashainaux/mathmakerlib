@@ -152,14 +152,23 @@ class RightCuboid(Polyhedron):
 
     @property
     def lbl_width(self):
+        if self.labels is None:
+            raise AttributeError('Labels must be set before trying to get '
+                                 'them.')
         return self.labels[0]
 
     @property
     def lbl_depth(self):
+        if self.labels is None:
+            raise AttributeError('Labels must be set before trying to get '
+                                 'them.')
         return self.labels[1]
 
     @property
     def lbl_height(self):
+        if self.labels is None:
+            raise AttributeError('Labels must be set before trying to get '
+                                 'them.')
         return self.labels[2]
 
     @property
@@ -168,4 +177,7 @@ class RightCuboid(Polyhedron):
 
     @property
     def lbl_volume(self):
+        if self.labels is None:
+            raise AttributeError('Labels must be set before trying to get '
+                                 'them.')
         return self.lbl_width * self.lbl_depth * self.lbl_height

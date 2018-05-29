@@ -22,8 +22,8 @@
 from math import radians, sin, cos
 
 from mathmakerlib import mmlib_setup
-from mathmakerlib.exceptions import ZeroBipoint
 from mathmakerlib.core.drawable import Drawable, tikz_approx_position
+from mathmakerlib.core.drawable import HasThickness
 from mathmakerlib.geometry.tools import convex_hull
 from mathmakerlib.calculus.tools import is_number
 from mathmakerlib.geometry.point import Point
@@ -32,7 +32,7 @@ from mathmakerlib.geometry.vector import Vector
 from mathmakerlib.geometry.polyhedra import Polyhedron
 
 
-class ObliqueProjection(Drawable):
+class ObliqueProjection(Drawable, HasThickness):
     """
     Oblique projection of 3D objects.
 
@@ -75,10 +75,6 @@ class ObliqueProjection(Drawable):
         if not isinstance(object3D, Polyhedron):
             raise TypeError('object3D must be a Polyhedron, found {} instead.'
                             .format(repr(object3D)))
-        if not isinstance(direction, str):
-            raise TypeError('direction must be a string, found {} instead '
-                            '(type: {}).'
-                            .format(repr(direction), type(direction)))
         if direction not in mmlib_setup.DIRECTION_VALUES:
             raise ValueError('Allowed values for direction argument are {}. '
                              'Found {} instead.'
@@ -144,32 +140,26 @@ class ObliqueProjection(Drawable):
         for edge in object3D.edges:
             p0 = self._vertices_match[edge.endpoints[0].name][1]
             p1 = self._vertices_match[edge.endpoints[1].name][1]
-            try:
-                projected_edge = LineSegment(p0, p1,
-                                             thickness=thickness,
-                                             draw_endpoints=draw_vertices,
-                                             label_endpoints=label_vertices,
-                                             color=color,
-                                             allow_zero_length=False,
-                                             locked_label=True,
-                                             label_scale=edge.label_scale,
-                                             label=edge.label,
-                                             label_mask=edge.label_mask,
-                                             label_winding=edge.label_winding,
-                                             sloped_label=False)
-            except ZeroBipoint:
-                pass
-            else:
-                vertices_connexions[p0].append(LineSegment(p0, p1))
-                vertices_connexions[p1].append(LineSegment(p1, p0))
-                if projected_edge not in self._edges:
-                    self._edges.append(projected_edge)
-                else:
-                    raise NotImplementedError
-                if projected_edge not in self._edges3D:
-                    self._edges3D[projected_edge] = edge
-                else:
-                    raise NotImplementedError
+            # TODO: check cases when the projected edge is a single point
+            # (ZeroBipoint should be raised)
+            projected_edge = LineSegment(p0, p1,
+                                         thickness=thickness,
+                                         draw_endpoints=draw_vertices,
+                                         label_endpoints=label_vertices,
+                                         color=color,
+                                         allow_zero_length=False,
+                                         locked_label=True,
+                                         label_scale=edge.label_scale,
+                                         label=edge.label,
+                                         label_mask=edge.label_mask,
+                                         label_winding=edge.label_winding,
+                                         sloped_label=False)
+            vertices_connexions[p0].append(LineSegment(p0, p1))
+            vertices_connexions[p1].append(LineSegment(p1, p0))
+            if projected_edge not in self._edges:  # TODO: else, what...?
+                self._edges.append(projected_edge)
+            if projected_edge not in self._edges3D:  # TODO: else, what...?
+                self._edges3D[projected_edge] = edge
         # Find out which edges are hidden.
         # The ones that belong to convex hull of the projected vertices are
         # considered visible. By default, they will remain visible (i.e. keep
@@ -229,7 +219,7 @@ class ObliqueProjection(Drawable):
             self._draw_vertices = value
         else:
             raise TypeError('draw_vertices must be a boolean; '
-                            'got {} instead.'.format(type(value)))
+                            'found {} instead.'.format(type(value)))
 
     @property
     def label_vertices(self):
@@ -241,7 +231,7 @@ class ObliqueProjection(Drawable):
             self._label_vertices = value
         else:
             raise TypeError('label_vertices must be a boolean; '
-                            'got {} instead.'.format(type(value)))
+                            'found {} instead.'.format(type(value)))
 
     def tikz_declarations(self):
         """Return the Points declarations."""
@@ -259,7 +249,7 @@ class ObliqueProjection(Drawable):
         if self.draw_vertices:
             output.append('% Draw Vertices')
         output.append('% Draw Oblique Projection of {}'
-                      .format(self._object3D_name))
+                      .format(self.object3D_name))
         return output
 
     def tikz_draw(self):
@@ -279,7 +269,6 @@ class ObliqueProjection(Drawable):
 
     def tikz_label(self):
         """Return the command to write the object's label."""
-        """Not implemented yet."""
 
     def tikz_points_labels(self):
         """Return the command to write the Vertices' labels."""

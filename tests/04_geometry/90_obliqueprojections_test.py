@@ -21,6 +21,7 @@
 
 import pytest
 
+from mathmakerlib import mmlib_setup
 from mathmakerlib.geometry import RightCuboid, ObliqueProjection
 
 
@@ -28,20 +29,51 @@ from mathmakerlib.geometry import RightCuboid, ObliqueProjection
 def rc(): return RightCuboid(dimensions=(4, 3, 2), name='FLAVORED')
 
 
-def test_instanciation_errors():
+def test_instanciation_ratio_error(rc):
     """Check errors when instanciating a new ObliqueProjection."""
     with pytest.raises(TypeError) as excinfo:
         ObliqueProjection(k='a')
     assert str(excinfo.value) == 'Ratio k must be a number. Found '\
         '\'a\' instead.'
+
+
+def test_instanciation_angle_error(rc):
+    """Check errors when instanciating a new ObliqueProjection."""
     with pytest.raises(TypeError) as excinfo:
         ObliqueProjection(α='a')
     assert str(excinfo.value) == 'Angle α must be a number. Found '\
         '\'a\' instead.'
+
+
+def test_instanciation_object3D_error(rc):
+    """Check errors when instanciating a new ObliqueProjection."""
     with pytest.raises(TypeError) as excinfo:
         ObliqueProjection('a')
     assert str(excinfo.value) == 'object3D must be a Polyhedron, found '\
         '\'a\' instead.'
+
+
+def test_instanciation_direction_error(rc):
+    with pytest.raises(ValueError) as excinfo:
+        ObliqueProjection(rc, direction='undefined')
+    assert str(excinfo.value) == 'Allowed values for direction argument are '\
+        '{}. Found \'undefined\' instead.'.format(mmlib_setup.DIRECTION_VALUES)
+
+
+def test_label_vertices_error(rc):
+    op = ObliqueProjection(rc)
+    with pytest.raises(TypeError) as excinfo:
+        op.label_vertices = 'true'
+    assert str(excinfo.value) == 'label_vertices must be a boolean; '\
+        'found <class \'str\'> instead.'
+
+
+def test_draw_vertices_error(rc):
+    op = ObliqueProjection(rc)
+    with pytest.raises(TypeError) as excinfo:
+        op.draw_vertices = 'true'
+    assert str(excinfo.value) == 'draw_vertices must be a boolean; '\
+        'found <class \'str\'> instead.'
 
 
 def test_topright_projection(rc):
@@ -351,6 +383,87 @@ def test_bottomright_edges_labeling(rc):
 \draw[thick, dashed] (V) -- (D);
 \draw[thick, dashed] (D) -- (E);
 \draw[thick, dashed] (O) -- (D);
+
+
+% Label Points
+
+\end{tikzpicture}
+"""
+
+
+def test_drawn_vertices(rc):
+    """Check the default projection of a right cuboid is correct."""
+    assert ObliqueProjection(rc, draw_vertices=True).drawn == r"""
+\begin{tikzpicture}
+% Declare Points
+\coordinate (F) at (0,0);
+\coordinate (L) at (4,0);
+\coordinate (A) at (4,3);
+\coordinate (V) at (0,3);
+\coordinate (O) at (0.948,0.948);
+\coordinate (R) at (4.948,0.948);
+\coordinate (E) at (4.948,3.948);
+\coordinate (D) at (0.948,3.948);
+
+% Draw Vertices
+\draw (F) node[scale=0.67] {$\times$};
+\draw (L) node[scale=0.67] {$\times$};
+\draw (A) node[scale=0.67] {$\times$};
+\draw (V) node[scale=0.67] {$\times$};
+\draw (O) node[scale=0.67] {$\times$};
+\draw (R) node[scale=0.67] {$\times$};
+\draw (E) node[scale=0.67] {$\times$};
+\draw (D) node[scale=0.67] {$\times$};
+
+% Draw Oblique Projection of RightCuboid
+\draw[thick] (F) -- (L);
+\draw[thick] (L) -- (A);
+\draw[thick] (A) -- (V);
+\draw[thick] (V) -- (F);
+\draw[thick] (L) -- (R);
+\draw[thick, dashed] (R) -- (O);
+\draw[thick, dashed] (O) -- (F);
+\draw[thick] (A) -- (E);
+\draw[thick] (E) -- (R);
+\draw[thick] (V) -- (D);
+\draw[thick] (D) -- (E);
+\draw[thick, dashed] (O) -- (D);
+
+
+% Label Points
+
+\end{tikzpicture}
+"""
+
+
+def test_draw_thick_and_blue(rc):
+    """Check the default projection of a right cuboid is correct."""
+    assert ObliqueProjection(rc, color='RoyalBlue',
+                             thickness='very thick').drawn == r"""
+\begin{tikzpicture}
+% Declare Points
+\coordinate (F) at (0,0);
+\coordinate (L) at (4,0);
+\coordinate (A) at (4,3);
+\coordinate (V) at (0,3);
+\coordinate (O) at (0.948,0.948);
+\coordinate (R) at (4.948,0.948);
+\coordinate (E) at (4.948,3.948);
+\coordinate (D) at (0.948,3.948);
+
+% Draw Oblique Projection of RightCuboid
+\draw[very thick, RoyalBlue] (F) -- (L);
+\draw[very thick, RoyalBlue] (L) -- (A);
+\draw[very thick, RoyalBlue] (A) -- (V);
+\draw[very thick, RoyalBlue] (V) -- (F);
+\draw[very thick, RoyalBlue] (L) -- (R);
+\draw[very thick, RoyalBlue, dashed] (R) -- (O);
+\draw[very thick, RoyalBlue, dashed] (O) -- (F);
+\draw[very thick, RoyalBlue] (A) -- (E);
+\draw[very thick, RoyalBlue] (E) -- (R);
+\draw[very thick, RoyalBlue] (V) -- (D);
+\draw[very thick, RoyalBlue] (D) -- (E);
+\draw[very thick, RoyalBlue, dashed] (O) -- (D);
 
 
 % Label Points

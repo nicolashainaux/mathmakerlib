@@ -173,6 +173,12 @@ def test_repr(A, B):
         == 'LineSegment(Point A(0, 0), Point B(1, 1))'
 
 
+def test_hash():
+    """Check __hash__."""
+    assert hash(LineSegment(Point(0, 0, 'A'), Point(1, 1, 'B')))\
+        != hash(LineSegment(Point(0, 0, 0, 'A'), Point(1, 1, 1, 'B')))
+
+
 def test_equality(A, B, C):
     """Check __eq__ and __ne__ are correct."""
     s = LineSegment(A, B)

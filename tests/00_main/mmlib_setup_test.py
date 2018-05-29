@@ -24,20 +24,50 @@ import pytest
 from mathmakerlib import mmlib_setup
 
 
-def test_setup_errors():
+def test_angles_setup_error():
     """Check exceptions raised by mmlib_setup."""
     with pytest.raises(TypeError) as excinfo:
         mmlib_setup.angles.DEFAULT_ARMSPOINTS_POSITION = 'a'
     assert str(excinfo.value) == 'DEFAULT_ARMSPOINTS_POSITION must be a '\
         'number, found <class \'str\'> instead.'
+
+
+def test_receding_axis_angle_setup_error():
+    """Check exceptions raised by mmlib_setup."""
     with pytest.raises(TypeError) as excinfo:
         mmlib_setup.oblique_projection.RECEDING_AXIS_ANGLE = 'a'
     assert str(excinfo.value) == 'RECEDING_AXIS_ANGLE must be a '\
         'number, found \'a\' instead.'
+
+
+def test_ratio_setup_error():
+    """Check exceptions raised by mmlib_setup."""
     with pytest.raises(TypeError) as excinfo:
         mmlib_setup.oblique_projection.RATIO = 'a'
     assert str(excinfo.value) == 'RATIO must be a '\
         'number, found \'a\' instead.'
+
+
+def test_direction_setup_error():
+    """Check exceptions raised by mmlib_setup."""
+    with pytest.raises(ValueError) as excinfo:
+        mmlib_setup.oblique_projection.DIRECTION = 'undefined'
+    assert str(excinfo.value) == 'Incorrect direction value: '\
+        '\'undefined\'. Available values belong to: {}.'\
+        .format(mmlib_setup.DIRECTION_VALUES)
+
+
+def test_dashpattern_setup_error():
+    """Check exceptions raised by mmlib_setup."""
+    with pytest.raises(ValueError) as excinfo:
+        mmlib_setup.oblique_projection.DASHPATTERN = 'undefined'
+    assert str(excinfo.value) == 'Incorrect dashpattern value: '\
+        '\'undefined\'. Available values belong to: {}.'\
+        .format(mmlib_setup.DASHPATTERN_VALUES)
+
+
+def test_points_setup_error():
+    """Check exceptions raised by mmlib_setup."""
     with pytest.raises(TypeError) as excinfo:
         mmlib_setup.points.DEFAULT_POSITION_PRECISION = 'a'
     assert str(excinfo.value) == 'DEFAULT_POSITION_PRECISION must be a '\

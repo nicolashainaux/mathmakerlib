@@ -245,3 +245,7 @@ def test_belongs_to():
     assert Point(1, 1).belongs_to(s)
     assert not Point(3, 4).belongs_to(s)
     assert not Point(5, 5).belongs_to(s)
+    with pytest.raises(TypeError) as excinfo:
+        Point(1, 1, 'A').belongs_to(Point(3, 4, 'B'))
+    assert str(excinfo.value) == 'Argument \'other\' must be a LineSegment. '\
+        'Found Point B(3, 4) instead.'
