@@ -59,7 +59,6 @@ class ObliqueProjection(Drawable, HasThickness):
         """
         self.draw_vertices = draw_vertices
         self.label_vertices = label_vertices
-        self._object3D_name = type(object3D).__name__
         if k is None:
             k = mmlib_setup.oblique_projection.RATIO
         if not is_number(k):
@@ -81,6 +80,7 @@ class ObliqueProjection(Drawable, HasThickness):
                              .format(mmlib_setup.DIRECTION_VALUES,
                                      repr(direction)))
         self._direction = direction
+        self._object3D_name = type(object3D).__name__
 
         # Setup the edges' labels
         if object3D.labels is not None:
@@ -238,7 +238,7 @@ class ObliqueProjection(Drawable, HasThickness):
         return '\n'.join([v.tikz_declarations() for v in self.vertices])
 
     def _tikz_draw_options(self):
-        return [self.thickness, self.color]
+        """Unused, as the picture consists of several draw commands."""
 
     def _tikz_draw_vertices(self):
         return '\n'.join([v.tikz_draw()[0] for v in self.vertices]) + '\n'

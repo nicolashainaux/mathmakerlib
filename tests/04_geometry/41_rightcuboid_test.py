@@ -99,3 +99,17 @@ def test_unset_labels_volume_error(rc):
         rc.lbl_volume
     assert str(excinfo.value) == 'Labels must be set before trying to get '\
         'them.'
+
+
+def test_setup_labels_error(rc):
+    """Check errors when accessing an unset attribute of a RightCuboid."""
+    with pytest.raises(TypeError) as excinfo:
+        rc.setup_labels((4, 5))
+    assert str(excinfo.value) == 'labels argument must be a list or tuple, '\
+        'of length 3. Found (4, 5) instead.'
+
+
+def test_volume_from_labels(rc):
+    """Check calculation of volume from labels of a RightCuboid."""
+    rc.setup_labels((4, 5, 6))
+    assert rc.lbl_volume == 120
