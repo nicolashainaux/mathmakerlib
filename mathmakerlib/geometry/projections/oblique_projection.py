@@ -152,6 +152,7 @@ class ObliqueProjection(Drawable):
                                              color=color,
                                              allow_zero_length=False,
                                              locked_label=True,
+                                             label_scale=edge.label_scale,
                                              label=edge.label,
                                              label_mask=edge.label_mask,
                                              label_winding=edge.label_winding,
