@@ -41,6 +41,10 @@ DASHPATTERN_VALUES = ['solid', 'dotted', 'densely dotted', 'loosely dotted',
 
 DIRECTION_VALUES = ['top-left', 'top-right', 'bottom-left', 'bottom-right']
 
+DEFAULT_TIMECLOCK_CONTEXT = {'h_min_sep': ':', 'min_sec_sep': ':',
+                             'display_h': True, 'display_min': True,
+                             'display_sec': True}
+
 
 class PolygonsSetup(object):
 
@@ -116,6 +120,29 @@ class AnglesSetup(object):
         self._DEFAULT_ARMSPOINTS_POSITION = value
 
 
+class ClockTimeSetup(object):
+
+    def __init__(self):
+        self._CONTEXT = DEFAULT_TIMECLOCK_CONTEXT
+
+    @property
+    def CONTEXT(self):
+        return self._CONTEXT
+
+    @CONTEXT.setter
+    def CONTEXT(self, context):
+        if not isinstance(context, dict):
+            raise TypeError('context must be a dict. Found {} instead.'
+                            .format(repr(context)))
+        for key in context:
+            if key not in DEFAULT_TIMECLOCK_CONTEXT:
+                raise KeyError('keys of context must belong to {}; found '
+                               '{} instead.'
+                               .format(set(DEFAULT_TIMECLOCK_CONTEXT.keys()),
+                                       repr(key)))
+        self._CONTEXT.update(context)
+
+
 class ObliqueProjectionSetup(object):
 
     def __init__(self):
@@ -177,10 +204,11 @@ SUPPORTED_LANGUAGES = ['en', 'en_US', 'en_GB', 'fr', 'fr_FR']
 
 
 def init():
-    global polygons, angles, oblique_projection, language, points
+    global polygons, angles, oblique_projection, language, points, time
 
     polygons = PolygonsSetup()
     points = PointsSetup()
     angles = AnglesSetup()
     oblique_projection = ObliqueProjectionSetup()
+    time = ClockTimeSetup()
     language = 'en'

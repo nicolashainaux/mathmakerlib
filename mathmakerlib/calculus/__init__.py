@@ -25,9 +25,11 @@ from .number import Sign, Number, move_fracdigits_to, remove_fracdigits_from
 from .number import fix_fracdigits
 from .unit import Unit, physical_quantity, difference_of_orders_of_magnitude
 from .fraction import Fraction
+from .clocktime import ClockTime
 
 __all__ = ['is_number', 'is_integer', 'is_natural', 'Exponented', 'Sign',
            'Number', 'move_fracdigits_to', 'remove_fracdigits_from',
            'fix_fracdigits', 'Unit', 'physical_quantity',
            'difference_of_orders_of_magnitude',
-           'Fraction', 'prime_factors']
+           'Fraction', 'prime_factors',
+           'ClockTime']
