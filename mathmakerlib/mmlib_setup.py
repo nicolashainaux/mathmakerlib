@@ -33,11 +33,10 @@ from decimal import Decimal
 from mathmakerlib.LaTeX import DASHPATTERN_VALUES
 from mathmakerlib.core.oriented import check_winding
 from mathmakerlib.calculus.number import Number, is_number
-from mathmakerlib.constants import DIRECTION_VALUES
-
-DEFAULT_CLOCKTIME_CONTEXT = {'h_min_sep': ':', 'min_sec_sep': ':',
-                             'display_h': True, 'display_min': True,
-                             'display_sec': True}
+from mathmakerlib.geometry.projections.oblique_projection \
+    import DIRECTION_VALUES
+from mathmakerlib.calculus.clocktime import check_clocktime_context
+from mathmakerlib.calculus.clocktime import DEFAULT_CLOCKTIME_CONTEXT
 
 
 class PolygonsSetup(object):
@@ -125,15 +124,7 @@ class ClockTimeSetup(object):
 
     @CONTEXT.setter
     def CONTEXT(self, context):
-        if not isinstance(context, dict):
-            raise TypeError('context must be a dict. Found {} instead.'
-                            .format(repr(context)))
-        for key in context:
-            if key not in DEFAULT_CLOCKTIME_CONTEXT:
-                raise KeyError('keys of context must belong to {}; found '
-                               '{} instead.'
-                               .format(set(DEFAULT_CLOCKTIME_CONTEXT.keys()),
-                                       repr(key)))
+        check_clocktime_context(context)
         self._CONTEXT.update(context)
 
 

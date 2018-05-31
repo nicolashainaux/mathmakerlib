@@ -26,11 +26,19 @@ from mathmakerlib.core.drawable import Drawable, tikz_approx_position
 from mathmakerlib.core.drawable import HasThickness
 from mathmakerlib.geometry.tools import convex_hull
 from mathmakerlib.calculus.tools import is_number
-from mathmakerlib.constants import DIRECTION_VALUES
 from mathmakerlib.geometry.point import Point
 from mathmakerlib.geometry.linesegment import LineSegment
 from mathmakerlib.geometry.vector import Vector
 from mathmakerlib.geometry.polyhedra import Polyhedron
+
+DIRECTION_VALUES = ['top-left', 'top-right', 'bottom-left', 'bottom-right']
+
+
+def check_direction(value):
+    if value not in DIRECTION_VALUES:
+        raise ValueError('Allowed values for direction argument are {}. '
+                         'Found {} instead.'
+                         .format(DIRECTION_VALUES, repr(value)))
 
 
 class ObliqueProjection(Drawable, HasThickness):
@@ -75,10 +83,7 @@ class ObliqueProjection(Drawable, HasThickness):
         if not isinstance(object3D, Polyhedron):
             raise TypeError('object3D must be a Polyhedron, found {} instead.'
                             .format(repr(object3D)))
-        if direction not in DIRECTION_VALUES:
-            raise ValueError('Allowed values for direction argument are {}. '
-                             'Found {} instead.'
-                             .format(DIRECTION_VALUES, repr(direction)))
+        check_direction(direction)
         self._direction = direction
         self._object3D_name = type(object3D).__name__
 

@@ -21,12 +21,21 @@
 
 import pytest
 
-from mathmakerlib import mmlib_setup
+from mathmakerlib.calculus.clocktime import DEFAULT_CLOCKTIME_CONTEXT
 from mathmakerlib.calculus import ClockTime
 
 
 @pytest.fixture()
 def ct(): return ClockTime(15, 24, 16)
+
+
+def test_clocktime_instanciation_error(ct):
+    """Check the ClockTime class initialization"""
+    with pytest.raises(TypeError) as excinfo:
+        ClockTime(15.2, 24, 16)
+    assert str(excinfo.value) == 'hour, minute and second must be '\
+        '<class \'int\'>. Found <class \'float\'>, <class \'int\'> and '\
+        '<class \'int\'> instead.'
 
 
 def test_clocktime_str(ct):
@@ -41,7 +50,7 @@ def test_clocktime_hash(ct):
 
 def test_clocktime_context(ct):
     """Check the ClockTime class initialization"""
-    assert ct.context == mmlib_setup.DEFAULT_TIMECLOCK_CONTEXT
+    assert ct.context == DEFAULT_CLOCKTIME_CONTEXT
 
 
 def test_clocktime_context_typeerror(ct):
@@ -58,7 +67,7 @@ def test_clocktime_context_keyerror(ct):
         ct.context = {'unknown_key': True}
     assert str(excinfo.value) == '"keys of context must belong to {}; found '\
         '\'unknown_key\' instead."'\
-        .format(set(mmlib_setup.DEFAULT_TIMECLOCK_CONTEXT.keys()))
+        .format(set(DEFAULT_CLOCKTIME_CONTEXT.keys()))
 
 
 def test_negative_second_clocktime_instanciation():
@@ -129,6 +138,14 @@ def test_lower_or_equal():
     assert t1 <= t2
 
 
+def test_addition_error():
+    """Check ClockTime __add__()"""
+    with pytest.raises(TypeError) as excinfo:
+        ClockTime(6, 39, 25) + (3, 50, 44)
+    assert str(excinfo.value) == 'Only a ClockTime can be added to a '\
+        'ClockTime. Found <class \'tuple\'> instead.'
+
+
 def test_regular_addition():
     """Check ClockTime __add__()"""
     assert ClockTime(6, 39, 25) + ClockTime(0, 11, 12) \
@@ -145,6 +162,14 @@ def test_exceeding_day_addition():
     """Check ClockTime __add__()"""
     assert ClockTime(21, 30, 0) + ClockTime(5, 20, 40) \
         == ClockTime(2, 50, 40)
+
+
+def test_subtraction_error():
+    """Check ClockTime __sub__()"""
+    with pytest.raises(TypeError) as excinfo:
+        ClockTime(6, 39, 25) - (3, 50, 44)
+    assert str(excinfo.value) == 'Only a ClockTime can be subtracted from a '\
+        'ClockTime. Found <class \'tuple\'> instead.'
 
 
 def test_regular_subtraction():

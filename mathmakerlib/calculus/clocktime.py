@@ -19,9 +19,24 @@
 # along with Mathmaker Lib; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-from mathmakerlib import mmlib_setup
 from mathmakerlib.calculus.tools import is_integer
 from mathmakerlib.core.printable import Printable
+
+DEFAULT_CLOCKTIME_CONTEXT = {'h_min_sep': ':', 'min_sec_sep': ':',
+                             'display_h': True, 'display_min': True,
+                             'display_sec': True}
+
+
+def check_clocktime_context(value):
+    if not isinstance(value, dict):
+        raise TypeError('context must be a dict. Found {} instead.'
+                        .format(repr(value)))
+    for key in value:
+        if key not in DEFAULT_CLOCKTIME_CONTEXT:
+            raise KeyError('keys of context must belong to {}; found '
+                           '{} instead.'
+                           .format(set(DEFAULT_CLOCKTIME_CONTEXT.keys()),
+                                   repr(key)))
 
 
 class ClockTime(Printable):
@@ -29,9 +44,9 @@ class ClockTime(Printable):
 
     def __new__(cls, hour=0, minute=0, second=0, context=None):
         if any(not is_integer(value) for value in [hour, minute, second]):
-            raise TypeError('hour, minute and second must be {}. '
+            raise TypeError('hour, minute and second must be <class \'int\'>. '
                             'Found {}, {} and {} instead.'
-                            .format(type(int), hour, minute, second))
+                            .format(type(hour), type(minute), type(second)))
         if second < 0:
             minute -= abs(second) // 60 + 1
         if second >= 60:
@@ -45,7 +60,7 @@ class ClockTime(Printable):
         hour = hour % 24
         self = super().__new__(cls)
         self._hour, self._minute, self._second = hour, minute, second
-        self._context = mmlib_setup.DEFAULT_TIMECLOCK_CONTEXT
+        self._context = DEFAULT_CLOCKTIME_CONTEXT
         self.context = context
         return self
 
@@ -68,16 +83,7 @@ class ClockTime(Printable):
     @context.setter
     def context(self, value):
         if value is not None:
-            DEFAULT_CONTEXT = mmlib_setup.DEFAULT_TIMECLOCK_CONTEXT
-            if not isinstance(value, dict):
-                raise TypeError('context must be a dict. Found {} instead.'
-                                .format(repr(value)))
-            for key in value:
-                if key not in DEFAULT_CONTEXT:
-                    raise KeyError('keys of context must belong to {}; found '
-                                   '{} instead.'
-                                   .format(set(DEFAULT_CONTEXT.keys()),
-                                           repr(key)))
+            check_clocktime_context(value)
             self._context.update(value)
 
     def __repr__(self):
@@ -118,7 +124,7 @@ class ClockTime(Printable):
     def __add__(self, other):
         if not isinstance(other, ClockTime):
             raise TypeError('Only a ClockTime can be added to a ClockTime. '
-                            'Found {} instead.'.format(repr(other)))
+                            'Found {} instead.'.format(type(other)))
         return ClockTime(self.hour + other.hour,
                          self.minute + other.minute,
                          self.second + other.second)
@@ -126,7 +132,7 @@ class ClockTime(Printable):
     def __sub__(self, other):
         if not isinstance(other, ClockTime):
             raise TypeError('Only a ClockTime can be subtracted from a '
-                            'ClockTime. Found {} instead.'.format(repr(other)))
+                            'ClockTime. Found {} instead.'.format(type(other)))
         return ClockTime(self.hour - other.hour,
                          self.minute - other.minute,
                          self.second - other.second)
