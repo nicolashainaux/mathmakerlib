@@ -23,10 +23,27 @@ import pytest
 
 from mathmakerlib.calculus.clocktime import DEFAULT_CLOCKTIME_CONTEXT
 from mathmakerlib.calculus import ClockTime
+from mathmakerlib.calculus.clocktime import check_clocktime_context
 
 
 @pytest.fixture()
 def ct(): return ClockTime(15, 24, 16)
+
+
+def test_check_clocktime_context_typeerror():
+    """Check check_clocktime_context()"""
+    with pytest.raises(TypeError) as excinfo:
+        check_clocktime_context(('h', 'min', 's'))
+    assert str(excinfo.value) == 'context must be a dict. '\
+        'Found <class \'tuple\'> instead.'
+
+
+def test_check_clocktime_context_keyerror():
+    """Check check_clocktime_context()"""
+    with pytest.raises(KeyError) as excinfo:
+        check_clocktime_context({'hour': 3})
+    assert str(excinfo.value) == '"keys of context must belong to {}; found '\
+        '\'hour\' instead."'.format(set(DEFAULT_CLOCKTIME_CONTEXT.keys()))
 
 
 def test_clocktime_instanciation_error(ct):
@@ -51,23 +68,6 @@ def test_clocktime_hash(ct):
 def test_clocktime_context(ct):
     """Check the ClockTime class initialization"""
     assert ct.context == DEFAULT_CLOCKTIME_CONTEXT
-
-
-def test_clocktime_context_typeerror(ct):
-    """Check the ClockTime class initialization"""
-    with pytest.raises(TypeError) as excinfo:
-        ct.context = ('anything', 'wrong')
-    assert str(excinfo.value) == "context must be a dict. Found "\
-        "('anything', 'wrong') instead."
-
-
-def test_clocktime_context_keyerror(ct):
-    """Check the ClockTime class initialization"""
-    with pytest.raises(KeyError) as excinfo:
-        ct.context = {'unknown_key': True}
-    assert str(excinfo.value) == '"keys of context must belong to {}; found '\
-        '\'unknown_key\' instead."'\
-        .format(set(DEFAULT_CLOCKTIME_CONTEXT.keys()))
 
 
 def test_negative_second_clocktime_instanciation():
@@ -188,3 +188,15 @@ def test_exceeding_day_subtraction():
     """Check ClockTime __sub__()"""
     assert ClockTime(5, 20, 40) - ClockTime(21, 30, 0) \
         == ClockTime(7, 50, 40)
+
+
+def test_clocktime_printed(ct):
+    """Check ClockTime imprint()"""
+    assert ct.printed == '15:24:16'
+
+
+def test_clocktime_printed_customized_context(ct):
+    """Check ClockTime imprint()"""
+    ct.context = {'h': 'h ', 'min': '', 's': '', 'display_h': True,
+                  'display_min': True, 'display_s': False}
+    assert ct.printed == '15h 24'

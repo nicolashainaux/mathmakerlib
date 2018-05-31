@@ -22,15 +22,15 @@
 from mathmakerlib.calculus.tools import is_integer
 from mathmakerlib.core.printable import Printable
 
-DEFAULT_CLOCKTIME_CONTEXT = {'h_min_sep': ':', 'min_sec_sep': ':',
+DEFAULT_CLOCKTIME_CONTEXT = {'h': ':', 'min': ':', 's': '',
                              'display_h': True, 'display_min': True,
-                             'display_sec': True}
+                             'display_s': True}
 
 
 def check_clocktime_context(value):
     if not isinstance(value, dict):
         raise TypeError('context must be a dict. Found {} instead.'
-                        .format(repr(value)))
+                        .format(type(value)))
     for key in value:
         if key not in DEFAULT_CLOCKTIME_CONTEXT:
             raise KeyError('keys of context must belong to {}; found '
@@ -118,9 +118,6 @@ class ClockTime(Printable):
     def __hash__(self):
         return hash(repr(self))
 
-    def imprint(self, start_expr=True, variant='latex'):
-        pass
-
     def __add__(self, other):
         if not isinstance(other, ClockTime):
             raise TypeError('Only a ClockTime can be added to a ClockTime. '
@@ -136,3 +133,13 @@ class ClockTime(Printable):
         return ClockTime(self.hour - other.hour,
                          self.minute - other.minute,
                          self.second - other.second)
+
+    def imprint(self, start_expr=True, variant='latex'):
+        output = ''
+        if self.context['display_h']:
+            output += '{}{}'.format(self.hour, self.context['h'])
+        if self.context['display_min']:
+            output += '{}{}'.format(self.minute, self.context['min'])
+        if self.context['display_s']:
+            output += '{}{}'.format(self.second, self.context['s'])
+        return output
