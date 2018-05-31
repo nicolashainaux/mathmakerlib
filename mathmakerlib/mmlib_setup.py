@@ -33,10 +33,9 @@ from decimal import Decimal
 from mathmakerlib.LaTeX import DASHPATTERN_VALUES
 from mathmakerlib.core.oriented import check_winding
 from mathmakerlib.calculus.number import Number, is_number
+from mathmakerlib.constants import DIRECTION_VALUES
 
-DIRECTION_VALUES = ['top-left', 'top-right', 'bottom-left', 'bottom-right']
-
-DEFAULT_TIMECLOCK_CONTEXT = {'h_min_sep': ':', 'min_sec_sep': ':',
+DEFAULT_CLOCKTIME_CONTEXT = {'h_min_sep': ':', 'min_sec_sep': ':',
                              'display_h': True, 'display_min': True,
                              'display_sec': True}
 
@@ -118,7 +117,7 @@ class AnglesSetup(object):
 class ClockTimeSetup(object):
 
     def __init__(self):
-        self._CONTEXT = DEFAULT_TIMECLOCK_CONTEXT
+        self._CONTEXT = DEFAULT_CLOCKTIME_CONTEXT
 
     @property
     def CONTEXT(self):
@@ -130,10 +129,10 @@ class ClockTimeSetup(object):
             raise TypeError('context must be a dict. Found {} instead.'
                             .format(repr(context)))
         for key in context:
-            if key not in DEFAULT_TIMECLOCK_CONTEXT:
+            if key not in DEFAULT_CLOCKTIME_CONTEXT:
                 raise KeyError('keys of context must belong to {}; found '
                                '{} instead.'
-                               .format(set(DEFAULT_TIMECLOCK_CONTEXT.keys()),
+                               .format(set(DEFAULT_CLOCKTIME_CONTEXT.keys()),
                                        repr(key)))
         self._CONTEXT.update(context)
 
