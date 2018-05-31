@@ -25,17 +25,10 @@ from abc import ABCMeta, abstractmethod
 from mathmakerlib import required
 from mathmakerlib.LaTeX import DEFAULT_FONT_SIZES
 from mathmakerlib.LaTeX import DEFAULT_COLOR_NAMES, XCOLOR_BASE
-from mathmakerlib.LaTeX import XCOLOR_DVIPSNAMES
+from mathmakerlib.LaTeX import XCOLOR_DVIPSNAMES, THICKNESS_VALUES, ARROW_TIPS
 from mathmakerlib.core.printable import Printable
 from mathmakerlib.calculus.tools import is_number
 from mathmakerlib.calculus.number import Number
-
-
-THICKNESS_VALUES = [None, 'thin', 'very thin', 'ultra thin', 'thick',
-                    'very thick', 'ultra thick']
-
-
-ARROW_TIPS = [None, '<->', '<-', '->', '-']
 
 
 def check_color(value):

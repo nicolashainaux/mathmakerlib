@@ -82,5 +82,10 @@ KNOWN_AMSMATH_SYMBOLS = [r'\text{', r'\negthickspace', r'\dfrac', r'\tfrac',
 
 KNOWN_TEXTCOMP_SYMBOLS = [r'\textdegree', r'\textdollar', r'\textsterling']
 
+THICKNESS_VALUES = [None, 'thin', 'very thin', 'ultra thin', 'thick',
+                    'very thick', 'ultra thick']
+
+ARROW_TIPS = [None, '<->', '<-', '->', '-']
+
 __all__ = ['AttrList', 'OptionsList', 'Command', 'DocumentClass',
            'UsePackage', 'UseTikzLibrary']
