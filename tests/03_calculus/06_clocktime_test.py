@@ -33,7 +33,7 @@ def ct(): return ClockTime(15, 24, 16)
 
 def test_setup_global_clocktime_context():
     """Check setting up the global clocktime context"""
-    mmlib_setup.clocktime.context = DEFAULT_CLOCKTIME_CONTEXT
+    mmlib_setup.clocktime.CONTEXT = DEFAULT_CLOCKTIME_CONTEXT
 
 
 def test_check_clocktime_context_typeerror():
