@@ -189,11 +189,11 @@ SUPPORTED_LANGUAGES = ['en', 'en_US', 'en_GB', 'fr', 'fr_FR']
 
 
 def init():
-    global polygons, angles, oblique_projection, language, points, time
+    global polygons, angles, oblique_projection, language, points, clocktime
 
     polygons = PolygonsSetup()
     points = PointsSetup()
     angles = AnglesSetup()
     oblique_projection = ObliqueProjectionSetup()
-    time = ClockTimeSetup()
+    clocktime = ClockTimeSetup()
     language = 'en'

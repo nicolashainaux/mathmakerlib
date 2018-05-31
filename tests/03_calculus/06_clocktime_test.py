@@ -21,6 +21,7 @@
 
 import pytest
 
+from mathmakerlib import mmlib_setup
 from mathmakerlib.calculus.clocktime import DEFAULT_CLOCKTIME_CONTEXT
 from mathmakerlib.calculus import ClockTime
 from mathmakerlib.calculus.clocktime import check_clocktime_context
@@ -28,6 +29,11 @@ from mathmakerlib.calculus.clocktime import check_clocktime_context
 
 @pytest.fixture()
 def ct(): return ClockTime(15, 24, 16)
+
+
+def test_setup_global_clocktime_context():
+    """Check setting up the global clocktime context"""
+    mmlib_setup.clocktime.context = DEFAULT_CLOCKTIME_CONTEXT
 
 
 def test_check_clocktime_context_typeerror():
@@ -195,8 +201,9 @@ def test_clocktime_printed(ct):
     assert ct.printed == '15:24:16'
 
 
-def test_clocktime_printed_customized_context(ct):
+def test_custom_context_clocktime_printed():
     """Check ClockTime imprint()"""
-    ct.context = {'h': 'h ', 'min': '', 's': '', 'display_h': True,
-                  'display_min': True, 'display_s': False}
+    ct = ClockTime(15, 24, 16, context={'h': 'h ', 'min': '', 's': '',
+                                        'display_h': True, 'display_min': True,
+                                        'display_s': False})
     assert ct.printed == '15h 24'

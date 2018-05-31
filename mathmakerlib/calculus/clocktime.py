@@ -19,6 +19,7 @@
 # along with Mathmaker Lib; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
+from mathmakerlib import mmlib_setup
 from mathmakerlib.calculus.tools import is_integer
 from mathmakerlib.core.printable import Printable
 
@@ -60,8 +61,10 @@ class ClockTime(Printable):
         hour = hour % 24
         self = super().__new__(cls)
         self._hour, self._minute, self._second = hour, minute, second
-        self._context = DEFAULT_CLOCKTIME_CONTEXT
-        self.context = context
+        self._context = mmlib_setup.clocktime.CONTEXT
+        if context is not None:
+            check_clocktime_context(context)
+            self._context.update(context)
         return self
 
     @property
@@ -79,12 +82,6 @@ class ClockTime(Printable):
     @property
     def context(self):
         return self._context
-
-    @context.setter
-    def context(self, value):
-        if value is not None:
-            check_clocktime_context(value)
-            self._context.update(value)
 
     def __repr__(self):
         return f'ClockTime({self.hour:02}:{self.minute:02}:{self.second:02})'
