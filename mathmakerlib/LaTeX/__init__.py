@@ -87,5 +87,11 @@ THICKNESS_VALUES = [None, 'thin', 'very thin', 'ultra thin', 'thick',
 
 ARROW_TIPS = [None, '<->', '<-', '->', '-']
 
+DASHPATTERN_VALUES = ['solid', 'dotted', 'densely dotted', 'loosely dotted',
+                      'dashed', 'densely dashed', 'loosely dashed',
+                      'dash dot', 'densely dash dot', 'loosely dash dot',
+                      'dash dot dot', 'densely dash dot dot',
+                      'loosely dash dot dot']
+
 __all__ = ['AttrList', 'OptionsList', 'Command', 'DocumentClass',
            'UsePackage', 'UseTikzLibrary']

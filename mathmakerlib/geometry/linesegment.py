@@ -19,7 +19,7 @@
 # along with Mathmaker Lib; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-from mathmakerlib.mmlib_setup import DASHPATTERN_VALUES
+from mathmakerlib.LaTeX import DASHPATTERN_VALUES
 from mathmakerlib.exceptions import ZeroLengthLineSegment
 from mathmakerlib.core.drawable import check_scale, Drawable, HasThickness
 from mathmakerlib.core.drawable import tikz_approx_position, tikz_options_list

@@ -30,14 +30,9 @@
 
 from decimal import Decimal
 
+from mathmakerlib.LaTeX import DASHPATTERN_VALUES
 from mathmakerlib.core.oriented import check_winding
 from mathmakerlib.calculus.number import Number, is_number
-
-DASHPATTERN_VALUES = ['solid', 'dotted', 'densely dotted', 'loosely dotted',
-                      'dashed', 'densely dashed', 'loosely dashed',
-                      'dash dot', 'densely dash dot', 'loosely dash dot',
-                      'dash dot dot', 'densely dash dot dot',
-                      'loosely dash dot dot']
 
 DIRECTION_VALUES = ['top-left', 'top-right', 'bottom-left', 'bottom-right']
 
