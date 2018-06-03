@@ -19,13 +19,16 @@
 # along with Mathmaker Lib; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
+from copy import deepcopy
+
 from mathmakerlib import mmlib_setup
 from mathmakerlib.calculus.tools import is_integer
 from mathmakerlib.core.printable import Printable
 
 DEFAULT_CLOCKTIME_CONTEXT = {'h': ':', 'min': ':', 's': '',
-                             'display_h': True, 'display_min': True,
-                             'display_s': True}
+                             'display_s': True, 'display_0h': True,
+                             'display_0min': True,
+                             'min_if_0h': ' min ', 's_if_0h_0min': 's'}
 
 
 def check_clocktime_context(value):
@@ -44,6 +47,10 @@ class ClockTime(Printable):
     """hour:minute:second objects ranging from 00:00:00 to 23:59:59"""
 
     def __new__(cls, hour=0, minute=0, second=0, context=None):
+        if isinstance(hour, ClockTime):
+            if context is None:
+                context = hour.context
+            hour, minute, second = hour.hour, hour.minute, hour.second
         if any(not is_integer(value) for value in [hour, minute, second]):
             raise TypeError('hour, minute and second must be <class \'int\'>. '
                             'Found {}, {} and {} instead.'
@@ -61,7 +68,7 @@ class ClockTime(Printable):
         hour = hour % 24
         self = super().__new__(cls)
         self._hour, self._minute, self._second = hour, minute, second
-        self._context = mmlib_setup.clocktime.CONTEXT
+        self._context = deepcopy(mmlib_setup.clocktime.CONTEXT)
         if context is not None:
             check_clocktime_context(context)
             self._context.update(context)
@@ -133,10 +140,26 @@ class ClockTime(Printable):
 
     def imprint(self, start_expr=True, variant='latex'):
         output = ''
-        if self.context['display_h']:
+        zero_h = self.hour == 0
+        zero_min = self.minute == 0
+        displayed_h = False
+        displayed_min = False
+        minute_fmt = '{}{}'
+        second_fmt = '{}{}'
+        if not zero_h or self.context['display_0h']:
             output += '{}{}'.format(self.hour, self.context['h'])
-        if self.context['display_min']:
-            output += '{}{}'.format(self.minute, self.context['min'])
+            minute_fmt = '{:02}{}'
+            displayed_h = True
+        if displayed_h or (not zero_min or self.context['display_0min']):
+            u = self.context['min']
+            if not displayed_h:
+                u = self.context['min_if_0h']
+            output += minute_fmt.format(self.minute, u)
+            second_fmt = '{:02}{}'
+            displayed_min = True
         if self.context['display_s']:
-            output += '{}{}'.format(self.second, self.context['s'])
+            u = self.context['s']
+            if not displayed_min:
+                u = self.context['s_if_0h_0min']
+            output += second_fmt.format(self.second, u)
         return output

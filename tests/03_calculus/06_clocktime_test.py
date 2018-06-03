@@ -31,12 +31,12 @@ from mathmakerlib.calculus.clocktime import check_clocktime_context
 def ct(): return ClockTime(15, 24, 16)
 
 
-def test_setup_global_clocktime_context():
+def test_setup_global_context():
     """Check setting up the global clocktime context"""
     mmlib_setup.clocktime.CONTEXT = DEFAULT_CLOCKTIME_CONTEXT
 
 
-def test_check_clocktime_context_typeerror():
+def test_check_context_typeerror():
     """Check check_clocktime_context()"""
     with pytest.raises(TypeError) as excinfo:
         check_clocktime_context(('h', 'min', 's'))
@@ -44,7 +44,7 @@ def test_check_clocktime_context_typeerror():
         'Found <class \'tuple\'> instead.'
 
 
-def test_check_clocktime_context_keyerror():
+def test_check_context_keyerror():
     """Check check_clocktime_context()"""
     with pytest.raises(KeyError) as excinfo:
         check_clocktime_context({'hour': 3})
@@ -52,7 +52,7 @@ def test_check_clocktime_context_keyerror():
         '\'hour\' instead."'.format(set(DEFAULT_CLOCKTIME_CONTEXT.keys()))
 
 
-def test_clocktime_instanciation_error(ct):
+def test_instanciation_error():
     """Check the ClockTime class initialization"""
     with pytest.raises(TypeError) as excinfo:
         ClockTime(15.2, 24, 16)
@@ -61,40 +61,46 @@ def test_clocktime_instanciation_error(ct):
         '<class \'int\'> instead.'
 
 
-def test_clocktime_str(ct):
+def test_str(ct):
     """Check the ClockTime class initialization"""
     assert str(ct) == '15:24:16'
 
 
-def test_clocktime_hash(ct):
+def test_instanciation_from_another_clocktime(ct):
+    """Check the ClockTime class initialization"""
+    ct2 = ClockTime(ct)
+    assert str(ct2) == '15:24:16'
+
+
+def test_hash(ct):
     """Check the ClockTime class initialization"""
     hash(ct)
 
 
-def test_clocktime_context(ct):
+def test_context(ct):
     """Check the ClockTime class initialization"""
     assert ct.context == DEFAULT_CLOCKTIME_CONTEXT
 
 
-def test_negative_second_clocktime_instanciation():
+def test_negative_second_instanciation():
     """Check the ClockTime class initialization"""
     t = ClockTime(15, 24, -16)
     assert str(t) == '15:23:44'
 
 
-def test_negative_minute_and_second_clocktime_instanciation():
+def test_negative_minute_and_second_instanciation():
     """Check the ClockTime class initialization"""
     t = ClockTime(15, -24, -16)
     assert str(t) == '14:35:44'
 
 
-def test_negative_clocktime_instanciation():
+def test_negative_instanciation():
     """Check the ClockTime class initialization"""
     t = ClockTime(-15, -24, -16)
     assert str(t) == '08:35:44'
 
 
-def test_clocktime_leading_zeros():
+def test_leading_zeros():
     """Check leading zeros"""
     assert str(ClockTime(1, 2, 9)) == '01:02:09'
 
@@ -204,6 +210,48 @@ def test_clocktime_printed(ct):
 def test_custom_context_clocktime_printed():
     """Check ClockTime imprint()"""
     ct = ClockTime(15, 24, 16, context={'h': 'h ', 'min': '', 's': '',
-                                        'display_h': True, 'display_min': True,
                                         'display_s': False})
     assert ct.printed == '15h 24'
+
+
+def test_0h_not_printed():
+    """Check ClockTime imprint()"""
+    ct = ClockTime(0, 24, 30,
+                   context={'h': 'h', 'min': '', 's': '',
+                            'display_s': False, 'display_0h': False,
+                            'min_if_0h': ' min ', 's_if_0h_0min': 's'})
+    assert ct.printed == '24 min '
+
+
+def test_0h_24min_30s_printed():
+    """Check ClockTime imprint()"""
+    ct = ClockTime(0, 24, 30)
+    assert ct.printed == '0:24:30'
+
+
+def test_24min_30s_printed():
+    """Check ClockTime imprint()"""
+    ct = ClockTime(0, 24, 30,
+                   context={'h': 'h', 'min': '', 's': '',
+                            'display_0h': False,
+                            'min_if_0h': ' min ', 's_if_0h_0min': 's'})
+    assert ct.printed == '24 min 30'
+
+
+def test_30s_printed():
+    """Check ClockTime imprint()"""
+    ct = ClockTime(0, 0, 30,
+                   context={'h': 'h', 'min': '', 's': '',
+                            'display_0h': False, 'display_0min': False,
+                            'min_if_0h': ' min ', 's_if_0h_0min': ' s'})
+    assert ct.printed == '30 s'
+
+
+def test_0min_printed():
+    """Check ClockTime imprint()"""
+    ct = ClockTime(0, 0, 0,
+                   context={'h': 'h', 'min': '', 's': '',
+                            'display_0h': False, 'display_0min': True,
+                            'display_s': False,
+                            'min_if_0h': ' min ', 's_if_0h_0min': ' s'})
+    assert ct.printed == '0 min '
