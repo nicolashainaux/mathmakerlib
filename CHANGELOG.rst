@@ -4,10 +4,12 @@ Changelog
 Version 0.7 (2018-05-  )
 ------------------------
 
-* Accept floats to initialize Numbers (the float being converted to str).
-* Now Points, as well as other geometric objects, may be 2D or 3D.
+* Now Points, as well as other basic geometric objects, may be 2D or 3D.
 * Add first three-dimensional objects: Polyhedron and RightCuboid.
 * Add first flat representation of polyhedra: ObliqueProjection
+* Extend units conversions to areas, volumes and conversions between capacities and volumes (from m³ to mm³).
+* Add ClockTime object to easily deal with times.
+* Accept floats to initialize Numbers (the float being converted to str).
 
 Version 0.6 (2018-04-12)
 ------------------------
