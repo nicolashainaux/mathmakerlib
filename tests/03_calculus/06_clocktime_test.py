@@ -255,3 +255,23 @@ def test_0min_printed():
                             'display_s': False,
                             'min_if_0h': ' min ', 's_if_0h_0min': ' s'})
     assert ct.printed == '0 min '
+
+
+def test_4min_printed():
+    """Check ClockTime imprint()"""
+    ct = ClockTime(0, 4, 0,
+                   context={'h': 'h', 'min': '', 's': '',
+                            'display_0h': False, 'display_0min': True,
+                            'display_s': False,
+                            'min_if_0h': ' min ', 's_if_0h_0min': ' s'})
+    assert ct.printed == '4 min '
+
+
+def test_1h_04min_printed():
+    """Check ClockTime imprint()"""
+    ct = ClockTime(1, 4, 0,
+                   context={'h': 'h', 'min': '', 's': '',
+                            'display_0h': False, 'display_0min': True,
+                            'display_s': False,
+                            'min_if_0h': ' min ', 's_if_0h_0min': ' s'})
+    assert ct.printed == '1h04'
