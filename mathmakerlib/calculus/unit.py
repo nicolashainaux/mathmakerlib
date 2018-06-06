@@ -29,6 +29,7 @@ from mathmakerlib.calculus.exponented import Exponented
 LENGTH_UNITS = ['km', 'hm', 'dam', 'm', 'dm', 'cm', 'mm', 'µm', 'nm', 'pm']
 CAPACITY_UNITS = ['kL', 'hL', 'daL', 'L', 'dL', 'cL', 'mL', 'µL', 'nL', 'pL']
 MASS_UNITS = ['t', 'kg', 'hg', 'dag', 'g', 'dg', 'cg', 'mg', 'µg', 'ng', 'pg']
+VOLUME_CAPACITY_MATCH = ['m', '', '', 'dm', '', '', 'cm', '', '', 'µm']
 COMMON_LENGTH_UNITS = LENGTH_UNITS[:-3]
 COMMON_CAPACITY_UNITS = CAPACITY_UNITS[1:-3]
 COMMON_MASS_UNITS = MASS_UNITS[:-3]
@@ -46,6 +47,8 @@ UNIT_KINDS = {'length': COMMON_LENGTH_UNITS,
               'capacity': COMMON_CAPACITY_UNITS,
               'currency': CURRENCY_UNITS}
 PHYSICAL_QUANTITIES = {'length': LENGTH_UNITS,
+                       'area': LENGTH_UNITS,
+                       'volume': LENGTH_UNITS,
                        'capacity': CAPACITY_UNITS,
                        'mass': MASS_UNITS,
                        'currency': CURRENCY_UNITS,
@@ -88,14 +91,27 @@ def difference_of_orders_of_magnitude(unit1, unit2):
         unit1 = Unit(unit1)
     if isinstance(unit2, str):
         unit2 = Unit(unit2)
-    phq = physical_quantity(unit1)
-    if phq != physical_quantity(unit2):
+    phq1 = physical_quantity(unit1)
+    phq2 = physical_quantity(unit2)
+    if phq1 == phq2:
+        dimension = unit1.exponent
+        if dimension is None:
+            dimension = 1
+        magnitude_diff = (PHYSICAL_QUANTITIES[phq2].index(unit2.content)
+                          - PHYSICAL_QUANTITIES[phq1].index(unit1.content))\
+            * dimension
+    elif phq1 == 'volume' and phq2 == 'capacity':
+        magnitude_diff = PHYSICAL_QUANTITIES[phq2].index(unit2.content)\
+            - VOLUME_CAPACITY_MATCH.index(unit1.content)
+    elif phq1 == 'capacity' and phq2 == 'volume':
+        magnitude_diff = VOLUME_CAPACITY_MATCH.index(unit2.content)\
+            - PHYSICAL_QUANTITIES[phq1].index(unit1.content)
+    else:
         raise TypeError('Cannot give the difference of orders of magnitude '
                         'between two units that do not belong to the same '
                         'physical quantity ({} and {}).'
                         .format(unit1, unit2))
-    return 10 ** Decimal(str(PHYSICAL_QUANTITIES[phq].index(unit2.content)
-                             - PHYSICAL_QUANTITIES[phq].index(unit1.content)))
+    return 10 ** (Decimal(str(magnitude_diff)))
 
 
 class Unit(Exponented):

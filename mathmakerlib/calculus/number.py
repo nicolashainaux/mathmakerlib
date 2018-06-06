@@ -407,7 +407,7 @@ class Number(Decimal, Signed, Printable, Evaluable):
         if isinstance(unit, str):
             unit = Unit(unit)
         try:
-            factor = difference_of_orders_of_magnitude(str(self.unit), unit)
+            factor = difference_of_orders_of_magnitude(self.unit, unit)
         except TypeError as excinfo:
             if str(excinfo).startswith('Cannot give the difference of orders '
                                        'of magnitude between two units that '

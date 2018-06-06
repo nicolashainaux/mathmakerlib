@@ -166,6 +166,62 @@ def test_conversions():
     assert j.uiprinted == '0.01096 hL'
 
 
+def test_convert_area_to_smaller_unit():
+    """Check conversions between area units."""
+    i = Number(6, unit=Unit('m', exponent=2))
+    j = i.converted_to(Unit('dm', exponent=2))
+    assert j == Number(600, unit=Unit('dm', exponent=2))
+
+
+def test_convert_area_to_greater_unit():
+    """Check conversions between area units."""
+    i = Number(6, unit=Unit('dm', exponent=2))
+    j = i.converted_to(Unit('m', exponent=2))
+    assert j == Number(0.06, unit=Unit('m', exponent=2))
+
+
+def test_convert_volume_to_smaller_unit():
+    """Check conversions between volume units."""
+    i = Number(6, unit=Unit('m', exponent=3))
+    j = i.converted_to(Unit('dm', exponent=3))
+    assert j == Number(6000, unit=Unit('dm', exponent=3))
+
+
+def test_convert_volume_to_geater_unit():
+    """Check conversions between volume units."""
+    i = Number(6, unit=Unit('dm', exponent=3))
+    j = i.converted_to(Unit('m', exponent=3))
+    assert j == Number(0.006, unit=Unit('m', exponent=3))
+
+
+def test_convert_dm3_to_L():
+    """Check conversions between volume units."""
+    i = Number(6, unit=Unit('dm', exponent=3))
+    j = i.converted_to('L')
+    assert j == Number(6, unit='L')
+
+
+def test_convert_dm3_to_mL():
+    """Check conversions between volume units."""
+    i = Number(6, unit=Unit('dm', exponent=3))
+    j = i.converted_to('mL')
+    assert j == Number(6000, unit='mL')
+
+
+def test_convert_mL_to_dm3():
+    """Check conversions between volume units."""
+    i = Number(6, unit='mL')
+    j = i.converted_to(Unit('dm', exponent=3))
+    assert j == Number(0.006, unit=Unit('dm', exponent=3))
+
+
+def test_convert_dL_to_cm3():
+    """Check conversions between volume units."""
+    i = Number(6, unit='dL')
+    j = i.converted_to(Unit('cm', exponent=3))
+    assert j == Number(600, unit=Unit('cm', exponent=3))
+
+
 def test_rounded():
     """Check rounding is good."""
     assert Number(4.2).rounded(0) == 4
