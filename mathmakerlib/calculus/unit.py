@@ -29,7 +29,7 @@ from mathmakerlib.calculus.exponented import Exponented
 LENGTH_UNITS = ['km', 'hm', 'dam', 'm', 'dm', 'cm', 'mm', 'µm', 'nm', 'pm']
 CAPACITY_UNITS = ['kL', 'hL', 'daL', 'L', 'dL', 'cL', 'mL', 'µL', 'nL', 'pL']
 MASS_UNITS = ['t', 'kg', 'hg', 'dag', 'g', 'dg', 'cg', 'mg', 'µg', 'ng', 'pg']
-VOLUME_CAPACITY_MATCH = ['m', '', '', 'dm', '', '', 'cm', '', '', 'µm']
+VOLUME_CAPACITY_MATCH = ['m', '', '', 'dm', '', '', 'cm', '', '', 'mm']
 COMMON_LENGTH_UNITS = LENGTH_UNITS[:-3]
 COMMON_CAPACITY_UNITS = CAPACITY_UNITS[1:-3]
 COMMON_MASS_UNITS = MASS_UNITS[:-3]
