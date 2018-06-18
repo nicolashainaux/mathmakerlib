@@ -1,7 +1,7 @@
 Changelog
 =========
 
-Version 0.7 (2018-05-  )
+Version 0.7 (2018-06-18)
 ------------------------
 
 * Now Points, as well as other basic geometric objects, may be 2D or 3D.
