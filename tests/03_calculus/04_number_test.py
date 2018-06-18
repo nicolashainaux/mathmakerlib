@@ -256,8 +256,8 @@ def test_digits_sum():
 
 def test_quantize():
     """Check quantize() is correct."""
-    assert Number(2).quantize(Decimal('0.01')) == Number('2.00')
-    assert Number('3.6').quantize(Decimal('0.01')) == Number('3.60')
+    assert Number(2).quantize(Decimal('0.01')).printed == '2.00'
+    assert Number('3.6').quantize(Decimal('0.01')).printed == '3.60'
     assert Number('3.6', unit='mL').quantize(Decimal('0.01')) \
         == Number('3.60', unit='mL')
     assert Number('3.6', unit='mL').quantize(Number('0.01')) \
