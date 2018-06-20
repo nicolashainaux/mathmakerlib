@@ -32,7 +32,7 @@ from mathmakerlib.core.drawable import Labeled, HasArrowTips
 from mathmakerlib.core.drawable import tikz_options_list, Drawable
 from mathmakerlib.core.drawable import tikz_approx_position
 from mathmakerlib.core.dimensional import Dimensional
-from mathmakerlib.geometry.point import Point, OPPOSITE_LABEL_POSITIONS
+from mathmakerlib.geometry.point import Point
 from mathmakerlib.geometry.vector import Vector
 from mathmakerlib.geometry.bipoint import Bipoint
 from mathmakerlib.calculus.number import Number, is_number

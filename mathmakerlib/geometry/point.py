@@ -182,7 +182,7 @@ class Point(Drawable, Dimensional):
     def x(self, value):
         try:
             self._x = Number(value)
-        except (TypeError, InvalidOperation) as excinfo:
+        except (TypeError, InvalidOperation):
             raise TypeError('Expected a number as abscissa, found {} '
                             'instead.'.format(repr(value)))
 
@@ -194,7 +194,7 @@ class Point(Drawable, Dimensional):
     def y(self, value):
         try:
             self._y = Number(value)
-        except (TypeError, InvalidOperation) as excinfo:
+        except (TypeError, InvalidOperation):
             raise TypeError('Expected a number as ordinate, found {} '
                             'instead.'.format(repr(value)))
 
@@ -210,7 +210,7 @@ class Point(Drawable, Dimensional):
             three_dimensional = False
         try:
             self._z = Number(value)
-        except (TypeError, InvalidOperation) as excinfo:
+        except (TypeError, InvalidOperation):
             raise TypeError('Expected a number as applicate, found {} '
                             'instead.'.format(repr(value)))
         self._three_dimensional = three_dimensional
