@@ -21,7 +21,7 @@
 
 import pytest
 
-from mathmakerlib import mmlib_setup
+from mathmakerlib import config
 from mathmakerlib.geometry import RightCuboid, ObliqueProjection
 
 
@@ -57,7 +57,7 @@ def test_instanciation_direction_error(rc):
     with pytest.raises(ValueError) as excinfo:
         ObliqueProjection(rc, direction='undefined')
     assert str(excinfo.value) == 'Allowed values for direction argument are '\
-        '{}. Found \'undefined\' instead.'.format(mmlib_setup.DIRECTION_VALUES)
+        '{}. Found \'undefined\' instead.'.format(config.DIRECTION_VALUES)
 
 
 def test_label_vertices_error(rc):

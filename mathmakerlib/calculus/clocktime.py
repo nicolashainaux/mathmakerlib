@@ -21,7 +21,7 @@
 
 from copy import deepcopy
 
-from mathmakerlib import mmlib_setup
+from mathmakerlib import config
 from mathmakerlib.calculus.tools import is_integer
 from mathmakerlib.core.printable import Printable
 
@@ -68,7 +68,7 @@ class ClockTime(Printable):
         hour = hour % 24
         self = super().__new__(cls)
         self._hour, self._minute, self._second = hour, minute, second
-        self._context = deepcopy(mmlib_setup.clocktime.CONTEXT)
+        self._context = deepcopy(config.clocktime.CONTEXT)
         if context is not None:
             check_clocktime_context(context)
             self._context.update(context)

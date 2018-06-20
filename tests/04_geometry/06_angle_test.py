@@ -21,7 +21,7 @@
 
 import pytest
 
-from mathmakerlib import required, mmlib_setup
+from mathmakerlib import required, config
 from mathmakerlib.calculus import Number, Unit
 from mathmakerlib.geometry import Point, Bipoint
 from mathmakerlib.geometry.angle import AngleDecoration, Angle, AnglesSet
@@ -236,13 +236,13 @@ def test_naming():
     α = Angle(X, A, Y)
     assert α.name == r'\angle XAY'
     required.package['stackengine'] = required.package['scalerel'] = False
-    mmlib_setup.language = 'fr'
+    config.language = 'fr'
     assert α.name == r'\stackon[-5pt]{XAY}{\vstretch{1.5}{\hstretch{1.6}'\
         '{\widehat{\phantom{\;\;\;\;}}}}}'
     assert required.package['stackengine']
     assert required.package['scalerel']
     required.package['stackengine'] = required.package['scalerel'] = False
-    mmlib_setup.language = 'en'
+    config.language = 'en'
     α.naming_mode = 'from_vertex'
     assert α.name == r'\angle A'
     α.naming_mode = 'from_armspoints'

@@ -23,7 +23,7 @@ import string
 from decimal import InvalidOperation
 from math import cos, sin, radians
 
-from mathmakerlib import mmlib_setup
+from mathmakerlib import config
 from mathmakerlib.core.drawable import Drawable, check_scale, tikz_options_list
 from mathmakerlib.core.dimensional import Dimensional
 from mathmakerlib.calculus.number import Number
@@ -149,7 +149,7 @@ class Point(Drawable, Dimensional):
 
     def __eq__(self, other):
         if isinstance(other, Point):
-            p = mmlib_setup.points.DEFAULT_POSITION_PRECISION
+            p = config.points.DEFAULT_POSITION_PRECISION
             return all([self.x.rounded(p) == other.x.rounded(p),
                         self.y.rounded(p) == other.y.rounded(p),
                         self.z.rounded(p) == other.z.rounded(p)])

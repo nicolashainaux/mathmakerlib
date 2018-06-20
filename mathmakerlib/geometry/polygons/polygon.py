@@ -23,7 +23,7 @@ import warnings
 from copy import deepcopy
 from statistics import mean
 
-from mathmakerlib import mmlib_setup
+from mathmakerlib import config
 from mathmakerlib.calculus.number import Number
 from mathmakerlib.calculus.tools import is_number
 from mathmakerlib.core.drawable import Drawable, HasThickness, Colored
@@ -75,7 +75,7 @@ class Polygon(Drawable, Colored, HasThickness, Oriented, Dimensional):
         :param winding: force the winding to be either 'clockwise' or
         'anticlockwise'. If left to None (default), doesn't force anything,
         the winding will be either forced by the value of
-        mmlib_setup.DEFAULT_POLYGON_WINDING, or if it is None too, then the
+        config.DEFAULT_POLYGON_WINDING, or if it is None too, then the
         winding will be deduced from the given vertices' order.
         :type winding: None or a str ('clockwise' or 'anticlockwise')
         """
@@ -104,8 +104,8 @@ class Polygon(Drawable, Colored, HasThickness, Oriented, Dimensional):
                                  '({}).'.format(len(vertices), len(name)))
 
         if (winding is None
-            and mmlib_setup.polygons.DEFAULT_WINDING is not None):
-            winding = mmlib_setup.polygons.DEFAULT_WINDING
+            and config.polygons.DEFAULT_WINDING is not None):
+            winding = config.polygons.DEFAULT_WINDING
 
         if winding is not None:
             check_winding(winding)
@@ -186,7 +186,7 @@ class Polygon(Drawable, Colored, HasThickness, Oriented, Dimensional):
         self.sloped_sides_labels = sloped_sides_labels
 
         if (self._reverted_winding
-            and mmlib_setup.polygons.ENABLE_MISMATCH_WINDING_WARNING):
+            and config.polygons.ENABLE_MISMATCH_WINDING_WARNING):
             warnings.warn('Changed the order of Points to comply with forced '
                           'winding ({}) for {}.'.format(winding, repr(self)))
 

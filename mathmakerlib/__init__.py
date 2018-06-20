@@ -19,10 +19,10 @@
 # along with Mathmaker Lib; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-from . import required, exceptions, mmlib_setup
+from . import required, exceptions, config
 from . import locale_patch, calculus, core, geometry, LaTeX
 
-__all__ = ['required', 'mmlib_setup', 'LaTeX', 'exceptions',
+__all__ = ['required', 'config', 'LaTeX', 'exceptions',
            'locale_patch', 'core', 'calculus', 'geometry']
 
 __version_info__ = (0, 7, 0)
@@ -50,5 +50,5 @@ __info__ = '{lib_name} {r}\nLicense: {li}\n{c} {contact}'\
                    r=__release__, li=__licence__, c=__copyright__,
                    contact=__contact__)
 
-mmlib_setup.init()
+config.init()
 required.init()

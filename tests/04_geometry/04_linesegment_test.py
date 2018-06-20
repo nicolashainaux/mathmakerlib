@@ -24,7 +24,7 @@ from decimal import Decimal
 
 from mathmakerlib.exceptions import ZeroLengthLineSegment
 from mathmakerlib.core.drawable import THICKNESS_VALUES
-from mathmakerlib.mmlib_setup import DASHPATTERN_VALUES
+from mathmakerlib.config import DASHPATTERN_VALUES
 from mathmakerlib.calculus import Number
 from mathmakerlib.geometry import Point, LineSegment
 

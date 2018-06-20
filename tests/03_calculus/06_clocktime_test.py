@@ -21,7 +21,7 @@
 
 import pytest
 
-from mathmakerlib import mmlib_setup
+from mathmakerlib import config
 from mathmakerlib.calculus.clocktime import DEFAULT_CLOCKTIME_CONTEXT
 from mathmakerlib.calculus import ClockTime
 from mathmakerlib.calculus.clocktime import check_clocktime_context
@@ -31,9 +31,9 @@ from mathmakerlib.calculus.clocktime import check_clocktime_context
 def ct(): return ClockTime(15, 24, 16)
 
 
-def test_setup_global_context():
+def test_config_global_context():
     """Check setting up the global clocktime context"""
-    mmlib_setup.clocktime.CONTEXT = DEFAULT_CLOCKTIME_CONTEXT
+    config.clocktime.CONTEXT = DEFAULT_CLOCKTIME_CONTEXT
 
 
 def test_check_context_typeerror():

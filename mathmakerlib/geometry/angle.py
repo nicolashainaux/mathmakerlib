@@ -22,7 +22,7 @@
 import sys
 from math import atan2, degrees
 
-from mathmakerlib import required, mmlib_setup
+from mathmakerlib import required, config
 from mathmakerlib.LaTeX import MATHEMATICAL_NOTATIONS
 from mathmakerlib.exceptions import ZeroVector
 from mathmakerlib.core.oriented import Oriented
@@ -402,7 +402,7 @@ class Angle(Drawable, Oriented, HasThickness, Dimensional):
             try:
                 position = p[1]
             except IndexError:
-                position = mmlib_setup.angles.DEFAULT_ARMSPOINTS_POSITION
+                position = config.angles.DEFAULT_ARMSPOINTS_POSITION
             self._armspoints.append(self.arms[i].point_at(position, name))
         if len(self._armspoints):
             self.label_armspoints = True
@@ -577,7 +577,7 @@ class Angle(Drawable, Oriented, HasThickness, Dimensional):
     def name(self):
         loc = None
         for l in ['fr', 'en']:
-            if mmlib_setup.language.startswith(l):
+            if config.language.startswith(l):
                 loc = l
         if self.naming_mode == 'from_endpoints':
             content = '{}{}{}'.format(self.endpoints[0].name,

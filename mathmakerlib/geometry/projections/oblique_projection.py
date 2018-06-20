@@ -21,7 +21,7 @@
 
 from math import radians, sin, cos
 
-from mathmakerlib import mmlib_setup
+from mathmakerlib import config
 from mathmakerlib.core.drawable import Drawable, tikz_approx_position
 from mathmakerlib.core.drawable import HasThickness
 from mathmakerlib.geometry.tools import convex_hull
@@ -58,7 +58,7 @@ class ObliqueProjection(Drawable, HasThickness):
         :param object3D: the object to project.
         :type object3D: Polyhedron
         :param k: the ratio of the oblique projection. Defaults to
-        mmlib_setup.oblique_projection.RATIO
+        config.oblique_projection.RATIO
         :type k: number
         :param α: the angle between the receding Z-axis, and X-axis.
         :type α: number
@@ -69,14 +69,14 @@ class ObliqueProjection(Drawable, HasThickness):
         self.draw_vertices = draw_vertices
         self.label_vertices = label_vertices
         if k is None:
-            k = mmlib_setup.oblique_projection.RATIO
+            k = config.oblique_projection.RATIO
         if not is_number(k):
             raise TypeError('Ratio k must be a number. Found {} instead.'
                             .format(repr(k)))
         if α is None:
-            α = mmlib_setup.oblique_projection.RECEDING_AXIS_ANGLE
+            α = config.oblique_projection.RECEDING_AXIS_ANGLE
         if direction is None:
-            direction = mmlib_setup.oblique_projection.DIRECTION
+            direction = config.oblique_projection.DIRECTION
         if not is_number(α):
             raise TypeError('Angle α must be a number. Found {} instead.'
                             .format(repr(α)))
@@ -186,7 +186,7 @@ class ObliqueProjection(Drawable, HasThickness):
                         and pm not in convex_hull(pm, *pface)
                         and not any(m.belongs_to(s) for s in f.sides)):
                         edge.dashpattern = \
-                            mmlib_setup.oblique_projection.DASHPATTERN
+                            config.oblique_projection.DASHPATTERN
 
         # Setup the vertices' labels
         for vertex in self.vertices:

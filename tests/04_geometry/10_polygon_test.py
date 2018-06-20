@@ -23,7 +23,7 @@ import sys
 import locale
 import pytest
 
-from mathmakerlib import required, mmlib_setup
+from mathmakerlib import required, config
 from mathmakerlib.calculus import Number
 from mathmakerlib.geometry import Point, Polygon, AngleDecoration
 from mathmakerlib.geometry import shoelace_formula
@@ -222,7 +222,7 @@ def test_lbl_perimeter(pointO, pointA, pointB, pointC):
 
 def test_winding(pointO, pointA, pointB, pointC, pointI, pointJ):
     """Check the Polygon's winding."""
-    mmlib_setup.polygons.DEFAULT_WINDING = 'clockwise'
+    config.polygons.DEFAULT_WINDING = 'clockwise'
     with pytest.warns(UserWarning) as record:
         p = Polygon(pointO, pointI, pointJ)
     assert len(record) == 1
@@ -231,12 +231,12 @@ def test_winding(pointO, pointA, pointB, pointC, pointI, pointJ):
     assert p.winding == 'clockwise'
     q = Polygon(pointO, pointJ, pointI)
     assert q.winding == 'clockwise'
-    mmlib_setup.polygons.DEFAULT_WINDING = 'anticlockwise'
+    config.polygons.DEFAULT_WINDING = 'anticlockwise'
     with pytest.warns(UserWarning) as record:
         q = Polygon(pointO, pointJ, pointI)
     assert len(record) == 1
     assert q.winding == 'anticlockwise'
-    mmlib_setup.polygons.DEFAULT_WINDING = None
+    config.polygons.DEFAULT_WINDING = None
     p = Polygon(pointO, pointI, pointJ)
     assert p.winding == 'anticlockwise'
     q = Polygon(pointO, pointJ, pointI)
@@ -251,12 +251,12 @@ def test_winding(pointO, pointA, pointB, pointC, pointI, pointJ):
         Polygon(pointO, pointJ, pointI, winding='counterclockwise')
     assert str(excinfo.value) == 'Expect \'clockwise\' or '\
         '\'anticlockwise\'. Found \'counterclockwise\' instead.'
-    mmlib_setup.polygons.ENABLE_MISMATCH_WINDING_WARNING = False
+    config.polygons.ENABLE_MISMATCH_WINDING_WARNING = False
     with pytest.warns(None) as record:
         p = Polygon(pointO, pointA, pointB, pointC, name='PLUM',
                     winding='clockwise')
     assert len(record) == 0
-    mmlib_setup.polygons.ENABLE_MISMATCH_WINDING_WARNING = True
+    config.polygons.ENABLE_MISMATCH_WINDING_WARNING = True
     p.setup_labels(['one', 'two', 'three', 'four'])
     p.setup_marks(['|', '||', '|||', '||||'])
     assert p.drawn == r"""

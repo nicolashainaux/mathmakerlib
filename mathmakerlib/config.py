@@ -20,13 +20,9 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 # To change default mathmakerlib's settings:
-# from mathmakerlib import mmlib_setup
 
-# Then in your main module:
-# mmlib_setup.init()
-
-# example of usage to change a value:
-# mmlib_setup.polygons.DEFAULT_WINDING = 'clockwise'
+# import mathmakerlib.config
+# mathmakerlib.config.polygons.DEFAULT_WINDING = 'clockwise'
 
 from decimal import Decimal
 
