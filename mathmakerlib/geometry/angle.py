@@ -19,7 +19,6 @@
 # along with Mathmaker Lib; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-import sys
 from math import atan2, degrees
 
 from mathmakerlib import required, config
@@ -36,8 +35,8 @@ from mathmakerlib.geometry.point import Point
 from mathmakerlib.geometry.vector import Vector
 from mathmakerlib.geometry.bipoint import Bipoint
 from mathmakerlib.calculus.number import Number, is_number
+from mathmakerlib.constants import LOCALE_US
 
-LOCALE_US = 'en' if sys.platform.startswith('win') else 'en_US.UTF-8'
 AVAILABLE_NAMING_MODES = ['from_endpoints', 'from_armspoints', 'from_vertex']
 
 
