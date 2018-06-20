@@ -190,10 +190,18 @@ SUPPORTED_LANGUAGES = ['en', 'en_US', 'en_GB', 'fr', 'fr_FR']
 
 def init():
     global polygons, angles, oblique_projection, language, points, clocktime
+    global initialized
 
-    polygons = PolygonsSetup()
-    points = PointsSetup()
-    angles = AnglesSetup()
-    oblique_projection = ObliqueProjectionSetup()
-    clocktime = ClockTimeSetup()
-    language = 'en'
+    try:
+        initialized
+    except NameError:
+        initialized = False
+
+    if not initialized:
+        initialized = True
+        polygons = PolygonsSetup()
+        points = PointsSetup()
+        angles = AnglesSetup()
+        oblique_projection = ObliqueProjectionSetup()
+        clocktime = ClockTimeSetup()
+        language = 'en'

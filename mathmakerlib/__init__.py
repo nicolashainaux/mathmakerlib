@@ -49,3 +49,6 @@ __info__ = '{lib_name} {r}\nLicense: {li}\n{c} {contact}'\
            .format(lib_name=__lib_name__,
                    r=__release__, li=__licence__, c=__copyright__,
                    contact=__contact__)
+
+mmlib_setup.init()
+required.init()

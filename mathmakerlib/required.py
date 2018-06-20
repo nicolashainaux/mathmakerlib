@@ -22,21 +22,29 @@
 
 def init():
     global package, options, tikz_library, tikzset
+    global required_initialized
 
-    # It's difficult to track amssymb, that could show up almost anywhere.
-    # This is left to mathmakerlib's user. A (yet short) list of symbols is
-    # provided in LaTeX module.
-    package = {pkg_name: False
-               for pkg_name in ['tikz', 'siunitx', 'xcolor', 'eurosym',
-                                'amsmath', 'stackengine', 'scalerel',
-                                'cancel', 'multicol', 'placeins', 'ulem',
-                                'textcomp', 'array', 'graphicx', 'epstopdf',
-                                'textpos']}
-    options = {'xcolor': set(), 'textpos': set()}
-    tikz_library = {'angles': False,
-                    'decorations.markings': False,
-                    'quotes': False}
-    tikzset = {'singledash_hatchmark': False,
-               'doubledash_hatchmark': False,
-               'tripledash_hatchmark': False}
-    # hack = {'rightangle_mark': False}
+    try:
+        required_initialized
+    except NameError:
+        required_initialized = False
+
+    if not required_initialized:
+        required_initialized = True
+        # It's difficult to track amssymb, that could show up almost anywhere.
+        # This is left to mathmakerlib's user. A (yet short) list of symbols is
+        # provided in LaTeX module.
+        package = {pkg_name: False
+                   for pkg_name in ['tikz', 'siunitx', 'xcolor', 'eurosym',
+                                    'amsmath', 'stackengine', 'scalerel',
+                                    'cancel', 'multicol', 'placeins', 'ulem',
+                                    'textcomp', 'array', 'graphicx',
+                                    'epstopdf', 'textpos']}
+        options = {'xcolor': set(), 'textpos': set()}
+        tikz_library = {'angles': False,
+                        'decorations.markings': False,
+                        'quotes': False}
+        tikzset = {'singledash_hatchmark': False,
+                   'doubledash_hatchmark': False,
+                   'tripledash_hatchmark': False}
+        # hack = {'rightangle_mark': False}

@@ -22,12 +22,6 @@
 import sys
 import locale
 
-from mathmakerlib import required, mmlib_setup
-from mathmakerlib import locale_patch  # noqa Apply monkey-patch to locale.
-
-required.init()
-mmlib_setup.init()
-
 LOCALE_US = 'en' if sys.platform.startswith('win') else 'en_US.UTF-8'
 
 locale.setlocale(locale.LC_ALL, locale=LOCALE_US)
