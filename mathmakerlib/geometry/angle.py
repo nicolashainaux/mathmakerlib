@@ -19,6 +19,7 @@
 # along with Mathmaker Lib; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
+import locale
 from math import atan2, degrees
 
 from mathmakerlib import required, config
@@ -35,7 +36,6 @@ from mathmakerlib.geometry.point import Point
 from mathmakerlib.geometry.vector import Vector
 from mathmakerlib.geometry.bipoint import Bipoint
 from mathmakerlib.calculus.number import Number, is_number
-from mathmakerlib.constants import LOCALE_US
 
 AVAILABLE_NAMING_MODES = ['from_endpoints', 'from_armspoints', 'from_vertex']
 
@@ -619,11 +619,17 @@ class Angle(Drawable, Oriented, HasThickness, Dimensional):
         if self.decoration is None or not self.mark_right:
             return ''
         check_winding(winding)
+        # Decimal numbers in TikZ must be written with a dot as decimal point.
+        # As of now, there is no reliable way to temporarily change the
+        # locale to 'C' (or 'en_US'), so here's a little patch that will
+        # replace possibly other decimal points by a '.'.
+        theta = str(Bipoint(self.vertex, self.points[0])
+                    .slope.rounded(Number('0.01')).printed)
+        if (locale.localeconv()['decimal_point'] != '.'
+            and locale.localeconv()['decimal_point'] in theta):
+            theta = theta.replace(locale.localeconv()['decimal_point'], '.')
         rt = 'cm={{cos({θ}), sin({θ}), -sin({θ}), cos({θ}), ({v})}}' \
-            .format(θ=Bipoint(self.vertex, self.points[0])
-                    .slope.rounded(Number('0.01'))
-                    .imprint(mod_locale=LOCALE_US),
-                    v=self.vertex.name)
+            .format(θ=theta, v=self.vertex.name)
         draw_options = tikz_options_list([self.decoration.thickness,
                                           self.decoration.color,
                                           rt])
