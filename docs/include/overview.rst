@@ -25,6 +25,9 @@ You'll need to install it if it's not already on your system.
 Basic use
 ---------
 
+Numbers
+^^^^^^^
+
 ::
 
     >>> from mathmakerlib.calculus import Number
@@ -61,66 +64,12 @@ You can also play with units. Basic operations are available:
     Number('24 cm^2')
     >>>
 
-Basic geometric shapes can also be created:
-
-::
-
-    >>> from mathmakerlib.geometry import Point, LineSegment
-    >>> ls = LineSegment(Point(0, 0, 'A'), Point(4, 0, 'B'), label='4 cm')
-    >>> ls.drawn
-    \begin{tikzpicture}
-    % Declare Points
-    \coordinate (A) at (0,0);
-    \coordinate (B) at (4,0);
-
-    % Draw Points
-    \draw (A) node {$\times$};
-    \draw (B) node {$\times$};
-
-    % Draw Line Segment
-    \draw[thick] (A) -- (B) node[midway, below, sloped] {4 cm};
-
-    % Label Points
-    \draw (A) node[left] {A};
-    \draw (B) node[right] {B};
-    \end{tikzpicture}
-    >>>
-
-Once compiled (here using Ubuntu font):
-
-.. image:: pics/simple_linesegment.png
-
-::
-
-    >>> from mathmakerlib.geometry import Point, DividedLineSegment
-    >>> A = Point(0, 0, 'A')
-    >>> B = Point(10, 0, 'B')
-    >>> ls = DividedLineSegment(A, B, n=5, fill=3, fillcolor='Cerulean')
-    >>> ls.drawn
-    \begin{tikzpicture}
-    % Declare Points
-    \coordinate (A) at (0,0);
-    \coordinate (B) at (10,0);
-    \coordinate (a3) at (6,0);
-
-    % Draw Divided Line Segment
-    \draw[ultra thick] (A) -- (B);
-    \draw[ultra thick, Cerulean] (A) -- (a3);
-    \draw[ultra thick, opacity=0] (A) -- (B) node[opacity=1, pos=0, sloped] {|} node[opacity=1, pos=0.2, sloped] {|} node[opacity=1, pos=0.4, sloped] {|} node[opacity=1, pos=0.6, sloped] {|} node[opacity=1, pos=0.8, sloped] {|} node[opacity=1, pos=1, sloped] {|};
-
-    % Label Points
-
-    \end{tikzpicture}
-
-Once compiled (here using Ubuntu font):
-
-.. image:: pics/dividedlinesegment.png
+Polygons
+^^^^^^^^
 
 ::
 
     >>> from mathmakerlib.geometry import Rectangle, Rhombus
-    >>> import mathmakerlib.required
-    >>> mathmakerlib.required.init()
     >>> print(Rectangle().drawn)
 
     \begin{tikzpicture}
@@ -154,23 +103,23 @@ Once compiled (here using Ubuntu font):
 
     \begin{tikzpicture}
     % Declare Points
-    \coordinate (Q) at (0,0);
-    \coordinate (R) at (0.866,-0.5);
-    \coordinate (S) at (1.732,0);
-    \coordinate (T) at (0.866,0.5);
+    \coordinate (E) at (0,0);
+    \coordinate (F) at (0.866,-0.5);
+    \coordinate (G) at (1.732,0);
+    \coordinate (H) at (0.866,0.5);
 
     % Draw Rhombus
-    \draw[thick] (Q)
-    -- (R) node[midway, sloped, scale=0.5] {||}
-    -- (S) node[midway, sloped, scale=0.5] {||}
-    -- (T) node[midway, sloped, scale=0.5] {||}
+    \draw[thick] (E)
+    -- (F) node[midway, sloped, scale=0.5] {||}
+    -- (G) node[midway, sloped, scale=0.5] {||}
+    -- (H) node[midway, sloped, scale=0.5] {||}
     -- cycle node[midway, sloped, scale=0.5] {||};
 
     % Label Points
-    \draw (Q) node[left] {Q};
-    \draw (R) node[below] {R};
-    \draw (S) node[right] {S};
-    \draw (T) node[above] {T};
+    \draw (E) node[left] {E};
+    \draw (F) node[below] {F};
+    \draw (G) node[right] {G};
+    \draw (H) node[above] {H};
     \end{tikzpicture}
 
 Once compiled (still using Ubuntu font):
@@ -181,15 +130,13 @@ Once compiled (still using Ubuntu font):
 
 ::
 
-    >>> import mathmakerlib.required
     >>> from mathmakerlib.calculus import Number
-    >>> from mathmakerlib.geometry import Polygon, Point, AngleMark
-    >>> mathmakerlib.required.init()
+    >>> from mathmakerlib.geometry import Polygon, Point, AngleDecoration
     >>> p = Polygon(Point(0, 0), Point(3, -1), Point(4, 2), Point(2, 3), Point(-1, 2), name='STONE')
-    >>> p.setup_labels([Number(3, unit='cm'), Number('3.5', unit='cm'), Number('2.5', unit='cm'), Number(3, unit='cm'), Number(3, unit='cm')], masks=[None, None, '?', ' ', ' '])
+    >>> p.setup_labels([Number(3, unit='cm'), Number(3.5, unit='cm'), Number(2.5, unit='cm'), Number(3, unit='cm'), Number(3, unit='cm')], masks=[None, None, '?', ' ', ' '])
     >>> p.sides[0].mark = p.sides[3].mark = p.sides[4].mark = '||'
-    >>> p.sides[0].mark_scale = p.sides[3].mark_scale = p.sides[4].mark_scale = Number('0.67')
-    >>> p.angles[1].mark = AngleMark(color='NavyBlue', thickness='very thick', radius=Number('0.5', unit='cm'))
+    >>> p.sides[0].mark_scale = p.sides[3].mark_scale = p.sides[4].mark_scale = Number(0.67)
+    >>> p.angles[1].decoration = AngleDecoration(color='NavyBlue', thickness='very thick', radius=Number(0.5, unit='cm'))
     >>> print(p.drawn)
 
     \begin{tikzpicture}
@@ -202,12 +149,12 @@ Once compiled (still using Ubuntu font):
 
     % Draw Pentagon
     \draw[thick] (S)
-    -- (T) node[midway, below, sloped] {3 cm} node[midway, sloped, scale=0.67] {||}
-    -- (O) node[midway, below, sloped] {3.5 cm}
+    -- (T) node[midway, below, sloped] {\SI{3}{cm}} node[midway, sloped, scale=0.67] {||}
+    -- (O) node[midway, below, sloped] {\SI{3.5}{cm}}
     -- (N) node[midway, above, sloped] {?}
     -- (E) node[midway, sloped, scale=0.67] {||}
     -- cycle node[midway, sloped, scale=0.67] {||}
-    pic [draw, NavyBlue, very thick, angle radius = 0.5 cm] {angle = O--T--S};
+    pic [draw, very thick, angle radius = 0.5 cm, NavyBlue] {angle = O--T--S};
 
     % Label Points
     \draw (S) node[below left] {S};
@@ -218,16 +165,69 @@ Once compiled (still using Ubuntu font):
     \end{tikzpicture}
 
     >>> p.lbl_perimeter
-    Number('15.0 cm')
+    Number('15 cm')
     >>> p.type
     'Pentagon'
+    >>> import mathmakerlib.required
     >>> print(mathmakerlib.required.tikz_library)
-    {'angles': True}
+    {'angles': True, 'decorations.markings': False, 'quotes': False}
     >>>
 
 Once compiled (still using Ubuntu font, take care to include angles tikz library):
 
 .. image:: pics/example_pentagon.png
+
+
+Polyhedra
+^^^^^^^^^
+
+::
+
+    >>> from mathmakerlib.geometry import RightCuboid, ObliqueProjection
+    >>> rc = RightCuboid(dimensions=(4, 3, 2), name='FLAVORED')
+    >>> print(ObliqueProjection(rc, label_vertices=True).drawn)
+
+    \begin{tikzpicture}
+    % Declare Points
+    \coordinate (F) at (0,0);
+    \coordinate (L) at (4,0);
+    \coordinate (A) at (4,3);
+    \coordinate (V) at (0,3);
+    \coordinate (O) at (0.948,0.948);
+    \coordinate (R) at (4.948,0.948);
+    \coordinate (E) at (4.948,3.948);
+    \coordinate (D) at (0.948,3.948);
+
+    % Draw Oblique Projection of RightCuboid
+    \draw[thick] (F) -- (L);
+    \draw[thick] (L) -- (A);
+    \draw[thick] (A) -- (V);
+    \draw[thick] (V) -- (F);
+    \draw[thick] (L) -- (R);
+    \draw[thick, dashed] (R) -- (O);
+    \draw[thick, dashed] (O) -- (F);
+    \draw[thick] (A) -- (E);
+    \draw[thick] (E) -- (R);
+    \draw[thick] (V) -- (D);
+    \draw[thick] (D) -- (E);
+    \draw[thick, dashed] (O) -- (D);
+
+
+    % Label Points
+    \draw (F) node[below left] {F};
+    \draw (L) node[below right] {L};
+    \draw (A) node[above left] {A};
+    \draw (V) node[left] {V};
+    \draw (O) node[left] {O};
+    \draw (R) node[right] {R};
+    \draw (E) node[above right] {E};
+    \draw (D) node[above left] {D};
+    \end{tikzpicture}
+
+
+Once compiled (still using Ubuntu font):
+
+.. image:: pics/example_rightcuboid.png
 
 
 Contribute
