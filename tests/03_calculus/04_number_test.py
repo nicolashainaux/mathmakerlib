@@ -278,12 +278,10 @@ def test_printing():
     """Check printing is correct."""
     assert Number('8.6').printed == '8.6'
     assert Number('8.60').printed == '8.60'
-    assert Number('8.6').imprint(mod_locale=LOCALE_US) == '8.6'
     locale.setlocale(locale.LC_ALL, LOCALE_FR)
     assert locale.str(Decimal('8.6')) == '8,6'
     assert Number('8.6').printed == '8,6'
     assert Number('8.6').uiprinted == '8.6'
-    assert Number('8.6').imprint(mod_locale=LOCALE_US) == '8.6'
     assert Number('8.6').printed == '8,6'
     assert Number('8.6', unit='cm').printed == r'\SI{8,6}{cm}'
     locale.setlocale(locale.LC_ALL, LOCALE_US)

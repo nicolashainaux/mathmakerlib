@@ -20,10 +20,10 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 from . import required, exceptions, config, constants
-from . import locale_patch, calculus, core, geometry, LaTeX
+from . import calculus, core, geometry, LaTeX
 
 __all__ = ['required', 'config', 'LaTeX', 'exceptions', 'constants',
-           'locale_patch', 'core', 'calculus', 'geometry']
+           'core', 'calculus', 'geometry']
 
 __version_info__ = (0, 7, 0)
 __dev__ = 0

@@ -26,7 +26,6 @@ import warnings
 from decimal import Decimal, ROUND_DOWN, ROUND_HALF_UP
 
 from mathmakerlib import required
-from mathmakerlib import locale_patch  # noqa
 from mathmakerlib.calculus.unit import physical_quantity
 from mathmakerlib.calculus.tools import is_number, is_integer
 from mathmakerlib.core.signed import Signed
@@ -358,20 +357,15 @@ class Number(Decimal, Signed, Printable, Evaluable):
         else:
             return Sign('+')
 
-    def imprint(self, start_expr=True, variant='latex', mod_locale=None):
+    def imprint(self, start_expr=True, variant='latex'):
         extra_sign = ''
         if not start_expr and self >= 0:
             extra_sign = '+'
         if variant == 'latex':
-            if mod_locale is not None:
-                restore_values = locale.setting_values()
-                locale.setlocale(locale.LC_ALL, mod_locale)
             self_str = locale.format(
                 '%.{}f'.format(
                     self.fracdigits_nb(ignore_trailing_zeros=False)),
                 Decimal(self))
-            if mod_locale is not None:
-                locale.setlocale(*restore_values)
 
         elif variant == 'user_input':
             self_str = Decimal.__str__(self)
