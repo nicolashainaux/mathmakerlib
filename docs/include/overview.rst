@@ -67,6 +67,8 @@ You can also play with units. Basic operations are available:
 Polygons
 ^^^^^^^^
 
+Examples of a default Rectangle and default Rhombus.
+
 ::
 
     >>> from mathmakerlib.geometry import Rectangle, Rhombus
