@@ -66,4 +66,4 @@ Run the tests:
 
     (dev0) $ pytest -x -vv -r w tests/
 
-So far, more details can be found in the `documentation for developers of mathmaker <http://mathmakerlib.readthedocs.io/en/dev/dev_index.html>`__.
+So far, more details can be found in the `documentation for developers of mathmaker <http://mathmaker.readthedocs.io/en/dev/dev_index.html>`__.
