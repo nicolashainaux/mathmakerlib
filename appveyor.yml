@@ -6,6 +6,10 @@ branches:
   - pre-release
   - dev
 
+image:
+  - Visual Studio 2015
+  - Ubuntu1804
+
 max_jobs: 1
 
 environment:
@@ -17,7 +21,8 @@ environment:
 
 install:
   # We need wheel installed to build wheels
-  - "%PYTHON%\\python.exe -m pip install wheel pytest"
+  - cmd: "%PYTHON%\\python.exe -m pip install wheel pytest"
+  - sh: "pip3.6 install wheel pytest"
 
 build: off
 
@@ -29,7 +34,8 @@ test_script:
   # the interpreter you're using - Appveyor does not do anything special
   # to put the Python version you want to use on PATH.
   # - "build.cmd %PYTHON%\\python.exe setup.py test"
-  - "%PYTHON%\\python.exe setup.py test"
+  - cmd: "%PYTHON%\\python.exe setup.py test"
+  - sh: "python setup.py test"
 
 after_test:
   # This step builds your wheels.
@@ -37,7 +43,7 @@ after_test:
   # 64-bit Python 3.3/3.4. And you need to use %PYTHON% to get the correct
   # interpreter
   # - "build.cmd %PYTHON%\\python.exe setup.py bdist_wheel"
-  - "%PYTHON%\\python.exe setup.py bdist_wheel"
+  - cmd: "%PYTHON%\\python.exe setup.py bdist_wheel"
 
 artifacts:
   # bdist_wheel puts your built wheel in the dist directory
