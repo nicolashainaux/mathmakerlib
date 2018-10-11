@@ -22,7 +22,7 @@ environment:
 install:
   # We need wheel installed to build wheels
   - cmd: "%PYTHON%\\python.exe -m pip install wheel pytest"
-  - sh: "pip3 --user install wheel pytest"
+  - sh: "sudo apt install python3-pip && sudo pip3 install wheel pytest"
 
 build: off
 
