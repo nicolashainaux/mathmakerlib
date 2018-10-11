@@ -4,6 +4,7 @@ branches:
   only:
   - master
   - pre-release
+  - dev
 
 max_jobs: 1
 
