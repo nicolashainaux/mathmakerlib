@@ -12,3 +12,4 @@ htmlcov/
 .cache/
 outfiles/
 __pycache__/
+.venv/
