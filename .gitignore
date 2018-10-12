@@ -13,3 +13,4 @@ htmlcov/
 outfiles/
 __pycache__/
 .venv/
+.coverage
