@@ -5,7 +5,7 @@ Mathmaker Lib offers python objects to create mathematical expressions or
 geometric figures to print as LaTeX. These objects can also be used to create
 detailed calculations, like equations resolutions or expressions expansions.
 
-`License <https://github.com/nicolashainaux/mathmakerlib/blob/master/LICENSE>`__
+`License <https://gitlab.com/nicolas.hainaux/mathmakerlib/blob/dev/LICENSE>`__
 
 Quickstart
 ==========

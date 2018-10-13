@@ -17,7 +17,7 @@ Install mathmakerlib in dev mode in a venv:
       (dev0) $ pip3 install pytest tox flake8 pydocstyle sphinx sphinx-autodoc-annotation sphinx-rtd-theme
       (dev0) $ mkdir mathmakerlib
       (dev0) $ cd mathmakerlib/
-      (dev0) $ git clone https://github.com/nicolashainaux/mathmakerlib.git
+      (dev0) $ git clone https://gitlab.com/nicolas.hainaux/mathmakerlib.git
       (dev0) $ python3 setup.py develop
 
 
@@ -31,7 +31,7 @@ Install mathmakerlib in dev mode in a venv:
       [dev0] $ sudo pip3 install pytest tox flake8 pydocstyle sphinx sphinx-autodoc-annotation sphinx-rtd-theme
       [dev0] $ mkdir mathmakerlib
       [dev0] $ cd mathmakerlib/
-      [dev0] $ git clone https://github.com/nicolashainaux/mathmakerlib.git
+      [dev0] $ git clone https://gitlab.com/nicolas.hainaux/mathmakerlib.git
       [dev0] $ python3 setup.py develop
 
 
