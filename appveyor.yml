@@ -6,25 +6,27 @@ branches:
   - pre-release
   - dev
 
-image:
-  - Visual Studio 2015
-  - Ubuntu1804
-
 max_jobs: 1
 
+# For Python versions available on Appveyor, see
+# https://www.appveyor.com/docs/windows-images-software/#python
+# https://www.appveyor.com/docs/linux-images-software#python
 environment:
   CODECOV_TOKEN: "11e629de-a607-4624-a3c2-71bac08124a5"
-
   matrix:
-    # For Python versions available on Appveyor, see
-    # https://www.appveyor.com/docs/windows-images-software/#python
-    # https://www.appveyor.com/docs/linux-images-software#python
-    - PYTHON: "C:\\Python36-x64"
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+      PYTHON: "C:\\Python36"
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+      PYTHON: "C:\\Python36-x64"
+    - APPVEYOR_BUILD_WORKER_IMAGE: Ubuntu1804
 
 install:
   # We need wheel installed to build wheels
   - cmd: "%PYTHON%\\python.exe -m pip install wheel pytest"
-  - sh: "sudo apt -y install python3-pip && sudo -H pip3 install wheel pytest codecov pytest-cov && sudo locale-gen en_US.UTF-8 && sudo locale-gen fr_FR.UTF-8 && sudo python3 setup.py install"
+  - sh: "sudo apt -y install python3-pip"
+  - sh: "sudo -H pip3 install wheel pytest codecov pytest-cov"
+  - sh: "sudo locale-gen en_US.UTF-8 && sudo locale-gen fr_FR.UTF-8"
+  - sh: "sudo python3 setup.py install"
 
 build: off
 
