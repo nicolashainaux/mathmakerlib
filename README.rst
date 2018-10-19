@@ -20,7 +20,7 @@ Contact: nh dot techn (hosted by gmail dot com)
 .. |PyPI3| image:: https://img.shields.io/pypi/pyversions/mathmakerlib.svg?maxAge=2592000
 .. |Build Status| image:: https://ci.appveyor.com/api/projects/status/uophwj4u6i3byd5r/branch/master?svg=true
    :target: https://ci.appveyor.com/project/nicolashainaux/mathmakerlib-ho94f
-.. |Codecov| image:: https://codecov.io/gh/codecov/example-python/branch/master/graph/badge.svg
+.. |Codecov| image:: https://codecov.io/gl/nicolas.hainaux/mathmakerlib/branch/master/graph/badge.svg
   :target: https://codecov.io/gl/nicolas.hainaux/mathmakerlib
 .. |Documentation Status| image:: https://readthedocs.org/projects/mathmakerlib/badge/?version=latest
    :target: https://mathmaker-lib.readthedocs.io/en/latest/
