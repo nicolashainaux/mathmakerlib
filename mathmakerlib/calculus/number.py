@@ -362,7 +362,7 @@ class Number(Decimal, Signed, Printable, Evaluable):
         if not start_expr and self >= 0:
             extra_sign = '+'
         if variant == 'latex':
-            self_str = locale.format(
+            self_str = locale.format_string(
                 '%.{}f'.format(
                     self.fracdigits_nb(ignore_trailing_zeros=False)),
                 Decimal(self))
