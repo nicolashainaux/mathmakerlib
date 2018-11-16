@@ -11,7 +11,7 @@ Version 0.7 (2018-06-18)
 * Add ClockTime object to easily deal with times.
 * Accept floats to initialize Numbers (the float being converted to str).
 
-Patch 0.7.1 (2018-11-23)
+Patch 0.7.1 (2018-11-16)
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
 * Fix Number.rounded() for precisions greater than 10 (e.g. 10, 100, 1000 etc.)
