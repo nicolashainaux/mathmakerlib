@@ -20,6 +20,7 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 import copy
+import math
 import locale
 import random
 import warnings
@@ -452,9 +453,11 @@ class Number(Decimal, Signed, Printable, Evaluable):
         :param precision: a Decimal (same as decimal.Decimal().quantize()).
                           For instance, Decimal('1'), Decimal('1.0') etc.
         """
-        return Number(self.quantize(precision,
-                                    rounding=rounding),
-                      unit=self.unit).standardized()
+        if precision >= 10:
+            rounded_val = round(self, -int(math.log10(precision)))
+        else:
+            rounded_val = self.quantize(precision, rounding=rounding)
+        return Number(rounded_val, unit=self.unit).standardized()
 
     def fracdigits_nb(self, ignore_trailing_zeros=True):
         """Return the number of fractional digits."""
@@ -501,6 +504,15 @@ class Number(Decimal, Signed, Printable, Evaluable):
         _, digits, e = self.standardized().as_tuple()
         return {Number(10) ** (e + len(digits) - 1 - i): d
                 for i, d in enumerate(digits)}
+
+    def highest_digitplace(self):
+        """Return a power of ten matching the highest digitplace."""
+        _, digits, e = self.standardized().as_tuple()
+        return Number(10) ** (e + len(digits) - 1)
+
+    def estimation(self):
+        """Round to the highest digitplace possible."""
+        return self.rounded(self.highest_digitplace())
 
     def digit(self, digitplace):
         """

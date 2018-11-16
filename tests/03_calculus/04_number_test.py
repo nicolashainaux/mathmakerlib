@@ -224,6 +224,11 @@ def test_rounded():
     assert Number(4.2).rounded(0) == 4
     assert Number(4.2).rounded(Decimal('1'), rounding=ROUND_HALF_UP) == 4
     assert Number('4.2', unit='cm').rounded(0) == Number(4, unit='cm')
+    assert Number(4.678).rounded(Number(0.01)) == Number(4.68)
+    assert Number(4678).rounded(10) == 4680
+    assert Number(4678).rounded(100) == 4700
+    assert Number(4678).rounded(1000) == 5000
+    assert Number(4678).rounded(10000) == 0
 
 
 def test_fracdigits_nb():
@@ -608,6 +613,22 @@ def test_digits():
                                        Decimal('1'): 9,
                                        Decimal('0.1'): 7,
                                        Decimal('0.01'): 2}
+
+
+def test_highest_digitplace():
+    """Check Number.highest_digitplace()"""
+    assert Number('2895.986').highest_digitplace() == Number(1000)
+    assert Number(4678).highest_digitplace() == Number(1000)
+    assert Number('340.843').highest_digitplace() == Number(100)
+    assert Number('3.843').highest_digitplace() == Number(1)
+    assert Number('0.0243').highest_digitplace() == Number(0.01)
+
+
+def test_estimation():
+    """Check Number.estimation()"""
+    assert Number(4678).estimation() == Number(5000)
+    assert Number(33.037).estimation() == Number(30)
+    assert Number(0.037).estimation() == Number(0.04)
 
 
 def test_digit():
