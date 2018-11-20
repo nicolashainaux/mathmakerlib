@@ -105,8 +105,8 @@ setup(
               'tox': Tox,
               'clean': CleanCommand},
     author_email=__author_email__,
-    description='Mathmaker Lib offers lualatex-printable mathematical '
-    'objects. Geometric shapes are created using TikZ.',
+    description='Collection of lualatex-printable mathematical objects, '
+    'including geometric shapes.',
     long_description=read('README.rst', 'CHANGELOG.rst', 'CONTRIBUTORS.rst'),
     packages=find_packages(exclude=['tests', 'docs']),
     include_package_data=True,
