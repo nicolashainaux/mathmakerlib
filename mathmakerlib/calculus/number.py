@@ -362,20 +362,24 @@ class Number(Decimal, Signed, Printable, Evaluable):
         extra_sign = ''
         if not start_expr and self >= 0:
             extra_sign = '+'
-        if variant == 'latex':
+
+        if variant in ['latex', 'siunitx']:
             self_str = locale.format_string(
                 '%.{}f'.format(
                     self.fracdigits_nb(ignore_trailing_zeros=False)),
                 Decimal(self))
-
         elif variant == 'user_input':
             self_str = Decimal.__str__(self)
         else:
-            raise ValueError('variant must belong to [\'latex\', '
+            raise ValueError('variant must belong to [\'latex\', \'siunitx\', '
                              '\'user_input\']; got \'{}\' instead.'
                              .format(variant))
         if self.unit is None:
-            return extra_sign + self_str
+            if variant == 'siunitx':
+                required.package['siunitx'] = True
+                return r'\num{{{}}}'.format(extra_sign + self_str)
+            else:
+                return extra_sign + self_str
         else:
             if variant == 'latex':
                 required.package['siunitx'] = True

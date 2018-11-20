@@ -276,7 +276,7 @@ def test_printing_errors():
     with pytest.raises(ValueError) as excinfo:
         Number('8.6').imprint(variant='undefined')
     assert str(excinfo.value) == 'variant must belong to [\'latex\', ' \
-        '\'user_input\']; got \'undefined\' instead.'
+        '\'siunitx\', \'user_input\']; got \'undefined\' instead.'
 
 
 def test_printing():
@@ -309,6 +309,10 @@ def test_printing():
     assert required.package['eurosym']
     n = Number('38', unit=r'\textdegree')
     assert n.printed == r'\ang{38}'
+    required.package['siunitx'] = False
+    n = Number('9000')
+    assert n.imprint(variant='siunitx') == r'\num{9000}'
+    assert required.package['siunitx']
 
 
 def test_sign():
