@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 # Mathmaker Lib offers lualatex-printable mathematical objects.
-# Copyright 2006-2017 Nicolas Hainaux <nh.techn@gmail.com>
+# Copyright 2006-2019 Nicolas Hainaux <nh.techn@gmail.com>
 
 # This file is part of Mathmaker Lib.
 
@@ -39,7 +39,7 @@ __author__ = 'Nicolas Hainaux'
 __author_email__ = 'nh.techn@gmail.com'
 __licence__ = 'GNU General Public License v3 or later (GPLv3+)'
 __url__ = 'https://gitlab.com/nicolas.hainaux/mathmakerlib/'
-__copyright__ = 'Copyright 2006-2017'
+__copyright__ = 'Copyright 2006-2019'
 __contact__ = '{author} <{author_email}>'\
               .format(author=__author__, author_email=__author_email__)
 __licence_info__ = '{lib_ref} is free software. Its license is '\

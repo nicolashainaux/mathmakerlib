@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 # Mathmaker Lib offers lualatex-printable mathematical objects.
-# Copyright 2006-2017 Nicolas Hainaux <nh.techn@gmail.com>
+# Copyright 2006-2019 Nicolas Hainaux <nh.techn@gmail.com>
 
 # This file is part of Mathmaker Lib.
 
