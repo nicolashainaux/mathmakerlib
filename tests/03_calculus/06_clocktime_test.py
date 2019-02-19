@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 # Mathmaker Lib offers lualatex-printable mathematical objects.
-# Copyright 2006-2017 Nicolas Hainaux <nh.techn@gmail.com>
+# Copyright 2006-2019 Nicolas Hainaux <nh.techn@gmail.com>
 
 # This file is part of Mathmaker Lib.
 
@@ -209,69 +209,62 @@ def test_clocktime_printed(ct):
 
 def test_custom_context_clocktime_printed():
     """Check ClockTime imprint()"""
-    ct = ClockTime(15, 24, 16, context={'h': 'h ', 'min': '', 's': '',
-                                        'display_s': False})
-    assert ct.printed == '15h 24'
+    ct = ClockTime(15, 24, 16, context={'sep': 'as_si_units'})
+    assert ct.printed == r'15~\si{h}~24~\si{min}~16~\si{s}'
 
 
-def test_0h_not_printed():
+def test_0h_not_printed_in_si_units():
     """Check ClockTime imprint()"""
-    ct = ClockTime(0, 24, 30,
-                   context={'h': 'h', 'min': '', 's': '',
-                            'display_s': False, 'display_0h': False,
-                            'min_if_0h': ' min ', 's_if_0h_0min': 's'})
-    assert ct.printed == '24 min '
+    ct = ClockTime(0, 24, 0,
+                   context={'sep': 'as_si_units', 'si_show_0h': False,
+                            'si_show_0min': False, 'si_show_0s': False})
+    assert ct.printed == r'24~\si{min}'
 
 
 def test_0h_24min_30s_printed():
     """Check ClockTime imprint()"""
     ct = ClockTime(0, 24, 30)
+    assert ct.printed == '00:24:30'
+    ct = ClockTime(0, 24, 30, context={'h_padding': False})
     assert ct.printed == '0:24:30'
 
 
 def test_24min_30s_printed():
     """Check ClockTime imprint()"""
     ct = ClockTime(0, 24, 30,
-                   context={'h': 'h', 'min': '', 's': '',
-                            'display_0h': False,
-                            'min_if_0h': ' min ', 's_if_0h_0min': 's'})
-    assert ct.printed == '24 min 30'
+                   context={'sep': 'as_si_units', 'si_only_central': True,
+                            'si_show_0h': False})
+    assert ct.printed == r'24~\si{min}~30'
 
 
 def test_30s_printed():
     """Check ClockTime imprint()"""
     ct = ClockTime(0, 0, 30,
-                   context={'h': 'h', 'min': '', 's': '',
-                            'display_0h': False, 'display_0min': False,
-                            'min_if_0h': ' min ', 's_if_0h_0min': ' s'})
-    assert ct.printed == '30 s'
+                   context={'sep': 'as_si_units', 'si_show_0h': False,
+                            'si_show_0min': False, 'si_show_0s': False})
+    assert ct.printed == r'30~\si{s}'
 
 
 def test_0min_printed():
     """Check ClockTime imprint()"""
     ct = ClockTime(0, 0, 0,
-                   context={'h': 'h', 'min': '', 's': '',
-                            'display_0h': False, 'display_0min': True,
-                            'display_s': False,
-                            'min_if_0h': ' min ', 's_if_0h_0min': ' s'})
-    assert ct.printed == '0 min '
+                   context={'sep': 'as_si_units', 'si_zero_as': 'min',
+                            'si_show_0h': False, 'si_show_0min': False,
+                            'si_show_0s': False})
+    assert ct.printed == r'0~\si{min}'
 
 
 def test_4min_printed():
     """Check ClockTime imprint()"""
     ct = ClockTime(0, 4, 0,
-                   context={'h': 'h', 'min': '', 's': '',
-                            'display_0h': False, 'display_0min': True,
-                            'display_s': False,
-                            'min_if_0h': ' min ', 's_if_0h_0min': ' s'})
-    assert ct.printed == '4 min '
+                   context={'sep': 'as_si_units', 'si_show_0h': False,
+                            'si_show_0min': False, 'si_show_0s': False})
+    assert ct.printed == r'4~\si{min}'
 
 
 def test_1h_04min_printed():
     """Check ClockTime imprint()"""
     ct = ClockTime(1, 4, 0,
-                   context={'h': 'h', 'min': '', 's': '',
-                            'display_0h': False, 'display_0min': True,
-                            'display_s': False,
-                            'min_if_0h': ' min ', 's_if_0h_0min': ' s'})
-    assert ct.printed == '1h04'
+                   context={'sep': 'as_si_units', 'si_only_central': True,
+                            'si_show_0s': False})
+    assert ct.printed == r'1~\si{h}~04'

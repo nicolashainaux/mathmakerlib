@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 # Mathmaker Lib offers lualatex-printable mathematical objects.
-# Copyright 2006-2017 Nicolas Hainaux <nh.techn@gmail.com>
+# Copyright 2006-2019 Nicolas Hainaux <nh.techn@gmail.com>
 
 # This file is part of Mathmaker Lib.
 
@@ -22,13 +22,15 @@
 from copy import deepcopy
 
 from mathmakerlib import config
+from mathmakerlib.calculus import Unit
 from mathmakerlib.calculus.tools import is_integer
 from mathmakerlib.core.printable import Printable
 
-DEFAULT_CLOCKTIME_CONTEXT = {'h': ':', 'min': ':', 's': '',
-                             'display_s': True, 'display_0h': True,
-                             'display_0min': True,
-                             'min_if_0h': ' min ', 's_if_0h_0min': 's'}
+DEFAULT_CLOCKTIME_CONTEXT = {'h_padding': True, 'min_padding': True,
+                             's_padding': True, 'show_0s': True, 'sep': ':',
+                             'si_show_0h': True, 'si_show_0min': True,
+                             'si_show_0s': True, 'si_only_central': False,
+                             'si_zero_as': 's'}
 
 
 def check_clocktime_context(value):
@@ -138,28 +140,54 @@ class ClockTime(Printable):
                          self.minute - other.minute,
                          self.second - other.second)
 
+    # DEFAULT_CLOCKTIME_CONTEXT = {'h_padding': True, 'min_padding': True,
+    #                              's_padding': True, 'show_0s': True,
+    #                              'sep': ':',
+    #                              'si_show_0h': True, 'si_show_0min': True,
+    #                              'si_show_0s': True,
+    #                              'si_only_central': False,
+    #                              'si_zero_as': 's'}
     def imprint(self, start_expr=True, variant='latex'):
-        output = ''
+        output = []
         zero_h = self.hour == 0
         zero_min = self.minute == 0
-        displayed_h = False
-        displayed_min = False
-        minute_fmt = '{}{}'
-        second_fmt = '{}{}'
-        if not zero_h or self.context['display_0h']:
-            output += '{}{}'.format(self.hour, self.context['h'])
-            minute_fmt = '{:02}{}'
-            displayed_h = True
-        if displayed_h or (not zero_min or self.context['display_0min']):
-            u = self.context['min']
-            if not displayed_h:
-                u = self.context['min_if_0h']
-            output += minute_fmt.format(self.minute, u)
-            second_fmt = '{:02}{}'
-            displayed_min = True
-        if self.context['display_s']:
-            u = self.context['s']
-            if not displayed_min:
-                u = self.context['s_if_0h_0min']
-            output += second_fmt.format(self.second, u)
+        zero_s = self.second == 0
+        # /!\ padding is ignored for the first unit to be displayed in the
+        # case of 'as_si_units'. E.g. 2 hours will be displayed 2 h, not 02 h
+        hours_fmt = '{:02}' if self.context['h_padding'] else '{}'
+        minutes_fmt = '{:02}' if self.context['min_padding'] else '{}'
+        seconds_fmt = '{:02}' if self.context['s_padding'] else '{}'
+        hours = hours_fmt.format(self.hour)
+        minutes = minutes_fmt.format(self.minute)
+        seconds = seconds_fmt.format(self.second)
+        displayed_anything = False
+        if self.context['sep'] == 'as_si_units':
+            if zero_h and zero_min and zero_s:
+                output.append('0')
+                output.append(Unit(self.context['si_zero_as']).printed)
+            if not zero_h or (zero_h and self.context['si_show_0h']):
+                hours = '{}'.format(self.hour)
+                output.append(hours)
+                output.append(Unit('h').printed)
+                displayed_anything = True
+            if not zero_min or (zero_min and self.context['si_show_0min']):
+                if not displayed_anything:
+                    minutes = '{}'.format(self.minute)
+                output.append(minutes)
+                if not(zero_s and self.context['si_only_central']):
+                    output.append(Unit('min').printed)
+                displayed_anything = True
+            if not zero_s or (zero_s and self.context['si_show_0s']):
+                if not displayed_anything:
+                    seconds = '{}'.format(self.second)
+                output.append(seconds)
+                if not(zero_h and self.context['si_only_central']):
+                    output.append(Unit('s').printed)
+                displayed_anything = True
+            output = '~'.join(output)
+        else:  # For instance, sep == ':'
+            output = [hours, minutes]
+            if (zero_s and self.context['show_0s']) or not zero_s:
+                output.append(seconds)
+            output = self.context['sep'].join(output)
         return output
