@@ -24,6 +24,6 @@ Contact: nh dot techn (hosted by gmail dot com)
   :target: https://codecov.io/gl/nicolas.hainaux/mathmakerlib
 .. |Documentation Status| image:: https://readthedocs.org/projects/mathmaker-lib/badge/?version=latest
    :target: https://mathmaker-lib.readthedocs.io/en/latest/
-.. |Maintenance| image:: https://img.shields.io/maintenance/yes/2018.svg?maxAge=2592000
+.. |Maintenance| image:: https://img.shields.io/maintenance/yes/2019.svg?maxAge=2592000
 .. |PyPI4| image:: https://img.shields.io/pypi/l/mathmakerlib.svg?maxAge=2592000
    :target: https://gitlab.com/nicolas.hainaux/mathmakerlib/blob/master/LICENSE
