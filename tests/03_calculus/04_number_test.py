@@ -744,7 +744,7 @@ def test_split():
     """Check split() in different cases."""
     result = Number(14).split()
     assert type(result) is tuple
-    assert len(result) is 2
+    assert len(result) == 2
     assert is_integer(result[0]) and is_integer(result[1])
     assert 1 <= result[0] <= 13
     assert 1 <= result[1] <= 13

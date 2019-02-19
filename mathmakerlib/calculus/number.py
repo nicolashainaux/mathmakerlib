@@ -72,7 +72,7 @@ class Sign(Printable, Evaluable):
 
     @sign.setter
     def sign(self, o):
-        if o is '+' or o is '-':
+        if o in ['+', '-']:
             self._sign = o
         elif isinstance(o, Sign):
             self._sign = o._sign

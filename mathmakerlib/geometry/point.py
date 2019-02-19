@@ -116,7 +116,7 @@ class Point(Drawable, Dimensional):
         else:
             self.name = name
         self.shape = shape
-        if label is 'default':
+        if label == 'default':
             self.label = self.name
         else:
             self.label = label
@@ -205,7 +205,7 @@ class Point(Drawable, Dimensional):
     @z.setter
     def z(self, value):
         three_dimensional = True
-        if value is 'undefined':
+        if value == 'undefined':
             value = 0
             three_dimensional = False
         try:
