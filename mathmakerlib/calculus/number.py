@@ -45,7 +45,7 @@ class Sign(Printable, Evaluable):
         return 'Sign({})'.format(self.sign)
 
     def __str__(self):
-        return self.sign
+        return str(self.sign)
 
     def __eq__(self, other):
         if isinstance(other, Sign):
