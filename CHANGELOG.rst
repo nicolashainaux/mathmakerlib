@@ -11,14 +11,15 @@ Version 0.7 (2018-06-18)
 * Add ClockTime object to easily deal with times.
 * Accept floats to initialize Numbers (the float being converted to str).
 
-Patches 0.7.1, 0.7.2 and 0.7.3 (2018-11-16, 2018-11-20 and 2019-02-20)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Patches 0.7.1, 0.7.2, 0.7.3 and 0.7.4 (2018-11-16, 2018-11-20, 2019-02-20 and 2019-02-22)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 * Fix Number.rounded() for precisions greater than 10 (e.g. 10, 100, 1000 etc.)
 * Add Number.highest_digitplace() and Number.estimation()
 * Add 'siunitx' variant keyword value to Number.imprint() (in order to print numbers as \\num{...})
 * Modify ClockTime object's context.
 * Include a logo.
+* Bugfix.
 
 Version 0.6 (2018-04-12)
 ------------------------

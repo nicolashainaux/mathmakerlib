@@ -25,7 +25,7 @@ from . import calculus, core, geometry, LaTeX
 __all__ = ['required', 'config', 'LaTeX', 'exceptions', 'constants',
            'core', 'calculus', 'geometry']
 
-__version_info__ = (0, 7, 3)
+__version_info__ = (0, 7, 4)
 __dev__ = 0
 __patch_nb__ = 0
 __version__ = '.'.join(str(c) for c in __version_info__)
