@@ -108,6 +108,8 @@ def test_Sign():
     assert Number(-4) * n == Number(4)
     assert p.evaluate() == Number(1)
     assert n.evaluate() == Number(-1)
+    p.sign = Sign('-')
+    assert p == n
 
 
 def test_copyability():
