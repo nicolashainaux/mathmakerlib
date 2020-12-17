@@ -24,7 +24,8 @@ install:
   - cmd: "%PYTHON%\\python.exe -m pip install wheel pytest"
   - sh: "sudo apt update"
   - sh: "sudo apt -y install python3-pip"
-  - sh: "sudo -H pip3 install wheel pytest codecov pytest-cov"
+  - sh: alias python="python3.6"
+  - sh: "sudo -H pip3 install wheel pytest coverage coveralls"
   - sh: "sudo locale-gen en_US.UTF-8 && sudo locale-gen fr_FR.UTF-8"
   - sh: "sudo python3 setup.py install"
 
@@ -35,12 +36,12 @@ test_script:
   # the interpreter you're using - Appveyor does not do anything special
   # to put the Python version you want to use on PATH.
   - cmd: "%PYTHON%\\python.exe setup.py test"
-  - sh: "pytest --cov=mathmakerlib tests/"
+  - sh: "coverage run --source=mathmakerlib -m pytest -vv"
 
 after_test:
   # This step builds your wheels.
   - cmd: "%PYTHON%\\python.exe setup.py bdist_wheel"
-  - sh: "codecov"
+  - sh: "coveralls"
 
 artifacts:
   # bdist_wheel puts your built wheel in the dist directory
