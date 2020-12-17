@@ -12,7 +12,6 @@ max_jobs: 1
 # https://www.appveyor.com/docs/windows-images-software/#python
 # https://www.appveyor.com/docs/linux-images-software#python
 environment:
-  CODECOV_TOKEN: "11e629de-a607-4624-a3c2-71bac08124a5"
   matrix:
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
       PYTHON: "C:\\Python36"
