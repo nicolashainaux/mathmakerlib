@@ -575,9 +575,9 @@ class Angle(Drawable, Oriented, HasThickness, Dimensional):
     @property
     def name(self):
         loc = None
-        for l in ['fr', 'en']:
-            if config.language.startswith(l):
-                loc = l
+        for lg in ['fr', 'en']:
+            if config.language.startswith(lg):
+                loc = lg
         if self.naming_mode == 'from_endpoints':
             content = '{}{}{}'.format(self.endpoints[0].name,
                                       self.vertex.name,
@@ -639,7 +639,7 @@ class Angle(Drawable, Oriented, HasThickness, Dimensional):
         elif winding == 'clockwise':
             rightangle_shape = '({R}, 0) -- ({R}, -{R}) -- (0, -{R})'\
                 .format(R=self.decoration.radius.uiprinted)
-        return '\draw{} {};'.format(draw_options, rightangle_shape)
+        return r'\draw' + '{} {};'.format(draw_options, rightangle_shape)
 
     def tikz_declarations(self):
         """Return the Points declarations."""
@@ -700,7 +700,7 @@ class Angle(Drawable, Oriented, HasThickness, Dimensional):
         decoration = self.tikz_decorations()
         if decoration != '':
             decoration = '\n' + decoration
-        commands = ['\draw{} ({}) -- ({}) -- ({}){};'
+        commands = [r'\draw' + '{} ({}) -- ({}) -- ({}){};'
                     .format(tikz_options_list('draw', self),
                             *[p.name for p in self.points],
                             decoration)
@@ -843,7 +843,7 @@ class AnglesSet(Drawable):
             decoration = α.tikz_decorations()
             if decoration != '':
                 decoration = '\n' + decoration
-            angles_cmd.append('\draw{} ({}) -- ({}) -- ({}){};'
+            angles_cmd.append(r'\draw' + '{} ({}) -- ({}) -- ({}){};'
                               .format(tikz_options_list('draw', α),
                                       *[p.name for p in α.points],
                                       decoration))
