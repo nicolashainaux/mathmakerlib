@@ -101,6 +101,7 @@ setup(
     license=__licence__,
     author=__author__,
     tests_require=['tox'],
+    install_requires=['microlib>=1.7'],
     cmdclass={'test': PyTest,
               'tox': Tox,
               'clean': CleanCommand},

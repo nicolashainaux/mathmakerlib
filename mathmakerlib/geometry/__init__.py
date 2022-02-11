@@ -25,6 +25,7 @@ from .bipoint import Bipoint
 from .vector import Vector
 from .linesegment import LineSegment
 from .dividedlinesegment import DividedLineSegment
+from .xaxis import XAxis
 from .polygons import Polygon, shoelace_formula
 from .polygons import Triangle, RightTriangle, EquilateralTriangle
 from .polygons import IsoscelesTriangle
@@ -35,6 +36,7 @@ from .projections import ObliqueProjection
 
 __all__ = ['convex_hull',
            'Point', 'Bipoint', 'Vector', 'LineSegment', 'DividedLineSegment',
+           'XAxis',
            'Polygon', 'shoelace_formula',
            'Triangle', 'RightTriangle', 'EquilateralTriangle',
            'IsoscelesTriangle',

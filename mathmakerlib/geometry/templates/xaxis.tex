@@ -1,0 +1,15 @@
+\begin{tikzpicture}
+
+\draw[-latex, thick] (0,0) -- (__LENGTH__,0);
+
+% subgraduations
+\foreach \x in __SG_ABSCISSAE__ {
+\draw (\x,0.09cm) -- (\x,-0.09cm);
+}
+
+% major graduations
+\foreach \x/\xtext in __MG_ABSCISSAE_TEXTS__ {
+\draw[thick] (\x,0.12cm) -- (\x,-0.12cm) node[below] {$\xtext\strut$};
+}
+__POINTS_DRAWN__
+\end{tikzpicture}
