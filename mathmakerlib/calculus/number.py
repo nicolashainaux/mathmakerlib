@@ -358,7 +358,7 @@ class Number(Decimal, Signed, Printable, Evaluable):
         else:
             return Sign('+')
 
-    def imprint(self, start_expr=True, variant='latex'):
+    def imprint(self, start_expr=True, variant='latex', dot=False):
         extra_sign = ''
         if not start_expr and self >= 0:
             extra_sign = '+'
@@ -374,6 +374,9 @@ class Number(Decimal, Signed, Printable, Evaluable):
             raise ValueError('variant must belong to [\'latex\', \'siunitx\', '
                              '\'user_input\']; got \'{}\' instead.'
                              .format(variant))
+        if dot:
+            self_str = self_str\
+                .replace(locale.localeconv()['decimal_point'], '.')
         if self.unit is None:
             if variant == 'siunitx':
                 required.package['siunitx'] = True
