@@ -23,8 +23,8 @@ from pathlib import Path
 
 from microlib import read_text
 
-from mathmakerlib import required
 from mathmakerlib.calculus.number import Number
+from mathmakerlib.calculus.fraction import Fraction
 from mathmakerlib.core.drawable import Drawable, HasThickness
 from mathmakerlib.geometry.point import Point
 from mathmakerlib.geometry.bipoint import Bipoint
@@ -67,6 +67,10 @@ class XAxis(Drawable, HasThickness, Bipoint):
         will be dropped with a warning.
         :type points_def: None or a list
         """
+        mini = Number(mini)
+        maxi = Number(maxi)
+        step = Number(step)
+        length = Number(length)
         # extra graduation that won't be drawn, to leave some space
         # between the last drawn graduation and the arrow
         after += 1
@@ -89,15 +93,22 @@ class XAxis(Drawable, HasThickness, Bipoint):
         sub_multiples = [i for i in range(sg_number) if not (i % subdivisions)]
         mg_indices = [n + before - 1 for n in sub_multiples]
         mg_indices = [i for i in mg_indices if i < len(all_sg)]
+        if before == 0:
+            all_sg.append(Point(0, 0))
         self._mg_abscissae = [all_sg[i].x.rounded(Number('1.00'))
                               for i in mg_indices]
-        self._mg_labels = [str(n + mini) for n in range(maxi - mini + 1)]
+        self._mg_labels = [Number(mini + n * step).printed
+                           for n in range(mg_number + 1)]
         if points_def is None:
             points_def = []
         sg_step = step / subdivisions
         m = mini - before * sg_step
-        abscissae = [(x.evaluate() - m) * length / (sg_step * sg_number)
+        # TODO: check there are no abscissae outside the drawn part of the axis
+        abscissae = [x.evaluate()
+                     if isinstance(x, Fraction) else Number(x).evaluate()
                      for (x, _) in points_def]
+        abscissae = [(x.evaluate() - m) * length / (sg_step * sg_number)
+                     for x in abscissae]
         names = [n for (_, n) in points_def]
         points_def = zip(abscissae, names)
         self._points = [Point(x=abscissa.rounded(Number('1.00')), y=0, name=n,
@@ -107,14 +118,22 @@ class XAxis(Drawable, HasThickness, Bipoint):
 
     @property
     def template_fmt(self):
-        required.package['amsmath'] = True  # \text requires amsmath
         sg_abscissae = ','.join([a.imprint(dot=True)
                                  for a in self._sg_abscissae])
-        mg_abscissae_texts = ','.join([rf'{x}/\text{{{lab}}}'
-                                       for (x, lab) in zip(self._mg_abscissae,
+        # do not leave commas in the labels to be printed, it will mess up
+        # the axis (because TiKZ already uses commas to separate the values)
+        if any([',' in label for label in self._mg_labels]):
+            mg_abscissae_texts = \
+                ','.join([f'{x}/{{{lab}}}'
+                          for (x, lab) in zip(self._mg_abscissae,
+                                              self._mg_labels)])
+        else:
+            mg_abscissae_texts = \
+                ','.join([f'{x}/{lab}' for (x, lab) in zip(self._mg_abscissae,
                                                            self._mg_labels)])
-        points_drawn = [r'\draw[thick] ({p.x},0) node {$\times$} '
-                        r'node[p.label_position] {{p.name}};'
+        points_drawn = [(r'\draw[thick] ({x},0) node {{$\times$}} '
+                         r'node[{lbl_pos}] {{{name}}};')
+                        .format(x=p.x, lbl_pos=p.label_position, name=p.name)
                         for p in self._points]
         return {'__LENGTH__': self._length.imprint(dot=True),
                 '__SG_ABSCISSAE__': '{' + sg_abscissae + '}',
