@@ -21,11 +21,11 @@ environment:
 
 install:
   # We need wheel installed to build wheels
-  - cmd: "%PYTHON%\\python.exe -m pip install wheel pytest"
+  - cmd: "%PYTHON%\\python.exe -m pip install microlib wheel pytest"
   - sh: "sudo apt update"
   - sh: "sudo apt -y install python3-pip"
   - sh: alias python="python3.6"
-  - sh: "sudo -H pip3 install wheel pytest coverage coveralls"
+  - sh: "sudo -H pip3 install microlib wheel pytest coverage coveralls"
   - sh: "sudo locale-gen en_US.UTF-8 && sudo locale-gen fr_FR.UTF-8"
   - sh: "sudo python3 setup.py install"
 
