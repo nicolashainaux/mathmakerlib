@@ -13,18 +13,18 @@ max_jobs: 1
 # https://www.appveyor.com/docs/linux-images-software#python
 environment:
   matrix:
-    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-      PYTHON: "C:\\Python36"
-    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-      PYTHON: "C:\\Python36-x64"
-    - APPVEYOR_BUILD_WORKER_IMAGE: Ubuntu1804
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+      PYTHON: "C:\\Python38"
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+      PYTHON: "C:\\Python38-x64"
+    - APPVEYOR_BUILD_WORKER_IMAGE: Ubuntu2004
 
 install:
   # We need wheel installed to build wheels
   - cmd: "%PYTHON%\\python.exe -m pip install microlib wheel pytest"
   - sh: "sudo apt update"
   - sh: "sudo apt -y install python3-pip"
-  - sh: alias python="python3.6"
+  - sh: alias python="python3.8"
   - sh: "sudo -H pip3 install microlib wheel pytest coverage coveralls"
   - sh: "sudo locale-gen en_US.UTF-8 && sudo locale-gen fr_FR.UTF-8"
   - sh: "sudo python3 setup.py install"

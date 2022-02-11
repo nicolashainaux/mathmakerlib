@@ -115,7 +115,7 @@ setup(
     test_suite='tests',
     classifiers=[
         'Programming Language :: Python',
-        'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.8',
         'Development Status :: 3 - Alpha',
         'Natural Language :: English',
         'License :: OSI Approved :: ' + __licence__,
