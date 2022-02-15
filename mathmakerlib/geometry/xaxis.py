@@ -136,7 +136,8 @@ class XAxis(Drawable, HasThickness, Bipoint):
                          r'node[{lbl_pos}] {{{name}}};')
                         .format(x=p.x, lbl_pos=p.label_position, name=p.name)
                         for p in self._points]
-        return {'__LENGTH__': self._length.imprint(dot=True),
+        return {'__TIKZ_PICTURE_OPTIONS__': self.tikz_picture_options(),
+                '__LENGTH__': self._length.imprint(dot=True),
                 '__SG_ABSCISSAE__': '{' + sg_abscissae + '}',
                 '__MG_ABSCISSAE_TEXTS__': '{' + mg_abscissae_texts + '}',
                 '__POINTS_DRAWN__': '\n'.join(points_drawn)

@@ -34,8 +34,11 @@ def test_instanciation():
                                Number(6.67), Number(7.33)]
     assert a._mg_abscissae == [2, 4, 6]
     assert a._mg_labels == ['2', '3', '4']
+    assert a.template_fmt['__TIKZ_PICTURE_OPTIONS__'] == ''
+    a.baseline = '-4pt'
     assert a.template_fmt == \
-        {'__LENGTH__': '8',
+        {'__TIKZ_PICTURE_OPTIONS__': '[baseline=-4pt]',
+         '__LENGTH__': '8',
          '__SG_ABSCISSAE__': '{0.67,1.33,2,2.67,3.33,4,4.67,5.33,6,6.67,7.33}',
          '__MG_ABSCISSAE_TEXTS__': r'{2/2,4/3,6/4}',
          '__POINTS_DRAWN__': ''
@@ -44,7 +47,7 @@ def test_instanciation():
     # produced code is compilable. But still check the template_fmt produced
     # in different cases: floats provided as abscissae, comma in mg_labels
     # (see c object test, below), Fractions provided (see object b...) etc.
-    assert a.drawn == r"""\begin{tikzpicture}
+    assert a.drawn == r"""\begin{tikzpicture}[baseline=-4pt]
 
 \draw[-latex, thick] (0,0) -- (8,0);
 
