@@ -1,6 +1,7 @@
 include *.rst
 include *.md
 include *.txt
+include *.tex
 include .flake8
 include MANIFEST.in
 include tox.ini
