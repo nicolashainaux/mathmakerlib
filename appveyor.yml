@@ -14,7 +14,7 @@ max_jobs: 1
 environment:
   matrix:
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-      PYTHON: "C:\\Python38-x64"
+      PYTHON: "C:\\Python38-x64\\python.exe"
     - APPVEYOR_BUILD_WORKER_IMAGE: Ubuntu2004
 
 install:
@@ -48,7 +48,7 @@ test_script:
 after_test:
   # This step builds your wheels.
   - cmd: poetry build
-  - sh: coveralls
+  - sh: poetry run coveralls
 
 artifacts:
   # bdist_wheel puts your built wheel in the dist directory
