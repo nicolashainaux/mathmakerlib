@@ -20,6 +20,8 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 import locale
+import warnings
+
 import pytest
 
 from mathmakerlib import required, config
@@ -249,10 +251,10 @@ def test_winding(pointO, pointA, pointB, pointC, pointI, pointJ):
     assert str(excinfo.value) == 'Expect \'clockwise\' or '\
         '\'anticlockwise\'. Found \'counterclockwise\' instead.'
     config.polygons.ENABLE_MISMATCH_WINDING_WARNING = False
-    with pytest.warns(None) as record:
+    with warnings.catch_warnings():
+        warnings.simplefilter("error")
         p = Polygon(pointO, pointA, pointB, pointC, name='PLUM',
                     winding='clockwise')
-    assert len(record) == 0
     config.polygons.ENABLE_MISMATCH_WINDING_WARNING = True
     p.setup_labels(['one', 'two', 'three', 'four'])
     p.setup_marks(['|', '||', '|||', '||||'])

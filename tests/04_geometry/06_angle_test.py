@@ -238,7 +238,7 @@ def test_naming():
     required.package['stackengine'] = required.package['scalerel'] = False
     config.language = 'fr'
     assert α.name == r'\stackon[-5pt]{XAY}{\vstretch{1.5}{\hstretch{1.6}'\
-        '{\widehat{\phantom{\;\;\;\;}}}}}'
+        r'{\widehat{\phantom{\;\;\;\;}}}}}'
     assert required.package['stackengine']
     assert required.package['scalerel']
     required.package['stackengine'] = required.package['scalerel'] = False
@@ -279,10 +279,10 @@ def test_marked_angles():
     assert theta.tikz_decorations() == ''
     assert not required.tikz_library['angles']
     assert theta.tikz_rightangle_mark() == \
-        '\draw[thick, cm={cos(0), sin(0), -sin(0), cos(0), (O)}]' \
+        r'\draw[thick, cm={cos(0), sin(0), -sin(0), cos(0), (O)}]' \
         ' (0.25 cm, 0) -- (0.25 cm, 0.25 cm) -- (0, 0.25 cm);'
     assert theta.tikz_rightangle_mark(winding='clockwise') == \
-        '\draw[thick, cm={cos(0), sin(0), -sin(0), cos(0), (O)}]' \
+        r'\draw[thick, cm={cos(0), sin(0), -sin(0), cos(0), (O)}]' \
         ' (0.25 cm, 0) -- (0.25 cm, -0.25 cm) -- (0, -0.25 cm);'
     with pytest.raises(ValueError) as excinfo:
         theta.tikz_rightangle_mark(winding=None)
