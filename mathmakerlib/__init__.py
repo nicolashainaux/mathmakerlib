@@ -19,21 +19,22 @@
 # along with Mathmaker Lib; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
+from pathlib import Path
+
+import toml
+
 from . import required, exceptions, config, constants
 from . import calculus, core, geometry, LaTeX
 
 __all__ = ['required', 'config', 'LaTeX', 'exceptions', 'constants',
            'core', 'calculus', 'geometry']
 
-__version_info__ = (0, 7, 8)
-__dev__ = 0
-__patch_nb__ = 0
-__version__ = '.'.join(str(c) for c in __version_info__)
-dev_addendum = '' if __dev__ == 0 else '.dev' + str(__dev__)
-patch_addendum = '' if __patch_nb__ == 0 else '-' + str(__patch_nb__)
-__version__ += dev_addendum + patch_addendum
+with open(Path(__file__).parent.parent / 'pyproject.toml', 'r') as f:
+    pp = toml.load(f)
 
-__lib_name__ = 'mathmakerlib'
+__version__ = pp['tool']['poetry']['version']
+__lib_name__ = pp['tool']['poetry']['name']
+
 __release__ = __version__ + ' (alpha)'
 __author__ = 'Nicolas Hainaux'
 __author_email__ = 'nh.techn@gmail.com'

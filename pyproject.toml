@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "mathmakerlib"
+version = "0.7.9"
+description = "Collection of various useful tools."
+authors = ["Nicolas Hainaux <nh.techn@gmail.com>"]
+readme = 'README.rst'
+
+[tool.poetry.dependencies]
+python = "^3.8"
+microlib = "^1.7.0"
+toml = "^0.10.2"
+
+[tool.poetry.dev-dependencies]
+pytest = "^7.0.1"
+# pytest-mock = "^3.3.1"
+flake8 = "^4.0.1"
+coveralls = "^3.3.1"
+coverage = "^6.3.1"
+
+[build-system]
+# requires = ["poetry-core>=1.0.0"]
+# build-backend = "poetry.core.masonry.api"
+requires = ["setuptools >= 40.6.0", "wheel"]
+build-backend = "setuptools.build_meta"
