@@ -1,15 +1,13 @@
 Changelog
 =========
 
-Version 0.7 (2018-06-18)
-------------------------
+Patches 0.7.5 to 0.7.9 (2022-02-11, 2022-02-15 and 2022-02-16)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-* Now Points, as well as other basic geometric objects, may be 2D or 3D.
-* Add first three-dimensional objects: Polyhedron and RightCuboid.
-* Add first flat representation of polyhedra: ObliqueProjection
-* Extend units conversions to areas, volumes and conversions between capacities and volumes (from m³ to mm³).
-* Add ClockTime object to easily deal with times.
-* Accept floats to initialize Numbers (the float being converted to str).
+* Add XAxis object.
+* Use poetry to manage dependencies.
+* Support only python>=3.8 64 bits.
+* Some cleanup.
 
 Patches 0.7.1, 0.7.2, 0.7.3 and 0.7.4 (2018-11-16, 2018-11-20, 2019-02-20 and 2019-02-22)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -21,11 +19,15 @@ Patches 0.7.1, 0.7.2, 0.7.3 and 0.7.4 (2018-11-16, 2018-11-20, 2019-02-20 and 20
 * Include a logo.
 * Bugfix.
 
-Patches 0.7.5 to 0.7.8 (2022-02-11 and 2022-02-15)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Version 0.7 (2018-06-18)
+------------------------
 
-* Add XAxis object.
-* Some cleanup.
+* Now Points, as well as other basic geometric objects, may be 2D or 3D.
+* Add first three-dimensional objects: Polyhedron and RightCuboid.
+* Add first flat representation of polyhedra: ObliqueProjection
+* Extend units conversions to areas, volumes and conversions between capacities and volumes (from m³ to mm³).
+* Add ClockTime object to easily deal with times.
+* Accept floats to initialize Numbers (the float being converted to str).
 
 Version 0.6 (2018-04-12)
 ------------------------
