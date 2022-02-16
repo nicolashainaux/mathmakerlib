@@ -14,20 +14,28 @@ max_jobs: 1
 environment:
   matrix:
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-      PYTHON: "C:\\Python38"
-    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
       PYTHON: "C:\\Python38-x64"
     - APPVEYOR_BUILD_WORKER_IMAGE: Ubuntu2004
 
 install:
   # We need wheel installed to build wheels
-  - cmd: "%PYTHON%\\python.exe -m pip install microlib wheel pytest"
-  - sh: "sudo apt update"
-  - sh: "sudo apt -y install python3-pip"
-  - sh: alias python="python3.8"
-  - sh: "sudo -H pip3 install microlib wheel pytest coverage coveralls"
-  - sh: "sudo locale-gen en_US.UTF-8 && sudo locale-gen fr_FR.UTF-8"
-  - sh: "sudo python3 setup.py install"
+  - cmd: set PYTHONIOENCODING=utf-8
+  - cmd: set PY_PYTHON=3.8
+  - cmd: set PATH=C:\\Python38-x64\\;C:\\Python38-x64\\Scripts;%USERPROFILE%\\.poetry\\bin;%PATH%
+  - cmd: curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/install-poetry.py | %PYTHON38%
+  - cmd: python --version
+  - cmd: python -c "import sys; print(sys.platform); print(sys.version_info)"
+  - cmd: poetry install
+  - sh: sudo apt -qq update
+  - sh: sudo apt -y install python3-venv python3-pip curl python-is-python3
+  # - sh: sudo -H pip3 install coveralls
+  - sh: curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/install-poetry.py | python -
+  # - sh: alias python="python3.8"
+  # - sh: "sudo -H pip3 install microlib wheel pytest coverage coveralls"
+  - sh: sudo locale-gen en_US.UTF-8 && sudo locale-gen fr_FR.UTF-8
+  - sh: source $HOME/.poetry/env
+  - sh: export PATH="$HOME/.local/bin:$PATH"
+  - sh: poetry install
 
 build: off
 
@@ -35,13 +43,13 @@ test_script:
   # Note that you must use the environment variable %PYTHON% to refer to
   # the interpreter you're using - Appveyor does not do anything special
   # to put the Python version you want to use on PATH.
-  - cmd: "%PYTHON%\\python.exe setup.py test"
-  - sh: "coverage run --source=mathmakerlib -m pytest -vv"
+  - cmd: poetry run pytest -vv
+  - sh: poetry run coverage run --source=mathmakerlib -m pytest -vv
 
 after_test:
   # This step builds your wheels.
-  - cmd: "%PYTHON%\\python.exe setup.py bdist_wheel"
-  - sh: "coveralls"
+  - cmd: poetry build
+  - sh: coveralls
 
 artifacts:
   # bdist_wheel puts your built wheel in the dist directory
