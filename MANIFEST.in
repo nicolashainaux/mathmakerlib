@@ -3,6 +3,7 @@ include *.md
 include *.txt
 include .flake8
 include MANIFEST.in
+include pyproject.toml
 include tox.ini
 include LICENSE
 recursive-include mathmakerlib *.tex

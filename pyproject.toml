@@ -4,6 +4,7 @@ version = "0.7.9"
 description = "Collection of various useful tools."
 authors = ["Nicolas Hainaux <nh.techn@gmail.com>"]
 readme = 'README.rst'
+include = ['pyproject.toml']
 
 [tool.poetry.dependencies]
 python = "^3.8"
