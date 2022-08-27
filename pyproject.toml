@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "mathmakerlib"
-version = "0.7.10"
+version = "0.7.11"
 description = "Collection of various useful tools."
 authors = ["Nicolas Hainaux <nh.techn@gmail.com>"]
 readme = 'README.rst'

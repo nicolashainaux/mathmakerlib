@@ -4,6 +4,10 @@ Changelog
 Unreleased
 ----------
 
+
+Version 0.7.11 (2022-08-27)
+---------------------------
+
 * Maintenance version.
 
 Version 0.7.10 (2022-02-17)
