@@ -1,16 +1,34 @@
 Changelog
 =========
 
-Patches 0.7.5 to 0.7.9 (2022-02-11, 2022-02-15 and 2022-02-16)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Unreleased
+----------
+
+* Maintenance version.
+
+Version 0.7.10 (2022-02-17)
+---------------------------
+
+* Use poetry to manage dependencies (hence, pyproject.toml).
+* Maintenance.
+
+
+Version 0.7.9 (2022-02-16)
+--------------------------
+
+* Use poetry to manage dependencies (hence, pyproject.toml).
+* Maintenance.
+
+
+Versions 0.7.5 to 0.7.8 (2022-02-11, 2022-02-15 and 2022-02-16)
+---------------------------------------------------------------
 
 * Add XAxis object.
-* Use poetry to manage dependencies.
 * Support only python>=3.8 64 bits.
 * Some cleanup.
 
-Patches 0.7.1, 0.7.2, 0.7.3 and 0.7.4 (2018-11-16, 2018-11-20, 2019-02-20 and 2019-02-22)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Versions 0.7.1, 0.7.2, 0.7.3 and 0.7.4 (2018-11-16, 2018-11-20, 2019-02-20 and 2019-02-22)
+------------------------------------------------------------------------------------------
 
 * Fix Number.rounded() for precisions greater than 10 (e.g. 10, 100, 1000 etc.)
 * Add Number.highest_digitplace() and Number.estimation()
