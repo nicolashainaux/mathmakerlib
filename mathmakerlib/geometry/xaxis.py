@@ -21,8 +21,6 @@
 
 from pathlib import Path
 
-from microlib import read_text
-
 from mathmakerlib import required
 from mathmakerlib.calculus.number import Number
 from mathmakerlib.calculus.fraction import Fraction
@@ -145,7 +143,7 @@ class XAxis(Drawable, HasThickness, Bipoint):
 
     def draw(self):
         required.package['tikz'] = True
-        pic = read_text(Path(__file__).parent / 'templates/xaxis.tex')
+        pic = (Path(__file__).parent / 'templates/xaxis.tex').read_text()
         for placeholder in self.template_fmt:
             pic = pic.replace(placeholder, self.template_fmt[placeholder])
         return pic
