@@ -30,7 +30,7 @@ install:
   - sh: sudo apt -qq update
   - sh: sudo apt -y install python3-venv python3-pip curl python-is-python3
 
-build:
+build_script:
   - cmd: .\py38\Scripts\activate.bat
   - cmd: curl -sSL https://install.python-poetry.org | %PYTHON%
   - cmd: poetry install
