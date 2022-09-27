@@ -15,7 +15,9 @@ environment:
   matrix:
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
       PYTHON: "C:\\Python38-x64\\python.exe"
+      APPVEYOR_BAKE_IMAGE: vs2019_mathmakerlib
     - APPVEYOR_BUILD_WORKER_IMAGE: Ubuntu2004
+      APPVEYOR_BAKE_IMAGE: ubuntu2004_mathmakerlib
 
 install:
   # We need wheel installed to build wheels
