@@ -22,7 +22,7 @@ install:
   - cmd: set PYTHONIOENCODING=utf-8
   - cmd: set PY_PYTHON=3.8
   - cmd: set PATH=C:\\Python38-x64\\;C:\\Python38-x64\\Scripts;%USERPROFILE%\\AppData\\Roaming\\Python\\Scripts;%PATH%
-  - cmd: curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/install-poetry.py | %PYTHON%
+  - cmd: curl -sSL https://install.python-poetry.org | %PYTHON%
   - cmd: python --version
   - cmd: python -c "import sys; print(sys.platform); print(sys.version_info)"
   - cmd: python -m venv py38
@@ -30,7 +30,7 @@ install:
   - cmd: poetry install
   - sh: sudo apt -qq update
   - sh: sudo apt -y install python3-venv python3-pip curl python-is-python3
-  - sh: curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/install-poetry.py | python -
+  - sh: curl -sSL https://install.python-poetry.org | python3 -
   - sh: sudo locale-gen en_US.UTF-8 && sudo locale-gen fr_FR.UTF-8
   - sh: export PATH="$HOME/.local/bin:$PATH"
   - sh: poetry install
