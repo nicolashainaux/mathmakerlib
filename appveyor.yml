@@ -29,6 +29,13 @@ install:
   - cmd: python -m venv py38
   - sh: sudo apt -qq update
   - sh: sudo apt -y install python3-venv python3-pip curl python-is-python3
+  - sh: export PATH="$HOME/.local/bin:$PATH"
+  - sh: echo $PATH
+  - sh: curl https://gitlab.com/nicolas.hainaux/amoxtli/-/raw/master/src/olli/olli.sh > $HOME/.local/bin/olli.sh
+  - sh: sudo chmod ugo+x $HOME/.local/bin/olli.sh
+  - sh: olli.sh
+  - sh: lualatex --version
+  - sh: luaotfload-tool --version
 
 build_script:
   - cmd: .\py38\Scripts\activate.bat
@@ -36,7 +43,7 @@ build_script:
   - cmd: poetry install
   - sh: curl -sSL https://install.python-poetry.org | python3 -
   - sh: sudo locale-gen en_US.UTF-8 && sudo locale-gen fr_FR.UTF-8
-  - sh: export PATH="$HOME/.local/bin:$PATH"
+  - sh: echo $PATH
   - sh: poetry install
 
 
