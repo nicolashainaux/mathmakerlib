@@ -32,8 +32,9 @@ install:
   - sh: mkdir -p $HOME/.local/bin
   - sh: export PATH="$HOME/.local/bin:$PATH"
   - sh: echo $PATH
-  - sh: pwd
   - sh: whoami
+  - sh: pwd
+  - sh: ls -alhG
   - sh: wget http://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz
   - sh: tar xvzf install-tl-unx.tar.gz
   - sh: SOURCE_DIR=`ls | grep install-tl | grep -v unx`
