@@ -34,7 +34,7 @@ install:
   - sh: echo $PATH
   - sh: curl https://gitlab.com/nicolas.hainaux/amoxtli/-/raw/master/src/olli/olli.sh > $HOME/.local/bin/olli.sh
   - sh: sudo chmod ugo+x $HOME/.local/bin/olli.sh
-  - sh: sudo olli.sh
+  - sh: sudo env "PATH=$PATH" olli.sh
   - sh: lualatex --version
   - sh: luaotfload-tool --version
 
