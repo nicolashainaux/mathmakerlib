@@ -33,12 +33,13 @@ install:
   - sh: export PATH="$HOME/.local/bin:$PATH"
   - sh: echo $PATH
   - sh: mkdir -p $HOME/.local/data
-  - sh: cd $HOME/.local/data
-  - sh: wget http://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz
-  - sh: tar xvzf install-tl-unx.tar.gz
+  # - sh: cd $HOME/.local/data
+  # - sh: wget http://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz
+  # - sh: tar xvzf install-tl-unx.tar.gz
+  # - sh: cd $HOME
   - sh: curl https://gitlab.com/nicolas.hainaux/amoxtli/-/raw/master/src/olli/olli.sh > $HOME/.local/bin/olli.sh
   - sh: sudo chmod ugo+x $HOME/.local/bin/olli.sh
-  - sh: sudo env "PATH=$PATH" olli.sh
+  - sh: sudo env "PATH=$PATH" olli.sh /home/appveyor/.local/data
   - sh: TL_BIN_DIR=`sudo cat /root/.tlbindir`
   - sh: export PATH="$TL_BIN_DIR:$PATH"
   - sh: echo $PATH
