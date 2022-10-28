@@ -35,13 +35,17 @@ install:
   - sh: whoami
   - sh: pwd
   - sh: ls -alhG
-  - sh: wget http://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz
-  - sh: tar xvzf install-tl-unx.tar.gz
-  - sh: SOURCE_DIR=`ls | grep install-tl | grep -v unx`
-  - sh: sudo $SOURCE_DIR/install-tl -profile mathmakerlib/LaTeX/texlive.profile
-  - sh: export PATH="/usr/local/texlive/2022/bin/x86_64-linux:$PATH"
+  - sh: curl $https://gitlab.com/nicolas.hainaux/amoxtli/-/raw/master/src/olli/olli.sh > olli.sh
+  - sh: chmod ugo+x olli.sh
+  - sh: olli.sh linux
+  - sh: wait $!
+  # - sh: wget http://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz
+  # - sh: tar xvzf install-tl-unx.tar.gz
+  # - sh: SOURCE_DIR=`ls | grep install-tl | grep -v unx`
+  # - sh: sudo $SOURCE_DIR/install-tl -profile mathmakerlib/LaTeX/texlive.profile
+  - sh: export PATH="`cat $HOME/.tlbindir`:$PATH"
   - sh: echo $PATH
-  - sh: sudo env "PATH=$PATH" tlmgr install xcolor lxfonts amsmath eurosym stackengine scalerel fontspec polyglossia siunitx pgf hyperref cancel placeins ulem tools graphics epstopdf textpos parskip geometry latex-bin epstopdf-pkg infwarerr grfext kvoptions pstricks pst-eps moreverb pst-tools collection-luatex
+  # - sh: sudo env "PATH=$PATH" tlmgr install xcolor lxfonts amsmath eurosym stackengine scalerel fontspec polyglossia siunitx pgf hyperref cancel placeins ulem tools graphics epstopdf textpos parskip geometry latex-bin epstopdf-pkg infwarerr grfext kvoptions pstricks pst-eps moreverb pst-tools collection-luatex
   - sh: lualatex --version
   - sh: luaotfload-tool --version
 
