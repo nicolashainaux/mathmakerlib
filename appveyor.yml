@@ -41,6 +41,7 @@ install:
   - sh: curl https://gitlab.com/nicolas.hainaux/amoxtli/-/raw/master/src/olli/olli.sh > $HOME/.local/bin/olli.sh
   - sh: sudo chmod ugo+x $HOME/.local/bin/olli.sh
   - sh: sudo env "PATH=$PATH" olli.sh --source "$SOURCE_DIR" /home/appveyor/.local/data
+  - sh: wait $!
   - sh: TL_BIN_DIR=`sudo cat /root/.tlbindir`
   - sh: export PATH="$TL_BIN_DIR:$PATH"
   - sh: echo $PATH
