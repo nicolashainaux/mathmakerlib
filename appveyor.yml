@@ -29,11 +29,12 @@ install:
   - cmd: python -m venv py38
   - sh: sudo apt -qq update
   - sh: sudo apt -y install python3-venv python3-pip curl python-is-python3
+  - sh: mkdir -p $HOME/.local/bin
   - sh: export PATH="$HOME/.local/bin:$PATH"
   - sh: echo $PATH
   - sh: curl https://gitlab.com/nicolas.hainaux/amoxtli/-/raw/master/src/olli/olli.sh > $HOME/.local/bin/olli.sh
   - sh: sudo chmod ugo+x $HOME/.local/bin/olli.sh
-  - sh: olli.sh
+  - sh: sudo olli.sh
   - sh: lualatex --version
   - sh: luaotfload-tool --version
 
