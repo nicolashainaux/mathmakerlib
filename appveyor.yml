@@ -37,7 +37,7 @@ install:
   - sh: ls -alhG
   - sh: curl https://gitlab.com/nicolas.hainaux/amoxtli/-/raw/master/src/olli/olli.sh > olli.sh
   - sh: chmod ugo+x olli.sh
-  - sh: olli.sh linux
+  - sh: ./olli.sh linux
   - sh: wait $!
   # - sh: wget http://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz
   # - sh: tar xvzf install-tl-unx.tar.gz
