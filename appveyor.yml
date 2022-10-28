@@ -35,7 +35,7 @@ install:
   - sh: whoami
   - sh: pwd
   - sh: ls -alhG
-  - sh: curl $https://gitlab.com/nicolas.hainaux/amoxtli/-/raw/master/src/olli/olli.sh > olli.sh
+  - sh: curl https://gitlab.com/nicolas.hainaux/amoxtli/-/raw/master/src/olli/olli.sh > olli.sh
   - sh: chmod ugo+x olli.sh
   - sh: olli.sh linux
   - sh: wait $!
