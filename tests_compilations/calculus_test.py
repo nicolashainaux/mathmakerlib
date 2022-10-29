@@ -29,6 +29,10 @@ def test1():
     t3 = Table([(1, 2), (3, 4), (5, 6)], bubble_operator='+', bubble_value='4',
                bubble_color='OliveGreen')
     with CompilationManager('test1', 'article.tex', t3.printed) as cmd:
+        import sys
+        sys.stderr.write(f'cmd={cmd}\n')
+        subprocess.run('lualatex --version', shell=True,
+                       executable='/bin/bash')
         ret_code = subprocess.run(cmd, shell=True, executable='/bin/bash',
                                   capture_output=True).returncode
         assert ret_code == 0
