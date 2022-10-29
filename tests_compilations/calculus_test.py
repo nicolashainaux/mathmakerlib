@@ -19,18 +19,16 @@
 # along with Mathmaker Lib; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-from .tools import is_number, is_integer, is_natural, prime_factors
-from .exponented import Exponented
-from .number import Sign, Number, move_fracdigits_to, remove_fracdigits_from
-from .number import fix_fracdigits
-from .unit import Unit, physical_quantity, difference_of_orders_of_magnitude
-from .fraction import Fraction
-from .clocktime import ClockTime
-from .table import Table
+import subprocess
 
-__all__ = ['is_number', 'is_integer', 'is_natural', 'Exponented', 'Sign',
-           'Number', 'move_fracdigits_to', 'remove_fracdigits_from',
-           'fix_fracdigits', 'Unit', 'physical_quantity',
-           'difference_of_orders_of_magnitude',
-           'Fraction', 'prime_factors',
-           'ClockTime', 'Table']
+from mathmakerlib.calculus import Table
+from .compilation_manager import CompilationManager
+
+
+def test1():
+    t3 = Table([(1, 2), (3, 4), (5, 6)], bubble_operator='+', bubble_value='4',
+               bubble_color='OliveGreen')
+    with CompilationManager('test1', 'article.tex', t3.printed) as cmd:
+        ret_code = subprocess.run(cmd, shell=True, executable='/bin/bash',
+                                  capture_output=True).returncode
+        assert ret_code == 0

@@ -1,0 +1,77 @@
+\RequirePackage{luatex85}
+\documentclass[a4paper, fleqn, 12pt]{article}
+
+\usepackage{lxfonts}
+\usepackage{amsmath}
+\usepackage{eurosym}
+
+\usepackage[no-math]{fontspec}
+
+%%% fixes in order to use lxfonts only for math
+\let\savedrmdefault\rmdefault
+\let\savedsfdefault\sfdefault
+\let\savedttdefault\itdefault
+\let\saveditdefault\itdefault
+\let\savedsldefault\sldefault
+\let\savedbxdefault\bxdefault
+\AtEndPreamble{% undo the nonmath settings by lxfonts
+  \let\rmdefault\savedrmdefault
+  \let\sfdefault\savedsfdefault
+  \let\ttdefault\saveditdefault
+  \let\itdefault\saveditdefault
+  \let\sldefault\savedsldefault
+  \let\bxdefault\savedbxdefault
+  \setmainfont{Ubuntu}[NFSSFamily=fontid]%
+}
+%%%
+
+\DeclareSymbolFont{mynumbers}      {TU}{fontid}{m}{n}
+\SetSymbolFont    {mynumbers}{bold}{TU}{fontid}{bx}{n}
+
+\AtBeginDocument{
+\DeclareMathSymbol{0}{\mathalpha}{mynumbers}{`0}
+\DeclareMathSymbol{1}{\mathalpha}{mynumbers}{`1}
+\DeclareMathSymbol{2}{\mathalpha}{mynumbers}{`2}
+\DeclareMathSymbol{3}{\mathalpha}{mynumbers}{`3}
+\DeclareMathSymbol{4}{\mathalpha}{mynumbers}{`4}
+\DeclareMathSymbol{5}{\mathalpha}{mynumbers}{`5}
+\DeclareMathSymbol{6}{\mathalpha}{mynumbers}{`6}
+\DeclareMathSymbol{7}{\mathalpha}{mynumbers}{`7}
+\DeclareMathSymbol{8}{\mathalpha}{mynumbers}{`8}
+\DeclareMathSymbol{9}{\mathalpha}{mynumbers}{`9}
+\DeclareMathSymbol{.}{\mathord}{mynumbers}{`.}
+\DeclareMathSymbol{,}{\mathpunct}{mynumbers}{`,}
+}
+
+\usepackage{polyglossia}
+\setmainlanguage{french}
+
+\usepackage{siunitx}[=v2]
+\newfontfamily\configfont{Ubuntu}
+
+\AtBeginDocument{
+\sisetup{mode=text, locale=FR, text-rm=\configfont}
+}
+
+\usepackage[dvipsnames]{xcolor}
+
+\usepackage{tikz}
+
+\usepackage{array}
+
+\usepackage{geometry}
+
+\geometry{hmargin=0.75cm, vmargin=0.75cm}
+\setlength{\parindent}{0cm}
+\setlength{\arrayrulewidth}{0.02pt}
+\pagestyle{empty}
+\newcounter{n}
+\newcommand{\exercise}{\noindent \hspace{-.25cm} \stepcounter{n} \normalsize \textbf{Exercice \arabic{n}}
+\newline \normalsize }
+\newcommand{\razcompteur}{\setcounter{n}{0}}
+
+\renewcommand{\parallel}{\mathbin{/\negthickspace/}}
+
+\begin{document}
+CONTENT
+\end{document}

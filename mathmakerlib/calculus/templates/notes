@@ -1,0 +1,7 @@
+table_bubble.tikz:
+BUBBLETEXT may be: \textcolor{BrickRed}{×\text{?}}
+
+table*.tikz:
+XVAL* and YVAL* may be \text{number}
+or \textcolor{BrickRed}{\text{?}}
+or \textcolor{OliveGreen}{\text{number}}
