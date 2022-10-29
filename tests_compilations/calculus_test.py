@@ -33,6 +33,9 @@ def test1():
         sys.stderr.write(f'cmd={cmd}\n')
         subprocess.run('lualatex --version', shell=True,
                        executable='/bin/bash')
+        subprocess.run('pwd', shell=True, executable='/bin/bash')
+        subprocess.run('ls', shell=True, executable='/bin/bash')
+        subprocess.run(cmd, shell=True, executable='/bin/bash')
         ret_code = subprocess.run(cmd, shell=True, executable='/bin/bash',
                                   capture_output=True).returncode
         assert ret_code == 0
