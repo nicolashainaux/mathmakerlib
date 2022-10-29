@@ -4,6 +4,8 @@ Changelog
 Unreleased
 ----------
 
+* Add Table class.
+* Start testing that printed objects are compiled by lualatex without any error.
 
 Version 0.7.11 (2022-08-27)
 ---------------------------
