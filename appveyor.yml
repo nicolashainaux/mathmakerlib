@@ -31,7 +31,7 @@ install:
   - cmd: python -c "import sys; print(sys.platform); print(sys.version_info)"
   - cmd: python -m venv py38
   - sh: sudo apt -qq update
-  - sh: sudo apt -y install python3-venv python3-pip curl python-is-python3
+  - sh: sudo apt -y install python3-venv python3-pip curl python-is-python3 fonts-ubuntu
   - sh: mkdir -p $HOME/.local/bin
   - sh: export PATH="$HOME/.local/bin:$PATH"
   - sh: echo $PATH
