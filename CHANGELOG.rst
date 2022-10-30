@@ -4,6 +4,7 @@ Changelog
 Unreleased
 ----------
 
+* Add compact option to Table objects, to print more compact tables.
 
 Version 0.7.12 (2022-10-29)
 ---------------------------

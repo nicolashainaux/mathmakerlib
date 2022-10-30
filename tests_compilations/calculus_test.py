@@ -28,7 +28,10 @@ from .compilation_manager import CompilationManager
 def test1():
     t3 = Table([(1, 2), (3, 4), (5, 6)], bubble_operator='+', bubble_value='4',
                bubble_color='OliveGreen')
-    with CompilationManager('test1', 'article.tex', t3.printed) as cmd:
+    t2 = Table([(1, 2), (3, 4)], bubble_value='?', bubble_color='BrickRed',
+               compact=True)
+    content = f'{t3.printed}\n{t2.printed}'
+    with CompilationManager('test1', 'article.tex', content) as cmd:
         # import sys
         # sys.stderr.write(f'cmd={cmd}\n')
         # subprocess.run(cmd, shell=True, executable='/bin/bash')

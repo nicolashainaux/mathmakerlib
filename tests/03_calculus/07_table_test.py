@@ -83,3 +83,18 @@ def test_imprint(mocker):
     assert 'v7' in output
     assert 'v8' in output
     assert 'SOME_CONTENT' in output
+    m.side_effect = ['SOME_CONTENT']
+    required.package['tikz'] = False
+    t4 = Table([('v1', 'v2'), ('v3', 'v4'), ('v5', 'v6'), ('v7', 'v8')],
+               bubble_value='?', compact=True)
+    output = t4.printed
+    assert required.package['tikz']
+    assert 'v1' in output
+    assert 'v2' in output
+    assert 'v3' in output
+    assert 'v4' in output
+    assert 'v5' in output
+    assert 'v6' in output
+    assert 'v7' in output
+    assert 'v8' in output
+    assert 'SOME_CONTENT' in output

@@ -28,7 +28,7 @@ from mathmakerlib.core.printable import Printable
 class Table(Printable):
 
     def __init__(self, couples, bubble_operator='×', bubble_value=None,
-                 bubble_color=None):
+                 bubble_color=None, compact=False):
         if len(couples) not in [2, 3, 4]:
             raise ValueError(f'Only tables of 2, 3 or 4 columns may be created'
                              f' so far; but got {len(couples)} couple(s).')
@@ -39,6 +39,7 @@ class Table(Printable):
         self.bubble_operator = bubble_operator
         self.bubble_value = bubble_value
         self.bubble_color = bubble_color
+        self.compact = compact
 
     @property
     def size(self):
@@ -46,15 +47,24 @@ class Table(Printable):
         return len(self.couples)
 
     @property
+    def compact_suffix(self):
+        """'_compact' if self.compact else ''."""
+        return '_compact' if self.compact else ''
+
+    @property
     def template(self):
         """The template matching self's size."""
-        return (Path(__file__).parent / f'templates/table{self.size}.tikz')\
-            .read_text()
+        fn = f'templates/table{self.size}{self.compact_suffix}.tikz'
+        return (Path(__file__).parent / fn).read_text()
 
     @property
     def xoffset(self):
         """The x-offset to start drawing the possible arrow and bubble."""
-        return {2: '2.5', 3: '4', 4: '5.5'}[self.size]
+        if self.compact:
+            offsets = {2: '1.65', 3: '2.75', 4: '3.85'}
+        else:
+            offsets = {2: '2.5', 3: '4', 4: '5.5'}
+        return offsets[self.size]
 
     @property
     def bubble(self):
@@ -66,8 +76,9 @@ class Table(Printable):
             if self.bubble_color:
                 text = r'\textcolor{{{color}}}{{{text}}}'\
                     .format(color=self.bubble_color, text=text)
-            bubble_template = (Path(__file__).parent
-                               / 'templates/table_bubble.tikz').read_text()
+            fn = f'table_bubble{self.compact_suffix}.tikz'
+            bubble_template = (Path(__file__).parent / f'templates/{fn}')\
+                .read_text()
             return bubble_template.replace('BUBBLETEXT', text)\
                 .replace('XOFF', self.xoffset)
 
