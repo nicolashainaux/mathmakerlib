@@ -4,6 +4,7 @@ Changelog
 Unreleased
 ----------
 
+* Add baseline option to Table objects, to provide control over the tikz picture's baseline.
 
 Version 0.7.13 (2022-10-30)
 ---------------------------
