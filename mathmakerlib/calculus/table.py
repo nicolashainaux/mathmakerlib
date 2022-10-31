@@ -28,7 +28,7 @@ from mathmakerlib.core.printable import Printable
 class Table(Printable):
 
     def __init__(self, couples, bubble_operator='×', bubble_value=None,
-                 bubble_color=None, compact=False):
+                 bubble_color=None, compact=False, baseline=None):
         if len(couples) not in [2, 3, 4]:
             raise ValueError(f'Only tables of 2, 3 or 4 columns may be created'
                              f' so far; but got {len(couples)} couple(s).')
@@ -40,6 +40,7 @@ class Table(Printable):
         self.bubble_value = bubble_value
         self.bubble_color = bubble_color
         self.compact = compact
+        self.baseline = baseline
 
     @property
     def size(self):
@@ -67,6 +68,15 @@ class Table(Printable):
         return offsets[self.size]
 
     @property
+    def baseline_tikz(self):
+        """The baseline str to insert as tikz picture option"""
+        if self.baseline is None:
+            return ''
+        else:
+            return f"""
+baseline={self.baseline}pt,"""
+
+    @property
     def bubble(self):
         """The tikz code to draw an arrow, bubble and its content; if any."""
         if self.bubble_value is None:
@@ -88,4 +98,5 @@ class Table(Printable):
         for i in range(self.size):
             output = output.replace(f'XVAL{i}', str(self.couples[i][0]))
             output = output.replace(f'YVAL{i}', str(self.couples[i][1]))
-        return output.replace('BUBBLE', self.bubble)
+        return output.replace('BUBBLE', self.bubble)\
+            .replace('BASELINE', self.baseline_tikz)

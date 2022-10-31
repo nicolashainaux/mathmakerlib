@@ -1,5 +1,5 @@
 \begin{tikzpicture}[
-roundnode/.style={circle, draw=black, fill=black!1, inner sep=0.5mm, thick, radius=0.3cm},
+roundnode/.style={circle, draw=black, fill=black!1, inner sep=0.5mm, thick, radius=0.3cm},BASELINE
 ]
 \let\st\strut
 \foreach \x/\xtext/\ytext in{0/XVAL0/YVAL0,1.1/XVAL1/YVAL1,2.2/XVAL2/YVAL2}

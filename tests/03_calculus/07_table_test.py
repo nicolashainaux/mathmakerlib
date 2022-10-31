@@ -83,10 +83,11 @@ def test_imprint(mocker):
     assert 'v7' in output
     assert 'v8' in output
     assert 'SOME_CONTENT' in output
+    assert 'baseline' not in output
     m.side_effect = ['SOME_CONTENT']
     required.package['tikz'] = False
     t4 = Table([('v1', 'v2'), ('v3', 'v4'), ('v5', 'v6'), ('v7', 'v8')],
-               bubble_value='?', compact=True)
+               bubble_value='?', compact=True, baseline=3)
     output = t4.printed
     assert required.package['tikz']
     assert 'v1' in output
@@ -98,3 +99,4 @@ def test_imprint(mocker):
     assert 'v7' in output
     assert 'v8' in output
     assert 'SOME_CONTENT' in output
+    assert 'baseline=3pt' in output
