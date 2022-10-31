@@ -34,7 +34,6 @@ def test1():
     with CompilationManager('test1', 'article.tex', content) as cmd:
         # import sys
         # sys.stderr.write(f'cmd={cmd}\n')
-        # subprocess.run(cmd, shell=True, executable='/bin/bash')
-        ret_code = subprocess.run(cmd, shell=True, executable='/bin/bash',
-                                  capture_output=True).returncode
+        ret_code = subprocess.run(cmd, shell=True, executable='/bin/bash')\
+            .returncode
         assert ret_code == 0
