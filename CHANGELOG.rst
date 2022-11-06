@@ -4,6 +4,7 @@ Changelog
 Unreleased
 ----------
 
+* Bugfix: behavior of Number.split() is changed to split at one rank further for powers of 10. Previous behaviour lead to crash on them; or to replace self by another arbitrary Number, what did not make sense at all. A call like Number(1).split(at_unit=True) now explicitely raises an Error.
 
 Version 0.7.14 (2022-10-31)
 ---------------------------

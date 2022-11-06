@@ -734,12 +734,20 @@ def test_split_exceptions():
     """Check split() raises exceptions in expected cases."""
     with pytest.raises(ValueError):
         Number(10).split(operation='*')
-    with pytest.warns(UserWarning):
-        Number(1).split()
-    with pytest.warns(UserWarning):
-        Number('0.1').split()
-    with pytest.warns(UserWarning):
-        Number('0.01').split()
+    with pytest.raises(RuntimeError) as excinfo:
+        Number(1).split(at_unit=True)
+    assert str(excinfo.value) \
+        == 'Cannot split 1 (operation=\'sum\', dig=0, at_unit=True, '\
+           'int_as_halves=False, int_as_quarters= False, '\
+           'int_as_halves_or_quarters=False, return_all=False)'
+    with pytest.raises(TypeError) as excinfo:
+        Number(0.1).split(at_unit=True)
+    assert str(excinfo.value) \
+        == 'Cannot split at unit the non integer Number 0.1'
+    with pytest.raises(TypeError) as excinfo:
+        Number('0.25').split(at_unit=True, dig=1)
+    assert str(excinfo.value) \
+        == 'Cannot split at unit the non integer Number 0.25'
 
 
 def test_split():
@@ -826,7 +834,7 @@ def test_split():
              (Number('4.5'), Number('2.5')),
              (Number('5.5'), Number('1.5')),
              (Number('6.5'), Number('0.5'))]]
-    assert Number(20).split(return_all=True, integer_split_at_unit=True) == \
+    assert Number(20).split(return_all=True, at_unit=True) == \
         [(Number('1'), Number('19')),
          (Number('2'), Number('18')),
          (Number('3'), Number('17')),
@@ -846,7 +854,21 @@ def test_split():
          (Number('17'), Number('3')),
          (Number('18'), Number('2')),
          (Number('19'), Number('1'))]
+    assert Number(20).split(return_all=True, at_unit=True)\
+        == Number(20).split(return_all=True, dig=1)
     assert Number(20).split(return_all=True) == [(Number('10'), Number('10'))]
+    assert Number(10).split(return_all=True) \
+        == [(1, 9), (2, 8), (3, 7), (4, 6), (5, 5), (6, 4), (7, 3), (8, 2),
+            (9, 1)]
+    assert Number(10).split(at_unit=True, return_all=True) \
+        == [(1, 9), (2, 8), (3, 7), (4, 6), (5, 5), (6, 4), (7, 3), (8, 2),
+            (9, 1)]
+    assert Number(1).split(return_all=True) \
+        == [(Number('0.1'), Number('0.9')), (Number('0.2'), Number('0.8')),
+            (Number('0.3'), Number('0.7')), (Number('0.4'), Number('0.6')),
+            (Number('0.5'), Number('0.5')), (Number('0.6'), Number('0.4')),
+            (Number('0.7'), Number('0.3')), (Number('0.8'), Number('0.2')),
+            (Number('0.9'), Number('0.1'))]
     assert Number(70).split(return_all=True) == \
         [(Number('10'), Number('60')),
          (Number('20'), Number('50')),

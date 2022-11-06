@@ -23,7 +23,6 @@ import copy
 import math
 import locale
 import random
-import warnings
 from decimal import Decimal, ROUND_DOWN, ROUND_HALF_UP
 
 from mathmakerlib import required
@@ -612,7 +611,7 @@ class Number(Decimal, Signed, Printable, Evaluable):
 
     def split(self, operation='sum', dig=0, return_all=False,
               int_as_halves=False, int_as_quarters=False,
-              int_as_halves_or_quarters=False, integer_split_at_unit=False):
+              int_as_halves_or_quarters=False, at_unit=False):
         """
         Split self as a sum or difference, e.g. self = a + b or self = a - b
 
@@ -622,10 +621,21 @@ class Number(Decimal, Signed, Printable, Evaluable):
         dig=1, then self will be split into 2-fractional-digits numbers,
         like 2.14 + 2.36.
 
+        For natural numbers, the split depth will match the lowest non-zero
+        digit (except for powers of 10). For instance, 70 would, by default,
+        be split at tens (10, 20, 30, 40, 50 and 60). Take care that splitting
+        20 then leads to 10 + 10 only.
+
+        The powers of 10 (natural numbers or not) cannot be split at their own
+        rank, so by default, the value of dig will be 1 (a user-provided 0 will
+        be ignored).
+
         :param operation: must be 'sum', 'difference', '+' or '-'
         :type operation: str
         :param dig: extra depth level to use
         :type dig: int
+        :param at_unit: whether depth level should be set at unit
+        :type at_unit: raise TypeError if self is not an integer
         :param int_as_halves: whether integers should be split as two integers
         ± 0.5. Disabled if self is not integer.
         :type int_as_halves: bool
@@ -641,7 +651,12 @@ class Number(Decimal, Signed, Printable, Evaluable):
         if operation not in ['sum', 'difference', '+', '-']:
             raise ValueError('Argument "operation" should be either \'sum\' '
                              'or \'difference\'.')
-        if integer_split_at_unit:
+        if at_unit and not is_integer(self):
+            raise TypeError(
+                f'Cannot split at unit the non integer Number {str(self)}')
+        if self.is_power_of_10() and dig == 0 and not at_unit:
+            dig = 1
+        if at_unit:
             n_depth = self.fracdigits_nb()
             depth = dig + self.fracdigits_nb()
         else:
@@ -649,16 +664,6 @@ class Number(Decimal, Signed, Printable, Evaluable):
             depth = dig + self.lowest_nonzero_digit_index()
         n = self
         if operation in ['sum', '+']:
-            if self.is_power_of_10() and abs(self) <= 1 and dig == 0:
-                # This case is impossible: write 1 as a sum of two natural
-                # numbers bigger than 1, or 0.1 as a sum of two positive
-                # decimals having 1 digit either, etc. so we arbitrarily
-                # replace self by a random number between 2 and 9
-                warnings.warn('mathmakerlib is asked something impossible '
-                              '(split {} as a sum of two numbers having as '
-                              'many digits)'.format(self))
-                n = random.choice([i + 2 for i in range(7)])
-                n = n * (10 ** (Decimal(- n_depth)))
             amplitude = n
         elif operation in ['difference', '-']:
             amplitude = max(10 ** (n_depth), n)
@@ -673,6 +678,12 @@ class Number(Decimal, Signed, Printable, Evaluable):
         if depth >= 1:
             seq = [i for i in seq
                    if not is_integer(i * (10 ** (depth - 1)))]
+        if not seq:
+            raise RuntimeError(
+                f'Cannot split {self} (operation=\'{operation}\', dig={dig}, '
+                f'at_unit={at_unit}, int_as_halves={int_as_halves}, '
+                f'int_as_quarters= {int_as_quarters}, int_as_halves_or_quar'
+                f'ters={int_as_halves_or_quarters}, return_all={return_all})')
         delta = 0
         if is_integer(self):
             if int_as_halves_or_quarters:
