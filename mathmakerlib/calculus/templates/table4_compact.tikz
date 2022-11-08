@@ -1,6 +1,3 @@
-\begin{tikzpicture}[
-roundnode/.style={circle, draw=black, fill=black!1, inner sep=0.5mm, thick, radius=0.3cm},BASELINE
-]
 \let\st\strut
 \foreach \x/\xtext/\ytext in{0/XVAL0/YVAL0,1.1/XVAL1/YVAL1,2.2/XVAL2/YVAL2,3.3/XVAL3/YVAL3}
 {\draw[thick] (\x,0.5) +(-0.55,-0.25) rectangle ++(0.55,0.25) ;
@@ -9,4 +6,3 @@ roundnode/.style={circle, draw=black, fill=black!1, inner sep=0.5mm, thick, radi
 \node[]  at (\x+0.005,0) {$\ytext$};
 \node[] (x_\x)  at (\x,0.75) {};
 \node[] (y_\x) at (\x,-0.25) {};}BUBBLE
-\end{tikzpicture}

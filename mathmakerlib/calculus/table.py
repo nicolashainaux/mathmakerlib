@@ -19,10 +19,12 @@
 # along with Mathmaker Lib; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
+import copy
 from pathlib import Path
 
 from mathmakerlib import required
 from mathmakerlib.core.printable import Printable
+from mathmakerlib.LaTeX import AttrList, TikZPicture
 
 
 class Table(Printable):
@@ -40,7 +42,16 @@ class Table(Printable):
         self.bubble_value = bubble_value
         self.bubble_color = bubble_color
         self.compact = compact
-        self.baseline = baseline
+        if baseline is None:
+            self.baseline = ''
+        else:
+            self.baseline = baseline
+        self._options_list = [
+            {'roundnode/.style': AttrList('circle', 'thick',
+                                          {'draw': 'black'},
+                                          {'fill': 'black!1'},
+                                          {'inner sep': '0.5mm'},
+                                          {'radius': '0.3cm'})}]
 
     @property
     def size(self):
@@ -68,13 +79,11 @@ class Table(Printable):
         return offsets[self.size]
 
     @property
-    def baseline_tikz(self):
-        """The baseline str to insert as tikz picture option"""
-        if self.baseline is None:
-            return ''
-        else:
-            return f"""
-baseline={self.baseline}pt,"""
+    def options_list(self):
+        options = copy.deepcopy(self._options_list)
+        if self.baseline:
+            options.append({'baseline': self.baseline})
+        return options
 
     @property
     def bubble(self):
@@ -94,9 +103,9 @@ baseline={self.baseline}pt,"""
 
     def imprint(self, start_expr=True, variant='latex'):
         required.package['tikz'] = True
-        output = self.template
+        content = self.template
         for i in range(self.size):
-            output = output.replace(f'XVAL{i}', str(self.couples[i][0]))
-            output = output.replace(f'YVAL{i}', str(self.couples[i][1]))
-        return output.replace('BUBBLE', self.bubble)\
-            .replace('BASELINE', self.baseline_tikz)
+            content = content.replace(f'XVAL{i}', str(self.couples[i][0]))
+            content = content.replace(f'YVAL{i}', str(self.couples[i][1]))
+        content = content.replace('BUBBLE', self.bubble)
+        return str(TikZPicture(content, *self.options_list))

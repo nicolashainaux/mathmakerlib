@@ -42,3 +42,12 @@ def test_str():
     assert str(al2) == '{usenames, dvipsnames}'
     al2.append('svgnames')
     assert str(al2) == '{usenames, dvipsnames, svgnames}'
+    ol2 = OptionsList(
+        {'roundnode/.style': AttrList('circle', 'thick',
+                                      {'draw': 'black'},
+                                      {'fill': 'black!1'},
+                                      {'inner sep': '0.5mm'},
+                                      {'radius': '0.3cm'})})
+    assert str(ol2) \
+        == '[roundnode/.style={circle, thick, draw=black, fill=black!1, '\
+        'inner sep=0.5mm, radius=0.3cm}]'
