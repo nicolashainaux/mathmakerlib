@@ -24,6 +24,7 @@
 
 from .attr_list import AttrList, OptionsList
 from .commands import Command, DocumentClass, UsePackage, UseTikzLibrary
+from .environment import Environment, TikZPicture
 
 DEFAULT_FONT_SIZES = [r'\tiny', r'\scriptsize', r'\footnotesize', r'\small',
                       r'\normalsize', r'\large', r'\Large', r'\LARGE',
@@ -93,5 +94,5 @@ DASHPATTERN_VALUES = ['solid', 'dotted', 'densely dotted', 'loosely dotted',
                       'dash dot dot', 'densely dash dot dot',
                       'loosely dash dot dot']
 
-__all__ = ['AttrList', 'OptionsList', 'Command', 'DocumentClass',
-           'UsePackage', 'UseTikzLibrary']
+__all__ = [AttrList, OptionsList, Command, DocumentClass, UsePackage,
+           UseTikzLibrary, Environment, TikZPicture]
