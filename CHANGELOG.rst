@@ -4,6 +4,7 @@ Changelog
 Unreleased
 ----------
 
+* Introduce new LaTeX classes: Environment and TikZPicture
 
 Version 0.7.15 (2022-11-06)
 ---------------------------
