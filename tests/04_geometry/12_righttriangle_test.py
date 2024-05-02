@@ -113,3 +113,9 @@ r"""(0.25 cm, 0) -- (0.25 cm, -0.25 cm) -- (0, -0.25 cm);
 \draw (Y) node[left] {Y};
 \end{tikzpicture}
 """
+
+
+def test_pythagorean_equation():
+    r = RightTriangle(name='SVG')
+    assert r.pythagorean_equation \
+        == r'\text{GS}^{2}=\text{SV}^{2}+\text{VG}^{2}'
