@@ -119,6 +119,7 @@ def test_instanciation(A, B):
     assert s.Δx == 1
     assert s.Δy == 1
     assert s.Δz == 0
+    assert s.length_name == 'AB'
 
 
 def test_some_setters(A, B):

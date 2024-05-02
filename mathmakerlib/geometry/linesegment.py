@@ -116,6 +116,7 @@ class LineSegment(Drawable, HasThickness, Bipoint):
             raise TypeError('Expected bool type for \'locked_label\' keyword '
                             'argument. Found {}.'.format(type(locked_label)))
         self._locked_label = locked_label
+        self._length_name = self.tail.name + self.head.name
 
     def __repr__(self):
         return 'LineSegment({}, {})'.format(repr(self.endpoints[0]),
@@ -183,6 +184,10 @@ class LineSegment(Drawable, HasThickness, Bipoint):
     # @property
     # def name(self):
     #     return '[' + self.endpoints[0].name + self.endpoints[1].name + ']'
+
+    @property
+    def length_name(self):
+        return self._length_name
 
     @property
     def locked_label(self):
