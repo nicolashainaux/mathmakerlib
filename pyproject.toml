@@ -10,6 +10,7 @@ include = ['pyproject.toml']
 [tool.poetry.dependencies]
 python = "^3.8"
 toml = "^0.10.2"
+sympy = "^1.13.3"
 
 [tool.poetry.dev-dependencies]
 pytest = "^7.0.1"

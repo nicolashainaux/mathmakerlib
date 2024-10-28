@@ -23,7 +23,7 @@ import pytest
 from decimal import Decimal
 
 from mathmakerlib.calculus import is_number, is_integer, is_natural
-from mathmakerlib.calculus import prime_factors
+from mathmakerlib.calculus import prime_factors, prime_decomposition
 
 
 def test_is_number():
@@ -86,3 +86,12 @@ def test_prime_factors():
     assert prime_factors(31) == [31]
     assert prime_factors(16065) == [3, 3, 3, 5, 7, 17]
     assert all(type(n) is int for n in prime_factors(210))
+
+
+def test_prime_decomposition():
+    assert prime_decomposition(1) == []
+    assert prime_decomposition(2) == [(2, 1)]
+    assert prime_decomposition(16) == [(2, 4)]
+    assert prime_decomposition(31) == [(31, 1)]
+    assert prime_decomposition(16065) == [(3, 3), (5, 1), (7, 1), (17, 1)]
+    assert prime_decomposition(28224) == [(2, 6), (3, 2), (7, 2)]

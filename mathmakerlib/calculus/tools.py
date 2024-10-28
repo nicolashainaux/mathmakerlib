@@ -21,6 +21,8 @@
 
 from decimal import Decimal
 
+from sympy.ntheory import primefactors
+
 
 def is_number(n):
     """Check if n is a number."""
@@ -67,3 +69,19 @@ def prime_factors(n):
                 factors.append(n)
             break
     return factors
+
+
+# TODO: this is a bit redundant with the previous method
+def prime_decomposition(nn):
+    """
+    Return the prime decomposition of self (natural numbers only).
+    """
+    primes_list = primefactors(nn)
+    decomposition = list()
+    for p in primes_list:
+        i = 0
+        while not (nn % p):
+            i += 1
+            nn = nn / p
+        decomposition.append((p, i))
+    return decomposition
