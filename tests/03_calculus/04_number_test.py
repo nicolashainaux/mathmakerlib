@@ -30,7 +30,7 @@ from mathmakerlib.calculus import is_integer, Unit, Number, Sign
 from mathmakerlib.calculus import move_fracdigits_to
 from mathmakerlib.calculus import remove_fracdigits_from
 from mathmakerlib.calculus import fix_fracdigits
-from mathmakerlib.constants import LOCALE_US, LOCALE_FR
+from mathmakerlib.shared import LOCALE_US, LOCALE_FR
 
 
 def test_Number_inheritance():

@@ -20,6 +20,18 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 import sys
+from pathlib import Path
+from gettext import translation
+
+from mathmakerlib import config
+
+ROOTDIR = Path(__file__).parent
+LOCALEDIR = ROOTDIR / 'locale'
+L10N_DOMAIN = 'mathmakerlib'
 
 LOCALE_US = 'en' if sys.platform.startswith('win') else 'en_US.UTF-8'
 LOCALE_FR = 'fr' if sys.platform.startswith('win') else 'fr_FR.UTF-8'
+
+
+def tr(self):
+    return translation(L10N_DOMAIN, LOCALEDIR, config.language).gettext

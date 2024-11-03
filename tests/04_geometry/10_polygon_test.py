@@ -28,7 +28,7 @@ from mathmakerlib import required, config
 from mathmakerlib.calculus import Number
 from mathmakerlib.geometry import Point, Polygon, AngleDecoration
 from mathmakerlib.geometry import shoelace_formula
-from mathmakerlib.constants import LOCALE_US, LOCALE_FR
+from mathmakerlib.shared import LOCALE_US, LOCALE_FR
 
 
 @pytest.fixture()
