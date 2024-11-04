@@ -19,20 +19,15 @@
 # along with Mathmaker Lib; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-from .tools import is_number, is_integer, is_natural, prime_factors
-from .tools import prime_decomposition
-from .exponented import Exponented
-from .number import Sign, Number, move_fracdigits_to, remove_fracdigits_from
-from .number import fix_fracdigits
-from .unit import Unit, physical_quantity, difference_of_orders_of_magnitude
-from .fraction import Fraction
-from .clocktime import ClockTime
-from .table import Table
-from . import equations
+from abc import ABCMeta, abstractmethod
 
-__all__ = ['is_number', 'is_integer', 'is_natural', 'Exponented', 'Sign',
-           'Number', 'move_fracdigits_to', 'remove_fracdigits_from',
-           'fix_fracdigits', 'Unit', 'physical_quantity',
-           'difference_of_orders_of_magnitude',
-           'Fraction', 'prime_factors', 'prime_decomposition',
-           'ClockTime', 'Table', 'equations']
+from mathmakerlib.core.printable import Printable
+
+
+class Equation(Printable, metaclass=ABCMeta):
+
+    @abstractmethod
+    def autosolve(self, *args, **options):
+        """
+        Return the complete resolution of the equation.
+        """

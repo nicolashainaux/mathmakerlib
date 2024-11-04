@@ -19,20 +19,24 @@
 # along with Mathmaker Lib; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-from .tools import is_number, is_integer, is_natural, prime_factors
-from .tools import prime_decomposition
-from .exponented import Exponented
-from .number import Sign, Number, move_fracdigits_to, remove_fracdigits_from
-from .number import fix_fracdigits
-from .unit import Unit, physical_quantity, difference_of_orders_of_magnitude
-from .fraction import Fraction
-from .clocktime import ClockTime
-from .table import Table
-from . import equations
+# import pytest
 
-__all__ = ['is_number', 'is_integer', 'is_natural', 'Exponented', 'Sign',
-           'Number', 'move_fracdigits_to', 'remove_fracdigits_from',
-           'fix_fracdigits', 'Unit', 'physical_quantity',
-           'difference_of_orders_of_magnitude',
-           'Fraction', 'prime_factors', 'prime_decomposition',
-           'ClockTime', 'Table', 'equations']
+from mathmakerlib.calculus import Number
+from mathmakerlib.calculus.equations import PythagoreanEquation
+from mathmakerlib.geometry import RightTriangle
+
+
+def test_PythagoreanEquation():
+    r = RightTriangle(name='ABC')
+    r.setup_labels(labels=[Number(3, unit='cm'),
+                           Number(4, unit='cm'),
+                           None],
+                   masks=[None, None, ' '])
+    assert PythagoreanEquation(r).printed == \
+        r'\text{CA}^{2}=\text{AB}^{2}+\text{BC}^{2}'
+    assert PythagoreanEquation(r).autosolve('hyp') == \
+        r"""\[\text{CA}^{2}=\text{AB}^{2}+\text{BC}^{2}\]
+\[\text{CA}^{2}=3^{2}+4^{2}\]
+\[\text{CA}^{2}=25\]
+\[\text{CA}=\sqrt{\mathstrut 25}\text{ because CA is positive.}\]
+\[\uline{\text{CA}=\SI{5}{cm}}\]"""
