@@ -36,8 +36,8 @@ class CompilationManager:
         self.content = content
         self.test_name = test_name
         self.out_tex = Path(__file__).parent / f'{test_name}.tex'
-        self.template = (Path(__file__).parent
-                         / f'templates/{template_name}').read_text()
+        template_path = Path(__file__).parent / f'templates/{template_name}'
+        self.template = template_path.read_text()
 
     def __enter__(self):
         self.out_tex.write_text(self.template.replace('CONTENT', self.content))

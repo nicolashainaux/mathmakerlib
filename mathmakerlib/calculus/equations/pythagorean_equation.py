@@ -59,7 +59,7 @@ class PythagoreanEquation(Equation):
         sides_id = ['leg0', 'leg1', 'hyp']
         if unknown_side not in sides_id:
             raise ValueError(f'Expected a value belonging to {sides_id}; '
-                             f'got {unknown_side} instead.')
+                             f'got \'{unknown_side}\' instead.')
         if required_rounding is None:
             required_rounding = Decimal('1.000')
         rounding_rank = Number(required_rounding).fracdigits_nb(
@@ -91,6 +91,8 @@ class PythagoreanEquation(Equation):
             result = Number(result, unit=self.rt.leg0.label_value.unit)
             data.update({'leg0_length': leg0_length.printed,
                          'leg1_length': leg1_length.printed,
+                         'square_leg0_length': leg0_length * leg0_length,
+                         'square_leg1_length': leg1_length * leg1_length,
                          'square_legs_sum': square_legs_sum.printed,
                          'explanation': explanation,
                          'equal_sign': equal_sign,

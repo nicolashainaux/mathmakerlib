@@ -19,14 +19,24 @@
 # along with Mathmaker Lib; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-# import pytest
+import pytest
+from pathlib import Path
+from decimal import Decimal
 
 from mathmakerlib.calculus import Number
 from mathmakerlib.calculus.equations import PythagoreanEquation
 from mathmakerlib.geometry import RightTriangle
 
+DATA_PATH = Path(__file__).parent.parent.parent \
+    / 'tests_compilations/data/pythagorean_equations'
 
-def test_PythagoreanEquation():
+TEST_ABC_1 = (DATA_PATH / 'ABC_1.tex').read_text()
+TEST_ABC_2 = (DATA_PATH / 'ABC_2.tex').read_text()
+TEST_GIH = (DATA_PATH / 'GIH.tex').read_text()
+TEST_GMW = (DATA_PATH / 'GMW.tex').read_text()
+
+
+def test_PythagoreanEquation_calculate_hyp():
     r = RightTriangle(name='ABC')
     r.setup_labels(labels=[Number(3, unit='cm'),
                            Number(4, unit='cm'),
@@ -34,9 +44,34 @@ def test_PythagoreanEquation():
                    masks=[None, None, ' '])
     assert PythagoreanEquation(r).printed == \
         r'\text{CA}^{2}=\text{AB}^{2}+\text{BC}^{2}'
-    assert PythagoreanEquation(r).autosolve('hyp') == \
-        r"""\[\text{CA}^{2}=\text{AB}^{2}+\text{BC}^{2}\]
-\[\text{CA}^{2}=3^{2}+4^{2}\]
-\[\text{CA}^{2}=25\]
-\[\text{CA}=\sqrt{\mathstrut 25}\text{ because CA is positive.}\]
-\[\uline{\text{CA}=\SI{5}{cm}}\]"""
+
+    with pytest.raises(ValueError) as excinfo:
+        PythagoreanEquation(r).autosolve('hypo')
+    assert str(excinfo.value) == "Expected a value belonging to ['leg0', "\
+        "'leg1', 'hyp']; got 'hypo' instead."
+
+    assert PythagoreanEquation(r).autosolve('hyp') == TEST_ABC_1
+
+    r.setup_labels(labels=[Number(3, unit='cm'),
+                           Number(5, unit='cm'),
+                           None],
+                   masks=[None, None, ' '])
+    assert PythagoreanEquation(r).autosolve('hyp') == TEST_ABC_2
+
+    r = RightTriangle(name='GIH')
+    r.setup_labels(labels=[Number(145, unit='mm'),
+                           Number(168, unit='mm'),
+                           None],
+                   masks=[None, None, ' '])
+    assert PythagoreanEquation(r)\
+        .autosolve('hyp', show_squares_step=True,
+                   required_rounding=Decimal('0.01')) == TEST_GIH
+
+    r = RightTriangle(name='GMW')
+    r.setup_labels(labels=[Number('0.8', unit='m'),
+                           Number('1.5', unit='m'),
+                           None],
+                   masks=[None, None, ' '])
+    assert PythagoreanEquation(r)\
+        .autosolve('hyp', required_rounding=Decimal('0.1')) == TEST_GMW
+    assert PythagoreanEquation(r).autosolve('hyp') == TEST_GMW
