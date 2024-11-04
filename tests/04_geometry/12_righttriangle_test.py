@@ -92,6 +92,7 @@ r"""(0.25 cm, 0) -- (0.25 cm, 0.25 cm) -- (0, 0.25 cm);
     r.setup_labels([Number(3, unit='cm'),
                     Number(4, unit='cm'),
                     Number(5, unit='cm')])
+    assert r.leg0.label_value == Number(3, unit='cm')
     assert r.winding == 'clockwise'
     assert r.drawn == r"""
 \begin{tikzpicture}
