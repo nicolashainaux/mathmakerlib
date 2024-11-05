@@ -44,7 +44,17 @@ def test_PythagoreanEquation_compilations():
     TEST_ABC_2 = (DATA_PATH / 'ABC_2.tex').read_text()
     TEST_GIH = (DATA_PATH / 'GIH.tex').read_text()
     TEST_GMW = (DATA_PATH / 'GMW.tex').read_text()
-    content = '\n'.join([TEST_ABC_1, TEST_ABC_2, TEST_GIH, TEST_GMW])
+    TEST_ZIP = (DATA_PATH / 'ZIP.tex').read_text()
+    TEST_ZIP1 = (DATA_PATH / 'ZIP1.tex').read_text()
+    TEST_ZIP2 = (DATA_PATH / 'ZIP2.tex').read_text()
+    TEST_ZIP3 = (DATA_PATH / 'ZIP3.tex').read_text()
+    TEST_SVK = (DATA_PATH / 'SVK.tex').read_text()
+    TEST_SVK1 = (DATA_PATH / 'SVK1.tex').read_text()
+    TEST_SVK2 = (DATA_PATH / 'SVK2.tex').read_text()
+    TEST_SVK3 = (DATA_PATH / 'SVK3.tex').read_text()
+    content = '\n'.join([TEST_ABC_1, TEST_ABC_2, TEST_GIH, TEST_GMW, TEST_ZIP,
+                        TEST_ZIP1, TEST_ZIP2, TEST_ZIP3, TEST_SVK, TEST_SVK1,
+                        TEST_SVK2, TEST_SVK3])
     with CompilationManager('test_PythagoreanEquation_compilations',
                             'article.tex', content) as cmd:
         ret_code = subprocess.run(cmd, shell=True, executable='/bin/bash',
