@@ -108,11 +108,3 @@ class RightTriangle(Triangle):
     @property
     def right_angle(self):
         return self.angles[1]
-
-    @property
-    def pythagorean_equation(self):
-        return r"\text{{{hyp}}}^{{2}}"\
-            r"=\text{{{leg1}}}^{{2}}+\text{{{leg2}}}^{{2}}"\
-            .format(hyp=self.hypotenuse.length_name,
-                    leg1=self.sides[0].length_name,
-                    leg2=self.sides[1].length_name)
