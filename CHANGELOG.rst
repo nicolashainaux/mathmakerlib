@@ -4,6 +4,7 @@ Changelog
 Unreleased
 ----------
 
+* Add PythagoreanEquation class.
 
 Version 0.7.16 (2022-11-08)
 ---------------------------

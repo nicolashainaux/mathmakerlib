@@ -1,0 +1,45 @@
+#!/bin/env bash
+
+# This function will replace the default headers by more appropriated ones.
+# It takes $1 as the file name
+# $2 as the title to insert
+set_header () {
+
+    sed -i 's/Copyright (C) YEAR/Copyright (C) 2006-'`date +%Y`'/' "$1"
+    sed -i 's/This file is distributed under the same license as the PACKAGE package/This file is distributed under the same license as the mathmakerlib package/' "$1"
+    sed -i 's/SOME DESCRIPTIVE TITLE/'"$2"'/' "$1"
+    sed -i 's/charset=CHARSET/charset=UTF-8/' "$1"
+
+}
+
+cd ..
+
+PROJ_DIR=`pwd`
+ROOT_DIR=$PROJ_DIR"/mathmakerlib"
+
+echo "ROOT_DIR=$ROOT_DIR"
+
+VERSION=`toml get --toml-path $PROJ_DIR/pyproject.toml tool.poetry.version`
+
+echo "VERSION=$VERSION"
+
+cd mathmakerlib/
+xgettext --package-name="mathmakerlib" --package-version="$VERSION" --copyright-holder="Nicolas Hainaux" --msgid-bugs-address="nh.techn@posteo.net" --keyword=tr --output=locale/mathmakerlib_updates.pot *.py */*.py */*/*.py
+
+echo "pwd="`pwd`
+
+../toolbox/merge_py_updates_to_main_pot_file.py
+
+REVISION="$?"
+
+YEAR=`date +%Y`
+TIMESTAMP=`printf '%(%Y-%m-%d %H:%M%z)T'`
+sed -i "s/Copyright (C) 2006-..../Copyright (C) 2006-$YEAR/" ./locale/mathmakerlib.pot
+sed -i "s/^# mathmakerlib .*/# mathmakerlib $VERSION/" ./locale/mathmakerlib.pot
+
+if [ "$REVISION" == "0" ]; then
+    sed -i "s/^# PO-Revision-Date:.*/# PO-Revision-Date: $TIMESTAMP/" ./locale/mathmakerlib.pot
+fi
+
+echo "Removing mathmakerlib_updates.pot"
+rm ./locale/mathmakerlib_updates.pot

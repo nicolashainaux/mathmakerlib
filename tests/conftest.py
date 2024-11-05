@@ -21,6 +21,6 @@
 
 import locale
 
-from mathmakerlib.constants import LOCALE_US
+from mathmakerlib.shared import LOCALE_US
 
 locale.setlocale(locale.LC_ALL, locale=LOCALE_US)

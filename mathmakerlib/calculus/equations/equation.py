@@ -19,7 +19,15 @@
 # along with Mathmaker Lib; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-import sys
+from abc import ABCMeta, abstractmethod
 
-LOCALE_US = 'en' if sys.platform.startswith('win') else 'en_US.UTF-8'
-LOCALE_FR = 'fr' if sys.platform.startswith('win') else 'fr_FR.UTF-8'
+from mathmakerlib.core.printable import Printable
+
+
+class Equation(Printable, metaclass=ABCMeta):
+
+    @abstractmethod
+    def autosolve(self, *args, **options):
+        """
+        Return the complete resolution of the equation.
+        """

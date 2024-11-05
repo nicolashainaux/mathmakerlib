@@ -23,7 +23,7 @@ import locale
 
 from mathmakerlib.calculus import Number, Fraction
 from mathmakerlib.geometry import XAxis
-from mathmakerlib.constants import LOCALE_US, LOCALE_FR
+from mathmakerlib.shared import LOCALE_US, LOCALE_FR
 
 
 def test_instanciation():

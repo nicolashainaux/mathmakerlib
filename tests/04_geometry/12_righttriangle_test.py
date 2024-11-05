@@ -28,6 +28,9 @@ def test_instanciation():
     r = RightTriangle()
     assert r.type == 'RightTriangle'
     assert r.hypotenuse == LineSegment(Point(2, 1), Point(0, 0))
+    assert r.hyp == r.hypotenuse
+    assert r.leg0 == LineSegment(Point(0, 0), Point(2, 0))
+    assert r.leg1 == LineSegment(Point(2, 0), Point(2, 1))
     assert r.right_angle.mark_right
     assert r.right_angle.vertex == Point(2, 0)
 
@@ -89,6 +92,7 @@ r"""(0.25 cm, 0) -- (0.25 cm, 0.25 cm) -- (0, 0.25 cm);
     r.setup_labels([Number(3, unit='cm'),
                     Number(4, unit='cm'),
                     Number(5, unit='cm')])
+    assert r.leg0.label_value == Number(3, unit='cm')
     assert r.winding == 'clockwise'
     assert r.drawn == r"""
 \begin{tikzpicture}

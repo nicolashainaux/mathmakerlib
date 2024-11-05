@@ -19,20 +19,19 @@
 # along with Mathmaker Lib; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-from .tools import is_number, is_integer, is_natural, prime_factors
-from .tools import prime_decomposition
-from .exponented import Exponented
-from .number import Sign, Number, move_fracdigits_to, remove_fracdigits_from
-from .number import fix_fracdigits
-from .unit import Unit, physical_quantity, difference_of_orders_of_magnitude
-from .fraction import Fraction
-from .clocktime import ClockTime
-from .table import Table
-from . import equations
+import sys
+from pathlib import Path
+from gettext import translation
 
-__all__ = ['is_number', 'is_integer', 'is_natural', 'Exponented', 'Sign',
-           'Number', 'move_fracdigits_to', 'remove_fracdigits_from',
-           'fix_fracdigits', 'Unit', 'physical_quantity',
-           'difference_of_orders_of_magnitude',
-           'Fraction', 'prime_factors', 'prime_decomposition',
-           'ClockTime', 'Table', 'equations']
+from mathmakerlib import config
+
+ROOTDIR = Path(__file__).parent
+LOCALEDIR = ROOTDIR / 'locale'
+L10N_DOMAIN = 'mathmakerlib'
+
+LOCALE_US = 'en' if sys.platform.startswith('win') else 'en_US.UTF-8'
+LOCALE_FR = 'fr' if sys.platform.startswith('win') else 'fr_FR.UTF-8'
+
+
+def tr(self):
+    return translation(L10N_DOMAIN, LOCALEDIR, config.language).gettext

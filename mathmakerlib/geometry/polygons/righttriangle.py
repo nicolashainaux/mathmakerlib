@@ -94,5 +94,17 @@ class RightTriangle(Triangle):
         return self._sides[2]
 
     @property
+    def hyp(self):
+        return self._sides[2]
+
+    @property
+    def leg0(self):
+        return self._sides[0]
+
+    @property
+    def leg1(self):
+        return self._sides[1]
+
+    @property
     def right_angle(self):
         return self.angles[1]

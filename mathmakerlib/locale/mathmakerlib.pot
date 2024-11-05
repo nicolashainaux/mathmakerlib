@@ -1,0 +1,15 @@
+# MATHMAKERLIB TEMPLATE PO FILE.
+# Copyright (C) 2006-2024 Nicolas Hainaux <nh.techn@posteo.net>
+# This file is distributed under the same license as the mathmakerlib package.
+#
+# mathmakerlib 0.7.11
+# POT-Creation-Date: 2024-11-03 09:04+0100
+# PO-Revision-Date: 2024-11-03 09:04+0100
+
+msgid ""
+msgstr ""
+
+#: calculus/equations/pythagorean_equation.py:78
+#, python-brace-format
+msgid "because {length_name} is positive."
+msgstr ""

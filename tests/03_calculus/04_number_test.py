@@ -30,7 +30,7 @@ from mathmakerlib.calculus import is_integer, Unit, Number, Sign
 from mathmakerlib.calculus import move_fracdigits_to
 from mathmakerlib.calculus import remove_fracdigits_from
 from mathmakerlib.calculus import fix_fracdigits
-from mathmakerlib.constants import LOCALE_US, LOCALE_FR
+from mathmakerlib.shared import LOCALE_US, LOCALE_FR
 
 
 def test_Number_inheritance():
@@ -959,3 +959,15 @@ def test_fix_digits():
     n1, n2, n3 = fix_fracdigits(Decimal('0.6'), Decimal('10'), Decimal('100'))
     assert n1 == Decimal('6')
     assert not is_integer(n2) or not is_integer(n3)
+
+
+def test_is_perfect_square():
+    assert Number(25).is_perfect_square()
+    assert not Number(250).is_perfect_square()
+    assert Number(2500).is_perfect_square()
+    assert not Number('2.5').is_perfect_square()
+    assert Number('0.25').is_perfect_square()
+    assert Number('6.25').is_perfect_square()
+    assert not Number(30).is_perfect_square()
+    assert Number('282.24').is_perfect_square()
+    assert not Number('282.25').is_perfect_square()

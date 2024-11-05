@@ -24,7 +24,7 @@ import pytest
 
 from mathmakerlib.calculus import Number
 from mathmakerlib.geometry import Point, Triangle, AngleDecoration
-from mathmakerlib.constants import LOCALE_US, LOCALE_FR
+from mathmakerlib.shared import LOCALE_US, LOCALE_FR
 
 
 def test_instanciation_errors():

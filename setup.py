@@ -22,6 +22,7 @@
 
 import sys
 import os
+import subprocess
 from setuptools import setup, find_packages, Command
 from setuptools.command.test import test as TestCommand
 
@@ -94,6 +95,30 @@ class Tox(TestCommand):
         sys.exit(errno)
 
 
+def create_mo_files(force=False):
+    if force:
+        return []
+    data_files = []
+    localedir = 'mathmaker/locale/'
+    po_dirs = [localedir + loc + '/LC_MESSAGES/'
+               for loc in next(os.walk(localedir))[1]]
+    for d in po_dirs:
+        mo_files = []
+        po_files = [f
+                    for f in next(os.walk(d))[2]
+                    if os.path.splitext(f)[1] == '.po']
+        for po_file in po_files:
+            filename, extension = os.path.splitext(po_file)
+            mo_file = filename + '.mo'
+            msgfmt_cmd = 'msgfmt {} -o {}'.format(d + po_file, d + mo_file)
+            subprocess.call(msgfmt_cmd, shell=True)
+            sys.stdout.write('Compiled {}\n      as {}\n'.format(d + po_file,
+                                                                 d + mo_file))
+            mo_files.append(d + mo_file)
+        data_files.append((d, mo_files))
+    return data_files
+
+
 setup(
     name=__lib_name__,
     version=__version__,
@@ -110,6 +135,7 @@ setup(
     'including geometric shapes.',
     long_description=read('README.rst', 'CHANGELOG.rst', 'CONTRIBUTORS.rst'),
     packages=find_packages(exclude=['tests', 'docs']),
+    data_files=create_mo_files(force='--force' in sys.argv),
     include_package_data=True,
     platforms='any',
     test_suite='tests',

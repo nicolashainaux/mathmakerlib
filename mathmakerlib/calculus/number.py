@@ -28,6 +28,7 @@ from decimal import Decimal, ROUND_DOWN, ROUND_HALF_UP
 from mathmakerlib import required
 from mathmakerlib.calculus.unit import physical_quantity
 from mathmakerlib.calculus.tools import is_number, is_integer
+from mathmakerlib.calculus.tools import prime_decomposition
 from mathmakerlib.core.signed import Signed
 from mathmakerlib.core.printable import Printable
 from mathmakerlib.core.evaluable import Evaluable
@@ -713,6 +714,18 @@ class Number(Decimal, Signed, Printable, Evaluable):
                 a += delta
                 b += delta
             return (Number(a), Number(b))
+
+    def is_perfect_square(self):
+        """
+        Return True is self is a perfect square (including decimal numbers).
+        """
+        power = self.fracdigits_nb()
+        if power % 2:
+            return False
+        N = self * 10 ** power
+        pd = prime_decomposition(N)
+        # check all powers are even
+        return all([not (e % 2) for (_, e) in pd])
 
 
 def move_fracdigits_to(n, from_nb=None):

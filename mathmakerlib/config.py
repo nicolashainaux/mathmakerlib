@@ -200,4 +200,6 @@ def init():
         angles = AnglesSetup()
         oblique_projection = ObliqueProjectionSetup()
         clocktime = ClockTimeSetup()
+        # any software using mathmakerlib can set its language using
+        # mathmakerlib.config.language = ...
         language = 'en'

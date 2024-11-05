@@ -23,10 +23,10 @@ from pathlib import Path
 
 import toml
 
-from . import required, exceptions, config, constants
+from . import required, exceptions, config, shared
 from . import calculus, core, geometry, LaTeX
 
-__all__ = ['required', 'config', 'LaTeX', 'exceptions', 'constants',
+__all__ = ['required', 'config', 'shared', 'LaTeX', 'exceptions',
            'core', 'calculus', 'geometry']
 
 with open(Path(__file__).parent.parent / 'pyproject.toml', 'r') as f:
