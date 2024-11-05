@@ -41,10 +41,10 @@ class PythagoreanEquation(Equation):
 
     def imprint(self, start_expr=True, variant='latex'):
         return r"\text{{{hyp}}}^{{2}}"\
-            r"=\text{{{leg1}}}^{{2}}+\text{{{leg2}}}^{{2}}"\
-            .format(hyp=self.rt.hypotenuse.length_name,
-                    leg1=self.rt.sides[0].length_name,
-                    leg2=self.rt.sides[1].length_name)
+            r"=\text{{{leg0}}}^{{2}}+\text{{{leg1}}}^{{2}}"\
+            .format(hyp=self.rt.hyp.length_name,
+                    leg0=self.rt.leg0.length_name,
+                    leg1=self.rt.leg1.length_name)
 
     def autosolve(self, unknown_side, show_squares_step=False,
                   shortcut_mode=True, required_rounding=None):
@@ -71,39 +71,68 @@ class PythagoreanEquation(Equation):
             f'{shortcut}{detailed}.tex'
         template_path = ROOTDIR / 'calculus/equations/templates' / template_fn
         template = template_path.read_text()
-        data = {'hypotenuse': self.rt.hyp.length_name,
+        data = {'hyp': self.rt.hyp.length_name,
                 'leg0': self.rt.leg0.length_name,
                 'leg1': self.rt.leg1.length_name}
-        equal_sign = '='
+        explanation = ' ' + tr('because {length_name} is positive.')
+        unit = None
 
         if unknown_side == 'hyp':
             leg0_length = Number(self.rt.leg0.label_value, unit=None)
             leg1_length = Number(self.rt.leg1.label_value, unit=None)
-            square_legs_sum = leg0_length * leg0_length \
-                + leg1_length * leg1_length
-            explanation = ' ' \
-                + tr('because {length_name} is positive.')\
-                .format(length_name=self.rt.hyp.length_name)
+            square_leg0_length = leg0_length * leg0_length
+            square_leg1_length = leg1_length * leg1_length
+            square_legs_sum = square_leg0_length + square_leg1_length
+            explanation = explanation.format(
+                length_name=self.rt.hyp.length_name)
             result = square_legs_sum.sqrt().standardized()
-            if result.fracdigits_nb() > rounding_rank:
-                result = result.rounded(required_rounding)
-                equal_sign = r'\approx'
-            result = Number(result, unit=self.rt.leg0.label_value.unit)
+            unit = self.rt.leg0.label_value.unit
             data.update({'leg0_length': leg0_length.printed,
                          'leg1_length': leg1_length.printed,
-                         'square_leg0_length': leg0_length * leg0_length,
-                         'square_leg1_length': leg1_length * leg1_length,
-                         'square_legs_sum': square_legs_sum.printed,
-                         'explanation': explanation,
-                         'equal_sign': equal_sign,
-                         'hypotenuse_length_with_unit': result.printed})
+                         'square_leg0_length': square_leg0_length,
+                         'square_leg1_length': square_leg1_length,
+                         'square_legs_sum': square_legs_sum.printed})
 
         elif unknown_side == 'leg0':
-            pass
-            # same
+            hyp_length = Number(self.rt.hyp.label_value, unit=None)
+            leg1_length = Number(self.rt.leg1.label_value, unit=None)
+            square_hyp_length = hyp_length * hyp_length
+            square_leg1_length = leg1_length * leg1_length
+            squares_difference = square_hyp_length - square_leg1_length
+            explanation = explanation.format(
+                length_name=self.rt.leg0.length_name)
+            result = squares_difference.sqrt().standardized()
+            unit = self.rt.hyp.label_value.unit
+            data.update({'hyp_length': hyp_length.printed,
+                         'leg1_length': leg1_length.printed,
+                         'square_hyp_length': square_hyp_length,
+                         'square_leg1_length': square_leg1_length,
+                         'squares_difference': squares_difference})
 
         else:  # unknown_side == 'leg1'
-            pass
-            # same
+            hyp_length = Number(self.rt.hyp.label_value, unit=None)
+            leg0_length = Number(self.rt.leg0.label_value, unit=None)
+            square_hyp_length = hyp_length * hyp_length
+            square_leg0_length = leg0_length * leg0_length
+            squares_difference = square_hyp_length - square_leg0_length
+            explanation = explanation.format(
+                length_name=self.rt.leg1.length_name)
+            result = squares_difference.sqrt().standardized()
+            unit = self.rt.hyp.label_value.unit
+            data.update({'hyp_length': hyp_length.printed,
+                         'leg0_length': leg0_length.printed,
+                         'square_hyp_length': square_hyp_length,
+                         'square_leg0_length': square_leg0_length,
+                         'squares_difference': squares_difference})
+
+        equal_sign = '='
+        if result.fracdigits_nb() > rounding_rank:
+            result = result.rounded(required_rounding)
+            equal_sign = r'\approx'
+        result = Number(result, unit=unit)
+
+        data.update({'explanation': explanation,
+                     'equal_sign': equal_sign,
+                     'result_with_unit': result.printed})
 
         return template.format(**data)
