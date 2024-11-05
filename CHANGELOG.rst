@@ -4,8 +4,13 @@ Changelog
 Unreleased
 ----------
 
+
+Version 0.7.12 (2024-11-05)
+---------------------------
+
 * Add Table class.
 * Start testing that printed objects are compiled by lualatex without any error.
+* Add PythagoreanEquation class.
 
 Version 0.7.11 (2022-08-27)
 ---------------------------
