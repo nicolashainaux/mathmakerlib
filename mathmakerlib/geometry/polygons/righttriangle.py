@@ -95,7 +95,7 @@ class RightTriangle(Triangle):
 
     @property
     def hyp(self):
-        return self.hypotenuse
+        return self._sides[2]
 
     @property
     def leg0(self):
