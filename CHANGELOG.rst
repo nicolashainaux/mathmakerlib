@@ -5,6 +5,11 @@ Unreleased
 ----------
 
 
+Version 0.7.18 (2024-11-13)
+---------------------------
+
+* Fix numbers' displaying in PythagoreanEquation.autosolve() output.
+
 Version 0.7.17 (2024-11-05)
 ---------------------------
 
