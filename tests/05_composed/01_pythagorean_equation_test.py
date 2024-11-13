@@ -30,18 +30,18 @@ from mathmakerlib.geometry import RightTriangle
 DATA_PATH = Path(__file__).parent.parent.parent \
     / 'tests_compilations/data/pythagorean_equations'
 
-TEST_ABC_1 = (DATA_PATH / 'ABC_1.tex').read_text()
-TEST_ABC_2 = (DATA_PATH / 'ABC_2.tex').read_text()
-TEST_GIH = (DATA_PATH / 'GIH.tex').read_text()
-TEST_GMW = (DATA_PATH / 'GMW.tex').read_text()
-TEST_ZIP = (DATA_PATH / 'ZIP.tex').read_text()
-TEST_ZIP1 = (DATA_PATH / 'ZIP1.tex').read_text()
-TEST_ZIP2 = (DATA_PATH / 'ZIP2.tex').read_text()
-TEST_ZIP3 = (DATA_PATH / 'ZIP3.tex').read_text()
-TEST_SVK = (DATA_PATH / 'SVK.tex').read_text()
-TEST_SVK1 = (DATA_PATH / 'SVK1.tex').read_text()
-TEST_SVK2 = (DATA_PATH / 'SVK2.tex').read_text()
-TEST_SVK3 = (DATA_PATH / 'SVK3.tex').read_text()
+TEST_ABC_1 = (DATA_PATH / 'ABC_1.tex').read_text().rstrip()
+TEST_ABC_2 = (DATA_PATH / 'ABC_2.tex').read_text().rstrip()
+TEST_GIH = (DATA_PATH / 'GIH.tex').read_text().rstrip()
+TEST_GMW = (DATA_PATH / 'GMW.tex').read_text().rstrip()
+TEST_ZIP = (DATA_PATH / 'ZIP.tex').read_text().rstrip()
+TEST_ZIP1 = (DATA_PATH / 'ZIP1.tex').read_text().rstrip()
+TEST_ZIP2 = (DATA_PATH / 'ZIP2.tex').read_text().rstrip()
+TEST_ZIP3 = (DATA_PATH / 'ZIP3.tex').read_text().rstrip()
+TEST_SVK = (DATA_PATH / 'SVK.tex').read_text().rstrip()
+TEST_SVK1 = (DATA_PATH / 'SVK1.tex').read_text().rstrip()
+TEST_SVK2 = (DATA_PATH / 'SVK2.tex').read_text().rstrip()
+TEST_SVK3 = (DATA_PATH / 'SVK3.tex').read_text().rstrip()
 
 
 def test_PythagoreanEquation_calculate_hyp():
