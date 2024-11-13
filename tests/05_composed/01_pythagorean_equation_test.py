@@ -34,6 +34,7 @@ TEST_ABC_1 = (DATA_PATH / 'ABC_1.tex').read_text().rstrip()
 TEST_ABC_2 = (DATA_PATH / 'ABC_2.tex').read_text().rstrip()
 TEST_GIH = (DATA_PATH / 'GIH.tex').read_text().rstrip()
 TEST_GMW = (DATA_PATH / 'GMW.tex').read_text().rstrip()
+TEST_GMW2 = (DATA_PATH / 'GMW2.tex').read_text().rstrip()
 TEST_ZIP = (DATA_PATH / 'ZIP.tex').read_text().rstrip()
 TEST_ZIP1 = (DATA_PATH / 'ZIP1.tex').read_text().rstrip()
 TEST_ZIP2 = (DATA_PATH / 'ZIP2.tex').read_text().rstrip()
@@ -83,6 +84,13 @@ def test_PythagoreanEquation_calculate_hyp():
     assert PythagoreanEquation(r)\
         .autosolve('hyp', required_rounding=Decimal('0.1')) == TEST_GMW
     assert PythagoreanEquation(r).autosolve('hyp') == TEST_GMW
+
+    r = RightTriangle(name='GMW')
+    r.setup_labels(labels=[Number('1.2', unit='m'),
+                           Number('1.6', unit='m'),
+                           None],
+                   masks=[None, None, ' '])
+    assert PythagoreanEquation(r).autosolve('hyp') == TEST_GMW2
 
 
 def test_PythagoreanEquation_calculate_leg0():

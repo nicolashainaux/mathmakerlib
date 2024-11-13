@@ -82,15 +82,16 @@ class PythagoreanEquation(Equation):
             leg1_length = Number(self.rt.leg1.label_value, unit=None)
             square_leg0_length = leg0_length * leg0_length
             square_leg1_length = leg1_length * leg1_length
-            square_legs_sum = square_leg0_length + square_leg1_length
+            square_legs_sum = (square_leg0_length + square_leg1_length)\
+                .standardized()
             explanation = explanation.format(
                 length_name=self.rt.hyp.length_name)
             result = square_legs_sum.sqrt().standardized()
             unit = self.rt.leg0.label_value.unit
             data.update({'leg0_length': leg0_length.printed,
                          'leg1_length': leg1_length.printed,
-                         'square_leg0_length': square_leg0_length,
-                         'square_leg1_length': square_leg1_length,
+                         'square_leg0_length': square_leg0_length.printed,
+                         'square_leg1_length': square_leg1_length.printed,
                          'square_legs_sum': square_legs_sum.printed})
 
         elif unknown_side == 'leg0':
@@ -98,32 +99,34 @@ class PythagoreanEquation(Equation):
             leg1_length = Number(self.rt.leg1.label_value, unit=None)
             square_hyp_length = hyp_length * hyp_length
             square_leg1_length = leg1_length * leg1_length
-            squares_difference = square_hyp_length - square_leg1_length
+            squares_difference = (square_hyp_length - square_leg1_length)\
+                .standardized()
             explanation = explanation.format(
                 length_name=self.rt.leg0.length_name)
             result = squares_difference.sqrt().standardized()
             unit = self.rt.hyp.label_value.unit
             data.update({'hyp_length': hyp_length.printed,
                          'leg1_length': leg1_length.printed,
-                         'square_hyp_length': square_hyp_length,
-                         'square_leg1_length': square_leg1_length,
-                         'squares_difference': squares_difference})
+                         'square_hyp_length': square_hyp_length.printed,
+                         'square_leg1_length': square_leg1_length.printed,
+                         'squares_difference': squares_difference.printed})
 
         else:  # unknown_side == 'leg1'
             hyp_length = Number(self.rt.hyp.label_value, unit=None)
             leg0_length = Number(self.rt.leg0.label_value, unit=None)
             square_hyp_length = hyp_length * hyp_length
             square_leg0_length = leg0_length * leg0_length
-            squares_difference = square_hyp_length - square_leg0_length
+            squares_difference = (square_hyp_length - square_leg0_length)\
+                .standardized()
             explanation = explanation.format(
                 length_name=self.rt.leg1.length_name)
             result = squares_difference.sqrt().standardized()
             unit = self.rt.hyp.label_value.unit
             data.update({'hyp_length': hyp_length.printed,
                          'leg0_length': leg0_length.printed,
-                         'square_hyp_length': square_hyp_length,
-                         'square_leg0_length': square_leg0_length,
-                         'squares_difference': squares_difference})
+                         'square_hyp_length': square_hyp_length.printed,
+                         'square_leg0_length': square_leg0_length.printed,
+                         'squares_difference': squares_difference.printed})
 
         equal_sign = '='
         if result.fracdigits_nb() > rounding_rank:
