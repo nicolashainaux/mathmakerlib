@@ -13,7 +13,37 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Poedit 3.0.1\n"
 
-#: calculus/equations/pythagorean_equation.py:78
+#: calculus/equations/pythagorean_equation.py:135
 #, python-brace-format
 msgid "because {length_name} is positive."
 msgstr "car {length_name} est positif."
+
+#: calculus/equations/pythagorean_equation.py:83
+msgid "On one hand:"
+msgstr "D'une part :"
+
+#: calculus/equations/pythagorean_equation.py:84
+msgid "On the other hand:"
+msgstr "D'autre part :"
+
+#: calculus/equations/pythagorean_equation.py:85
+msgid "Hence:"
+msgstr "Donc :"
+
+#: calculus/equations/pythagorean_equation.py:86
+#, python-brace-format
+msgid ""
+"So, by the converse of the pythagorean theorem, {triangle_name} has a right "
+"angle in {vertex_name}."
+msgstr ""
+"Donc, d'après la réciproque du théorème de Pythagore, {triangle_name} est "
+"rectangle en {vertex_name}."
+
+#: calculus/equations/pythagorean_equation.py:90
+#, python-brace-format
+msgid ""
+"So, by the contrapositive of the pythagorean theorem, {triangle_name} has no "
+"right angle."
+msgstr ""
+"Donc, d'après la contraposée du théorème de Pythagoren, {triangle_name} "
+"n'est pas rectangle."

@@ -39,12 +39,70 @@ class PythagoreanEquation(Equation):
         """
         self.rt = rt
 
-    def imprint(self, start_expr=True, variant='latex'):
+    def imprint(self, neq=False, start_expr=True, variant='latex'):
+        equal_sign = '='
+        if neq:
+            equal_sign = r"\neq "
         return r"\text{{{hyp}}}^{{2}}"\
-            r"=\text{{{leg0}}}^{{2}}+\text{{{leg1}}}^{{2}}"\
+            r"{equal_sign}\text{{{leg0}}}^{{2}}+\text{{{leg1}}}^{{2}}"\
             .format(hyp=self.rt.hyp.length_name,
                     leg0=self.rt.leg0.length_name,
-                    leg1=self.rt.leg1.length_name)
+                    leg1=self.rt.leg1.length_name,
+                    equal_sign=equal_sign)
+
+    def calculate_square_hyp(self):
+        template_fn = 'pythagorean_equation_calculate_square_hyp.tex'
+        template_path = ROOTDIR / 'calculus/equations/templates' / template_fn
+        template = template_path.read_text()
+        hyp_length = Number(self.rt.hyp.label_value, unit=None)
+        square_hyp_length = hyp_length * hyp_length
+        data = {'hyp_length': hyp_length.printed,
+                'hyp': self.rt.hyp.length_name,
+                'square_hyp_length': square_hyp_length}
+        return template.format(**data)
+
+    def calculate_square_legs_sum(self):
+        template_fn = 'pythagorean_equation_calculate_square_legs_sum.tex'
+        template_path = ROOTDIR / 'calculus/equations/templates' / template_fn
+        template = template_path.read_text()
+        leg0_length = Number(self.rt.leg0.label_value, unit=None)
+        leg1_length = Number(self.rt.leg1.label_value, unit=None)
+        square_leg0_length = leg0_length * leg0_length
+        square_leg1_length = leg1_length * leg1_length
+        square_legs_sum = (square_leg0_length + square_leg1_length)\
+            .standardized()
+        data = {'leg0': self.rt.leg0.length_name,
+                'leg1': self.rt.leg1.length_name,
+                'leg0_length': leg0_length.printed,
+                'leg1_length': leg1_length.printed,
+                'square_legs_sum': square_legs_sum}
+        return template.format(**data)
+
+    def autotest(self):
+        tr = translation(L10N_DOMAIN, LOCALEDIR, [config.language]).gettext
+        on_one_hand = tr('On one hand:')
+        on_the_other = tr('On the other hand:')
+        hence = tr('Hence:')
+        ccl = {True: tr('So, by the converse of the pythagorean theorem, '
+                        '{triangle_name} has a right angle in {vertex_name}.')
+               .format(triangle_name=self.rt.name,
+                       vertex_name=self.rt.right_angle.vertex.name),
+               False: tr('So, by the contrapositive of the pythagorean theorem'
+                         ', {triangle_name} has no right angle.')
+               .format(triangle_name=self.rt.name)}
+        leg0_length = Number(self.rt.leg0.label_value, unit=None)
+        leg1_length = Number(self.rt.leg1.label_value, unit=None)
+        square_leg0_length = leg0_length * leg0_length
+        square_leg1_length = leg1_length * leg1_length
+        square_legs_sum = (square_leg0_length + square_leg1_length)\
+            .standardized()
+        hyp_length = Number(self.rt.hyp.label_value, unit=None)
+        square_hyp_length = hyp_length * hyp_length
+        right = square_hyp_length == square_legs_sum
+        result = (f"""{on_one_hand}\n{self.calculate_square_hyp()}"""
+                  f"""{on_the_other}\n{self.calculate_square_legs_sum()}"""
+                  f"""{hence} {self.imprint(neq=not right)}\n{ccl[right]}""")
+        return result
 
     def autosolve(self, unknown_side, show_squares_step=False,
                   shortcut_mode=True, required_rounding=None):
