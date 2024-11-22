@@ -5,6 +5,11 @@ Unreleased
 ----------
 
 
+Version 0.7.19 (2024-11-22)
+---------------------------
+
+* Add methods calculate_square_hyp(), calculate_square_legs_sum() and autotest() to PythagoreanEquation objects.
+
 Version 0.7.18 (2024-11-13)
 ---------------------------
 
