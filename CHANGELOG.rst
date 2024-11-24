@@ -5,6 +5,11 @@ Unreleased
 ----------
 
 
+Version 0.7.20 (2024-11-24)
+---------------------------
+
+* Fix to PythagoreanEquation.autotest() (not compilable LaTeX output).
+
 Version 0.7.19 (2024-11-22)
 ---------------------------
 
