@@ -58,7 +58,7 @@ class PythagoreanEquation(Equation):
         square_hyp_length = hyp_length * hyp_length
         data = {'hyp_length': hyp_length.printed,
                 'hyp': self.rt.hyp.length_name,
-                'square_hyp_length': square_hyp_length}
+                'square_hyp_length': square_hyp_length.printed}
         return template.format(**data)
 
     def calculate_square_legs_sum(self):
@@ -75,7 +75,7 @@ class PythagoreanEquation(Equation):
                 'leg1': self.rt.leg1.length_name,
                 'leg0_length': leg0_length.printed,
                 'leg1_length': leg1_length.printed,
-                'square_legs_sum': square_legs_sum}
+                'square_legs_sum': square_legs_sum.printed}
         return template.format(**data)
 
     def autotest(self):
@@ -99,10 +99,16 @@ class PythagoreanEquation(Equation):
         hyp_length = Number(self.rt.hyp.label_value, unit=None)
         square_hyp_length = hyp_length * hyp_length
         right = square_hyp_length == square_legs_sum
-        result = (f"""{on_one_hand}\n{self.calculate_square_hyp()}"""
-                  f"""{on_the_other}\n{self.calculate_square_legs_sum()}"""
-                  f"""{hence} {self.imprint(neq=not right)}\n{ccl[right]}""")
-        return result
+        template_fn = 'pythagorean_equation_autotest.tex'
+        template_path = ROOTDIR / 'calculus/equations/templates' / template_fn
+        template = template_path.read_text()
+        data = {'on_one_hand': on_one_hand,
+                'calculate_square_hyp': self.calculate_square_hyp().rstrip(),
+                'on_the_other': on_the_other,
+                'calculate_sum': self.calculate_square_legs_sum().rstrip(),
+                'hence': hence, 'eq': self.imprint(neq=not right),
+                'conclusion': ccl[right]}
+        return template.format(**data)
 
     def autosolve(self, unknown_side, show_squares_step=False,
                   shortcut_mode=True, required_rounding=None):

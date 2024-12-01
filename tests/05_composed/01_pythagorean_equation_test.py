@@ -173,11 +173,14 @@ def test_PythagoreanEquation_autotest():
         r"""On one hand:
 \[\text{OT}^{2}=104^{2}\]
 \[\text{OT}^{2}=10816\]
+
 On the other hand:
 \[\text{TA}^{2}+\text{AO}^{2}=96^{2}+40^{2}\]
 \[\text{TA}^{2}+\text{AO}^{2}=10816\]
-Hence: \text{OT}^{2}=\text{TA}^{2}+\text{AO}^{2}
-So, by the converse of the pythagorean theorem, TAO has a right angle in A."""
+
+Hence: $\text{OT}^{2}=\text{TA}^{2}+\text{AO}^{2}$ \newline
+So, by the converse of the pythagorean theorem, TAO has a right angle in A.
+"""
 
     r.setup_labels(labels=[Number('96', unit='dm'),
                            Number('40', unit='dm'),
@@ -186,9 +189,12 @@ So, by the converse of the pythagorean theorem, TAO has a right angle in A."""
         (r"""On one hand:
 \[\text{OT}^{2}=105^{2}\]
 \[\text{OT}^{2}=11025\]
+
 On the other hand:
 \[\text{TA}^{2}+\text{AO}^{2}=96^{2}+40^{2}\]
 \[\text{TA}^{2}+\text{AO}^{2}=10816\]
-Hence: \text{OT}^{2}\neq \text{TA}^{2}+\text{AO}^{2}
+
+Hence: $\text{OT}^{2}\neq \text{TA}^{2}+\text{AO}^{2}$ \newline
 So, by the contrapositive of the pythagorean theorem, """
-         r"""TAO has no right angle.""")
+         r"""TAO has no right angle.
+""")
