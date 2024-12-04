@@ -19,8 +19,17 @@
 # along with Mathmaker Lib; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
+import pytest
+
 from mathmakerlib.calculus import Number
 from mathmakerlib.geometry import Point, LineSegment, RightTriangle
+
+
+@pytest.fixture
+def t6():
+    t6 = RightTriangle(name='ZAD', rotation_angle=90)
+    # t6.setup_labels([Number('3'), Number('2.5'), None])
+    return t6
 
 
 def test_instanciation():
@@ -117,3 +126,31 @@ r"""(0.25 cm, 0) -- (0.25 cm, -0.25 cm) -- (0, -0.25 cm);
 \draw (Y) node[left] {Y};
 \end{tikzpicture}
 """
+
+
+def test_t6_setup_for_trigonometry_errors(t6):
+    """Check errors raised by setup_for_trigonometry()."""
+    with pytest.raises(ValueError):
+        t6.setup_for_trigonometry(angle_nb=0, trigo_fct='tan',
+                                  angle_val=Number(32, unit='\\textdegree'),
+                                  down_length_val=Number(3.5, unit='cm'),
+                                  up_length_val=Number(3.5, unit='cm'),
+                                  length_unit='cm')
+    with pytest.raises(ValueError):
+        t6.setup_for_trigonometry(angle_nb=0, trigo_fct='tan',
+                                  angle_val=Number(32, unit='\\textdegree'),
+                                  length_unit='cm')
+    with pytest.raises(ValueError):
+        t6.setup_for_trigonometry(angle_nb=1, trigo_fct='tan',
+                                  angle_val=Number(32, unit='\\textdegree'),
+                                  up_length_val=Number(3.5, unit='cm'),
+                                  length_unit='cm')
+    with pytest.raises(ValueError):
+        t6.setup_for_trigonometry(angle_nb=0, trigo_fct='tas',
+                                  angle_val=Number(32, unit='\\textdegree'),
+                                  up_length_val=Number(3.5, unit='cm'),
+                                  length_unit='cm')
+    with pytest.raises(ValueError):
+        t6.setup_for_trigonometry(angle_nb=0, trigo_fct='tan',
+                                  angle_val=Number(32, unit='\\textdegree'),
+                                  up_length_val=Number(3.5, unit='cm'))
