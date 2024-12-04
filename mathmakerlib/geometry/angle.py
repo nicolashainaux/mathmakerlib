@@ -601,8 +601,8 @@ class Angle(Drawable, Oriented, HasThickness, Dimensional):
 
     def tikz_decorations(self):
         output_elements = []
-        if not(self.decoration is None
-               or (self.mark_right and self.label is None)):
+        if not (self.decoration is None
+                or (self.mark_right and self.label is None)):
             output_elements = \
                 self.decoration.generate_tikz(self.points[0].name,
                                               self.vertex.name,
