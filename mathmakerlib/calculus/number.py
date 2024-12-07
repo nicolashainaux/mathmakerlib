@@ -340,6 +340,102 @@ class Number(Decimal, Signed, Printable, Evaluable):
     def sqrt(self):
         return Number(Decimal(self).sqrt())
 
+    def cos(self):
+        """Return the cosine of self degrees and handle special cases."""
+        d = abs(Decimal(self) % 360)
+        if d == Decimal(0):
+            return Number(1)
+        elif d in [Decimal(60), Decimal(300)]:
+            return Number('0.5')
+        elif d in [Decimal(90), Decimal(270)]:
+            return Number(0)
+        elif d in [Decimal(120), Decimal(240)]:
+            return Number('-0.5')
+        elif d == Decimal(180):
+            return Number(-1)
+        return Number(math.cos(math.radians(d)))
+
+    def acos(self):
+        """
+        Return the arc cosine of self, in degrees, and handle special cases.
+        The result is between 0 and 180.
+        """
+        d = Decimal(self)
+        result = math.degrees(math.acos(d))
+        if d == 0:
+            result = 90
+        elif d == Decimal('0.5'):
+            result = 60
+        elif d == 1:
+            result = 0
+        elif d == Decimal('-0.5'):
+            result = 120
+        elif d == -1:
+            result = 180
+        return Number(result).standardized()
+
+    def sin(self):
+        """Return the sine of self degrees and handle special cases."""
+        d = Decimal(self) % 360
+        if d in [Decimal(0), Decimal(180), Decimal(-180)]:
+            return Number(0)
+        elif d in [Decimal(30), Decimal(150), Decimal(-330), Decimal(-210)]:
+            return Number('0.5')
+        elif d in [Decimal(90), Decimal(-270)]:
+            return Number(1)
+        elif d in [Decimal(-30), Decimal(-150), Decimal(330), Decimal(210)]:
+            return Number('-0.5')
+        elif d in [Decimal(-90), Decimal(270)]:
+            return Number(-1)
+        return Number(math.sin(math.radians(d)))
+
+    def asin(self):
+        """
+        Return the arc sine of self, in degrees, and handle special cases.
+        The result is between -90 and 90.
+        """
+        d = Decimal(self)
+        result = math.degrees(math.asin(d))
+        if d == 0:
+            result = 0
+        elif d == Decimal('0.5'):
+            result = 30
+        elif d == 1:
+            result = 90
+        elif d == Decimal('-0.5'):
+            result = -30
+        elif d == -1:
+            result = -90
+        return Number(result).standardized()
+
+    def tan(self):
+        """Return the tangent of self degrees and handle special cases."""
+        d = Decimal(self) % 360
+        if d in [Decimal(0), Decimal(180), Decimal(-180)]:
+            return Number(0)
+        elif d in [Decimal(45), Decimal(225)]:
+            return Number(1)
+        elif d in [Decimal(135), Decimal(315)]:
+            return Number(-1)
+        elif d in [Decimal(90), Decimal(-90), Decimal(270), Decimal(-270)]:
+            raise ValueError('Tangent of 90° or -90° is indefinite.')
+        return Number(math.tan(math.radians(d)))
+
+    def atan(self):
+        """
+        Return the arc tangent of self, in degrees, and handle special cases.
+        The result is between -90 and 90.
+        """
+        d = Decimal(self)
+        result = math.degrees(math.atan(d))
+        if d == 0:
+            result = 0
+        elif d == 1:
+            result = 45
+        elif d == -1:
+            result = -45
+        return Number(result).standardized()
+
     def quantize(self, exp, rounding=None, context=None):
         return Number(Decimal(self).quantize(exp,
                                              rounding=rounding,

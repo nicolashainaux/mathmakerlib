@@ -141,6 +141,128 @@ def test_sqrt():
     assert Number(2).sqrt().rounded(Decimal('0.0001')) == Number('1.4142')
 
 
+def test_cos():
+    assert Number(30).cos().rounded(Decimal('0.001')) == Number('0.866')
+    assert Number(360).cos() == 1
+    assert Number(-360).cos() == 1
+    assert Number(60).cos() == Number('0.5')
+    assert Number(-60).cos() == Number('0.5')
+    assert Number(90).cos() == 0
+    assert Number(-90).cos() == 0
+    assert Number(120).cos() == Number('-0.5')
+    assert Number(-120).cos() == Number('-0.5')
+    assert Number(180).cos() == -1
+    assert Number(-180).cos() == -1
+    assert Number(270).cos() == 0
+    assert Number(-270).cos() == 0
+    assert Number(300).cos() == Number('0.5')
+    assert Number(-300).cos() == Number('0.5')
+    assert Number(240).cos() == Number('-0.5')
+    assert Number(-240).cos() == Number('-0.5')
+    assert Number(45).cos().rounded(Decimal('0.001')) == Number('0.707')
+    assert Number(-45).cos().rounded(Decimal('0.001')) == Number('0.707')
+    assert Number(135).cos().rounded(Decimal('0.001')) == Number('-0.707')
+    assert Number(-135).cos().rounded(Decimal('0.001')) == Number('-0.707')
+    assert Number(315).cos().rounded(Decimal('0.001')) == Number('0.707')
+    assert Number(-315).cos().rounded(Decimal('0.001')) == Number('0.707')
+    assert Number(225).cos().rounded(Decimal('0.001')) == Number('-0.707')
+    assert Number(-225).cos().rounded(Decimal('0.001')) == Number('-0.707')
+
+
+def test_acos():
+    assert Number('0.866').acos().rounded(Decimal('1')) == 30
+    assert Number(1).acos() == 0
+    assert Number('0.5').acos() == 60
+    assert Number(0).acos() == 90
+    assert Number('-0.5').acos() == 120
+    assert Number(-1).acos() == 180
+    assert Number('0.707').acos().rounded(Decimal('1')) == 45
+    assert Number('-0.707').acos().rounded(Decimal('1')) == 135
+
+
+def test_sin():
+    assert Number(30).sin() == Number('0.5')
+    assert Number(-30).sin() == Number('-0.5')
+    assert Number(360).sin() == 0
+    assert Number(-360).sin() == 0
+    assert Number(60).sin().rounded(Decimal('0.001')) == Number('0.866')
+    assert Number(-60).sin().rounded(Decimal('0.001')) == Number('-0.866')
+    assert Number(90).sin() == 1
+    assert Number(-90).sin() == -1
+    assert Number(150).sin() == Number('0.5')
+    assert Number(-150).sin() == Number('-0.5')
+    assert Number(180).sin() == 0
+    assert Number(-180).sin() == 0
+    assert Number(0).sin() == 0
+    assert Number(210).sin() == Number('-0.5')
+    assert Number(-210).sin() == Number('0.5')
+    assert Number(270).sin() == -1
+    assert Number(-270).sin() == 1
+    assert Number(330).sin() == Number('-0.5')
+    assert Number(-330).sin() == Number('0.5')
+    assert Number(45).sin().rounded(Decimal('0.001')) == Number('0.707')
+    assert Number(-45).sin().rounded(Decimal('0.001')) == Number('-0.707')
+    assert Number(135).sin().rounded(Decimal('0.001')) == Number('0.707')
+    assert Number(-135).sin().rounded(Decimal('0.001')) == Number('-0.707')
+    assert Number(315).sin().rounded(Decimal('0.001')) == Number('-0.707')
+    assert Number(-315).sin().rounded(Decimal('0.001')) == Number('0.707')
+    assert Number(225).sin().rounded(Decimal('0.001')) == Number('-0.707')
+    assert Number(-225).sin().rounded(Decimal('0.001')) == Number('0.707')
+
+
+def test_asin():
+    assert Number('0.866').asin().rounded(Decimal('1')) == 60
+    assert Number(1).asin() == 90
+    assert Number('0.5').asin() == 30
+    assert Number(0).asin() == 0
+    assert Number('-0.5').asin() == -30
+    assert Number(-1).asin() == -90
+    assert Number('0.707').asin().rounded(Decimal('1')) == 45
+    assert Number('-0.707').asin().rounded(Decimal('1')) == -45
+
+
+def test_tan():
+    assert Number(30).tan().rounded(Decimal('0.001')) == Number('0.577')
+    assert Number(-30).tan().rounded(Decimal('0.001')) == Number('-0.577')
+    assert Number(360).tan() == 0
+    assert Number(-360).tan() == 0
+    assert Number(60).tan().rounded(Decimal('0.001')) == Number('1.732')
+    assert Number(-60).tan().rounded(Decimal('0.001')) == Number('-1.732')
+    with pytest.raises(ValueError) as excinfo:
+        Number(90).tan()
+    assert str(excinfo.value) == 'Tangent of 90° or -90° is indefinite.'
+    with pytest.raises(ValueError) as excinfo:
+        Number(-90).tan()
+    assert str(excinfo.value) == 'Tangent of 90° or -90° is indefinite.'
+    with pytest.raises(ValueError) as excinfo:
+        Number(270).tan()
+    assert str(excinfo.value) == 'Tangent of 90° or -90° is indefinite.'
+    with pytest.raises(ValueError) as excinfo:
+        Number(-270).tan()
+    assert str(excinfo.value) == 'Tangent of 90° or -90° is indefinite.'
+    assert Number(180).tan() == 0
+    assert Number(-180).tan() == 0
+    assert Number(0).tan() == 0
+    assert Number(45).tan().rounded(Decimal('0.001')) == 1
+    assert Number(-45).tan().rounded(Decimal('0.001')) == -1
+    assert Number(135).tan().rounded(Decimal('0.001')) == -1
+    assert Number(-135).tan().rounded(Decimal('0.001')) == 1
+    assert Number(315).tan().rounded(Decimal('0.001')) == -1
+    assert Number(-315).tan().rounded(Decimal('0.001')) == 1
+    assert Number(225).tan().rounded(Decimal('0.001')) == 1
+    assert Number(-225).tan().rounded(Decimal('0.001')) == -1
+
+
+def test_atan():
+    assert Number('1.732').atan().rounded(Decimal('1')) == 60
+    assert Number(1).atan() == 45
+    assert Number('0.577').atan().rounded(Decimal('1')) == 30
+    assert Number(0).atan() == 0
+    assert Number(-1).atan() == -45
+    assert Number('0.75').atan().rounded(Decimal('1.00')) == Number('36.87')
+    assert Number('-0.75').atan().rounded(Decimal('1.00')) == Number('-36.87')
+
+
 def test_conversions_errors():
     """Check numbers' conversions errors."""
     i = Number(6, unit='m')
