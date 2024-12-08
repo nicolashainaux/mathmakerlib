@@ -158,12 +158,12 @@ def test_instanciation_errors():
     assert str(excinfo.value) == 'Each arm\'s point must be defined by a ' \
         'tuple of 1 or 2 elements. Found 3 elements instead.'
     with pytest.raises(ValueError) as excinfo:
-        Angle(pointO, pointI, pointJ, label=Number(38, unit=r'\textdegree'),
+        Angle(pointO, pointI, pointJ, label=Number(38, unit=r'\degree'),
               decoration=AngleDecoration(label=Number(37,
-                                                      unit=r'\textdegree')))
+                                                      unit=r'\degree')))
     assert str(excinfo.value) == r"The label has been set twice, as Angle's "\
-        r"keyword argument (Number('38 \textdegree')) and as its "\
-        r"AngleDecoration's keyword argument (Number('37 \textdegree'))."
+        r"keyword argument (Number('38 \degree')) and as its "\
+        r"AngleDecoration's keyword argument (Number('37 \degree'))."
 
 
 def test_instanciation():
@@ -452,7 +452,7 @@ def test_drawing_labeled_angles():
     A = Point(0, 0, 'A')
     X = Point(6, 1, 'X')
     Y = Point(3, 5, 'Y')
-    α = Angle(X, A, Y, label=Number(38, unit=r'\textdegree'))
+    α = Angle(X, A, Y, label=Number(38, unit=r'\degree'))
     required.tikz_library['quotes'] = False
     assert α.drawn == r"""
 \begin{tikzpicture}
@@ -478,7 +478,7 @@ pic ["\ang{38}", angle eccentricity=2.6] {angle = X--A--Y};
         r'hatchmark=None; label=\ang{38}; color=None; thickness=thick; '\
         r'radius=0.25 cm; eccentricity=2.6)'
     α = Angle(X, A, Y,
-              decoration=AngleDecoration(label=Number(38, unit=r'\textdegree'),
+              decoration=AngleDecoration(label=Number(38, unit=r'\degree'),
                                          variety=None)
               )
     assert α.drawn == r"""
@@ -496,7 +496,7 @@ pic ["\ang{38}", angle eccentricity=2.6] {angle = X--A--Y};
 
 \end{tikzpicture}
 """
-    α = Angle(X, A, Y, label=Number(38, unit=r'\textdegree'),
+    α = Angle(X, A, Y, label=Number(38, unit=r'\degree'),
               decoration=AngleDecoration(radius=Number('0.9', unit='cm')))
     assert α.drawn == r"""
 \begin{tikzpicture}
@@ -808,7 +808,7 @@ def test_drawing_marked_labeled_angles():
     A = Point(0, 0, 'A')
     X = Point(6, 1, 'X')
     Y = Point(3, 5, 'Y')
-    α = Angle(X, A, Y, label=Number(38, unit=r'\textdegree'))
+    α = Angle(X, A, Y, label=Number(38, unit=r'\degree'))
     α.decoration = AngleDecoration(radius=Number('0.5', unit='cm'))
     assert α.drawn == r"""
 \begin{tikzpicture}
@@ -849,7 +849,7 @@ r"""angle radius = 0.58 cm] {angle = X--A--Y};
     Y1 = Point(3, 5, 'Y1')
     α = Angle(X1, A, Y1, armspoints=[('X', ), ('Y', )],
               label_vertex=True, draw_vertex=True,
-              label=Number(38, unit=r'\textdegree'))
+              label=Number(38, unit=r'\degree'))
     α.decoration = AngleDecoration(radius=Number('0.5', unit='cm'),
                                    variety='double',
                                    hatchmark='singledash')
@@ -887,12 +887,12 @@ def test_drawing_double_decorated_angles():
     E = Point('-1.84', '0.8', 'E')
     α = Angle(L, P, E, label_vertex=True, draw_vertex=True,
               label_endpoints=True, draw_endpoints=True,
-              label=Number(39, unit=r'\textdegree'))
+              label=Number(39, unit=r'\degree'))
     α.decoration = AngleDecoration(radius=Number('0.7', unit='cm'),
                                    eccentricity=Number('1.6'))
     α.decoration2 = AngleDecoration(radius=Number('1.6', unit='cm'),
                                     eccentricity=Number('1.3'),
-                                    label=Number(42, unit=r'\textdegree'),
+                                    label=Number(42, unit=r'\degree'),
                                     color='NavyBlue', do_draw=False,
                                     thickness=None)
     assert α.drawn == r"""
@@ -1023,11 +1023,11 @@ def test_drawing_AnglesSets_of_same_vertex():
               label_vertex=True, draw_vertex=True,
               decoration=AngleDecoration(color='RoyalBlue',
                                          radius=Number('0.5', unit='cm')),
-              label=Number(38, unit=r'\textdegree'))
+              label=Number(38, unit=r'\degree'))
     β = Angle(Y1, A, Z1, armspoints=[('Y', ), ('Z', )],
               decoration=AngleDecoration(color='BurntOrange', variety='double',
                                          radius=Number('0.5', unit='cm')),
-              label=Number(9, unit=r'\textdegree'))
+              label=Number(9, unit=r'\degree'))
     γ = Angle(X1, A, Z1, label='?',
               decoration=AngleDecoration(color='BrickRed',
                                          radius=Number('2', unit='cm'),

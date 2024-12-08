@@ -200,7 +200,7 @@ def test_fontsize():
     A = Point(0, 0, 'A')
     X = Point(2, '0.33', 'X')
     Y = Point(1, '1.67', 'Y')
-    α = Angle(X, A, Y, label=Number(38, unit=r'\textdegree'),
+    α = Angle(X, A, Y, label=Number(38, unit=r'\degree'),
               label_vertex=True)
     assert α.fontsize is None
     with pytest.raises(ValueError) as excinfo:

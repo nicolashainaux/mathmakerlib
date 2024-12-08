@@ -21,7 +21,7 @@
 
 import pytest
 # from pathlib import Path
-# from decimal import Decimal
+from decimal import Decimal
 
 from mathmakerlib.calculus import Number
 from mathmakerlib.calculus.equations import TrigonometricEquation
@@ -50,38 +50,52 @@ def test_TrigonometricEquation_instanciation_error(t6):
 
 def test_TrigonometricEquation_imprint(t6):
     t6.setup_for_trigonometry(angle_nb=0, trigo_fct='tan',
-                              angle_val=Number('32', unit='\\textdegree'),
+                              angle_val=Number('32', unit=r'\degree'),
                               down_length_val=Number('3.5', unit='cm'),
                               length_unit='cm')
     assert TrigonometricEquation(t6).printed \
-        == r'\[tan(\widehat{\text{\angle AZD}})=\frac{\text{AD}}{\text{AZ}}\]'
+        == r'\[tan(\text{\angle AZD})=\frac{\text{AD}}{\text{AZ}}\]'
     t6.setup_for_trigonometry(angle_nb=2, trigo_fct='tan',
-                              angle_val=Number('32', unit='\\textdegree'),
+                              angle_val=Number('32', unit=r'\degree'),
                               down_length_val=Number('3.5', unit='cm'),
                               length_unit='cm')
     assert TrigonometricEquation(t6).printed \
-        == r'\[tan(\widehat{\text{\angle ZDA}})=\frac{\text{AZ}}{\text{AD}}\]'
+        == r'\[tan(\text{\angle ZDA})=\frac{\text{AZ}}{\text{AD}}\]'
     t6.setup_for_trigonometry(angle_nb=0, trigo_fct='cos',
-                              angle_val=Number('32', unit='\\textdegree'),
+                              angle_val=Number('32', unit=r'\degree'),
                               down_length_val=Number('3.5', unit='cm'),
                               length_unit='cm')
     assert TrigonometricEquation(t6).printed \
-        == r'\[cos(\widehat{\text{\angle AZD}})=\frac{\text{ZA}}{\text{ZD}}\]'
+        == r'\[cos(\text{\angle AZD})=\frac{\text{ZA}}{\text{ZD}}\]'
     t6.setup_for_trigonometry(angle_nb=2, trigo_fct='cos',
-                              angle_val=Number('32', unit='\\textdegree'),
+                              angle_val=Number('32', unit=r'\degree'),
                               down_length_val=Number('3.5', unit='cm'),
                               length_unit='cm')
     assert TrigonometricEquation(t6).printed \
-        == r'\[cos(\widehat{\text{\angle ZDA}})=\frac{\text{DA}}{\text{DZ}}\]'
+        == r'\[cos(\text{\angle ZDA})=\frac{\text{DA}}{\text{DZ}}\]'
     t6.setup_for_trigonometry(angle_nb=0, trigo_fct='sin',
-                              angle_val=Number('32', unit='\\textdegree'),
+                              angle_val=Number('32', unit=r'\degree'),
                               down_length_val=Number('3.5', unit='cm'),
                               length_unit='cm')
     assert TrigonometricEquation(t6).printed \
-        == r'\[sin(\widehat{\text{\angle AZD}})=\frac{\text{DA}}{\text{DZ}}\]'
+        == r'\[sin(\text{\angle AZD})=\frac{\text{DA}}{\text{DZ}}\]'
     t6.setup_for_trigonometry(angle_nb=2, trigo_fct='sin',
-                              angle_val=Number('32', unit='\\textdegree'),
+                              angle_val=Number('32', unit=r'\degree'),
                               down_length_val=Number('3.5', unit='cm'),
                               length_unit='cm')
     assert TrigonometricEquation(t6).printed \
-        == r'\[sin(\widehat{\text{\angle ZDA}})=\frac{\text{ZA}}{\text{ZD}}\]'
+        == r'\[sin(\text{\angle ZDA})=\frac{\text{ZA}}{\text{ZD}}\]'
+
+
+def test_TrigonometricEquation_autosolve(t6):
+    t6.setup_for_trigonometry(angle_nb=0, trigo_fct='tan',
+                              angle_val=Number(32, unit=r'\degree'),
+                              down_length_val=Number('3.5', unit='cm'),
+                              length_unit='cm')
+    eq = TrigonometricEquation(t6)
+    assert eq.autosolve(required_rounding=Decimal('1.00')) == \
+        r'''\[tan(\text{\angle AZD})=\frac{\text{AD}}{\text{AZ}}\]
+\[tan(\ang{32})=\frac{\text{AD}}{3.5}\]
+\[\text{AD}=tan(\ang{32})\times 3.5\]
+\[\text{AD}\approx \SI{2.19}{cm}\]
+'''

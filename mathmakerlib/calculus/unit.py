@@ -33,7 +33,7 @@ VOLUME_CAPACITY_MATCH = ['m', '', '', 'dm', '', '', 'cm', '', '', 'mm']
 COMMON_LENGTH_UNITS = LENGTH_UNITS[:-3]
 COMMON_CAPACITY_UNITS = CAPACITY_UNITS[1:-3]
 COMMON_MASS_UNITS = MASS_UNITS[:-3]
-ANGLE_UNITS = ['\\textdegree']
+ANGLE_UNITS = [r'\degree']
 CURRENCY_UNITS = ['€', r'\officialeuro',
                   '$', r'\textdollar',
                   '£', r'\textsterling']

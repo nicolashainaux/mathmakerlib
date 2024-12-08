@@ -39,7 +39,8 @@ def init():
                                     'amsmath', 'stackengine', 'scalerel',
                                     'cancel', 'multicol', 'placeins', 'ulem',
                                     'textcomp', 'array', 'graphicx',
-                                    'epstopdf', 'textpos', 'fancyvrb']}
+                                    'epstopdf', 'textpos', 'fancyvrb',
+                                    'gensymb']}
         options = {'xcolor': set(), 'textpos': set()}
         tikz_library = {'angles': False,
                         'decorations.markings': False,

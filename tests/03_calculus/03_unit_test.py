@@ -37,7 +37,7 @@ def test_physical_quantity():
     assert physical_quantity(Unit('mm', exponent=3)) == 'volume'
     assert physical_quantity('undefined') is None
     assert physical_quantity(r'\officialeuro') == 'currency'
-    assert physical_quantity(r'\textdegree') == 'angle'
+    assert physical_quantity(r'\degree') == 'angle'
 
 
 def test_difference_of_orders_of_magnitude_exceptions():

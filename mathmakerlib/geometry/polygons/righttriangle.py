@@ -20,6 +20,7 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 from mathmakerlib import config
+from mathmakerlib import required
 from mathmakerlib.calculus.number import Number
 from mathmakerlib.geometry.point import Point
 from mathmakerlib.geometry.angle import AngleDecoration
@@ -201,8 +202,8 @@ class RightTriangle(Triangle):
             else:
                 self.angles[angle_nb].label = ''
         else:
-            self.angles[angle_nb].label = Number(angle_val,
-                                                 unit='\\textdegree')
+            self.angles[angle_nb].label = Number(angle_val, unit=r'\degree')
+            required.package['gensymb'] = True
         if up_length_val is None:
             labels[upside_nb] = '?'
             to_calculate = {'cos': 'adj', 'sin': 'opp',

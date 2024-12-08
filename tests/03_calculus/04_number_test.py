@@ -431,7 +431,7 @@ def test_printing():
     assert Number('0.70', unit=r'\officialeuro').quantize(Number('0.01'))\
         .printed == r'\SI{0.70}{\officialeuro}'
     assert required.package['eurosym']
-    n = Number('38', unit=r'\textdegree')
+    n = Number('38', unit=r'\degree')
     assert n.printed == r'\ang{38}'
     required.package['siunitx'] = False
     n = Number('9000')
