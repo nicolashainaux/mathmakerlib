@@ -23,8 +23,8 @@
 # from gettext import translation
 
 from .equation import Equation
-# from mathmakerlib.calculus.number import Number
-# from mathmakerlib.shared import ROOTDIR, L10N_DOMAIN, LOCALEDIR
+from mathmakerlib.calculus.number import Number
+from mathmakerlib.shared import ROOTDIR  # , L10N_DOMAIN, LOCALEDIR
 # from mathmakerlib import config
 
 EQUALITIES = \
@@ -47,44 +47,114 @@ class TrigonometricEquation(Equation):
         """
         if rt.trigo_setup:
             self.rt = rt
+            self.trigo_fct, angle_nb, t = self.rt.trigo_setup.split('_')
+            self.angle_nb = int(angle_nb)
+            self.to_calculate = t
         else:
             raise ValueError(f'The provided object (expected: RightTriangle, '
                              f'provided: {type(rt).__name__}) has not been '
-                             f'set up for trigonometry.')
+                             f'set up for trigonometry. rt._trigo_setup == '
+                             f"'{rt._trigo_setup}'")
 
-    def setup_hyp_adj_opp(self, trigo_fct, angle_nb):
+    def setup_hyp_adj_opp(self):
         adj = opp = hyp = ''
-        if trigo_fct == 'cos':
+        if self.trigo_fct == 'cos':
             adj = {0: self.rt.leg0.length_name,
-                   2: self.rt.leg1.length_name[::-1]}[angle_nb]
+                   2: self.rt.leg1.length_name[::-1]}[self.angle_nb]
             hyp = {0: self.rt.hyp.length_name[::-1],
-                   2: self.rt.hyp.length_name}[angle_nb]
-        elif trigo_fct == 'sin':
+                   2: self.rt.hyp.length_name}[self.angle_nb]
+        elif self.trigo_fct == 'sin':
             opp = {0: self.rt.leg1.length_name[::-1],
-                   2: self.rt.leg0.length_name}[angle_nb]
+                   2: self.rt.leg0.length_name}[self.angle_nb]
             hyp = {0: self.rt.hyp.length_name,
-                   2: self.rt.hyp.length_name[::-1]}[angle_nb]
+                   2: self.rt.hyp.length_name[::-1]}[self.angle_nb]
         else:  # trigo_fct == 'tan'
             adj = {0: self.rt.leg0.length_name[::-1],
-                   2: self.rt.leg1.length_name}[angle_nb]
+                   2: self.rt.leg1.length_name}[self.angle_nb]
             opp = {0: self.rt.leg1.length_name,
-                   2: self.rt.leg0.length_name[::-1]}[angle_nb]
+                   2: self.rt.leg0.length_name[::-1]}[self.angle_nb]
         return (hyp, adj, opp)
 
     def imprint(self, neq=False, start_expr=True, variant='latex'):
-        trigo_fct, angle_nb = self.rt.trigo_setup.split('_')
-        angle_nb = int(angle_nb)
-        template = EQUALITIES[trigo_fct]
-        hyp, adj, opp = self.setup_hyp_adj_opp(trigo_fct, angle_nb)
-        data = {'angle': self.rt.angles[angle_nb].name,
+        template = EQUALITIES[self.trigo_fct]
+        hyp, adj, opp = self.setup_hyp_adj_opp()
+        data = {'angle': self.rt.angles[self.angle_nb].name,
                 'hyp': hyp, 'adj': adj, 'opp': opp}
         return template.format(**data)
 
-    def autosolve(self, ):
+    def setup_template_values(self, required_rounding):
+        rounding_rank = Number(required_rounding).fracdigits_nb(
+            ignore_trailing_zeros=False)
+        angle_measure = self.rt.angles[self.angle_nb].label
+        adj_side = {0: self.rt.leg0, 2: self.rt.leg1}[self.angle_nb]
+        opp_side = {0: self.rt.leg1, 2: self.rt.leg0}[self.angle_nb]
+        hyp, adj, opp = self.setup_hyp_adj_opp()
+        adj_length = opp_length = hyp_length = ''
+        equal_sign = '='
+        result = ''
+        unit = r'\textdegree' if self.to_calculate == 'angle' else ''
+
+        if self.trigo_fct == 'cos':
+            if self.to_calculate == 'adj':
+                hyp_length = Number(self.rt.hyp.label, unit=None)
+                unit = self.rt.hyp.label.unit
+                result = angle_measure.cos() * hyp_length
+            elif self.to_calculate == 'hyp':
+                adj_length = Number(adj_side.label, unit=None)
+                unit = adj_side.label.unit
+                result = adj_length / angle_measure.cos()
+            else:  # self.to_calculate == 'angle'
+                hyp_length = Number(self.rt.hyp.label, unit=None)
+                adj_length = Number(adj_side.label, unit=None)
+                result = (adj_length / hyp_length).acos()
+
+        elif self.trigo_fct == 'sin':
+            if self.to_calculate == 'opp':
+                hyp_length = Number(self.rt.hyp.label, unit=None)
+                unit = self.rt.hyp.label.unit
+                result = angle_measure.sin() * hyp_length
+            elif self.to_calculate == 'hyp':
+                opp_length = Number(opp_side.label, unit=None)
+                unit = opp_side.label.unit
+                result = opp_length / angle_measure.sin()
+            else:  # self.to_calculate == 'angle'
+                hyp_length = Number(self.rt.hyp.label, unit=None)
+                opp_length = Number(opp_side.label, unit=None)
+                result = (opp_length / hyp_length).asin()
+
+        else:  # trigo_fct == 'tan'
+            if self.to_calculate == 'opp':
+                adj_length = Number(adj_side.label, unit=None)
+                unit = adj_side.label.unit
+                result = angle_measure.tan() * adj_length
+            elif self.to_calculate == 'adj':
+                opp_length = Number(opp_side.label, unit=None)
+                unit = opp_side.label.unit
+                result = opp_length / angle_measure.tan()
+            else:  # self.to_calculate == 'angle'
+                adj_length = Number(adj_side.label, unit=None)
+                opp_length = Number(opp_side.label, unit=None)
+                result = (opp_length / adj_length).atan()
+
+        if result.fracdigits_nb() > rounding_rank:
+            result = result.rounded(required_rounding)
+            equal_sign = r'\approx'
+
+        return {'angle': self.rt.angles[self.angle_nb].name,
+                'angle_measure': angle_measure,
+                'hyp': hyp, 'adj': adj, 'opp': opp,
+                'hyp_length': hyp_length, 'adj_length': adj_length,
+                'opp_length': opp_length,
+                'equal_sign': equal_sign,
+                'result_with_unit': Number(result, unit=unit)}
+
+    def autosolve(self, required_rounding):
         """
         Print the complete resolution.
         """
-        # tr = translation(L10N_DOMAIN, LOCALEDIR, [config.language]).gettext
-        # data = self.setup_data(trigo_fct, angle_nb)
-        # template =
-        # return f'{self.printed}\n{template.format(**data)}'
+        data = self.setup_template_values(required_rounding)
+        template_fn = f'trigonometric_equation_calculate_' \
+            f'{self.to_calculate}_{self.trigo_fct}.tex'
+        template_path = ROOTDIR / 'calculus/equations/templates' / template_fn
+        template = template_path.read_text()
+        return f'{self.printed}\n{template.format(**data)}'

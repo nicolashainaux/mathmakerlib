@@ -45,7 +45,7 @@ def test_TrigonometricEquation_instanciation_error(t6):
         TrigonometricEquation(t6)
     assert str(excinfo.value) == 'The provided object (expected: '\
         'RightTriangle, provided: RightTriangle) has not been set up '\
-        'for trigonometry.'
+        "for trigonometry. rt._trigo_setup == ''"
 
 
 def test_TrigonometricEquation_imprint(t6):

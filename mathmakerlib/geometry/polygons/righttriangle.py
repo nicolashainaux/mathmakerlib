@@ -25,6 +25,12 @@ from mathmakerlib.geometry.point import Point
 from mathmakerlib.geometry.angle import AngleDecoration
 from . import Triangle
 
+TRIGO_SETUPS = ['cos_0_adj', 'cos_0_hyp', 'cos_2_adj', 'cos_2_hyp',
+                'sin_0_opp', 'sin_0_hyp', 'sin_2_opp', 'sin_2_hyp',
+                'tan_0_adj', 'tan_0_opp', 'tan_2_adj', 'tan_2_opp',
+                'cos_0_angle', 'cos_2_angle', 'sin_0_angle', 'sin_2_angle',
+                'tan_0_angle', 'tan_2_angle']
+
 
 class RightTriangle(Triangle):
     """Right Triangles."""
@@ -112,10 +118,7 @@ class RightTriangle(Triangle):
 
     @property
     def trigo_setup(self):
-        if (type(self._trigo_setup) is str
-            and self._trigo_setup.count('_') == 1
-            and self._trigo_setup.split('_')[0] in ['cos', 'sin', 'tan']
-            and self._trigo_setup.split('_')[1] in ['0', '2']):
+        if self._trigo_setup in TRIGO_SETUPS:
             return self._trigo_setup
         return False
 
@@ -191,22 +194,27 @@ class RightTriangle(Triangle):
         downside_nb = side_nb[trigo_fct][angle_nb]['down']
         labels = [None, None, None]
         self.angles[angle_nb].decoration = angle_decoration
+        to_calculate = 'angle'
         if angle_val is None:
             if not only_mark_unknown_angle:
                 self.angles[angle_nb].label = '?'
             else:
-                self.angles[angle_nb].label = '?'
+                self.angles[angle_nb].label = ''
         else:
             self.angles[angle_nb].label = Number(angle_val,
                                                  unit='\\textdegree')
         if up_length_val is None:
             labels[upside_nb] = '?'
+            to_calculate = {'cos': 'adj', 'sin': 'opp',
+                            'tan': 'opp'}[trigo_fct]
         else:
             labels[upside_nb] = Number(up_length_val, unit=str(length_unit))
         if down_length_val is None:
             labels[downside_nb] = '?'
+            to_calculate = {'cos': 'hyp', 'sin': 'hyp',
+                            'tan': 'adj'}[trigo_fct]
         else:
             labels[downside_nb] = Number(down_length_val,
                                          unit=str(length_unit))
         self.setup_labels(labels)
-        self._trigo_setup = str(trigo_fct) + '_' + str(angle_nb)
+        self._trigo_setup = f'{trigo_fct}_{angle_nb}_{to_calculate}'
