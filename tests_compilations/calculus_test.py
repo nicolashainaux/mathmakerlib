@@ -62,3 +62,14 @@ def test_PythagoreanEquation_compilations():
         ret_code = subprocess.run(cmd, shell=True, executable='/bin/bash',
                                   capture_output=True).returncode
         assert ret_code == 0
+
+
+def test_TrigonometricEquation_compilations():
+    DATA_PATH = Path(__file__).parent / 'data/trigonometric_equations'
+    TEST_ZAD_TAN = (DATA_PATH / 'ZAD_tan.tex').read_text()
+    content = '\n'.join([TEST_ZAD_TAN])
+    with CompilationManager('test_TrigonometricEquation_compilations',
+                            'article.tex', content) as cmd:
+        ret_code = subprocess.run(cmd, shell=True, executable='/bin/bash',
+                                  capture_output=True).returncode
+        assert ret_code == 0

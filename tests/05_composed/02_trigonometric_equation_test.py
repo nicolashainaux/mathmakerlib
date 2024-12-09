@@ -20,17 +20,17 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 import pytest
-# from pathlib import Path
+from pathlib import Path
 from decimal import Decimal
 
 from mathmakerlib.calculus import Number
 from mathmakerlib.calculus.equations import TrigonometricEquation
 from mathmakerlib.geometry import RightTriangle
 
-# DATA_PATH = Path(__file__).parent.parent.parent \
-#     / 'tests_compilations/data/trigonometric_equations'
+DATA_PATH = Path(__file__).parent.parent.parent \
+    / 'tests_compilations/data/trigonometric_equations'
 
-# TEST_ABC_1 = (DATA_PATH / 'ABC_1.tex').read_text()
+TEST_ZAD_TAN = (DATA_PATH / 'ZAD_tan.tex').read_text()
 
 
 @pytest.fixture
@@ -93,9 +93,4 @@ def test_TrigonometricEquation_autosolve(t6):
                               down_length_val=Number('3.5', unit='cm'),
                               length_unit='cm')
     eq = TrigonometricEquation(t6)
-    assert eq.autosolve(required_rounding=Decimal('1.00')) == \
-        r'''\[tan(\text{\angle AZD})=\frac{\text{AD}}{\text{AZ}}\]
-\[tan(\ang{32})=\frac{\text{AD}}{3.5}\]
-\[\text{AD}=tan(\ang{32})\times 3.5\]
-\[\text{AD}\approx \SI{2.19}{cm}\]
-'''
+    assert eq.autosolve(required_rounding=Decimal('1.00')) == TEST_ZAD_TAN
