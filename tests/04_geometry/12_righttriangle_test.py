@@ -134,23 +134,15 @@ def test_t6_setup_for_trigonometry_errors(t6):
         t6.setup_for_trigonometry(angle_nb=0, trigo_fct='tan',
                                   angle_val=Number(32, unit=r'\degree'),
                                   down_length_val=Number(3.5, unit='cm'),
-                                  up_length_val=Number(3.5, unit='cm'),
-                                  length_unit='cm')
+                                  up_length_val=Number(3.5, unit='cm'))
     with pytest.raises(ValueError):
         t6.setup_for_trigonometry(angle_nb=0, trigo_fct='tan',
-                                  angle_val=Number(32, unit=r'\degree'),
-                                  length_unit='cm')
+                                  angle_val=Number(32, unit=r'\degree'))
     with pytest.raises(ValueError):
         t6.setup_for_trigonometry(angle_nb=1, trigo_fct='tan',
                                   angle_val=Number(32, unit=r'\degree'),
-                                  up_length_val=Number(3.5, unit='cm'),
-                                  length_unit='cm')
+                                  up_length_val=Number(3.5, unit='cm'))
     with pytest.raises(ValueError):
         t6.setup_for_trigonometry(angle_nb=0, trigo_fct='tas',
-                                  angle_val=Number(32, unit=r'\degree'),
-                                  up_length_val=Number(3.5, unit='cm'),
-                                  length_unit='cm')
-    with pytest.raises(ValueError):
-        t6.setup_for_trigonometry(angle_nb=0, trigo_fct='tan',
                                   angle_val=Number(32, unit=r'\degree'),
                                   up_length_val=Number(3.5, unit='cm'))

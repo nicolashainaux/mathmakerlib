@@ -30,7 +30,12 @@ from mathmakerlib.geometry import RightTriangle
 DATA_PATH = Path(__file__).parent.parent.parent \
     / 'tests_compilations/data/trigonometric_equations'
 
-TEST_ZAD_TAN = (DATA_PATH / 'ZAD_tan.tex').read_text()
+ZAD_OPP_TAN0 = (DATA_PATH / 'ZAD_opp_tan0.tex').read_text()
+ZAD_ADJ_TAN0 = (DATA_PATH / 'ZAD_adj_tan0.tex').read_text()
+ZAD_ADJ_COS0 = (DATA_PATH / 'ZAD_adj_cos0.tex').read_text()
+ZAD_HYP_COS0 = (DATA_PATH / 'ZAD_hyp_cos0.tex').read_text()
+ZAD_OPP_SIN0 = (DATA_PATH / 'ZAD_opp_sin0.tex').read_text()
+ZAD_HYP_SIN0 = (DATA_PATH / 'ZAD_hyp_sin0.tex').read_text()
 
 
 @pytest.fixture
@@ -51,46 +56,79 @@ def test_TrigonometricEquation_instanciation_error(t6):
 def test_TrigonometricEquation_imprint(t6):
     t6.setup_for_trigonometry(angle_nb=0, trigo_fct='tan',
                               angle_val=Number('32', unit=r'\degree'),
-                              down_length_val=Number('3.5', unit='cm'),
-                              length_unit='cm')
+                              down_length_val=Number('3.5', unit='cm'))
     assert TrigonometricEquation(t6).printed \
         == r'\[tan(\text{\angle AZD})=\frac{\text{AD}}{\text{AZ}}\]'
     t6.setup_for_trigonometry(angle_nb=2, trigo_fct='tan',
                               angle_val=Number('32', unit=r'\degree'),
-                              down_length_val=Number('3.5', unit='cm'),
-                              length_unit='cm')
+                              down_length_val=Number('3.5', unit='cm'))
     assert TrigonometricEquation(t6).printed \
         == r'\[tan(\text{\angle ZDA})=\frac{\text{AZ}}{\text{AD}}\]'
     t6.setup_for_trigonometry(angle_nb=0, trigo_fct='cos',
                               angle_val=Number('32', unit=r'\degree'),
-                              down_length_val=Number('3.5', unit='cm'),
-                              length_unit='cm')
+                              down_length_val=Number('3.5', unit='cm'))
     assert TrigonometricEquation(t6).printed \
         == r'\[cos(\text{\angle AZD})=\frac{\text{ZA}}{\text{ZD}}\]'
     t6.setup_for_trigonometry(angle_nb=2, trigo_fct='cos',
                               angle_val=Number('32', unit=r'\degree'),
-                              down_length_val=Number('3.5', unit='cm'),
-                              length_unit='cm')
+                              down_length_val=Number('3.5', unit='cm'))
     assert TrigonometricEquation(t6).printed \
         == r'\[cos(\text{\angle ZDA})=\frac{\text{DA}}{\text{DZ}}\]'
     t6.setup_for_trigonometry(angle_nb=0, trigo_fct='sin',
                               angle_val=Number('32', unit=r'\degree'),
-                              down_length_val=Number('3.5', unit='cm'),
-                              length_unit='cm')
+                              down_length_val=Number('3.5', unit='cm'))
     assert TrigonometricEquation(t6).printed \
         == r'\[sin(\text{\angle AZD})=\frac{\text{DA}}{\text{DZ}}\]'
     t6.setup_for_trigonometry(angle_nb=2, trigo_fct='sin',
                               angle_val=Number('32', unit=r'\degree'),
-                              down_length_val=Number('3.5', unit='cm'),
-                              length_unit='cm')
+                              down_length_val=Number('3.5', unit='cm'))
     assert TrigonometricEquation(t6).printed \
         == r'\[sin(\text{\angle ZDA})=\frac{\text{ZA}}{\text{ZD}}\]'
 
 
-def test_TrigonometricEquation_autosolve(t6):
+def test_TrigonometricEquation_autosolve_opp_tan0(t6):
     t6.setup_for_trigonometry(angle_nb=0, trigo_fct='tan',
                               angle_val=Number(32, unit=r'\degree'),
-                              down_length_val=Number('3.5', unit='cm'),
-                              length_unit='cm')
+                              down_length_val=Number('3.5', unit='cm'))
     eq = TrigonometricEquation(t6)
-    assert eq.autosolve(required_rounding=Decimal('1.00')) == TEST_ZAD_TAN
+    assert eq.autosolve(required_rounding=Decimal('1.00')) == ZAD_OPP_TAN0
+
+
+def test_TrigonometricEquation_autosolve_adj_tan0(t6):
+    t6.setup_for_trigonometry(angle_nb=0, trigo_fct='tan',
+                              angle_val=Number(40, unit=r'\degree'),
+                              up_length_val=Number(18, unit='mm'))
+    eq = TrigonometricEquation(t6)
+    assert eq.autosolve(required_rounding=Decimal('1.000')) == ZAD_ADJ_TAN0
+
+
+def test_TrigonometricEquation_autosolve_adj_cos0(t6):
+    t6.setup_for_trigonometry(angle_nb=0, trigo_fct='cos',
+                              angle_val=Number(36, unit=r'\degree'),
+                              down_length_val=Number(53, unit='dm'))
+    eq = TrigonometricEquation(t6)
+    assert eq.autosolve(required_rounding=Decimal('1.00')) == ZAD_ADJ_COS0
+
+
+def test_TrigonometricEquation_autosolve_hyp_cos0(t6):
+    t6.setup_for_trigonometry(angle_nb=0, trigo_fct='cos',
+                              angle_val=Number(80, unit=r'\degree'),
+                              up_length_val=Number(53, unit='km'))
+    eq = TrigonometricEquation(t6)
+    assert eq.autosolve(required_rounding=Decimal('1.0')) == ZAD_HYP_COS0
+
+
+def test_TrigonometricEquation_autosolve_opp_sin0(t6):
+    t6.setup_for_trigonometry(angle_nb=0, trigo_fct='sin',
+                              angle_val=Number(57, unit=r'\degree'),
+                              down_length_val=Number(19, unit='hm'))
+    eq = TrigonometricEquation(t6)
+    assert eq.autosolve(required_rounding=Decimal('1.00')) == ZAD_OPP_SIN0
+
+
+def test_TrigonometricEquation_autosolve_hyp_sin0(t6):
+    t6.setup_for_trigonometry(angle_nb=0, trigo_fct='sin',
+                              angle_val=Number(39, unit=r'\degree'),
+                              up_length_val=Number(48, unit='m'))
+    eq = TrigonometricEquation(t6)
+    assert eq.autosolve(required_rounding=Decimal('1.0')) == ZAD_HYP_SIN0

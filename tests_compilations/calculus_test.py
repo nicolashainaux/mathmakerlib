@@ -66,8 +66,14 @@ def test_PythagoreanEquation_compilations():
 
 def test_TrigonometricEquation_compilations():
     DATA_PATH = Path(__file__).parent / 'data/trigonometric_equations'
-    TEST_ZAD_TAN = (DATA_PATH / 'ZAD_tan.tex').read_text()
-    content = '\n'.join([TEST_ZAD_TAN])
+    ZAD_ADJ_TAN0 = (DATA_PATH / 'ZAD_adj_tan0.tex').read_text()
+    ZAD_OPP_TAN0 = (DATA_PATH / 'ZAD_opp_tan0.tex').read_text()
+    ZAD_ADJ_COS0 = (DATA_PATH / 'ZAD_adj_cos0.tex').read_text()
+    ZAD_HYP_COS0 = (DATA_PATH / 'ZAD_hyp_cos0.tex').read_text()
+    ZAD_OPP_SIN0 = (DATA_PATH / 'ZAD_opp_sin0.tex').read_text()
+    ZAD_HYP_SIN0 = (DATA_PATH / 'ZAD_hyp_sin0.tex').read_text()
+    content = '\n'.join([ZAD_ADJ_TAN0, ZAD_OPP_TAN0, ZAD_ADJ_COS0,
+                         ZAD_HYP_COS0, ZAD_OPP_SIN0, ZAD_HYP_SIN0])
     with CompilationManager('test_TrigonometricEquation_compilations',
                             'article.tex', content) as cmd:
         ret_code = subprocess.run(cmd, shell=True, executable='/bin/bash',

@@ -144,7 +144,6 @@ class RightTriangle(Triangle):
                                angle_val=None,
                                up_length_val=None,
                                down_length_val=None,
-                               length_unit=None,
                                only_mark_unknown_angle=False,
                                angle_decoration='default'):
         """
@@ -169,8 +168,6 @@ class RightTriangle(Triangle):
             denominator of the trigonometric formula
         :type down_length_val: Number (or leave it to None to use it as the
             unknown value to calculate)
-        :param length_unit: the length's unit to use for lengths
-        :type length_unit: anything that can be used as argument for Units
         """
         if [angle_val, up_length_val, down_length_val].count(None) != 1:
             raise ValueError('Exactly one of the optional arguments '
@@ -182,9 +179,6 @@ class RightTriangle(Triangle):
         if trigo_fct not in ['cos', 'sin', 'tan']:
             raise ValueError(f"trigo_fct must be either 'cos', 'sin' "
                              f"or 'tan', got '{trigo_fct} instead.")
-        if length_unit is None:
-            raise ValueError('length_unit must be defined')
-        self.length_unit = str(length_unit)
         if angle_decoration == 'default':
             angle_decoration = AngleDecoration()
         side_nb = {'cos': {0: {'up': 0, 'down': 2},
@@ -199,6 +193,7 @@ class RightTriangle(Triangle):
         self.angles[angle_nb].decoration = angle_decoration
         to_calculate = 'angle'
         if angle_val is None:
+            self.length_unit = str(up_length_val.unit)
             if not only_mark_unknown_angle:
                 self.angles[angle_nb].label = '?'
             else:
@@ -207,12 +202,14 @@ class RightTriangle(Triangle):
             self.angles[angle_nb].label = Number(angle_val, unit=r'\degree')
             required.package['gensymb'] = True
         if up_length_val is None:
+            self.length_unit = str(down_length_val.unit)
             labels[upside_nb] = '?'
             to_calculate = {'cos': 'adj', 'sin': 'opp',
                             'tan': 'opp'}[trigo_fct]
         else:
             labels[upside_nb] = Number(up_length_val, unit=self.length_unit)
         if down_length_val is None:
+            self.length_unit = str(up_length_val.unit)
             labels[downside_nb] = '?'
             to_calculate = {'cos': 'hyp', 'sin': 'hyp',
                             'tan': 'adj'}[trigo_fct]
