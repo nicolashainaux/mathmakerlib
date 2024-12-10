@@ -96,6 +96,7 @@ class RightTriangle(Triangle):
             self.right_angle.decoration = AngleDecoration(thickness=thickness)
             self.right_angle.mark_right = True
         self._trigo_setup = ''
+        self.length_unit = ''
 
     @property
     def hypotenuse(self):
@@ -183,6 +184,7 @@ class RightTriangle(Triangle):
                              f"or 'tan', got '{trigo_fct} instead.")
         if length_unit is None:
             raise ValueError('length_unit must be defined')
+        self.length_unit = str(length_unit)
         if angle_decoration == 'default':
             angle_decoration = AngleDecoration()
         side_nb = {'cos': {0: {'up': 0, 'down': 2},
@@ -209,13 +211,13 @@ class RightTriangle(Triangle):
             to_calculate = {'cos': 'adj', 'sin': 'opp',
                             'tan': 'opp'}[trigo_fct]
         else:
-            labels[upside_nb] = Number(up_length_val, unit=str(length_unit))
+            labels[upside_nb] = Number(up_length_val, unit=self.length_unit)
         if down_length_val is None:
             labels[downside_nb] = '?'
             to_calculate = {'cos': 'hyp', 'sin': 'hyp',
                             'tan': 'adj'}[trigo_fct]
         else:
             labels[downside_nb] = Number(down_length_val,
-                                         unit=str(length_unit))
+                                         unit=self.length_unit)
         self.setup_labels(labels)
         self._trigo_setup = f'{trigo_fct}_{angle_nb}_{to_calculate}'

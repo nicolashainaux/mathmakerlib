@@ -93,16 +93,18 @@ class TrigonometricEquation(Equation):
         adj_length = opp_length = hyp_length = ''
         equal_sign = '='
         result = ''
-        unit = r'\degree' if self.to_calculate == 'angle' else ''
+        unit = ''
+        if self.to_calculate == 'angle':
+            unit = r'\degree'
+        else:
+            unit = self.rt.length_unit
 
         if self.trigo_fct == 'cos':
             if self.to_calculate == 'adj':
                 hyp_length = Number(self.rt.hyp.label_value, unit=None)
-                unit = self.rt.hyp.label_value.unit
                 result = angle_measure.cos() * hyp_length
             elif self.to_calculate == 'hyp':
                 adj_length = Number(adj_side.label_value, unit=None)
-                unit = adj_side.label_value.unit
                 result = adj_length / angle_measure.cos()
             else:  # self.to_calculate == 'angle'
                 hyp_length = Number(self.rt.hyp.label_value, unit=None)
@@ -112,11 +114,9 @@ class TrigonometricEquation(Equation):
         elif self.trigo_fct == 'sin':
             if self.to_calculate == 'opp':
                 hyp_length = Number(self.rt.hyp.label_value, unit=None)
-                unit = self.rt.hyp.label_value.unit
                 result = angle_measure.sin() * hyp_length
             elif self.to_calculate == 'hyp':
                 opp_length = Number(opp_side.label_value, unit=None)
-                unit = opp_side.label_value.unit
                 result = opp_length / angle_measure.sin()
             else:  # self.to_calculate == 'angle'
                 hyp_length = Number(self.rt.hyp.label_value, unit=None)
@@ -126,11 +126,9 @@ class TrigonometricEquation(Equation):
         else:  # trigo_fct == 'tan'
             if self.to_calculate == 'opp':
                 adj_length = Number(adj_side.label_value, unit=None)
-                unit = adj_side.label_value.unit
                 result = angle_measure.tan() * adj_length
             elif self.to_calculate == 'adj':
                 opp_length = Number(opp_side.label_value, unit=None)
-                unit = opp_side.label_value.unit
                 result = opp_length / angle_measure.tan()
             else:  # self.to_calculate == 'angle'
                 adj_length = Number(adj_side.label_value, unit=None)
