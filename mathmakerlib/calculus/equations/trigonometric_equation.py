@@ -85,8 +85,10 @@ class TrigonometricEquation(Equation):
     def setup_template_values(self, required_rounding):
         rounding_rank = Number(required_rounding).fracdigits_nb(
             ignore_trailing_zeros=False)
-        angle_measure = Number(
-            self.rt.angles[self.angle_nb].decoration.label_value)
+        angle_measure = '?'
+        if self.to_calculate != 'angle':
+            angle_measure = Number(
+                self.rt.angles[self.angle_nb].decoration.label_value)
         adj_side = {0: self.rt.leg0, 2: self.rt.leg1}[self.angle_nb]
         opp_side = {0: self.rt.leg1, 2: self.rt.leg0}[self.angle_nb]
         hyp, adj, opp = self.setup_hyp_adj_opp()
@@ -146,8 +148,11 @@ class TrigonometricEquation(Equation):
         if isinstance(adj_length, Number):
             adj_length = adj_length.printed
 
+        if isinstance(angle_measure, Number):
+            angle_measure = angle_measure.printed
+
         return {'angle': self.rt.angles[self.angle_nb].name,
-                'angle_measure': angle_measure.printed,
+                'angle_measure': angle_measure,
                 'hyp': hyp, 'adj': adj, 'opp': opp,
                 'hyp_length': hyp_length, 'adj_length': adj_length,
                 'opp_length': opp_length,

@@ -44,12 +44,25 @@ ZAD_HYP_COS2 = (DATA_PATH / 'ZAD_hyp_cos2.tex').read_text()
 ZAD_OPP_SIN2 = (DATA_PATH / 'ZAD_opp_sin2.tex').read_text()
 ZAD_HYP_SIN2 = (DATA_PATH / 'ZAD_hyp_sin2.tex').read_text()
 
+TAO_ANGLE_TAN0 = (DATA_PATH / 'TAO_angle_tan0.tex').read_text()
+TAO_ANGLE_TAN2 = (DATA_PATH / 'TAO_angle_tan2.tex').read_text()
+TAO_ANGLE_COS0 = (DATA_PATH / 'TAO_angle_cos0.tex').read_text()
+TAO_ANGLE_COS2 = (DATA_PATH / 'TAO_angle_cos2.tex').read_text()
+TAO_ANGLE_SIN0 = (DATA_PATH / 'TAO_angle_sin0.tex').read_text()
+TAO_ANGLE_SIN2 = (DATA_PATH / 'TAO_angle_sin2.tex').read_text()
+
 
 @pytest.fixture
 def t6():
     t6 = RightTriangle(name='ZAD', rotation_angle=90)
     # t6.setup_labels([Number('3'), Number('2.5'), None])
     return t6
+
+
+@pytest.fixture
+def t7():
+    t7 = RightTriangle(name='TAO')
+    return t7
 
 
 def test_TrigonometricEquation_instanciation_error(t6):
@@ -187,3 +200,51 @@ def test_TrigonometricEquation_autosolve_hyp_sin2(t6):
                               up_length_val=Number(48, unit='m'))
     eq = TrigonometricEquation(t6)
     assert eq.autosolve(required_rounding=Decimal('1.0')) == ZAD_HYP_SIN2
+
+
+def test_TrigonometricEquation_autosolve_angle_tan0(t7):
+    t7.setup_for_trigonometry(angle_nb=0, trigo_fct='tan',
+                              up_length_val=Number(9, unit='cm'),
+                              down_length_val=Number(9, unit='cm'))
+    eq = TrigonometricEquation(t7)
+    assert eq.autosolve(required_rounding=Decimal('1.0')) == TAO_ANGLE_TAN0
+
+
+def test_TrigonometricEquation_autosolve_angle_tan2(t7):
+    t7.setup_for_trigonometry(angle_nb=2, trigo_fct='tan',
+                              up_length_val=Number(3, unit='cm'),
+                              down_length_val=Number(10, unit='cm'))
+    eq = TrigonometricEquation(t7)
+    assert eq.autosolve(required_rounding=Decimal('1.0')) == TAO_ANGLE_TAN2
+
+
+def test_TrigonometricEquation_autosolve_angle_cos0(t7):
+    t7.setup_for_trigonometry(angle_nb=0, trigo_fct='cos',
+                              up_length_val=Number(3, unit='cm'),
+                              down_length_val=Number(5, unit='cm'))
+    eq = TrigonometricEquation(t7)
+    assert eq.autosolve(required_rounding=Decimal('1.00')) == TAO_ANGLE_COS0
+
+
+def test_TrigonometricEquation_autosolve_angle_cos2(t7):
+    t7.setup_for_trigonometry(angle_nb=2, trigo_fct='cos',
+                              up_length_val=Number(4, unit='cm'),
+                              down_length_val=Number(5, unit='cm'))
+    eq = TrigonometricEquation(t7)
+    assert eq.autosolve(required_rounding=Decimal('1.0')) == TAO_ANGLE_COS2
+
+
+def test_TrigonometricEquation_autosolve_angle_sin0(t7):
+    t7.setup_for_trigonometry(angle_nb=0, trigo_fct='sin',
+                              up_length_val=Number(3, unit='cm'),
+                              down_length_val=Number(5, unit='cm'))
+    eq = TrigonometricEquation(t7)
+    assert eq.autosolve(required_rounding=Decimal('1.00')) == TAO_ANGLE_SIN0
+
+
+def test_TrigonometricEquation_autosolve_angle_sin2(t7):
+    t7.setup_for_trigonometry(angle_nb=2, trigo_fct='sin',
+                              up_length_val=Number(4, unit='cm'),
+                              down_length_val=Number(5, unit='cm'))
+    eq = TrigonometricEquation(t7)
+    assert eq.autosolve(required_rounding=Decimal('1.0')) == TAO_ANGLE_SIN2

@@ -78,10 +78,18 @@ def test_TrigonometricEquation_compilations():
     ZAD_HYP_COS2 = (DATA_PATH / 'ZAD_hyp_cos2.tex').read_text()
     ZAD_OPP_SIN2 = (DATA_PATH / 'ZAD_opp_sin2.tex').read_text()
     ZAD_HYP_SIN2 = (DATA_PATH / 'ZAD_hyp_sin2.tex').read_text()
+    TAO_ANGLE_TAN0 = (DATA_PATH / 'TAO_angle_tan0.tex').read_text()
+    TAO_ANGLE_TAN2 = (DATA_PATH / 'TAO_angle_tan2.tex').read_text()
+    TAO_ANGLE_COS0 = (DATA_PATH / 'TAO_angle_cos0.tex').read_text()
+    TAO_ANGLE_COS2 = (DATA_PATH / 'TAO_angle_cos2.tex').read_text()
+    TAO_ANGLE_SIN0 = (DATA_PATH / 'TAO_angle_sin0.tex').read_text()
+    TAO_ANGLE_SIN2 = (DATA_PATH / 'TAO_angle_sin2.tex').read_text()
     content = '\n'.join([ZAD_ADJ_TAN0, ZAD_OPP_TAN0, ZAD_ADJ_COS0,
                          ZAD_HYP_COS0, ZAD_OPP_SIN0, ZAD_HYP_SIN0,
                          ZAD_ADJ_TAN2, ZAD_OPP_TAN2, ZAD_ADJ_COS2,
-                         ZAD_HYP_COS2, ZAD_OPP_SIN2, ZAD_HYP_SIN2])
+                         ZAD_HYP_COS2, ZAD_OPP_SIN2, ZAD_HYP_SIN2,
+                         TAO_ANGLE_TAN0, TAO_ANGLE_TAN2, TAO_ANGLE_COS0,
+                         TAO_ANGLE_COS2, TAO_ANGLE_SIN0, TAO_ANGLE_SIN2])
     with CompilationManager('test_TrigonometricEquation_compilations',
                             'article.tex', content) as cmd:
         ret_code = subprocess.run(cmd, shell=True, executable='/bin/bash',
