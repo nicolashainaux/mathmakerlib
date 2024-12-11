@@ -124,22 +124,6 @@ class RightTriangle(Triangle):
             return self._trigo_setup
         return False
 
-    def trigonometric_ratios(self):
-        """Definitions of the three standard trigonometric ratios."""
-        return {'cos': {0: [self.leg0.length_name,
-                            self.hyp.length_name[::-1]],
-                        2: [self.leg1.length_name[::-1],
-                            self.hyp.length_name]},
-                'sin': {0: [self.leg1.length_name[::-1],
-                            self.hyp.length_name],
-                        2: [self.leg0.length_name,
-                            self.hyp.length_name[::-1]]},
-                'tan': {0: [self.leg1.length_name,
-                            self.leg0.length_name[::-1]],
-                        2: [self.leg0.length_name[::-1],
-                            self.leg1.length_name]}
-                }
-
     def setup_for_trigonometry(self, angle_nb=None, trigo_fct=None,
                                angle_val=None,
                                up_length_val=None,
