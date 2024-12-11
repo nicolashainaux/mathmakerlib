@@ -148,6 +148,49 @@ def test_t6_setup_for_trigonometry_errors(t6):
                                   up_length_val=Number(3.5, unit='cm'))
 
 
+def test_t6_setup_for_trigonometry(t6):
+    t6.setup_for_trigonometry(angle_nb=0, trigo_fct='tan',
+                              angle_val=Number(32, unit=r'\degree'),
+                              down_length_val=None,
+                              up_length_val=Number(3.5, unit='cm'))
+    assert t6.trigo_setup == 'tan_0_adj'
+    t6.setup_for_trigonometry(angle_nb=2, trigo_fct='sin',
+                              angle_val=Number(32, unit=r'\degree'),
+                              down_length_val=Number(3.5, unit='cm'),
+                              up_length_val=None)
+    assert t6.trigo_setup == 'sin_2_opp'
+    t6.setup_for_trigonometry(angle_nb=0, trigo_fct='cos',
+                              angle_val=None,
+                              down_length_val='',
+                              up_length_val='')
+    assert t6.trigo_setup == 'cos_0_angle'
+    assert not t6.trigo_solvable
+    t6.setup_for_trigonometry(angle_nb=2, trigo_fct='cos',
+                              angle_val='',
+                              down_length_val=None,
+                              up_length_val='')
+    assert t6.trigo_setup == 'cos_2_hyp'
+    assert not t6.trigo_solvable
+    t6.setup_for_trigonometry(angle_nb=2, trigo_fct='cos',
+                              angle_val='',
+                              down_length_val=None,
+                              up_length_val=Number(4, unit='cm'))
+    assert t6.trigo_setup == 'cos_2_hyp'
+    assert not t6.trigo_solvable
+    t6.setup_for_trigonometry(angle_nb=2, trigo_fct='cos',
+                              angle_val=None,
+                              down_length_val=Number(4, unit='cm'),
+                              up_length_val='')
+    assert t6.trigo_setup == 'cos_2_angle'
+    assert not t6.trigo_solvable
+    t6.setup_for_trigonometry(angle_nb=2, trigo_fct='cos',
+                              angle_val=None,
+                              down_length_val='',
+                              up_length_val=Number(4, unit='cm'))
+    assert t6.trigo_setup == 'cos_2_angle'
+    assert not t6.trigo_solvable
+
+
 def test_sides_opposite_and_adjacent_to(t6):
     """Check side_adjacent_to() and side_opposite_to()"""
     assert t6.side_adjacent_to(0) == 'ZA'

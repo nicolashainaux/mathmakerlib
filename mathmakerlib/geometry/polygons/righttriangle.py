@@ -96,6 +96,7 @@ class RightTriangle(Triangle):
             self.right_angle.decoration = AngleDecoration(thickness=thickness)
             self.right_angle.mark_right = True
         self._trigo_setup = ''
+        self.trigo_solvable = False
         self.length_unit = ''
 
     @property
@@ -134,7 +135,9 @@ class RightTriangle(Triangle):
         Setup labels and stores configuration details.
 
         Exactly one parameter among the three *_val ones must be left to None,
-        this is the one that will be calculated.
+        this is the one that will be calculated. The remaining ones may be set
+        to '' if one wants to only write the trigonometric formula, for
+        instance, and not calculate anything: then self.trigo_solvable == False
 
         :param angle_nb: must be either 0 or 2 (index of an acute angle)
         :type angle_nb: int
@@ -180,28 +183,40 @@ class RightTriangle(Triangle):
         downside_nb = side_nb[trigo_fct][angle_nb]['down']
         labels = [None, None, None]
         self.angles[angle_nb].decoration = angle_decoration
-        to_calculate = 'angle'
-        if angle_val is None:
+        if isinstance(up_length_val, Number):
             self.length_unit = str(up_length_val.unit)
+        elif isinstance(down_length_val, Number):
+            self.length_unit = str(down_length_val.unit)
+        self.trigo_solvable = True
+        to_calculate = 'nothing'
+        if angle_val is None:
+            to_calculate = 'angle'
             if not only_mark_unknown_angle:
                 self.angles[angle_nb].label = '?'
             else:
                 self.angles[angle_nb].label = ''
+        elif angle_val == '':
+            self.trigo_solvable = False
+            self.angles[angle_nb].label = ''
         else:
             self.angles[angle_nb].label = Number(angle_val, unit=r'\degree')
             required.package['gensymb'] = True
         if up_length_val is None:
-            self.length_unit = str(down_length_val.unit)
             labels[upside_nb] = '?'
             to_calculate = {'cos': 'adj', 'sin': 'opp',
                             'tan': 'opp'}[trigo_fct]
+        elif up_length_val == '':
+            labels[upside_nb] = up_length_val
+            self.trigo_solvable = False
         else:
             labels[upside_nb] = Number(up_length_val, unit=self.length_unit)
         if down_length_val is None:
-            self.length_unit = str(up_length_val.unit)
             labels[downside_nb] = '?'
             to_calculate = {'cos': 'hyp', 'sin': 'hyp',
                             'tan': 'adj'}[trigo_fct]
+        elif down_length_val == '':
+            labels[upside_nb] = down_length_val
+            self.trigo_solvable = False
         else:
             labels[downside_nb] = Number(down_length_val,
                                          unit=self.length_unit)

@@ -79,29 +79,28 @@ def test_TrigonometricEquation_imprint(t6):
                               down_length_val=Number('3.5', unit='cm'))
     assert TrigonometricEquation(t6).printed \
         == r'\[tan(\text{\angle AZD})=\frac{\text{AD}}{\text{AZ}}\]'
-    t6.setup_for_trigonometry(angle_nb=2, trigo_fct='tan',
-                              angle_val=Number('32', unit=r'\degree'),
-                              down_length_val=Number('3.5', unit='cm'))
+    t6.setup_for_trigonometry(angle_nb=0, trigo_fct='tan', angle_val=None,
+                              up_length_val='', down_length_val='')
+    assert TrigonometricEquation(t6).printed \
+        == r'\[tan(\text{\angle AZD})=\frac{\text{AD}}{\text{AZ}}\]'
+    t6.setup_for_trigonometry(angle_nb=2, trigo_fct='tan', angle_val=None,
+                              up_length_val='', down_length_val='')
     assert TrigonometricEquation(t6).printed \
         == r'\[tan(\text{\angle ZDA})=\frac{\text{AZ}}{\text{AD}}\]'
-    t6.setup_for_trigonometry(angle_nb=0, trigo_fct='cos',
-                              angle_val=Number('32', unit=r'\degree'),
-                              down_length_val=Number('3.5', unit='cm'))
+    t6.setup_for_trigonometry(angle_nb=0, trigo_fct='cos', angle_val=None,
+                              up_length_val='', down_length_val='')
     assert TrigonometricEquation(t6).printed \
         == r'\[cos(\text{\angle AZD})=\frac{\text{ZA}}{\text{ZD}}\]'
-    t6.setup_for_trigonometry(angle_nb=2, trigo_fct='cos',
-                              angle_val=Number('32', unit=r'\degree'),
-                              down_length_val=Number('3.5', unit='cm'))
+    t6.setup_for_trigonometry(angle_nb=2, trigo_fct='cos', angle_val=None,
+                              up_length_val='', down_length_val='')
     assert TrigonometricEquation(t6).printed \
         == r'\[cos(\text{\angle ZDA})=\frac{\text{DA}}{\text{DZ}}\]'
-    t6.setup_for_trigonometry(angle_nb=0, trigo_fct='sin',
-                              angle_val=Number('32', unit=r'\degree'),
-                              down_length_val=Number('3.5', unit='cm'))
+    t6.setup_for_trigonometry(angle_nb=0, trigo_fct='sin', angle_val=None,
+                              up_length_val='', down_length_val='')
     assert TrigonometricEquation(t6).printed \
         == r'\[sin(\text{\angle AZD})=\frac{\text{DA}}{\text{DZ}}\]'
-    t6.setup_for_trigonometry(angle_nb=2, trigo_fct='sin',
-                              angle_val=Number('32', unit=r'\degree'),
-                              down_length_val=Number('3.5', unit='cm'))
+    t6.setup_for_trigonometry(angle_nb=2, trigo_fct='sin', angle_val=None,
+                              up_length_val='', down_length_val='')
     assert TrigonometricEquation(t6).printed \
         == r'\[sin(\text{\angle ZDA})=\frac{\text{ZA}}{\text{ZD}}\]'
 
@@ -248,3 +247,12 @@ def test_TrigonometricEquation_autosolve_angle_sin2(t7):
                               down_length_val=Number(5, unit='cm'))
     eq = TrigonometricEquation(t7)
     assert eq.autosolve(required_rounding=Decimal('1.0')) == TAO_ANGLE_SIN2
+
+
+def test_TrigonometricEquation_autosolve_error(t7):
+    t7.setup_for_trigonometry(angle_nb=2, trigo_fct='sin', angle_val=None,
+                              up_length_val='', down_length_val='')
+    with pytest.raises(ValueError) as excinfo:
+        TrigonometricEquation(t7).autosolve(required_rounding=Decimal('1.0'))
+    assert str(excinfo.value) == 'This RightTriangle\'s setup for '\
+        'trigonometry is not enough to calculate anything.'

@@ -163,6 +163,9 @@ class TrigonometricEquation(Equation):
         """
         Print the complete resolution.
         """
+        if not self.rt.trigo_solvable:
+            raise ValueError('This RightTriangle\'s setup for trigonometry '
+                             'is not enough to calculate anything.')
         required.package['gensymb'] = True
         data = self.setup_template_values(required_rounding)
         template_fn = f'trigonometric_equation_calculate_' \
