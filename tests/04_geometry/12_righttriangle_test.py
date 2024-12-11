@@ -146,3 +146,17 @@ def test_t6_setup_for_trigonometry_errors(t6):
         t6.setup_for_trigonometry(angle_nb=0, trigo_fct='tas',
                                   angle_val=Number(32, unit=r'\degree'),
                                   up_length_val=Number(3.5, unit='cm'))
+
+
+def test_sides_opposite_and_adjacent_to(t6):
+    """Check side_adjacent_to() and side_opposite_to()"""
+    assert t6.side_adjacent_to(0) == 'ZA'
+    assert t6.side_adjacent_to(2) == 'AD'
+    assert t6.side_opposite_to(0) == 'AD'
+    assert t6.side_opposite_to(2) == 'ZA'
+    with pytest.raises(ValueError) as excinfo:
+        t6.side_adjacent_to(1)
+    assert str(excinfo.value) == 'angle_nb must be 0 or 2; got 1 instead'
+    with pytest.raises(ValueError) as excinfo:
+        t6.side_opposite_to(3)
+    assert str(excinfo.value) == 'angle_nb must be 0 or 2; got 3 instead'

@@ -202,3 +202,27 @@ class RightTriangle(Triangle):
                                          unit=self.length_unit)
         self.setup_labels(labels)
         self._trigo_setup = f'{trigo_fct}_{angle_nb}_{to_calculate}'
+
+    def side_opposite_to(self, angle_nb):
+        """
+        Return the side opposite to given angle.
+
+        :param angle: one of the acute angles numbers
+        :type angle: int (must be 0 or 2)
+        """
+        if angle_nb not in [0, 2]:
+            raise ValueError(f'angle_nb must be 0 or 2; '
+                             f'got {angle_nb} instead')
+        return ({0: self.leg1, 2: self.leg0}[angle_nb]).length_name
+
+    def side_adjacent_to(self, angle_nb):
+        """
+        Return the side adjacent to given angle.
+
+        :param angle: one of the acute angles numbers
+        :type angle: int (must be 0 or 2)
+        """
+        if angle_nb not in [0, 2]:
+            raise ValueError(f'angle_nb must be 0 or 2; '
+                             f'got {angle_nb} instead')
+        return ({0: self.leg0, 2: self.leg1}[angle_nb]).length_name
