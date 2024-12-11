@@ -131,27 +131,32 @@ class RightTriangle(Triangle):
                                only_mark_unknown_angle=False,
                                angle_decoration='default'):
         """
-        Setup labels, determine subst_dict and stores configuration details.
+        Setup labels and stores configuration details.
 
-        Exactly one parameter among the three *_val ones must be left to None.
-        According to the chosen trigo_fct and this parameter, this method will
-        create the correct subst_dict.
+        Exactly one parameter among the three *_val ones must be left to None,
+        this is the one that will be calculated.
 
         :param angle_nb: must be either 0 or 2 (index of an acute angle)
         :type angle_nb: int
         :param trigo_fct: must belong to ['cos', 'sin', 'tan']
         :type trigo_fct: str
-        :param angle_val: the angle's Number
+        :param angle_val: the angle measure (in degrees)
         :type angle_val: Number (or leave it to None to use it as the unknown
             value to calculate)
-        :param up_length_val: the length's Number of the side that's at the
-            numerator of the trigonometric formula
+        :param up_length_val: the length of the side that's at the numerator of
+            the trigonometric formula
         :type up_length_val: Number (or leave it to None to use it as the
             unknown value to calculate)
-        :param down_length_val: the length's Number of the side that's at the
+        :param down_length_val: the length of the side that's at the
             denominator of the trigonometric formula
         :type down_length_val: Number (or leave it to None to use it as the
             unknown value to calculate)
+        :param only_mark_unknown_angle: if True, then no ? will be used as
+            label for the angle to calculate.
+        :type only_mark_unknown_angle: anything that evaluates to True or False
+        :param angle_decoration: to use a special decoration for the acute
+            angle
+        :type angle_decoration: AngleDecoration is expected
         """
         if [angle_val, up_length_val, down_length_val].count(None) != 1:
             raise ValueError('Exactly one of the optional arguments '
