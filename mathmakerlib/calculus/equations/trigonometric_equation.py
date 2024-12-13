@@ -24,6 +24,7 @@
 
 from .equation import Equation
 from mathmakerlib.calculus.number import Number
+from mathmakerlib.core.printable import Printable
 from mathmakerlib.shared import ROOTDIR  # , L10N_DOMAIN, LOCALEDIR
 from mathmakerlib import required
 
@@ -36,25 +37,21 @@ EQUALITIES = \
             r'\frac{{\text{{{opp}}}}}{{\text{{{adj}}}}}\]'}
 
 
-class TrigonometricEquation(Equation):
+class TrigonometricFormula(Printable):
 
-    def __init__(self, rt):
+    def __init__(self, rt, trigo_fct, angle_nb):
         """
         Initialize self.
 
         :param rt: the right triangle
         :type rt: RightTriangle
         """
-        if rt.trigo_setup:
-            self.rt = rt
-            self.trigo_fct, angle_nb, t = self.rt.trigo_setup.split('_')
-            self.angle_nb = int(angle_nb)
-            self.to_calculate = t
-        else:
-            raise ValueError(f'The provided object (expected: RightTriangle, '
-                             f'provided: {type(rt).__name__}) has not been '
-                             f'set up for trigonometry. rt._trigo_setup == '
-                             f"'{rt._trigo_setup}'")
+        if trigo_fct not in EQUALITIES.keys():
+            raise ValueError(f'Expected trigo_fct argument to be in '
+                             f'{EQUALITIES.keys()}; got {trigo_fct} instead.')
+        self.rt = rt
+        self.trigo_fct = trigo_fct
+        self.angle_nb = int(angle_nb)
 
     def setup_hyp_adj_opp(self):
         adj = opp = hyp = ''
@@ -82,6 +79,33 @@ class TrigonometricEquation(Equation):
                 'hyp': hyp, 'adj': adj, 'opp': opp}
         return template.format(**data)
 
+
+class TrigonometricEquation(Equation):
+
+    def __init__(self, rt):
+        """
+        Initialize self.
+
+        :param rt: the right triangle
+        :type rt: RightTriangle
+        """
+        if rt.trigo_setup:
+            self.rt = rt
+            self.trigo_fct, angle_nb, t = self.rt.trigo_setup.split('_')
+            self.angle_nb = int(angle_nb)
+            self.to_calculate = t
+            self.formula = TrigonometricFormula(rt, self.trigo_fct,
+                                                self.angle_nb)
+        else:
+            raise ValueError(f'The provided object (expected: RightTriangle, '
+                             f'provided: {type(rt).__name__}) has not been '
+                             f'set up for trigonometry. rt._trigo_setup == '
+                             f"'{rt._trigo_setup}'")
+
+    def imprint(self, neq=False, start_expr=True, variant='latex'):
+        return self.formula.imprint(neq=neq, start_expr=start_expr,
+                                    variant=variant)
+
     def setup_template_values(self, required_rounding):
         rounding_rank = Number(required_rounding).fracdigits_nb(
             ignore_trailing_zeros=False)
@@ -91,7 +115,7 @@ class TrigonometricEquation(Equation):
                 self.rt.angles[self.angle_nb].decoration.label_value)
         adj_side = {0: self.rt.leg0, 2: self.rt.leg1}[self.angle_nb]
         opp_side = {0: self.rt.leg1, 2: self.rt.leg0}[self.angle_nb]
-        hyp, adj, opp = self.setup_hyp_adj_opp()
+        hyp, adj, opp = self.formula.setup_hyp_adj_opp()
         adj_length = opp_length = hyp_length = ''
         equal_sign = '='
         result = ''
@@ -163,13 +187,10 @@ class TrigonometricEquation(Equation):
         """
         Print the complete resolution.
         """
-        if not self.rt.trigo_solvable:
-            raise ValueError('This RightTriangle\'s setup for trigonometry '
-                             'is not enough to calculate anything.')
         required.package['gensymb'] = True
         data = self.setup_template_values(required_rounding)
         template_fn = f'trigonometric_equation_calculate_' \
             f'{self.to_calculate}_{self.trigo_fct}.tex'
         template_path = ROOTDIR / 'calculus/equations/templates' / template_fn
         template = template_path.read_text()
-        return f'{self.printed}\n{template.format(**data)}'
+        return f'{self.formula.printed}\n{template.format(**data)}'

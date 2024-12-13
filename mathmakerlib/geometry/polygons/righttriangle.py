@@ -170,7 +170,7 @@ class RightTriangle(Triangle):
                              f' instead)')
         if trigo_fct not in ['cos', 'sin', 'tan']:
             raise ValueError(f"trigo_fct must be either 'cos', 'sin' "
-                             f"or 'tan', got '{trigo_fct} instead.")
+                             f"or 'tan', got '{trigo_fct}' instead.")
         if angle_decoration == 'default':
             angle_decoration = AngleDecoration()
         side_nb = {'cos': {0: {'up': 0, 'down': 2},
@@ -187,17 +187,12 @@ class RightTriangle(Triangle):
             self.length_unit = str(up_length_val.unit)
         elif isinstance(down_length_val, Number):
             self.length_unit = str(down_length_val.unit)
-        self.trigo_solvable = True
-        to_calculate = 'nothing'
+        to_calculate = 'angle'
         if angle_val is None:
-            to_calculate = 'angle'
             if not only_mark_unknown_angle:
                 self.angles[angle_nb].label = '?'
             else:
                 self.angles[angle_nb].label = ''
-        elif angle_val == '':
-            self.trigo_solvable = False
-            self.angles[angle_nb].label = ''
         else:
             self.angles[angle_nb].label = Number(angle_val, unit=r'\degree')
             required.package['gensymb'] = True
@@ -205,18 +200,12 @@ class RightTriangle(Triangle):
             labels[upside_nb] = '?'
             to_calculate = {'cos': 'adj', 'sin': 'opp',
                             'tan': 'opp'}[trigo_fct]
-        elif up_length_val == '':
-            labels[upside_nb] = up_length_val
-            self.trigo_solvable = False
         else:
             labels[upside_nb] = Number(up_length_val, unit=self.length_unit)
         if down_length_val is None:
             labels[downside_nb] = '?'
             to_calculate = {'cos': 'hyp', 'sin': 'hyp',
                             'tan': 'adj'}[trigo_fct]
-        elif down_length_val == '':
-            labels[upside_nb] = down_length_val
-            self.trigo_solvable = False
         else:
             labels[downside_nb] = Number(down_length_val,
                                          unit=self.length_unit)

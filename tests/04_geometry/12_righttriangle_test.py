@@ -20,6 +20,7 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 import pytest
+import decimal
 
 from mathmakerlib.calculus import Number
 from mathmakerlib.geometry import Point, LineSegment, RightTriangle
@@ -130,22 +131,32 @@ r"""(0.25 cm, 0) -- (0.25 cm, -0.25 cm) -- (0, -0.25 cm);
 
 def test_t6_setup_for_trigonometry_errors(t6):
     """Check errors raised by setup_for_trigonometry()."""
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError) as excinfo:
         t6.setup_for_trigonometry(angle_nb=0, trigo_fct='tan',
                                   angle_val=Number(32, unit=r'\degree'),
                                   down_length_val=Number(3.5, unit='cm'),
                                   up_length_val=Number(3.5, unit='cm'))
-    with pytest.raises(ValueError):
+    assert str(excinfo.value) == 'Exactly one of the optional arguments '\
+        '(angle_val, up_length_val, down_length_val) must be None.'
+    with pytest.raises(ValueError) as excinfo:
         t6.setup_for_trigonometry(angle_nb=0, trigo_fct='tan',
                                   angle_val=Number(32, unit=r'\degree'))
-    with pytest.raises(ValueError):
+    assert str(excinfo.value) == 'Exactly one of the optional arguments '\
+        '(angle_val, up_length_val, down_length_val) must be None.'
+    with pytest.raises(ValueError) as excinfo:
         t6.setup_for_trigonometry(angle_nb=1, trigo_fct='tan',
                                   angle_val=Number(32, unit=r'\degree'),
                                   up_length_val=Number(3.5, unit='cm'))
-    with pytest.raises(ValueError):
+    assert str(excinfo.value) == 'angle_nb must be 0 or 2 (got 1 instead)'
+    with pytest.raises(ValueError) as excinfo:
         t6.setup_for_trigonometry(angle_nb=0, trigo_fct='tas',
                                   angle_val=Number(32, unit=r'\degree'),
                                   up_length_val=Number(3.5, unit='cm'))
+    assert str(excinfo.value) == "trigo_fct must be either 'cos', 'sin' or "\
+        "'tan', got 'tas' instead."
+    with pytest.raises(decimal.InvalidOperation):
+        t6.setup_for_trigonometry(angle_nb=0, trigo_fct='tan', angle_val=None,
+                                  up_length_val='', down_length_val='')
 
 
 def test_t6_setup_for_trigonometry(t6):
@@ -161,18 +172,18 @@ def test_t6_setup_for_trigonometry(t6):
     assert t6.trigo_setup == 'sin_2_opp'
     t6.setup_for_trigonometry(angle_nb=0, trigo_fct='cos',
                               angle_val=None,
-                              down_length_val='',
-                              up_length_val='')
+                              down_length_val=Number(32, unit='cm'),
+                              up_length_val=Number(16, unit='cm'))
     assert t6.trigo_setup == 'cos_0_angle'
     assert not t6.trigo_solvable
     t6.setup_for_trigonometry(angle_nb=2, trigo_fct='cos',
-                              angle_val='',
+                              angle_val=Number(32, unit=r'\degree'),
                               down_length_val=None,
-                              up_length_val='')
+                              up_length_val=Number(16, unit='cm'))
     assert t6.trigo_setup == 'cos_2_hyp'
     assert not t6.trigo_solvable
     t6.setup_for_trigonometry(angle_nb=2, trigo_fct='cos',
-                              angle_val='',
+                              angle_val=Number(32, unit=r'\degree'),
                               down_length_val=None,
                               up_length_val=Number(4, unit='cm'))
     assert t6.trigo_setup == 'cos_2_hyp'
@@ -180,12 +191,12 @@ def test_t6_setup_for_trigonometry(t6):
     t6.setup_for_trigonometry(angle_nb=2, trigo_fct='cos',
                               angle_val=None,
                               down_length_val=Number(4, unit='cm'),
-                              up_length_val='')
+                              up_length_val=Number(1, unit='cm'))
     assert t6.trigo_setup == 'cos_2_angle'
     assert not t6.trigo_solvable
     t6.setup_for_trigonometry(angle_nb=2, trigo_fct='cos',
                               angle_val=None,
-                              down_length_val='',
+                              down_length_val=Number(16, unit='cm'),
                               up_length_val=Number(4, unit='cm'))
     assert t6.trigo_setup == 'cos_2_angle'
     assert not t6.trigo_solvable

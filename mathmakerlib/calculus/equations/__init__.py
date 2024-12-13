@@ -20,6 +20,6 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 from .pythagorean_equation import PythagoreanEquation
-from .trigonometric_equation import TrigonometricEquation
+from .trigonometric_equation import TrigonometricEquation, TrigonometricFormula
 
-__all__ = [PythagoreanEquation, TrigonometricEquation]
+__all__ = [PythagoreanEquation, TrigonometricEquation, TrigonometricFormula]
