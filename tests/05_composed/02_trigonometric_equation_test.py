@@ -99,6 +99,14 @@ def test_TrigonometricFormula_imprint(t6):
         == r'\[sin(\text{\angle ZDA})=\frac{\text{ZA}}{\text{ZD}}\]'
 
 
+def test_TrigonometricEquation_imprint(t6):
+    t6.setup_for_trigonometry(angle_nb=0, trigo_fct='tan',
+                              angle_val=Number(32, unit=r'\degree'),
+                              down_length_val=Number('3.5', unit='cm'))
+    assert TrigonometricEquation(t6).printed \
+        == r'\[tan(\text{\angle AZD})=\frac{\text{AD}}{\text{AZ}}\]'
+
+
 def test_TrigonometricEquation_autosolve_opp_tan0(t6):
     t6.setup_for_trigonometry(angle_nb=0, trigo_fct='tan',
                               angle_val=Number(32, unit=r'\degree'),
