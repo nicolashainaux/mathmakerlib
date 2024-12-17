@@ -24,6 +24,7 @@ import decimal
 
 from mathmakerlib.calculus import Number, Unit
 from mathmakerlib.geometry import Point, LineSegment, RightTriangle
+from mathmakerlib.geometry import AngleDecoration
 
 
 @pytest.fixture
@@ -208,6 +209,42 @@ def test_t6_setup_for_trigonometry(t6):
                               up_length_val=Number(4, unit='cm'),
                               only_mark_unknown_angle=True)
     assert t6.trigo_setup == 'cos_2_angle'
+
+
+def test_drawing_righttriangle_setup_for_trigonometry():
+    """Check drawing the RightTriangle."""
+    r = RightTriangle(name='ICY', leg1_length=Number(4), leg2_length=Number(3))
+    dec = AngleDecoration(radius=Number('0.4', unit='cm'))
+    r.setup_for_trigonometry(angle_nb=2, trigo_fct='cos',
+                             angle_val=Number(39, unit=r'\degree'),
+                             down_length_val=None,
+                             up_length_val=Number(6, unit='km'),
+                             angle_decoration=dec)
+    assert r.drawn == r'''
+\begin{tikzpicture}
+% Declare Points
+\coordinate (I) at (0,0);
+\coordinate (C) at (4,0);
+\coordinate (Y) at (4,3);
+
+% Draw RightTriangle
+\draw[thick] (I)
+-- (C)
+-- (Y) node[midway, below, sloped] {\SI{6}{km}}
+-- cycle node[midway, above, sloped] {?}
+pic ["\ang{39}", angle eccentricity=2, draw, thick, angle radius = 0.4 cm]'''\
+    r''' {angle = I--Y--C};
+
+% Mark right angles
+\draw[thick, cm={cos(90), sin(90), -sin(90), cos(90), (C)}] (0.25 cm, 0) '''\
+    r'''-- (0.25 cm, 0.25 cm) -- (0, 0.25 cm);
+
+% Label Points
+\draw (I) node[left] {I};
+\draw (C) node[below right] {C};
+\draw (Y) node[above right] {Y};
+\end{tikzpicture}
+'''
 
 
 def test_sides_opposite_and_adjacent_to(t6):
