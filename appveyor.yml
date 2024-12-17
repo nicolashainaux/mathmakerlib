@@ -14,7 +14,7 @@ max_jobs: 1
 environment:
   matrix:
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-      PYTHON: "C:\\Python38-x64\\python.exe"
+      PYTHON: "C:\\Python39-x64\\python.exe"
       APPVEYOR_BAKE_IMAGE: vs2019_mathmakerlib
     - APPVEYOR_BUILD_WORKER_IMAGE: Ubuntu2004
       APPVEYOR_BAKE_IMAGE: ubuntu2004_mathmakerlib
@@ -25,12 +25,13 @@ install:
   - sh: pwd
   - sh: ls -alhG
   - cmd: set PYTHONIOENCODING=utf-8
-  - cmd: set PY_PYTHON=3.8
-  - cmd: set PATH=C:\\Python38-x64\\;C:\\Python38-x64\\Scripts;%USERPROFILE%\\AppData\\Roaming\\Python\\Scripts;%PATH%
+  - cmd: set PY_PYTHON=3.9
+  - cmd: set PATH=C:\\Python39-x64\\;C:\\Python39-x64\\Scripts;%USERPROFILE%\\AppData\\Roaming\\Python\\Scripts;%PATH%
   - cmd: python --version
   - cmd: python -c "import sys; print(sys.platform); print(sys.version_info)"
-  - cmd: python -m venv py38
-  - sh: sudo apt -qq update
+  - cmd: python -m venv py39
+  - sh: python --version
+  - sh: sudo apt -qq update --allow-releaseinfo-change
   - sh: sudo apt -y install python3-venv python3-pip curl python-is-python3 fonts-ubuntu
   - sh: mkdir -p $HOME/.local/bin
   - sh: export PATH="$HOME/.local/bin:$PATH"
@@ -45,7 +46,7 @@ install:
   - sh: luaotfload-tool --version
 
 build_script:
-  - cmd: .\py38\Scripts\activate.bat
+  - cmd: .\py39\Scripts\activate.bat
   - cmd: curl -sSL https://install.python-poetry.org | %PYTHON%
   - cmd: poetry install
   - sh: curl -sSL https://install.python-poetry.org | python3 -
