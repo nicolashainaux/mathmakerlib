@@ -66,6 +66,16 @@ def t7():
     return t7
 
 
+def test_TrigonometricFormula_instanciation_error(t6):
+    with pytest.raises(ValueError) as excinfo:
+        TrigonometricFormula(t6, 'sit', 0)
+    assert str(excinfo.value) == 'Expected trigo_fct argument to be in '\
+        "['cos', 'sin', 'tan']; got 'sit' instead."
+    with pytest.raises(ValueError) as excinfo:
+        TrigonometricFormula(t6, 'sin', 3)
+    assert str(excinfo.value) == 'angle_nb must be 0 or 2 (got 3 instead)'
+
+
 def test_TrigonometricEquation_instanciation_error(t6):
     with pytest.raises(ValueError) as excinfo:
         TrigonometricEquation(t6)

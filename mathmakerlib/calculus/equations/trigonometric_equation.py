@@ -48,9 +48,13 @@ class TrigonometricFormula(Printable):
         """
         if trigo_fct not in EQUALITIES.keys():
             raise ValueError(f'Expected trigo_fct argument to be in '
-                             f'{EQUALITIES.keys()}; got {trigo_fct} instead.')
+                             f'{list(EQUALITIES.keys())}; '
+                             f"got '{trigo_fct}' instead.")
         self.rt = rt
         self.trigo_fct = trigo_fct
+        if angle_nb not in [0, 2]:
+            raise ValueError(f'angle_nb must be 0 or 2 (got {angle_nb}'
+                             f' instead)')
         self.angle_nb = int(angle_nb)
 
     def setup_hyp_adj_opp(self):
