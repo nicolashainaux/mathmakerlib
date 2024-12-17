@@ -30,9 +30,11 @@ install:
   - cmd: python --version
   - cmd: python -c "import sys; print(sys.platform); print(sys.version_info)"
   - cmd: python -m venv py39
-  - sh: python --version
   - sh: sudo apt -qq update --allow-releaseinfo-change
   - sh: sudo apt -y install python3-venv python3-pip curl python-is-python3 fonts-ubuntu
+  - sh: sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.8 8
+  - sh: sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.9 9
+  - sh: python --version
   - sh: mkdir -p $HOME/.local/bin
   - sh: export PATH="$HOME/.local/bin:$PATH"
   - sh: echo $PATH
