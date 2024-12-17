@@ -180,6 +180,12 @@ class RightTriangle(Triangle):
         downside_nb = side_nb[trigo_fct][angle_nb]['down']
         labels = [None, None, None]
         self.angles[angle_nb].decoration = angle_decoration
+        if all(isinstance(v, Number)
+               for v in [up_length_val, down_length_val]):
+            if up_length_val.unit != down_length_val.unit:
+                raise ValueError(f'The unit of the two provided lengths must '
+                                 f'be the same, got "{up_length_val.unit}" '
+                                 f'and "{down_length_val.unit}" instead.')
         if isinstance(up_length_val, Number):
             self.length_unit = up_length_val.unit
         elif isinstance(down_length_val, Number):

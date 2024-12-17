@@ -157,6 +157,13 @@ def test_t6_setup_for_trigonometry_errors(t6):
     with pytest.raises(decimal.InvalidOperation):
         t6.setup_for_trigonometry(angle_nb=0, trigo_fct='tan', angle_val=None,
                                   up_length_val='', down_length_val='')
+    with pytest.raises(ValueError) as excinfo:
+        t6.setup_for_trigonometry(angle_nb=0, trigo_fct='tan',
+                                  angle_val=None,
+                                  down_length_val=Number(6.5, unit='dm'),
+                                  up_length_val=Number(2.5, unit='cm'))
+    assert str(excinfo.value) == 'The unit of the two provided lengths must '\
+        'be the same, got "cm" and "dm" instead.'
 
 
 def test_t6_setup_for_trigonometry(t6):
