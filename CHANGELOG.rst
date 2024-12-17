@@ -5,6 +5,13 @@ Unreleased
 ----------
 
 
+Version 0.7.21 (2024-12-17)
+---------------------------
+
+* Add trigonometric methods to Number (with degrees as angle unit)
+* Add trigonometric methods to RightTriangle
+* Add TrigonometricEquation and TrigonometricFormula
+
 Version 0.7.20 (2024-11-24)
 ---------------------------
 
