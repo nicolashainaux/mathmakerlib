@@ -175,31 +175,26 @@ def test_t6_setup_for_trigonometry(t6):
                               down_length_val=Number(32, unit='cm'),
                               up_length_val=Number(16, unit='cm'))
     assert t6.trigo_setup == 'cos_0_angle'
-    assert not t6.trigo_solvable
     t6.setup_for_trigonometry(angle_nb=2, trigo_fct='cos',
                               angle_val=Number(32, unit=r'\degree'),
                               down_length_val=None,
                               up_length_val=Number(16, unit='cm'))
     assert t6.trigo_setup == 'cos_2_hyp'
-    assert not t6.trigo_solvable
     t6.setup_for_trigonometry(angle_nb=2, trigo_fct='cos',
                               angle_val=Number(32, unit=r'\degree'),
                               down_length_val=None,
                               up_length_val=Number(4, unit='cm'))
     assert t6.trigo_setup == 'cos_2_hyp'
-    assert not t6.trigo_solvable
     t6.setup_for_trigonometry(angle_nb=2, trigo_fct='cos',
                               angle_val=None,
                               down_length_val=Number(4, unit='cm'),
                               up_length_val=Number(1, unit='cm'))
     assert t6.trigo_setup == 'cos_2_angle'
-    assert not t6.trigo_solvable
     t6.setup_for_trigonometry(angle_nb=2, trigo_fct='cos',
                               angle_val=None,
                               down_length_val=Number(16, unit='cm'),
                               up_length_val=Number(4, unit='cm'))
     assert t6.trigo_setup == 'cos_2_angle'
-    assert not t6.trigo_solvable
 
 
 def test_sides_opposite_and_adjacent_to(t6):

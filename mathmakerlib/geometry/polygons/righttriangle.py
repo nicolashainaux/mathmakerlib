@@ -96,7 +96,6 @@ class RightTriangle(Triangle):
             self.right_angle.decoration = AngleDecoration(thickness=thickness)
             self.right_angle.mark_right = True
         self._trigo_setup = ''
-        self.trigo_solvable = False
         self.length_unit = ''
 
     @property
@@ -135,9 +134,7 @@ class RightTriangle(Triangle):
         Setup labels and stores configuration details.
 
         Exactly one parameter among the three *_val ones must be left to None,
-        this is the one that will be calculated. The remaining ones may be set
-        to '' if one wants to only write the trigonometric formula, for
-        instance, and not calculate anything: then self.trigo_solvable == False
+        this is the one that will be calculated.
 
         :param angle_nb: must be either 0 or 2 (index of an acute angle)
         :type angle_nb: int
