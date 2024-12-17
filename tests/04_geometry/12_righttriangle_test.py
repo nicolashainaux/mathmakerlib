@@ -22,7 +22,7 @@
 import pytest
 import decimal
 
-from mathmakerlib.calculus import Number
+from mathmakerlib.calculus import Number, Unit
 from mathmakerlib.geometry import Point, LineSegment, RightTriangle
 
 
@@ -165,25 +165,30 @@ def test_t6_setup_for_trigonometry(t6):
                               down_length_val=None,
                               up_length_val=Number(3.5, unit='cm'))
     assert t6.trigo_setup == 'tan_0_adj'
+    assert t6.length_unit == Unit('cm')
     t6.setup_for_trigonometry(angle_nb=2, trigo_fct='sin',
                               angle_val=Number(32, unit=r'\degree'),
-                              down_length_val=Number(3.5, unit='cm'),
+                              down_length_val=Number(3.5, unit='dm'),
                               up_length_val=None)
+    assert t6.length_unit == Unit('dm')
     assert t6.trigo_setup == 'sin_2_opp'
     t6.setup_for_trigonometry(angle_nb=0, trigo_fct='cos',
                               angle_val=None,
-                              down_length_val=Number(32, unit='cm'),
-                              up_length_val=Number(16, unit='cm'))
+                              down_length_val=Number(32, unit='mm'),
+                              up_length_val=Number(16, unit='mm'))
+    assert t6.length_unit == Unit('mm')
     assert t6.trigo_setup == 'cos_0_angle'
     t6.setup_for_trigonometry(angle_nb=2, trigo_fct='cos',
                               angle_val=Number(32, unit=r'\degree'),
                               down_length_val=None,
-                              up_length_val=Number(16, unit='cm'))
+                              up_length_val=Number(16, unit='dam'))
+    assert t6.length_unit == Unit('dam')
     assert t6.trigo_setup == 'cos_2_hyp'
     t6.setup_for_trigonometry(angle_nb=2, trigo_fct='cos',
                               angle_val=Number(32, unit=r'\degree'),
                               down_length_val=None,
-                              up_length_val=Number(4, unit='cm'))
+                              up_length_val=Number(4, unit='km'))
+    assert t6.length_unit == Unit('km')
     assert t6.trigo_setup == 'cos_2_hyp'
     t6.setup_for_trigonometry(angle_nb=2, trigo_fct='cos',
                               angle_val=None,

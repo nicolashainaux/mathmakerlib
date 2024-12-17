@@ -181,9 +181,9 @@ class RightTriangle(Triangle):
         labels = [None, None, None]
         self.angles[angle_nb].decoration = angle_decoration
         if isinstance(up_length_val, Number):
-            self.length_unit = str(up_length_val.unit)
+            self.length_unit = up_length_val.unit
         elif isinstance(down_length_val, Number):
-            self.length_unit = str(down_length_val.unit)
+            self.length_unit = down_length_val.unit
         to_calculate = 'angle'
         if angle_val is None:
             if not only_mark_unknown_angle:
