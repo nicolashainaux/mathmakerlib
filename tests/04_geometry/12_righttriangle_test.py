@@ -211,9 +211,10 @@ def test_t6_setup_for_trigonometry(t6):
     assert t6.trigo_setup == 'cos_2_angle'
 
 
-def test_drawing_righttriangle_setup_for_trigonometry():
+def test_drawing_righttriangle_setup_for_trigonometry_anticlockwise_winding():
     """Check drawing the RightTriangle."""
-    r = RightTriangle(name='ICY', leg1_length=Number(4), leg2_length=Number(3))
+    r = RightTriangle(name='ICY', leg1_length=Number(4), leg2_length=Number(3),
+                      winding='anticlockwise')
     dec = AngleDecoration(radius=Number('0.4', unit='cm'))
     r.setup_for_trigonometry(angle_nb=2, trigo_fct='cos',
                              angle_val=Number(39, unit=r'\degree'),
@@ -243,6 +244,42 @@ pic ["\ang{39}", angle eccentricity=2, draw, thick, angle radius = 0.4 cm]'''\
 \draw (I) node[left] {I};
 \draw (C) node[below right] {C};
 \draw (Y) node[above right] {Y};
+\end{tikzpicture}
+'''
+
+
+def test_drawing_righttriangle_setup_for_trigonometry_clockwise_winding():
+    rt = RightTriangle(name='LAC', mark_right_angle=True,
+                       leg1_length=Number(3), leg2_length=Number(4),
+                       winding='clockwise')
+    dec = AngleDecoration(radius=Number('0.4', unit='cm'))
+    rt.setup_for_trigonometry(angle_nb=2, trigo_fct='sin',
+                              angle_val=Number(83, unit=r'\degree'),
+                              down_length_val=Number(3, unit='hm'),
+                              up_length_val=None, angle_decoration=dec)
+    assert rt.drawn == r'''
+\begin{tikzpicture}
+% Declare Points
+\coordinate (L) at (3,4);
+\coordinate (A) at (3,0);
+\coordinate (C) at (0,0);
+
+% Draw RightTriangle
+\draw[thick] (L)
+-- (A) node[midway, above, sloped] {?}
+-- (C)
+-- cycle node[midway, above, sloped] {\SI{3}{hm}}
+pic ["\ang{83}", angle eccentricity=2, draw, thick, angle radius = 0.4 cm] '''\
+    r'''{angle = A--C--L};
+
+% Mark right angles
+\draw[thick, cm={cos(180), sin(180), -sin(180), cos(180), (A)}] '''\
+    r'''(0.25 cm, 0) -- (0.25 cm, -0.25 cm) -- (0, -0.25 cm);
+
+% Label Points
+\draw (L) node[above] {L};
+\draw (A) node[below right] {A};
+\draw (C) node[below left] {C};
 \end{tikzpicture}
 '''
 

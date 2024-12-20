@@ -601,17 +601,16 @@ class Angle(Drawable, Oriented, HasThickness, Dimensional):
 
     def tikz_decorations(self):
         output_elements = []
+        p0, p2 = self.points[0].name, self.points[2].name
+        if self.winding == 'clockwise':
+            p0, p2 = p2, p0
         if not (self.decoration is None
                 or (self.mark_right and self.label is None)):
             output_elements = \
-                self.decoration.generate_tikz(self.points[0].name,
-                                              self.vertex.name,
-                                              self.points[2].name)
+                self.decoration.generate_tikz(p0, self.vertex.name, p2)
         if self.decoration2 is not None:
             output_elements += \
-                self.decoration2.generate_tikz(self.points[0].name,
-                                               self.vertex.name,
-                                               self.points[2].name)
+                self.decoration2.generate_tikz(p0, self.vertex.name, p2)
         return '\n'.join(output_elements)
 
     def tikz_rightangle_mark(self, winding='anticlockwise'):
