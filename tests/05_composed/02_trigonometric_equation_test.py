@@ -52,6 +52,13 @@ TAO_ANGLE_COS2 = (DATA_PATH / 'TAO_angle_cos2.tex').read_text()
 TAO_ANGLE_SIN0 = (DATA_PATH / 'TAO_angle_sin0.tex').read_text()
 TAO_ANGLE_SIN2 = (DATA_PATH / 'TAO_angle_sin2.tex').read_text()
 
+ZAD_ADJ_TAN0_DIV = (DATA_PATH / 'ZAD_adj_tan0_div.tex').read_text()
+ZAD_ADJ_TAN2_DIV = (DATA_PATH / 'ZAD_adj_tan2_div.tex').read_text()
+ZAD_HYP_COS0_DIV = (DATA_PATH / 'ZAD_hyp_cos0_div.tex').read_text()
+ZAD_HYP_COS2_DIV = (DATA_PATH / 'ZAD_hyp_cos2_div.tex').read_text()
+ZAD_HYP_SIN0_DIV = (DATA_PATH / 'ZAD_hyp_sin0_div.tex').read_text()
+ZAD_HYP_SIN2_DIV = (DATA_PATH / 'ZAD_hyp_sin2_div.tex').read_text()
+
 
 @pytest.fixture
 def t6():
@@ -120,7 +127,9 @@ def test_TrigonometricEquation_autosolve_adj_tan0(t6):
                               angle_val=Number(40, unit=r'\degree'),
                               up_length_val=Number(18, unit='mm'))
     eq = TrigonometricEquation(t6)
-    assert eq.autosolve(required_rounding=Decimal('1.000')) == ZAD_ADJ_TAN0
+    assert eq.autosolve(required_rounding=Decimal('1.000')) == ZAD_ADJ_TAN0_DIV
+    assert eq.autosolve(div=False,
+                        required_rounding=Decimal('1.000')) == ZAD_ADJ_TAN0
 
 
 def test_TrigonometricEquation_autosolve_adj_cos0(t6):
@@ -136,7 +145,9 @@ def test_TrigonometricEquation_autosolve_hyp_cos0(t6):
                               angle_val=Number(80, unit=r'\degree'),
                               up_length_val=Number(53, unit='km'))
     eq = TrigonometricEquation(t6)
-    assert eq.autosolve(required_rounding=Decimal('1.0')) == ZAD_HYP_COS0
+    assert eq.autosolve(required_rounding=Decimal('1.0')) == ZAD_HYP_COS0_DIV
+    assert eq.autosolve(div=False,
+                        required_rounding=Decimal('1.0')) == ZAD_HYP_COS0
 
 
 def test_TrigonometricEquation_autosolve_opp_sin0(t6):
@@ -152,7 +163,9 @@ def test_TrigonometricEquation_autosolve_hyp_sin0(t6):
                               angle_val=Number(39, unit=r'\degree'),
                               up_length_val=Number(48, unit='m'))
     eq = TrigonometricEquation(t6)
-    assert eq.autosolve(required_rounding=Decimal('1.0')) == ZAD_HYP_SIN0
+    assert eq.autosolve(required_rounding=Decimal('1.0')) == ZAD_HYP_SIN0_DIV
+    assert eq.autosolve(div=False,
+                        required_rounding=Decimal('1.0')) == ZAD_HYP_SIN0
 
 
 def test_TrigonometricEquation_autosolve_opp_tan2(t6):
@@ -168,7 +181,9 @@ def test_TrigonometricEquation_autosolve_adj_tan2(t6):
                               angle_val=Number(40, unit=r'\degree'),
                               up_length_val=Number(18, unit='mm'))
     eq = TrigonometricEquation(t6)
-    assert eq.autosolve(required_rounding=Decimal('1.000')) == ZAD_ADJ_TAN2
+    assert eq.autosolve(required_rounding=Decimal('1.000')) == ZAD_ADJ_TAN2_DIV
+    assert eq.autosolve(div=False,
+                        required_rounding=Decimal('1.000')) == ZAD_ADJ_TAN2
 
 
 def test_TrigonometricEquation_autosolve_adj_cos2(t6):
@@ -184,7 +199,9 @@ def test_TrigonometricEquation_autosolve_hyp_cos2(t6):
                               angle_val=Number(80, unit=r'\degree'),
                               up_length_val=Number(53, unit='km'))
     eq = TrigonometricEquation(t6)
-    assert eq.autosolve(required_rounding=Decimal('1.0')) == ZAD_HYP_COS2
+    assert eq.autosolve(required_rounding=Decimal('1.0')) == ZAD_HYP_COS2_DIV
+    assert eq.autosolve(div=False,
+                        required_rounding=Decimal('1.0')) == ZAD_HYP_COS2
 
 
 def test_TrigonometricEquation_autosolve_opp_sin2(t6):
@@ -200,7 +217,9 @@ def test_TrigonometricEquation_autosolve_hyp_sin2(t6):
                               angle_val=Number(39, unit=r'\degree'),
                               up_length_val=Number(48, unit='m'))
     eq = TrigonometricEquation(t6)
-    assert eq.autosolve(required_rounding=Decimal('1.0')) == ZAD_HYP_SIN2
+    assert eq.autosolve(required_rounding=Decimal('1.0')) == ZAD_HYP_SIN2_DIV
+    assert eq.autosolve(div=False,
+                        required_rounding=Decimal('1.0')) == ZAD_HYP_SIN2
 
 
 def test_TrigonometricEquation_autosolve_angle_tan0(t7):

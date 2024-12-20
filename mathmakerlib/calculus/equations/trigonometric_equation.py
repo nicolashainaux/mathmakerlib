@@ -187,14 +187,18 @@ class TrigonometricEquation(Equation):
                 'equal_sign': equal_sign,
                 'result_with_unit': Number(result, unit=unit).printed}
 
-    def autosolve(self, required_rounding):
+    def autosolve(self, required_rounding, div=True):
         """
         Print the complete resolution.
         """
         required.package['gensymb'] = True
         data = self.setup_template_values(required_rounding)
+        template_id = f'{self.to_calculate}_{self.trigo_fct}'
+        div_or_frac = ''
+        if div and template_id in ['adj_tan', 'hyp_sin', 'hyp_cos']:
+            div_or_frac = '_div'
         template_fn = f'trigonometric_equation_calculate_' \
-            f'{self.to_calculate}_{self.trigo_fct}.tex'
+            f'{template_id}{div_or_frac}.tex'
         template_path = ROOTDIR / 'calculus/equations/templates' / template_fn
         template = template_path.read_text()
         return f'{self.formula.printed}\n{template.format(**data)}'
