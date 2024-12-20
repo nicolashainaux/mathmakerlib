@@ -29,11 +29,11 @@ from mathmakerlib.shared import ROOTDIR  # , L10N_DOMAIN, LOCALEDIR
 from mathmakerlib import required
 
 EQUALITIES = \
-    {'cos': r'\[cos(\text{{{angle}}})='
+    {'cos': r'\[\text{{cos}}(\text{{{angle}}})='
             r'\frac{{\text{{{adj}}}}}{{\text{{{hyp}}}}}\]',
-     'sin': r'\[sin(\text{{{angle}}})='
+     'sin': r'\[\text{{sin}}(\text{{{angle}}})='
             r'\frac{{\text{{{opp}}}}}{{\text{{{hyp}}}}}\]',
-     'tan': r'\[tan(\text{{{angle}}})='
+     'tan': r'\[\text{{tan}}(\text{{{angle}}})='
             r'\frac{{\text{{{opp}}}}}{{\text{{{adj}}}}}\]'}
 
 

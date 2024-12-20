@@ -86,17 +86,17 @@ def test_TrigonometricEquation_instanciation_error(t6):
 
 def test_TrigonometricFormula_imprint(t6):
     assert TrigonometricFormula(t6, 'tan', 0).printed \
-        == r'\[tan(\text{\angle AZD})=\frac{\text{AD}}{\text{AZ}}\]'
+        == r'\[\text{tan}(\text{\angle AZD})=\frac{\text{AD}}{\text{AZ}}\]'
     assert TrigonometricFormula(t6, 'tan', 2).printed \
-        == r'\[tan(\text{\angle ZDA})=\frac{\text{AZ}}{\text{AD}}\]'
+        == r'\[\text{tan}(\text{\angle ZDA})=\frac{\text{AZ}}{\text{AD}}\]'
     assert TrigonometricFormula(t6, 'cos', 0).printed \
-        == r'\[cos(\text{\angle AZD})=\frac{\text{ZA}}{\text{ZD}}\]'
+        == r'\[\text{cos}(\text{\angle AZD})=\frac{\text{ZA}}{\text{ZD}}\]'
     assert TrigonometricFormula(t6, 'cos', 2).printed \
-        == r'\[cos(\text{\angle ZDA})=\frac{\text{DA}}{\text{DZ}}\]'
+        == r'\[\text{cos}(\text{\angle ZDA})=\frac{\text{DA}}{\text{DZ}}\]'
     assert TrigonometricFormula(t6, 'sin', 0).printed \
-        == r'\[sin(\text{\angle AZD})=\frac{\text{DA}}{\text{DZ}}\]'
+        == r'\[\text{sin}(\text{\angle AZD})=\frac{\text{DA}}{\text{DZ}}\]'
     assert TrigonometricFormula(t6, 'sin', 2).printed \
-        == r'\[sin(\text{\angle ZDA})=\frac{\text{ZA}}{\text{ZD}}\]'
+        == r'\[\text{sin}(\text{\angle ZDA})=\frac{\text{ZA}}{\text{ZD}}\]'
 
 
 def test_TrigonometricEquation_imprint(t6):
@@ -104,7 +104,7 @@ def test_TrigonometricEquation_imprint(t6):
                               angle_val=Number(32, unit=r'\degree'),
                               down_length_val=Number('3.5', unit='cm'))
     assert TrigonometricEquation(t6).printed \
-        == r'\[tan(\text{\angle AZD})=\frac{\text{AD}}{\text{AZ}}\]'
+        == r'\[\text{tan}(\text{\angle AZD})=\frac{\text{AD}}{\text{AZ}}\]'
 
 
 def test_TrigonometricEquation_autosolve_opp_tan0(t6):
