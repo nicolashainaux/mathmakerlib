@@ -10,6 +10,11 @@ Unreleased
 ----------
 
 
+Version 0.7.23 (2024-12-20)
+---------------------------
+
+* Fix inconsistency in parameters' names of RightTriangle.
+
 Version 0.7.22 (2024-12-20)
 ---------------------------
 
