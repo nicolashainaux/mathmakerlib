@@ -37,7 +37,7 @@ class RightTriangle(Triangle):
     """Right Triangles."""
 
     def __init__(self, start_vertex=None, name=None,
-                 leg1_length=Number(2), leg2_length=Number(1),
+                 leg0_length=Number(2), leg1_length=Number(1),
                  mark_right_angle=True,
                  draw_vertices=False, label_vertices=True,
                  thickness='thick', color=None, rotation_angle=0,
@@ -54,12 +54,12 @@ class RightTriangle(Triangle):
         are supported as Points' names so far (at Polygon's creation).
         See issue #3.
         :type name: None or str
+        :param leg0_length: the leg0's length that will be used to calculate
+        the coordinates of the vertices used to build the RightTriangle
+        :type leg0_length: a number
         :param leg1_length: the leg1's length that will be used to calculate
         the coordinates of the vertices used to build the RightTriangle
         :type leg1_length: a number
-        :param leg2_length: the leg2's length that will be used to calculate
-        the coordinates of the vertices used to build the RightTriangle
-        :type leg2_length: a number
         :param mark_right_angle: if True (default), the right angle will be
         automatically marked as right angle.
         :type mark_right_angle: bool
@@ -76,10 +76,10 @@ class RightTriangle(Triangle):
         """
         if start_vertex is None:
             start_vertex = Point(0, 0)
-        # Accepted type for leg1's and leg2's lengths is number, will be
+        # Accepted type for leg0's and leg1's lengths is number, will be
         # checked at vertices' instanciations.
-        v1 = Point(leg1_length + start_vertex.x, start_vertex.y)
-        v2 = Point(leg1_length + start_vertex.x, leg2_length + start_vertex.y)
+        v1 = Point(leg0_length + start_vertex.x, start_vertex.y)
+        v2 = Point(leg0_length + start_vertex.x, leg1_length + start_vertex.y)
         if (winding == 'clockwise'
             or (winding is None
                 and config.polygons.DEFAULT_WINDING == 'clockwise')):

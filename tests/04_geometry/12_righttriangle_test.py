@@ -213,7 +213,7 @@ def test_t6_setup_for_trigonometry(t6):
 
 def test_drawing_righttriangle_setup_for_trigonometry_anticlockwise_winding():
     """Check drawing the RightTriangle."""
-    r = RightTriangle(name='ICY', leg1_length=Number(4), leg2_length=Number(3),
+    r = RightTriangle(name='ICY', leg0_length=Number(4), leg1_length=Number(3),
                       winding='anticlockwise')
     dec = AngleDecoration(radius=Number('0.4', unit='cm'))
     r.setup_for_trigonometry(angle_nb=2, trigo_fct='cos',
@@ -250,7 +250,7 @@ pic ["\ang{39}", angle eccentricity=2, draw, thick, angle radius = 0.4 cm]'''\
 
 def test_drawing_righttriangle_setup_for_trigonometry_clockwise_winding():
     rt = RightTriangle(name='LAC', mark_right_angle=True,
-                       leg1_length=Number(3), leg2_length=Number(4),
+                       leg0_length=Number(3), leg1_length=Number(4),
                        winding='clockwise')
     dec = AngleDecoration(radius=Number('0.4', unit='cm'))
     rt.setup_for_trigonometry(angle_nb=2, trigo_fct='sin',
