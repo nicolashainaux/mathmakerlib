@@ -34,13 +34,15 @@ def init():
         # It's difficult to track amssymb, that could show up almost anywhere.
         # This is left to mathmakerlib's user. A (yet short) list of symbols is
         # provided in LaTeX module.
+
+        # gensymb would be required to use \degree; as it is now, angles are
+        # produced by siunitx via \ang, so there's no need for gensymb
         package = {pkg_name: False
                    for pkg_name in ['tikz', 'siunitx', 'xcolor', 'eurosym',
                                     'amsmath', 'stackengine', 'scalerel',
                                     'cancel', 'multicol', 'placeins', 'ulem',
                                     'textcomp', 'array', 'graphicx',
-                                    'epstopdf', 'textpos', 'fancyvrb',
-                                    'gensymb']}
+                                    'epstopdf', 'textpos', 'fancyvrb']}
         options = {'xcolor': set(), 'textpos': set()}
         tikz_library = {'angles': False,
                         'decorations.markings': False,

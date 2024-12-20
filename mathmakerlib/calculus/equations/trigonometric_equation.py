@@ -26,7 +26,6 @@ from .equation import Equation
 from mathmakerlib.calculus.number import Number
 from mathmakerlib.core.printable import Printable
 from mathmakerlib.shared import ROOTDIR  # , L10N_DOMAIN, LOCALEDIR
-from mathmakerlib import required
 
 EQUALITIES = \
     {'cos': r'\[\text{{cos}}(\text{{{angle}}})='
@@ -191,7 +190,6 @@ class TrigonometricEquation(Equation):
         """
         Print the complete resolution.
         """
-        required.package['gensymb'] = True
         data = self.setup_template_values(required_rounding)
         template_id = f'{self.to_calculate}_{self.trigo_fct}'
         div_or_frac = ''
