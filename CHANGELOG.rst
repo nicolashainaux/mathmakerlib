@@ -1,9 +1,20 @@
 Changelog
 =========
 
+Unpublished
+-----------
+
+* Add RectangleGrid
+
 Unreleased
 ----------
 
+
+Version 0.7.22 (2024-12-20)
+---------------------------
+
+* Bugfix: clockwise winding RightTriangle draws decoration in wrong winding
+* Improve trigonometric equations' templates.
 
 Version 0.7.21 (2024-12-17)
 ---------------------------
