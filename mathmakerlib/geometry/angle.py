@@ -217,7 +217,7 @@ class AngleDecoration(Labeled, Colored, HasThickness, HasRadius, HasArrowTips):
         return deco
 
 
-class Angle(Drawable, Oriented, HasThickness, Dimensional):
+class Angle(Drawable, Oriented, HasThickness, Dimensional, HasArrowTips):
 
     def __init__(self, point, vertex, point_or_measure, decoration=None,
                  mark_right=False, second_point_name='auto', label=None,
@@ -225,7 +225,8 @@ class Angle(Drawable, Oriented, HasThickness, Dimensional):
                  label_vertex=False, draw_vertex=False,
                  label_armspoints=False, draw_armspoints=False,
                  label_endpoints=False, draw_endpoints=False,
-                 naming_mode='from_endpoints', decoration2=None):
+                 naming_mode='from_endpoints', decoration2=None,
+                 arrow_tips=None):
         """
         :param point: a Point of an arm of the Angle
         :type point: Point
@@ -255,6 +256,7 @@ class Angle(Drawable, Oriented, HasThickness, Dimensional):
         """
         self.color = color
         self.thickness = thickness
+        self.arrow_tips = arrow_tips
         self.naming_mode = naming_mode
         self.decoration = decoration
         self.decoration2 = decoration2
@@ -649,7 +651,7 @@ class Angle(Drawable, Oriented, HasThickness, Dimensional):
 
         :rtype: list
         """
-        return [self.thickness, self.color]
+        return [self.thickness, self.color, self.arrow_tips]
 
     def _tikz_draw_vertex(self):
         return self.vertex.tikz_draw()[0]

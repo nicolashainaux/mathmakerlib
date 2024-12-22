@@ -86,7 +86,7 @@ KNOWN_TEXTCOMP_SYMBOLS = [r'\textdegree', r'\textdollar', r'\textsterling']
 THICKNESS_VALUES = [None, 'thin', 'very thin', 'ultra thin', 'thick',
                     'very thick', 'ultra thick']
 
-ARROW_TIPS = [None, '<->', '<-', '->', '-']
+ARROW_TIPS = [None, '<->', '<-', '->', '-', 'round cap-round cap']
 
 DASHPATTERN_VALUES = ['solid', 'dotted', 'densely dotted', 'loosely dotted',
                       'dashed', 'densely dashed', 'loosely dashed',

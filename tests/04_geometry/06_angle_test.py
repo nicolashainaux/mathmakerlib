@@ -752,7 +752,7 @@ def test_drawing_marked_angles():
 """
 
 
-def test_drawing_angles_with_arrowtips():
+def test_drawing_angledecoration_with_arrowtips():
     """Check drawing standalone Angles."""
     A = Point(0, 0, 'A')
     X = Point(6, 1, 'X')
@@ -769,6 +769,29 @@ def test_drawing_angles_with_arrowtips():
 % Draw Angle
 \draw pic [draw, <->, thick, angle radius = 0.25 cm] {angle = X--A--Y};
 \draw[thick] (X) -- (A) -- (Y);
+
+% Label Points
+
+\end{tikzpicture}
+"""
+
+
+def test_drawing_angle_with_roundcaps():
+    """Check drawing standalone Angles."""
+    A = Point(0, 0, 'A')
+    X = Point(6, 1, 'X')
+    Y = Point(3, 5, 'Y')
+    α = Angle(X, A, Y, thickness='ultra thick',
+              arrow_tips='round cap-round cap')
+    assert α.drawn == r"""
+\begin{tikzpicture}
+% Declare Points
+\coordinate (X) at (6,1);
+\coordinate (A) at (0,0);
+\coordinate (Y) at (3,5);
+
+% Draw Angle
+\draw[ultra thick, round cap-round cap] (X) -- (A) -- (Y);
 
 % Label Points
 
