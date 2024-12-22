@@ -33,18 +33,23 @@ from mathmakerlib.calculus.number import Number
 
 
 def check_color(value):
-    if value is None or value in DEFAULT_COLOR_NAMES or value in XCOLOR_BASE:
+    if value is None:
+        color_name = None
+    else:
+        color_name = value.split('!')[0]
+    if (color_name is None or color_name in DEFAULT_COLOR_NAMES
+        or color_name in XCOLOR_BASE):
         # Base LaTeX colors do not need to be explicitely loaded.
         # As tikz package already loads xcolor base names, it's not
         # necessary to explicitely load them neither.
         pass
-    elif value in XCOLOR_DVIPSNAMES:
+    elif color_name in XCOLOR_DVIPSNAMES:
         required.package['xcolor'] = True
         required.options['xcolor'].add('dvipsnames')
     else:
         raise ValueError('Unknown color name: {}. Only colors from '
                          'xcolor\'s dvipsnames are yet supported.'
-                         .format(value))
+                         .format(color_name))
 
 
 def check_scale(value, source_name):
@@ -137,6 +142,20 @@ class Colored(object, metaclass=ABCMeta):
     def color(self, value):
         check_color(value)
         setattr(self, '_color', value)
+
+
+class Fillable(object, metaclass=ABCMeta):
+    @property
+    def fillcolor(self):
+        if not hasattr(self, '_fillcolor'):
+            return None
+        else:
+            return self._fillcolor
+
+    @fillcolor.setter
+    def fillcolor(self, value):
+        check_color(value)
+        setattr(self, '_fillcolor', value)
 
 
 class HasRadius(object, metaclass=ABCMeta):

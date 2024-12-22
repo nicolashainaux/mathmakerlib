@@ -27,7 +27,7 @@ from mathmakerlib.exceptions import ZeroVector
 from mathmakerlib.core.oriented import Oriented
 from mathmakerlib.core.oriented import check_winding, shoelace_formula
 from mathmakerlib.core.drawable import Colored, HasThickness, HasRadius
-from mathmakerlib.core.drawable import Labeled, HasArrowTips
+from mathmakerlib.core.drawable import Labeled, HasArrowTips, Fillable
 from mathmakerlib.core.drawable import tikz_options_list, Drawable
 from mathmakerlib.core.drawable import tikz_approx_position
 from mathmakerlib.core.dimensional import Dimensional
@@ -39,15 +39,18 @@ from mathmakerlib.calculus.number import Number, is_number
 AVAILABLE_NAMING_MODES = ['from_endpoints', 'from_armspoints', 'from_vertex']
 
 
-class AngleDecoration(Labeled, Colored, HasThickness, HasRadius, HasArrowTips):
+class AngleDecoration(Labeled, Colored, Fillable, HasThickness, HasRadius,
+                      HasArrowTips):
 
     def __init__(self, color=None, thickness='thick', label='default',
                  radius=Number('0.25', unit='cm'), variety='single',
                  gap=Number('0.4', unit='cm'), eccentricity='automatic',
-                 hatchmark=None, do_draw=True, arrow_tips=None):
+                 hatchmark=None, do_draw=True, arrow_tips=None,
+                 fillcolor=None):
         self.do_draw = do_draw
         self.arrow_tips = arrow_tips
         self.color = color
+        self.fillcolor = fillcolor
         self.thickness = thickness
         self.label = label
         self.radius = radius
@@ -174,6 +177,10 @@ class AngleDecoration(Labeled, Colored, HasThickness, HasRadius, HasArrowTips):
                 attributes.append(self.arrow_tips)
             if self.thickness is not None:
                 attributes.append(self.thickness)
+            if self.color is not None:
+                attributes.append(self.color)
+            if self.fillcolor is not None:
+                attributes.append(f'fill={self.fillcolor}')
             if self.radius is not None:
                 attributes.append('angle radius = {}'
                                   .format((self.radius * radius_coeff)
@@ -182,8 +189,8 @@ class AngleDecoration(Labeled, Colored, HasThickness, HasRadius, HasArrowTips):
                 attributes.append(self.hatchmark)
                 required.tikz_library['decorations.markings'] = True
                 required.tikzset[self.hatchmark + '_hatchmark'] = True
-        if (self.variety is not None
-            or (do_label and self.label not in [None, 'default'])):
+        if (self.variety is None
+            and (do_label and self.label not in [None, 'default'])):
             if self.color is not None:
                 attributes.append(self.color)
         return '[{}]'.format(', '.join(attributes))

@@ -728,7 +728,7 @@ def test_drawing_with_marked_angles(pointO, pointA, pointB, pointC, pointJ):
 
 % Draw Quadrilateral
 \draw pic [draw, thick, angle radius = 0.25 cm] {angle = B--A--O};
-\draw pic [draw, thin, angle radius = 8 mm, red] {angle = C--B--A};
+\draw pic [draw, thin, red, angle radius = 8 mm] {angle = C--B--A};
 \draw[thick] (O)
 -- (A)
 -- (B)

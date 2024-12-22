@@ -46,7 +46,7 @@ def test_AngleDecoration():
     assert AngleDecoration().tikz_attributes() \
         == '[draw, thick, angle radius = 0.25 cm]'
     assert AngleDecoration(color='green', thickness='thin').tikz_attributes() \
-        == '[draw, thin, angle radius = 0.25 cm, green]'
+        == '[draw, thin, green, angle radius = 0.25 cm]'
     assert AngleDecoration(radius=Number('0.5', unit=Unit('cm'))) \
         .tikz_attributes() == '[draw, thick, angle radius = 0.5 cm]'
     with pytest.raises(ValueError) as excinfo:
@@ -270,7 +270,7 @@ def test_marked_angles():
     theta.decoration = AngleDecoration(color='red', thickness='ultra thick',
                                        radius=Number(2))
     assert theta.tikz_decorations() \
-        == r'\draw pic [draw, ultra thick, angle radius = 2, red] '\
+        == r'\draw pic [draw, ultra thick, red, angle radius = 2] '\
            r'{angle = I--O--J};'
     assert required.tikz_library['angles']
     required.tikz_library['angles'] = False
@@ -799,6 +799,34 @@ def test_drawing_angle_with_roundcaps():
 """
 
 
+def test_drawing_angle_with_colored_and_filled_decoration():
+    """Check drawing standalone Angles."""
+    A = Point(0, 0, 'A')
+    X = Point(6, 1, 'X')
+    Y = Point(3, 5, 'Y')
+    α = Angle(X, A, Y, thickness='ultra thick',
+              arrow_tips='round cap-round cap')
+    α.decoration = AngleDecoration(fillcolor='CornflowerBlue!30', color='Plum',
+                                   radius=Number('0.5', unit='cm'),
+                                   thickness='ultra thick')
+    assert α.drawn == r"""
+\begin{tikzpicture}
+% Declare Points
+\coordinate (X) at (6,1);
+\coordinate (A) at (0,0);
+\coordinate (Y) at (3,5);
+
+% Draw Angle
+\draw pic [draw, ultra thick, Plum, fill=CornflowerBlue!30, angle radius = """\
+    r"""0.5 cm] {angle = X--A--Y};
+\draw[ultra thick, round cap-round cap] (X) -- (A) -- (Y);
+
+% Label Points
+
+\end{tikzpicture}
+"""
+
+
 def test_drawing_marked_rightangles():
     """Check drawing standalone Angles."""
     A = Point(0, 0, 'A')
@@ -928,8 +956,8 @@ def test_drawing_double_decorated_angles():
 % Draw Angle
 \draw pic ["\ang{39}", angle eccentricity=1.6, draw, thick, angle """\
 r"""radius = 0.7 cm] {angle = L--P--E};
-\draw pic ["\ang{42}", angle eccentricity=1.3, angle radius = 1.6 cm, """\
-r"""NavyBlue] {angle = L--P--E};
+\draw pic ["\ang{42}", angle eccentricity=1.3, NavyBlue, angle """\
+r"""radius = 1.6 cm] {angle = L--P--E};
 \draw[thick] (L) -- (P) -- (E);
 % Draw Vertex
 \draw (P) node[scale=0.67] {$\times$};
@@ -1068,16 +1096,16 @@ def test_drawing_AnglesSets_of_same_vertex():
 \coordinate (Z) at (0.8,5.2);
 
 % Draw Angles
-\draw pic ["\ang{38}", angle eccentricity=1.8, draw, thick, """\
-r"""angle radius = 0.5 cm, RoyalBlue] {angle = X1--A--Y1};
+\draw pic ["\ang{38}", angle eccentricity=1.8, draw, thick, RoyalBlue, """\
+r"""angle radius = 0.5 cm] {angle = X1--A--Y1};
 \draw[thick] (X1) -- (A) -- (Y1);
-\draw pic [draw, thick, angle radius = 0.5 cm, BurntOrange] """\
+\draw pic [draw, thick, BurntOrange, angle radius = 0.5 cm] """\
 r"""{angle = Y1--A--Z1};
-\draw pic ["\ang{9}", angle eccentricity=1.8, draw, thick, """\
-r"""angle radius = 0.58 cm, BurntOrange] {angle = Y1--A--Z1};
+\draw pic ["\ang{9}", angle eccentricity=1.8, draw, thick, BurntOrange, """\
+r"""angle radius = 0.58 cm] {angle = Y1--A--Z1};
 \draw[thick] (Y1) -- (A) -- (Z1);
-\draw pic ["?", angle eccentricity=1.15, draw, thick, """\
-r"""angle radius = 2 cm, BrickRed] {angle = X1--A--Z1};
+\draw pic ["?", angle eccentricity=1.15, draw, thick, BrickRed, """\
+r"""angle radius = 2 cm] {angle = X1--A--Z1};
 \draw[thick] (X1) -- (A) -- (Z1);
 % Draw Vertex
 \draw (A) node[scale=0.67] {$\times$};

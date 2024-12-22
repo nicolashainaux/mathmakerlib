@@ -128,7 +128,7 @@ def test_colors():
     assert not required.package['xcolor']
     assert 'dvipsnames' not in required.options['xcolor']
     with pytest.raises(ValueError) as excinfo:
-        p.color = 'UndefinedBlueOrange'
+        p.color = 'UndefinedBlueOrange!30'
     assert str(excinfo.value) == 'Unknown color name: UndefinedBlueOrange. ' \
         'Only colors from xcolor\'s dvipsnames are yet supported.'
     assert not required.package['xcolor']
