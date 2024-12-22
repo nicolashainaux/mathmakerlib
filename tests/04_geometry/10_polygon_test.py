@@ -704,12 +704,12 @@ def test_drawing_with_marked_angles(pointO, pointA, pointB, pointC, pointJ):
 \coordinate (C) at (1,3);
 
 % Draw Quadrilateral
+\draw pic [draw, thick, angle radius = 0.25 cm] {angle = B--A--O};
 \draw[thick] (O)
 -- (A)
 -- (B)
 -- (C)
--- cycle
-pic [draw, thick, angle radius = 0.25 cm] {angle = B--A--O};
+-- cycle;
 
 % Label Points
 
@@ -727,13 +727,13 @@ pic [draw, thick, angle radius = 0.25 cm] {angle = B--A--O};
 \coordinate (C) at (1,3);
 
 % Draw Quadrilateral
+\draw pic [draw, thick, angle radius = 0.25 cm] {angle = B--A--O};
+\draw pic [draw, thin, angle radius = 8 mm, red] {angle = C--B--A};
 \draw[thick] (O)
 -- (A)
 -- (B)
 -- (C)
--- cycle
-pic [draw, thick, angle radius = 0.25 cm] {angle = B--A--O}
-pic [draw, thin, angle radius = 8 mm, red] {angle = C--B--A};
+-- cycle;
 
 % Label Points
 
@@ -753,16 +753,15 @@ pic [draw, thin, angle radius = 8 mm, red] {angle = C--B--A};
 \coordinate (B) at (3,2);
 \coordinate (J) at (0,1);
 
+% Mark right angles
+\draw[thick, cm={cos(0), sin(0), -sin(0), cos(0), (O)}] """\
+        r"""(0.25 cm, 0) -- (0.25 cm, 0.25 cm) -- (0, 0.25 cm);
 % Draw Quadrilateral
 \draw[thick] (O)
 -- (A)
 -- (B)
 -- (J)
 -- cycle;
-
-% Mark right angles
-\draw[thick, cm={cos(0), sin(0), -sin(0), cos(0), (O)}] """\
-        r"""(0.25 cm, 0) -- (0.25 cm, 0.25 cm) -- (0, 0.25 cm);
 
 % Label Points
 

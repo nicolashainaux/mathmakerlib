@@ -163,16 +163,15 @@ def test_drawing_with_labeled_sides():
 \coordinate (B) at (2.236,0);
 \coordinate (C) at (0.582,0.98);
 
+% Mark right angles
+\draw[thick, """\
+r"""cm={cos(149.35), sin(149.35), -sin(149.35), cos(149.35), (B)}] """\
+                      r"""(0.25 cm, 0) -- (0.25 cm, 0.25 cm) -- (0, 0.25 cm);
 % Draw Triangle
 \draw[thick] (A)
 -- (B) node[midway, below, sloped, scale=0.85] {\SI{10}{hm}}
 -- (C) node[midway, above, sloped, scale=0.85] {\SI{6}{hm}}
 -- cycle node[midway, above, sloped, scale=0.85] {\SI{5}{hm}};
-
-% Mark right angles
-\draw[thick, """\
-r"""cm={cos(149.35), sin(149.35), -sin(149.35), cos(149.35), (B)}] """\
-                      r"""(0.25 cm, 0) -- (0.25 cm, 0.25 cm) -- (0, 0.25 cm);
 
 % Label Points
 

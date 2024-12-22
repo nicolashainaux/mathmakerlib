@@ -270,7 +270,8 @@ def test_marked_angles():
     theta.decoration = AngleDecoration(color='red', thickness='ultra thick',
                                        radius=Number(2))
     assert theta.tikz_decorations() \
-        == 'pic [draw, ultra thick, angle radius = 2, red] {angle = I--O--J}'
+        == r'\draw pic [draw, ultra thick, angle radius = 2, red] '\
+           r'{angle = I--O--J};'
     assert required.tikz_library['angles']
     required.tikz_library['angles'] = False
     theta.mark_right = True
@@ -462,8 +463,8 @@ def test_drawing_labeled_angles():
 \coordinate (Y) at (3,5);
 
 % Draw Angle
-\draw[thick] (X) -- (A) -- (Y)
-pic ["\ang{38}", angle eccentricity=2.6] {angle = X--A--Y};
+\draw pic ["\ang{38}", angle eccentricity=2.6] {angle = X--A--Y};
+\draw[thick] (X) -- (A) -- (Y);
 
 % Label Points
 
@@ -489,8 +490,8 @@ pic ["\ang{38}", angle eccentricity=2.6] {angle = X--A--Y};
 \coordinate (Y) at (3,5);
 
 % Draw Angle
-\draw[thick] (X) -- (A) -- (Y)
-pic ["\ang{38}", angle eccentricity=2.6] {angle = X--A--Y};
+\draw pic ["\ang{38}", angle eccentricity=2.6] {angle = X--A--Y};
+\draw[thick] (X) -- (A) -- (Y);
 
 % Label Points
 
@@ -506,9 +507,9 @@ pic ["\ang{38}", angle eccentricity=2.6] {angle = X--A--Y};
 \coordinate (Y) at (3,5);
 
 % Draw Angle
-\draw[thick] (X) -- (A) -- (Y)
-pic ["\ang{38}", angle eccentricity=1.44, draw, thick, """\
+\draw pic ["\ang{38}", angle eccentricity=1.44, draw, thick, """\
 r"""angle radius = 0.9 cm] {angle = X--A--Y};
+\draw[thick] (X) -- (A) -- (Y);
 
 % Label Points
 
@@ -623,8 +624,8 @@ def test_drawing_marked_angles():
 \coordinate (Y) at (3,5);
 
 % Draw Angle
-\draw[thick] (X) -- (A) -- (Y)
-pic [draw, thick, angle radius = 0.5 cm] {angle = X--A--Y};
+\draw pic [draw, thick, angle radius = 0.5 cm] {angle = X--A--Y};
+\draw[thick] (X) -- (A) -- (Y);
 
 % Label Points
 
@@ -639,9 +640,9 @@ pic [draw, thick, angle radius = 0.5 cm] {angle = X--A--Y};
 \coordinate (Y) at (3,5);
 
 % Draw Angle
-\draw[thick] (X) -- (A) -- (Y)
-pic [draw, thick, angle radius = 0.5 cm] {angle = X--A--Y}
-pic [draw, thick, angle radius = 0.58 cm] {angle = X--A--Y};
+\draw pic [draw, thick, angle radius = 0.5 cm] {angle = X--A--Y};
+\draw pic [draw, thick, angle radius = 0.58 cm] {angle = X--A--Y};
+\draw[thick] (X) -- (A) -- (Y);
 
 % Label Points
 
@@ -656,10 +657,10 @@ pic [draw, thick, angle radius = 0.58 cm] {angle = X--A--Y};
 \coordinate (Y) at (3,5);
 
 % Draw Angle
-\draw[thick] (X) -- (A) -- (Y)
-pic [draw, thick, angle radius = 0.5 cm] {angle = X--A--Y}
-pic [draw, thick, angle radius = 0.58 cm] {angle = X--A--Y}
-pic [draw, thick, angle radius = 0.66 cm] {angle = X--A--Y};
+\draw pic [draw, thick, angle radius = 0.5 cm] {angle = X--A--Y};
+\draw pic [draw, thick, angle radius = 0.58 cm] {angle = X--A--Y};
+\draw pic [draw, thick, angle radius = 0.66 cm] {angle = X--A--Y};
+\draw[thick] (X) -- (A) -- (Y);
 
 % Label Points
 
@@ -675,8 +676,8 @@ pic [draw, thick, angle radius = 0.66 cm] {angle = X--A--Y};
 \coordinate (Y) at (3,5);
 
 % Draw Angle
-\draw[thick] (X) -- (A) -- (Y)
-pic [draw, thick, angle radius = 0.5 cm, singledash] {angle = X--A--Y};
+\draw pic [draw, thick, angle radius = 0.5 cm, singledash] {angle = X--A--Y};
+\draw[thick] (X) -- (A) -- (Y);
 
 % Label Points
 
@@ -697,8 +698,8 @@ pic [draw, thick, angle radius = 0.5 cm, singledash] {angle = X--A--Y};
 \coordinate (Y) at (3,5);
 
 % Draw Angle
-\draw[thick] (X) -- (A) -- (Y)
-pic [draw, thick, angle radius = 0.5 cm, doubledash] {angle = X--A--Y};
+\draw pic [draw, thick, angle radius = 0.5 cm, doubledash] {angle = X--A--Y};
+\draw[thick] (X) -- (A) -- (Y);
 
 % Label Points
 
@@ -719,8 +720,8 @@ pic [draw, thick, angle radius = 0.5 cm, doubledash] {angle = X--A--Y};
 \coordinate (Y) at (3,5);
 
 % Draw Angle
-\draw[thick] (X) -- (A) -- (Y)
-pic [draw, thick, angle radius = 0.5 cm, tripledash] {angle = X--A--Y};
+\draw pic [draw, thick, angle radius = 0.5 cm, tripledash] {angle = X--A--Y};
+\draw[thick] (X) -- (A) -- (Y);
 
 % Label Points
 
@@ -740,10 +741,10 @@ pic [draw, thick, angle radius = 0.5 cm, tripledash] {angle = X--A--Y};
 \coordinate (Y) at (3,5);
 
 % Draw Angle
-\draw[thick] (X) -- (A) -- (Y)
-pic [draw, thick, angle radius = 0.5 cm, doubledash] {angle = X--A--Y}
-pic [draw, thick, angle radius = 0.58 cm, doubledash] {angle = X--A--Y}
-pic [draw, thick, angle radius = 0.66 cm, doubledash] {angle = X--A--Y};
+\draw pic [draw, thick, angle radius = 0.5 cm, doubledash] {angle = X--A--Y};
+\draw pic [draw, thick, angle radius = 0.58 cm, doubledash] {angle = X--A--Y};
+\draw pic [draw, thick, angle radius = 0.66 cm, doubledash] {angle = X--A--Y};
+\draw[thick] (X) -- (A) -- (Y);
 
 % Label Points
 
@@ -766,8 +767,8 @@ def test_drawing_angles_with_arrowtips():
 \coordinate (Y) at (3,5);
 
 % Draw Angle
-\draw[thick] (X) -- (A) -- (Y)
-pic [draw, <->, thick, angle radius = 0.25 cm] {angle = X--A--Y};
+\draw pic [draw, <->, thick, angle radius = 0.25 cm] {angle = X--A--Y};
+\draw[thick] (X) -- (A) -- (Y);
 
 % Label Points
 
@@ -790,12 +791,11 @@ def test_drawing_marked_rightangles():
 \coordinate (A) at (0,0);
 \coordinate (Y) at (-1,6);
 
-% Draw Angle
-\draw[thick] (X) -- (A) -- (Y);
-
 % Mark right angle
 \draw[thick, cm={cos(9.46), sin(9.46), -sin(9.46), cos(9.46), (A)}]"""\
 r""" (0.5 cm, 0) -- (0.5 cm, 0.5 cm) -- (0, 0.5 cm);
+% Draw Angle
+\draw[thick] (X) -- (A) -- (Y);
 
 % Label Points
 
@@ -818,9 +818,9 @@ def test_drawing_marked_labeled_angles():
 \coordinate (Y) at (3,5);
 
 % Draw Angle
-\draw[thick] (X) -- (A) -- (Y)
-pic ["\ang{38}", angle eccentricity=1.8, draw, thick, """\
+\draw pic ["\ang{38}", angle eccentricity=1.8, draw, thick, """\
 r"""angle radius = 0.5 cm] {angle = X--A--Y};
+\draw[thick] (X) -- (A) -- (Y);
 
 % Label Points
 
@@ -835,10 +835,10 @@ r"""angle radius = 0.5 cm] {angle = X--A--Y};
 \coordinate (Y) at (3,5);
 
 % Draw Angle
-\draw[thick] (X) -- (A) -- (Y)
-pic [draw, thick, angle radius = 0.5 cm] {angle = X--A--Y}
-pic ["\ang{38}", angle eccentricity=1.8, draw, thick, """\
+\draw pic [draw, thick, angle radius = 0.5 cm] {angle = X--A--Y};
+\draw pic ["\ang{38}", angle eccentricity=1.8, draw, thick, """\
 r"""angle radius = 0.58 cm] {angle = X--A--Y};
+\draw[thick] (X) -- (A) -- (Y);
 
 % Label Points
 
@@ -863,10 +863,10 @@ r"""angle radius = 0.58 cm] {angle = X--A--Y};
 \coordinate (Y) at (2.4,4);
 
 % Draw Angle
-\draw[thick] (X1) -- (A) -- (Y1)
-pic [draw, thick, angle radius = 0.5 cm, singledash] {angle = X1--A--Y1}
-pic ["\ang{38}", angle eccentricity=1.8, draw, thick, """\
+\draw pic [draw, thick, angle radius = 0.5 cm, singledash] {angle = X1--A--Y1};
+\draw pic ["\ang{38}", angle eccentricity=1.8, draw, thick, """\
 r"""angle radius = 0.58 cm, singledash] {angle = X1--A--Y1};
+\draw[thick] (X1) -- (A) -- (Y1);
 % Draw Vertex
 \draw (A) node[scale=0.67] {$\times$};
 % Draw Arms' Points
@@ -903,11 +903,11 @@ def test_drawing_double_decorated_angles():
 \coordinate (E) at (-1.84,0.8);
 
 % Draw Angle
-\draw[thick] (L) -- (P) -- (E)
-pic ["\ang{39}", angle eccentricity=1.6, draw, thick, angle """\
-r"""radius = 0.7 cm] {angle = L--P--E}
-pic ["\ang{42}", angle eccentricity=1.3, angle radius = 1.6 cm, """\
+\draw pic ["\ang{39}", angle eccentricity=1.6, draw, thick, angle """\
+r"""radius = 0.7 cm] {angle = L--P--E};
+\draw pic ["\ang{42}", angle eccentricity=1.3, angle radius = 1.6 cm, """\
 r"""NavyBlue] {angle = L--P--E};
+\draw[thick] (L) -- (P) -- (E);
 % Draw Vertex
 \draw (P) node[scale=0.67] {$\times$};
 % Draw End Points
@@ -1045,16 +1045,17 @@ def test_drawing_AnglesSets_of_same_vertex():
 \coordinate (Z) at (0.8,5.2);
 
 % Draw Angles
-\draw[thick] (X1) -- (A) -- (Y1)
-pic ["\ang{38}", angle eccentricity=1.8, draw, thick, """\
+\draw pic ["\ang{38}", angle eccentricity=1.8, draw, thick, """\
 r"""angle radius = 0.5 cm, RoyalBlue] {angle = X1--A--Y1};
-\draw[thick] (Y1) -- (A) -- (Z1)
-pic [draw, thick, angle radius = 0.5 cm, BurntOrange] {angle = Y1--A--Z1}
-pic ["\ang{9}", angle eccentricity=1.8, draw, thick, """\
+\draw[thick] (X1) -- (A) -- (Y1);
+\draw pic [draw, thick, angle radius = 0.5 cm, BurntOrange] """\
+r"""{angle = Y1--A--Z1};
+\draw pic ["\ang{9}", angle eccentricity=1.8, draw, thick, """\
 r"""angle radius = 0.58 cm, BurntOrange] {angle = Y1--A--Z1};
-\draw[thick] (X1) -- (A) -- (Z1)
-pic ["?", angle eccentricity=1.15, draw, thick, """\
+\draw[thick] (Y1) -- (A) -- (Z1);
+\draw pic ["?", angle eccentricity=1.15, draw, thick, """\
 r"""angle radius = 2 cm, BrickRed] {angle = X1--A--Z1};
+\draw[thick] (X1) -- (A) -- (Z1);
 % Draw Vertex
 \draw (A) node[scale=0.67] {$\times$};
 % Draw Arms' Points
@@ -1089,12 +1090,12 @@ def test_drawing_AngleSet_same_vertex_and_markright():
 \coordinate (Y1) at (-1,6);
 \coordinate (Z1) at (-3,1);
 
-% Draw Angles
-\draw[thick] (X1) -- (A) -- (Y1);
-\draw[thick] (Y1) -- (A) -- (Z1);
 % Mark right Angles
 \draw[thick, cm={cos(9.46), sin(9.46), -sin(9.46), cos(9.46), (A)}]"""\
 r""" (0.25 cm, 0) -- (0.25 cm, 0.25 cm) -- (0, 0.25 cm);
+% Draw Angles
+\draw[thick] (X1) -- (A) -- (Y1);
+\draw[thick] (Y1) -- (A) -- (Z1);
 
 % Label Points
 

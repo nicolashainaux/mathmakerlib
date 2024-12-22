@@ -94,13 +94,6 @@ def test_simple_drawing():
 \coordinate (G) at (2,1);
 \coordinate (A) at (0,1);
 
-% Draw Rectangle
-\draw[thick] (Y)
--- (O)
--- (G)
--- (A)
--- cycle;
-
 % Mark right angles
 \draw[thick, cm={cos(0), sin(0), -sin(0), cos(0), (Y)}] """\
 r"""(0.25 cm, 0) -- (0.25 cm, 0.25 cm) -- (0, 0.25 cm);
@@ -110,6 +103,12 @@ r"""(0.25 cm, 0) -- (0.25 cm, 0.25 cm) -- (0, 0.25 cm);
 r"""(0.25 cm, 0) -- (0.25 cm, 0.25 cm) -- (0, 0.25 cm);
 \draw[thick, cm={cos(-90), sin(-90), -sin(-90), cos(-90), (A)}] """\
 r"""(0.25 cm, 0) -- (0.25 cm, 0.25 cm) -- (0, 0.25 cm);
+% Draw Rectangle
+\draw[thick] (Y)
+-- (O)
+-- (G)
+-- (A)
+-- cycle;
 
 % Label Points
 \draw (Y) node[below left] {Y};
@@ -127,13 +126,6 @@ r"""(0.25 cm, 0) -- (0.25 cm, 0.25 cm) -- (0, 0.25 cm);
 \coordinate (G) at (1,0);
 \coordinate (A) at (-1,0);
 
-% Draw Rectangle
-\draw[thick] (Y)
--- (O)
--- (G)
--- (A)
--- cycle;
-
 % Mark right angles
 \draw[thick, cm={cos(0), sin(0), -sin(0), cos(0), (Y)}] """\
 r"""(0.25 cm, 0) -- (0.25 cm, 0.25 cm) -- (0, 0.25 cm);
@@ -143,6 +135,12 @@ r"""(0.25 cm, 0) -- (0.25 cm, 0.25 cm) -- (0, 0.25 cm);
 r"""(0.25 cm, 0) -- (0.25 cm, 0.25 cm) -- (0, 0.25 cm);
 \draw[thick, cm={cos(-90), sin(-90), -sin(-90), cos(-90), (A)}] """\
 r"""(0.25 cm, 0) -- (0.25 cm, 0.25 cm) -- (0, 0.25 cm);
+% Draw Rectangle
+\draw[thick] (Y)
+-- (O)
+-- (G)
+-- (A)
+-- cycle;
 
 % Label Points
 \draw (Y) node[below left] {Y};
@@ -160,13 +158,6 @@ r"""(0.25 cm, 0) -- (0.25 cm, 0.25 cm) -- (0, 0.25 cm);
 \coordinate (U) at (1.354,1.561);
 \coordinate (M) at (-0.061,0.146);
 
-% Draw Rectangle
-\draw[thick] (P)
--- (L)
--- (U)
--- (M)
--- cycle;
-
 % Mark right angles
 \draw[thick, cm={cos(45), sin(45), -sin(45), cos(45), (P)}] """\
 r"""(0.25 cm, 0) -- (0.25 cm, 0.25 cm) -- (0, 0.25 cm);
@@ -176,6 +167,12 @@ r"""(0.25 cm, 0) -- (0.25 cm, 0.25 cm) -- (0, 0.25 cm);
 r"""(0.25 cm, 0) -- (0.25 cm, 0.25 cm) -- (0, 0.25 cm);
 \draw[thick, cm={cos(-45), sin(-45), -sin(-45), cos(-45), (M)}] """\
 r"""(0.25 cm, 0) -- (0.25 cm, 0.25 cm) -- (0, 0.25 cm);
+% Draw Rectangle
+\draw[thick] (P)
+-- (L)
+-- (U)
+-- (M)
+-- cycle;
 
 % Label Points
 \draw (P) node[below] {P};

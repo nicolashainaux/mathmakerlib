@@ -199,17 +199,17 @@ class AngleDecoration(Labeled, Colored, HasThickness, HasRadius, HasArrowTips):
         if pic_attr == '[]':
             return ''
         required.tikz_library['angles'] = True
-        deco = ['pic {} {{angle = {}--{}--{}}}'
+        deco = [r'\draw pic {} {{angle = {}--{}--{}}};'
                 .format(pic_attr, *points_names)]
         if self.variety in ['double', 'triple']:
             space_sep = Number('0.16')
-            deco.append('pic {} {{angle = {}--{}--{}}}'
+            deco.append(r'\draw pic {} {{angle = {}--{}--{}}};'
                         .format(self.tikz_attributes(
                                 radius_coeff=1 + space_sep,
                                 do_label=last_layer == 2),
                                 *points_names))
             if self.variety == 'triple':
-                deco.append('pic {} {{angle = {}--{}--{}}}'
+                deco.append(r'\draw pic {} {{angle = {}--{}--{}}};'
                             .format(self.tikz_attributes(
                                     radius_coeff=1 + 2 * space_sep,
                                     do_label=last_layer == 3),
@@ -670,15 +670,16 @@ class Angle(Drawable, Oriented, HasThickness, Dimensional):
 
         :rtype: list
         """
-        comments = ['% Draw Angle']
+        comments = []
+        if self.mark_right:
+            comments.append('% Mark right angle')
+        comments.append('% Draw Angle')
         if self.draw_vertex:
             comments.append('% Draw Vertex')
         if self.draw_armspoints and len(self.armspoints):
             comments.append('% Draw Arms\' Points')
         if self.draw_endpoints:
             comments.append('% Draw End Points')
-        if self.mark_right:
-            comments.append('\n% Mark right angle')
         return comments
 
     def tikz_draw(self):
@@ -692,22 +693,24 @@ class Angle(Drawable, Oriented, HasThickness, Dimensional):
 
         :rtype: list
         """
+        commands = []
+        if self.mark_right:
+            commands.append(self.tikz_rightangle_mark())
         decoration = self.tikz_decorations()
-        if decoration != '':
-            decoration = '\n' + decoration
-        commands = [r'\draw' + '{} ({}) -- ({}) -- ({}){};'
-                    .format(tikz_options_list('draw', self),
-                            *[p.name for p in self.points],
-                            decoration)
-                    ]
+        if decoration:
+            decoration = f'{decoration}\n'
+        commands.append(r'{}\draw{} ({}) -- ({}) -- ({});'
+                        .format(decoration,
+                                tikz_options_list('draw', self),
+                                *[p.name for p in self.points])
+                        )
         if self.draw_vertex:
             commands.append(self._tikz_draw_vertex())
         if self.draw_armspoints and len(self.armspoints):
             commands.append(self._tikz_draw_armspoints())
         if self.draw_endpoints:
             commands.append(self._tikz_draw_endpoints())
-        if self.mark_right:
-            commands.append(self.tikz_rightangle_mark())
+        print(f'{commands = }')
         return commands
 
     def tikz_label(self):
@@ -782,7 +785,10 @@ class AnglesSet(Drawable):
 
         :rtype: list
         """
-        comments = ['% Draw Angles']
+        comments = []
+        if any([θ.mark_right for θ in self.angles]):
+            comments.append('% Mark right Angles')
+        comments.append('% Draw Angles')
         vertices_to_draw = len([α.draw_vertex
                                 for α in self.angles if α.draw_vertex])
         if vertices_to_draw:
@@ -795,8 +801,6 @@ class AnglesSet(Drawable):
             comments.append('% Draw Arms\' Points')
         if any([α.draw_endpoints for α in self.angles]):
             comments.append('% Draw End Points')
-        if any([θ.mark_right for θ in self.angles]):
-            comments.append('% Mark right Angles')
         return comments
 
     def tikz_label(self):
@@ -833,16 +837,21 @@ class AnglesSet(Drawable):
 
         :rtype: list
         """
+        commands = []
+
+        if any([θ.mark_right for θ in self.angles]):
+            commands.append(self._tikz_draw_right_angles_marks())
+
         angles_cmd = []
         for α in self.angles:
             decoration = α.tikz_decorations()
-            if decoration != '':
-                decoration = '\n' + decoration
-            angles_cmd.append(r'\draw' + '{} ({}) -- ({}) -- ({}){};'
-                              .format(tikz_options_list('draw', α),
-                                      *[p.name for p in α.points],
-                                      decoration))
-        commands = ['\n'.join(angles_cmd)]
+            if decoration:
+                decoration = f'{decoration}\n'
+            angles_cmd.append(r'{}\draw{} ({}) -- ({}) -- ({});'
+                              .format(decoration,
+                                      tikz_options_list('draw', α),
+                                      *[p.name for p in α.points]))
+        commands.append('\n'.join(angles_cmd))
 
         labeled_points_names = []
         vertices_cmd = []
@@ -879,8 +888,5 @@ class AnglesSet(Drawable):
         endpoints_cmd = '\n'.join(endpoints_cmd)
         if endpoints_cmd != '':
             commands.append(endpoints_cmd)
-
-        if any([θ.mark_right for θ in self.angles]):
-            commands.append(self._tikz_draw_right_angles_marks())
 
         return commands

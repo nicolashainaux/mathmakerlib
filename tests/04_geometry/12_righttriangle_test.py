@@ -21,10 +21,17 @@
 
 import pytest
 import decimal
+from pathlib import Path
 
 from mathmakerlib.calculus import Number, Unit
 from mathmakerlib.geometry import Point, LineSegment, RightTriangle
 from mathmakerlib.geometry import AngleDecoration
+
+DATA_PATH = Path(__file__).parent.parent.parent \
+    / 'tests_compilations/data/right_triangles'
+
+LAC1 = (DATA_PATH / 'LAC1.tex').read_text()
+ICY1 = (DATA_PATH / 'ICY1.tex').read_text()
 
 
 @pytest.fixture
@@ -57,15 +64,14 @@ def test_simple_drawing():
 \coordinate (C) at (2,0);
 \coordinate (Y) at (2,1);
 
+% Mark right angles
+\draw[thick, cm={cos(90), sin(90), -sin(90), cos(90), (C)}] """\
+r"""(0.25 cm, 0) -- (0.25 cm, 0.25 cm) -- (0, 0.25 cm);
 % Draw RightTriangle
 \draw[thick] (I)
 -- (C)
 -- (Y)
 -- cycle;
-
-% Mark right angles
-\draw[thick, cm={cos(90), sin(90), -sin(90), cos(90), (C)}] """\
-r"""(0.25 cm, 0) -- (0.25 cm, 0.25 cm) -- (0, 0.25 cm);
 
 % Label Points
 \draw (I) node[left] {I};
@@ -82,15 +88,14 @@ r"""(0.25 cm, 0) -- (0.25 cm, 0.25 cm) -- (0, 0.25 cm);
 \coordinate (C) at (-1,4);
 \coordinate (Y) at (-1,5);
 
+% Mark right angles
+\draw[thick, cm={cos(90), sin(90), -sin(90), cos(90), (C)}] """\
+r"""(0.25 cm, 0) -- (0.25 cm, 0.25 cm) -- (0, 0.25 cm);
 % Draw RightTriangle
 \draw[thick] (I)
 -- (C)
 -- (Y)
 -- cycle;
-
-% Mark right angles
-\draw[thick, cm={cos(90), sin(90), -sin(90), cos(90), (C)}] """\
-r"""(0.25 cm, 0) -- (0.25 cm, 0.25 cm) -- (0, 0.25 cm);
 
 % Label Points
 \draw (I) node[left] {I};
@@ -112,15 +117,14 @@ r"""(0.25 cm, 0) -- (0.25 cm, 0.25 cm) -- (0, 0.25 cm);
 \coordinate (C) at (-1,4);
 \coordinate (Y) at (-3,4);
 
+% Mark right angles
+\draw[thick, cm={cos(180), sin(180), -sin(180), cos(180), (C)}] """\
+r"""(0.25 cm, 0) -- (0.25 cm, -0.25 cm) -- (0, -0.25 cm);
 % Draw RightTriangle
 \draw[thick] (I)
 -- (C) node[midway, above, sloped] {\SI{3}{cm}}
 -- (Y) node[midway, below, sloped] {\SI{4}{cm}}
 -- cycle node[midway, above, sloped] {\SI{5}{cm}};
-
-% Mark right angles
-\draw[thick, cm={cos(180), sin(180), -sin(180), cos(180), (C)}] """\
-r"""(0.25 cm, 0) -- (0.25 cm, -0.25 cm) -- (0, -0.25 cm);
 
 % Label Points
 \draw (I) node[above right] {I};
@@ -221,31 +225,7 @@ def test_drawing_righttriangle_setup_for_trigonometry_anticlockwise_winding():
                              down_length_val=None,
                              up_length_val=Number(6, unit='km'),
                              angle_decoration=dec)
-    assert r.drawn == r'''
-\begin{tikzpicture}
-% Declare Points
-\coordinate (I) at (0,0);
-\coordinate (C) at (4,0);
-\coordinate (Y) at (4,3);
-
-% Draw RightTriangle
-\draw[thick] (I)
--- (C)
--- (Y) node[midway, below, sloped] {\SI{6}{km}}
--- cycle node[midway, above, sloped] {?}
-pic ["\ang{39}", angle eccentricity=2, draw, thick, angle radius = 0.4 cm]'''\
-    r''' {angle = I--Y--C};
-
-% Mark right angles
-\draw[thick, cm={cos(90), sin(90), -sin(90), cos(90), (C)}] (0.25 cm, 0) '''\
-    r'''-- (0.25 cm, 0.25 cm) -- (0, 0.25 cm);
-
-% Label Points
-\draw (I) node[left] {I};
-\draw (C) node[below right] {C};
-\draw (Y) node[above right] {Y};
-\end{tikzpicture}
-'''
+    assert r.drawn == ICY1
 
 
 def test_drawing_righttriangle_setup_for_trigonometry_clockwise_winding():
@@ -257,31 +237,7 @@ def test_drawing_righttriangle_setup_for_trigonometry_clockwise_winding():
                               angle_val=Number(83, unit=r'\degree'),
                               down_length_val=Number(3, unit='hm'),
                               up_length_val=None, angle_decoration=dec)
-    assert rt.drawn == r'''
-\begin{tikzpicture}
-% Declare Points
-\coordinate (L) at (3,4);
-\coordinate (A) at (3,0);
-\coordinate (C) at (0,0);
-
-% Draw RightTriangle
-\draw[thick] (L)
--- (A) node[midway, above, sloped] {?}
--- (C)
--- cycle node[midway, above, sloped] {\SI{3}{hm}}
-pic ["\ang{83}", angle eccentricity=2, draw, thick, angle radius = 0.4 cm] '''\
-    r'''{angle = A--C--L};
-
-% Mark right angles
-\draw[thick, cm={cos(180), sin(180), -sin(180), cos(180), (A)}] '''\
-    r'''(0.25 cm, 0) -- (0.25 cm, -0.25 cm) -- (0, -0.25 cm);
-
-% Label Points
-\draw (L) node[above] {L};
-\draw (A) node[below right] {A};
-\draw (C) node[below left] {C};
-\end{tikzpicture}
-'''
+    assert rt.drawn == LAC1
 
 
 def test_sides_opposite_and_adjacent_to(t6):

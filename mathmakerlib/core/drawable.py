@@ -19,6 +19,7 @@
 # along with Mathmaker Lib; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
+from itertools import zip_longest
 from decimal import Decimal, InvalidOperation
 from abc import ABCMeta, abstractmethod
 
@@ -250,9 +251,11 @@ class Drawable(Colored, Labeled, metaclass=ABCMeta):
 
     def tikzsection_drawing(self):
         drawing_section = ''
-        for (i, (c, d)) in enumerate(zip(self.tikz_drawing_comment(),
-                                     self.tikz_draw())):
-            drawing_section += ('{{drawing_comment{}}}\n{{drawing{}}}\n'
+        comments = [f'{comment}\n' for comment in self.tikz_drawing_comment()]
+        for (i, (c, d)) in enumerate(zip_longest(comments,
+                                                 self.tikz_draw(),
+                                                 fillvalue='')):
+            drawing_section += ('{{drawing_comment{}}}{{drawing{}}}\n'
                                 .format(i, i))\
                 .format(**{'drawing_comment{}'.format(i): c,
                            'drawing{}'.format(i): d})

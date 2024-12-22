@@ -1,0 +1,21 @@
+
+\begin{tikzpicture}
+% Declare Points
+\coordinate (L) at (3,4);
+\coordinate (A) at (3,0);
+\coordinate (C) at (0,0);
+
+% Mark right angles
+\draw[thick, cm={cos(180), sin(180), -sin(180), cos(180), (A)}] (0.25 cm, 0) -- (0.25 cm, -0.25 cm) -- (0, -0.25 cm);
+% Draw RightTriangle
+\draw pic ["\ang{83}", angle eccentricity=2, draw, thick, angle radius = 0.4 cm] {angle = A--C--L};
+\draw[thick] (L)
+-- (A) node[midway, above, sloped] {?}
+-- (C)
+-- cycle node[midway, above, sloped] {\SI{3}{hm}};
+
+% Label Points
+\draw (L) node[above] {L};
+\draw (A) node[below right] {A};
+\draw (C) node[below left] {C};
+\end{tikzpicture}

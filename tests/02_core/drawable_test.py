@@ -223,8 +223,8 @@ def test_fontsize():
 \coordinate (Y) at (1,1.67);
 
 % Draw Angle
-\draw[thick] (X) -- (A) -- (Y)
-pic ["\ang{38}", angle eccentricity=1.8, draw, thick] {angle = X--A--Y};
+\draw pic ["\ang{38}", angle eccentricity=1.8, draw, thick] {angle = X--A--Y};
+\draw[thick] (X) -- (A) -- (Y);
 
 % Label Points
 \draw (A) node[below left] {A};

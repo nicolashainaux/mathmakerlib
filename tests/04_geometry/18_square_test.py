@@ -51,13 +51,6 @@ def test_simple_drawing():
 \coordinate (M) at (1,1);
 \coordinate (S) at (0,1);
 
-% Draw Square
-\draw[thick] (G)
--- (E) node[midway, sloped, scale=0.5] {||}
--- (M) node[midway, sloped, scale=0.5] {||}
--- (S) node[midway, sloped, scale=0.5] {||}
--- cycle node[midway, sloped, scale=0.5] {||};
-
 % Mark right angles
 \draw[thick, cm={cos(0), sin(0), -sin(0), cos(0), (G)}] """\
 r"""(0.25 cm, 0) -- (0.25 cm, 0.25 cm) -- (0, 0.25 cm);
@@ -67,6 +60,12 @@ r"""(0.25 cm, 0) -- (0.25 cm, 0.25 cm) -- (0, 0.25 cm);
 r"""(0.25 cm, 0) -- (0.25 cm, 0.25 cm) -- (0, 0.25 cm);
 \draw[thick, cm={cos(-90), sin(-90), -sin(-90), cos(-90), (S)}] """\
 r"""(0.25 cm, 0) -- (0.25 cm, 0.25 cm) -- (0, 0.25 cm);
+% Draw Square
+\draw[thick] (G)
+-- (E) node[midway, sloped, scale=0.5] {||}
+-- (M) node[midway, sloped, scale=0.5] {||}
+-- (S) node[midway, sloped, scale=0.5] {||}
+-- cycle node[midway, sloped, scale=0.5] {||};
 
 % Label Points
 \draw (G) node[below left] {G};
@@ -84,6 +83,15 @@ r"""(0.25 cm, 0) -- (0.25 cm, 0.25 cm) -- (0, 0.25 cm);
 \coordinate (M) at (1,1);
 \coordinate (S) at (0,1);
 
+% Mark right angles
+\draw[thick, cm={cos(0), sin(0), -sin(0), cos(0), (G)}] """\
+r"""(0.25 cm, 0) -- (0.25 cm, 0.25 cm) -- (0, 0.25 cm);
+\draw[thick, cm={cos(90), sin(90), -sin(90), cos(90), (E)}] """\
+r"""(0.25 cm, 0) -- (0.25 cm, 0.25 cm) -- (0, 0.25 cm);
+\draw[thick, cm={cos(180), sin(180), -sin(180), cos(180), (M)}] """\
+r"""(0.25 cm, 0) -- (0.25 cm, 0.25 cm) -- (0, 0.25 cm);
+\draw[thick, cm={cos(-90), sin(-90), -sin(-90), cos(-90), (S)}] """\
+r"""(0.25 cm, 0) -- (0.25 cm, 0.25 cm) -- (0, 0.25 cm);
 % Draw Square
 \draw[thick] (G)
 -- (E) node[midway, below, sloped] {\SI{5}{cm}}"""\
@@ -94,16 +102,6 @@ r""" node[midway, sloped, scale=0.5] {||}
 r""" node[midway, sloped, scale=0.5] {||}
 -- cycle node[midway, below, sloped] {\SI{5}{cm}}"""\
 r""" node[midway, sloped, scale=0.5] {||};
-
-% Mark right angles
-\draw[thick, cm={cos(0), sin(0), -sin(0), cos(0), (G)}] """\
-r"""(0.25 cm, 0) -- (0.25 cm, 0.25 cm) -- (0, 0.25 cm);
-\draw[thick, cm={cos(90), sin(90), -sin(90), cos(90), (E)}] """\
-r"""(0.25 cm, 0) -- (0.25 cm, 0.25 cm) -- (0, 0.25 cm);
-\draw[thick, cm={cos(180), sin(180), -sin(180), cos(180), (M)}] """\
-r"""(0.25 cm, 0) -- (0.25 cm, 0.25 cm) -- (0, 0.25 cm);
-\draw[thick, cm={cos(-90), sin(-90), -sin(-90), cos(-90), (S)}] """\
-r"""(0.25 cm, 0) -- (0.25 cm, 0.25 cm) -- (0, 0.25 cm);
 
 % Label Points
 \draw (G) node[below left] {G};
@@ -124,6 +122,15 @@ r"""(0.25 cm, 0) -- (0.25 cm, 0.25 cm) -- (0, 0.25 cm);
 \coordinate (M) at (1,0);
 \coordinate (S) at (0,0);
 
+% Mark right angles
+\draw[thick, cm={cos(0), sin(0), -sin(0), cos(0), (G)}] """\
+r"""(0.25 cm, 0) -- (0.25 cm, -0.25 cm) -- (0, -0.25 cm);
+\draw[thick, cm={cos(-90), sin(-90), -sin(-90), cos(-90), (E)}] """\
+r"""(0.25 cm, 0) -- (0.25 cm, -0.25 cm) -- (0, -0.25 cm);
+\draw[thick, cm={cos(180), sin(180), -sin(180), cos(180), (M)}] """\
+r"""(0.25 cm, 0) -- (0.25 cm, -0.25 cm) -- (0, -0.25 cm);
+\draw[thick, cm={cos(90), sin(90), -sin(90), cos(90), (S)}] """\
+r"""(0.25 cm, 0) -- (0.25 cm, -0.25 cm) -- (0, -0.25 cm);
 % Draw Square
 \draw[thick] (G)
 -- (E) node[midway, above, sloped] {\SI{5}{cm}}"""\
@@ -134,16 +141,6 @@ r""" node[midway, sloped, scale=0.5] {||}
 r""" node[midway, sloped, scale=0.5] {||}
 -- cycle node[midway, above, sloped] {\SI{5}{cm}}"""\
 r""" node[midway, sloped, scale=0.5] {||};
-
-% Mark right angles
-\draw[thick, cm={cos(0), sin(0), -sin(0), cos(0), (G)}] """\
-r"""(0.25 cm, 0) -- (0.25 cm, -0.25 cm) -- (0, -0.25 cm);
-\draw[thick, cm={cos(-90), sin(-90), -sin(-90), cos(-90), (E)}] """\
-r"""(0.25 cm, 0) -- (0.25 cm, -0.25 cm) -- (0, -0.25 cm);
-\draw[thick, cm={cos(180), sin(180), -sin(180), cos(180), (M)}] """\
-r"""(0.25 cm, 0) -- (0.25 cm, -0.25 cm) -- (0, -0.25 cm);
-\draw[thick, cm={cos(90), sin(90), -sin(90), cos(90), (S)}] """\
-r"""(0.25 cm, 0) -- (0.25 cm, -0.25 cm) -- (0, -0.25 cm);
 
 % Label Points
 \draw (G) node[above left] {G};
