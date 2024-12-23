@@ -26,6 +26,7 @@ from .dimensional import Dimensional
 from .printable import Printable
 from .signed import Signed
 from .word import Word
+from .callout import Callout
 
-__all__ = ['Drawable', 'Oriented', 'Evaluable', 'Dimensional', 'Printable',
-           'Signed', 'Word']
+__all__ = [Drawable, Oriented, Evaluable, Dimensional, Printable, Signed, Word,
+           Callout]

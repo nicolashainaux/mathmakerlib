@@ -186,6 +186,7 @@ SUPPORTED_LANGUAGES = ['en', 'en_US', 'en_GB', 'fr', 'fr_FR']
 
 def init():
     global polygons, angles, oblique_projection, language, points, clocktime
+    global callout_styles
     global initialized
 
     try:
@@ -200,6 +201,10 @@ def init():
         angles = AnglesSetup()
         oblique_projection = ObliqueProjectionSetup()
         clocktime = ClockTimeSetup()
+        callout_styles = \
+            {'callout_style1': '''rectangle callout, rounded corners=0.4cm,
+minimum height=1.2cm, minimum width=1.6cm,
+inner xsep=0.3cm, inner ysep=0.1cm'''}
         # any software using mathmakerlib can set its language using
         # mathmakerlib.config.language = ...
         language = 'en'

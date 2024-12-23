@@ -21,7 +21,7 @@
 
 
 def init():
-    global package, options, tikz_library, tikzset
+    global package, options, tikz_library, tikzset, callout_style
     global required_initialized
 
     try:
@@ -46,8 +46,13 @@ def init():
         options = {'xcolor': set(), 'textpos': set()}
         tikz_library = {'angles': False,
                         'decorations.markings': False,
-                        'quotes': False}
+                        'quotes': False,
+                        'shapes.geometric': False,
+                        'shapes.callouts': False,
+                        'arrows.meta': False,
+                        'positioning': False}
         tikzset = {'singledash_hatchmark': False,
                    'doubledash_hatchmark': False,
                    'tripledash_hatchmark': False}
+        callout_style = {'callout_style1': False}
         # hack = {'rightangle_mark': False}
