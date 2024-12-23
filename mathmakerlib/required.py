@@ -47,6 +47,7 @@ def init():
         tikz_library = {'angles': False,
                         'decorations.markings': False,
                         'quotes': False,
+                        'arrows': False,
                         'shapes.geometric': False,
                         'shapes.callouts': False,
                         'arrows.meta': False,

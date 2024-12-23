@@ -205,6 +205,8 @@ class HasArrowTips(object, metaclass=ABCMeta):
         # (as it is now, only too few arrow tips are allowed)
         if value in ARROW_TIPS:
             self._arrow_tips = value
+            if value in ['round cap-round cap']:
+                required.tikz_library['arrows'] = True
         else:
             raise ValueError('Incorrect arrow_tips value: \'{}\'. '
                              'Available values belong to: {}.'

@@ -797,6 +797,7 @@ def test_drawing_angle_with_roundcaps():
 
 \end{tikzpicture}
 """
+    assert required.tikz_library['arrows']
 
 
 def test_drawing_angle_with_colored_and_filled_decoration():
