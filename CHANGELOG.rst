@@ -10,6 +10,12 @@ Unreleased
 ----------
 
 
+Version 0.7.24 (2024-12-26)
+---------------------------
+
+* Enhance AngleDecoration's rendering.
+* Add Callout class.
+
 Version 0.7.23 (2024-12-20)
 ---------------------------
 
