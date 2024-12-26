@@ -85,3 +85,8 @@ def prime_decomposition(nn):
             nn = nn / p
         decomposition.append((p, i))
     return decomposition
+
+
+def weighted_average(value1, value2, mass1, mass2, rounding_rank=3):
+    return round((value1 * mass1 + value2 * mass2) / (mass1 + mass2),
+                 rounding_rank)

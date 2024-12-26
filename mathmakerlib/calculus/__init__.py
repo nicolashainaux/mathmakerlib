@@ -20,7 +20,7 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 from .tools import is_number, is_integer, is_natural, prime_factors
-from .tools import prime_decomposition
+from .tools import prime_decomposition, weighted_average
 from .exponented import Exponented
 from .number import Sign, Number, move_fracdigits_to, remove_fracdigits_from
 from .number import fix_fracdigits
@@ -35,4 +35,4 @@ __all__ = ['is_number', 'is_integer', 'is_natural', 'Exponented', 'Sign',
            'fix_fracdigits', 'Unit', 'physical_quantity',
            'difference_of_orders_of_magnitude',
            'Fraction', 'prime_factors', 'prime_decomposition',
-           'ClockTime', 'Table', 'equations']
+           'ClockTime', 'Table', 'equations', 'weighted_average']

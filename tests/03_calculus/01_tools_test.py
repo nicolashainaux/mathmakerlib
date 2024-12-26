@@ -24,6 +24,7 @@ from decimal import Decimal
 
 from mathmakerlib.calculus import is_number, is_integer, is_natural
 from mathmakerlib.calculus import prime_factors, prime_decomposition
+from mathmakerlib.calculus import weighted_average
 
 
 def test_is_number():
@@ -95,3 +96,7 @@ def test_prime_decomposition():
     assert prime_decomposition(31) == [(31, 1)]
     assert prime_decomposition(16065) == [(3, 3), (5, 1), (7, 1), (17, 1)]
     assert prime_decomposition(28224) == [(2, 6), (3, 2), (7, 2)]
+
+
+def test_weighted_average():
+    assert weighted_average(10, 20, 3, 7) == 17
