@@ -19,6 +19,8 @@
 # along with Mathmaker Lib; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
+from pathlib import Path
+
 import pytest
 
 from mathmakerlib import required, config
@@ -26,6 +28,24 @@ from mathmakerlib.calculus import Number, Unit
 from mathmakerlib.geometry import Point, Bipoint
 from mathmakerlib.geometry.angle import AngleDecoration, Angle, AnglesSet
 from mathmakerlib.geometry.angle import AVAILABLE_NAMING_MODES
+from mathmakerlib.geometry.angle import autosize_decoration_radius
+
+DATA_PATH = Path(__file__).parent.parent.parent \
+    / 'tests_compilations/data/angles'
+
+XBY1 = (DATA_PATH / 'XBY1.tex').read_text()
+XBY2 = (DATA_PATH / 'XBY2.tex').read_text()
+XBY3 = (DATA_PATH / 'XBY3.tex').read_text()
+XBY4 = (DATA_PATH / 'XBY4.tex').read_text()
+
+
+def test_autosize_decoration_radius():
+    assert autosize_decoration_radius(4) == 2
+    assert autosize_decoration_radius(5) == 2
+    assert autosize_decoration_radius(100) == Number('0.6')
+    assert autosize_decoration_radius(160) == Number('0.4')
+    assert autosize_decoration_radius(57) == Number('0.9')
+    assert autosize_decoration_radius(45) == 1
 
 
 def test_AngleDecoration():
@@ -931,6 +951,66 @@ r"""angle radius = 0.58 cm, singledash] {angle = X1--A--Y1};
 \draw (Y) node[above left] {Y};
 \end{tikzpicture}
 """
+
+
+def test_drawing_decorated_angle_with_callout1():
+    X = Point(6, 0, 'X')
+    B = Point(0, 0, 'B')
+    Y = Point('-4.915', '3.441', 'Y')
+    α = Angle(X, B, Y, thickness='thick', arrow_tips='round cap-round cap',
+              callout_text=r'n°2 : \dots\dots\dots \vrule width 0pt '
+              r'height 0.5cm', callout_fmt={'fillcolor': 'CornflowerBlue!20'})
+    r = autosize_decoration_radius(α.measure)
+    α.decoration = AngleDecoration(fillcolor='CornflowerBlue!30',
+                                   color='CornflowerBlue',
+                                   radius=Number(r, unit='cm'),
+                                   thickness='thick')
+    assert α.drawn == XBY1
+
+
+def test_drawing_decorated_angle_with_callout2():
+    X = Point('-4.915', '3.441', 'X')
+    B = Point(0, 0, 'B')
+    Y = Point(-6, 0, 'Y')
+    α = Angle(X, B, Y, thickness='thick', arrow_tips='round cap-round cap',
+              callout_text=r'n°2 : \dots\dots\dots \vrule width 0pt '
+              r'height 0.5cm', callout_fmt={'fillcolor': 'CornflowerBlue!20'})
+    r = autosize_decoration_radius(α.measure)
+    α.decoration = AngleDecoration(fillcolor='CornflowerBlue!30',
+                                   color='CornflowerBlue',
+                                   radius=Number(r, unit='cm'),
+                                   thickness='thick')
+    assert α.drawn == XBY2
+
+
+def test_drawing_decorated_angle_with_callout3():
+    X = Point(-6, 0, 'X')
+    B = Point(0, 0, 'B')
+    Y = Point(-3, '-5.196', 'Y')
+    α = Angle(X, B, Y, thickness='thick', arrow_tips='round cap-round cap',
+              callout_text=r'n°2 : \dots\dots\dots \vrule width 0pt '
+              r'height 0.5cm', callout_fmt={'fillcolor': 'CornflowerBlue!20'})
+    r = autosize_decoration_radius(α.measure)
+    α.decoration = AngleDecoration(fillcolor='CornflowerBlue!30',
+                                   color='CornflowerBlue',
+                                   radius=Number(r, unit='cm'),
+                                   thickness='thick')
+    assert α.drawn == XBY3
+
+
+def test_drawing_decorated_angle_with_callout4():
+    X = Point(3, '-5.196', 'X')
+    B = Point(0, 0, 'B')
+    Y = Point(6, 0, 'Y')
+    α = Angle(X, B, Y, thickness='thick', arrow_tips='round cap-round cap',
+              callout_text=r'n°2 : \dots\dots\dots \vrule width 0pt '
+              r'height 0.5cm', callout_fmt={'fillcolor': 'CornflowerBlue!20'})
+    r = autosize_decoration_radius(α.measure)
+    α.decoration = AngleDecoration(fillcolor='CornflowerBlue!30',
+                                   color='CornflowerBlue',
+                                   radius=Number(r, unit='cm'),
+                                   thickness='thick')
+    assert α.drawn == XBY4
 
 
 def test_drawing_double_decorated_angles():

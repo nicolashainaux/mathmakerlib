@@ -35,3 +35,17 @@ def test_RightTriangles_compilations():
         ret_code = subprocess.run(cmd, shell=True, executable='/bin/bash',
                                   capture_output=True).returncode
         assert ret_code == 0
+
+
+def test_Angles_compilations():
+    DATA_PATH = Path(__file__).parent / 'data/angles'
+    TEST_XBY1 = (DATA_PATH / 'XBY1.tex').read_text()
+    TEST_XBY2 = (DATA_PATH / 'XBY2.tex').read_text()
+    TEST_XBY3 = (DATA_PATH / 'XBY3.tex').read_text()
+    TEST_XBY4 = (DATA_PATH / 'XBY4.tex').read_text()
+    content = '\n'.join([TEST_XBY1, TEST_XBY2, TEST_XBY3, TEST_XBY4])
+    with CompilationManager('test_Angles_compilations',
+                            'article.tex', content) as cmd:
+        ret_code = subprocess.run(cmd, shell=True, executable='/bin/bash',
+                                  capture_output=True).returncode
+        assert ret_code == 0

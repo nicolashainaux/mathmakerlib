@@ -24,6 +24,7 @@ from math import atan2, degrees
 from mathmakerlib import required, config
 from mathmakerlib.LaTeX import MATHEMATICAL_NOTATIONS
 from mathmakerlib.exceptions import ZeroVector
+from mathmakerlib.core import Callout, callout_positioning
 from mathmakerlib.core.oriented import Oriented
 from mathmakerlib.core.oriented import check_winding, shoelace_formula
 from mathmakerlib.core.drawable import Colored, HasThickness, HasRadius
@@ -34,9 +35,31 @@ from mathmakerlib.core.dimensional import Dimensional
 from mathmakerlib.geometry.point import Point
 from mathmakerlib.geometry.vector import Vector
 from mathmakerlib.geometry.bipoint import Bipoint
-from mathmakerlib.calculus.number import Number, is_number
+from mathmakerlib.calculus import Number, is_number, weighted_average
+from mathmakerlib.core import surrounding_keys
 
 AVAILABLE_NAMING_MODES = ['from_endpoints', 'from_armspoints', 'from_vertex']
+
+RADIUS_SIZES = {5: 2, 10: '1.5', 15: '1.3', 20: '1.2', 25: '1.1', 30: 1,
+                55: 1, 60: '0.8', 80: '0.7', 100: '0.6', 120: '0.5',
+                140: '0.4'}
+
+
+def autosize_decoration_radius(angle):
+    if angle <= 5:
+        return Number(RADIUS_SIZES[5])
+    elif angle >= 140:
+        return Number(RADIUS_SIZES[140])
+    elif angle in list(RADIUS_SIZES.keys()):
+        return Number(RADIUS_SIZES[angle])
+    else:
+        angle1, angle2 = surrounding_keys(angle, RADIUS_SIZES)
+        w1 = angle2 - angle
+        w2 = angle - angle1
+        radius1 = Number(RADIUS_SIZES[angle1])
+        radius2 = Number(RADIUS_SIZES[angle2])
+        return Number(weighted_average(radius1, radius2, w1, w2,
+                                       rounding_rank=1)).standardized()
 
 
 class AngleDecoration(Labeled, Colored, Fillable, HasThickness, HasRadius,
@@ -233,7 +256,7 @@ class Angle(Drawable, Oriented, HasThickness, Dimensional, HasArrowTips):
                  label_armspoints=False, draw_armspoints=False,
                  label_endpoints=False, draw_endpoints=False,
                  naming_mode='from_endpoints', decoration2=None,
-                 arrow_tips=None):
+                 arrow_tips=None, callout_text=None, callout_fmt=None):
         """
         :param point: a Point of an arm of the Angle
         :type point: Point
@@ -265,6 +288,9 @@ class Angle(Drawable, Oriented, HasThickness, Dimensional, HasArrowTips):
         self.thickness = thickness
         self.arrow_tips = arrow_tips
         self.naming_mode = naming_mode
+        self.callout_text = callout_text  # auto setup for callout is made
+        self.callout_fmt = callout_fmt  # somewhat below, for 2D angles only
+        self.callout = None
         self.decoration = decoration
         self.decoration2 = decoration2
         # The label must be set *after* the possible decoration, because it
@@ -341,19 +367,17 @@ class Angle(Drawable, Oriented, HasThickness, Dimensional, HasArrowTips):
         # Only 2D: labels positioning
         if not self.three_dimensional:
             # Vertex' label positioning
-            bisector = Vector(self._points[0], self.vertex)\
-                .bisector(Vector(self._points[2], self.vertex),
+            bisector = Vector(self.vertex, self._points[0])\
+                .bisector(Vector(self.vertex, self._points[2]),
                           new_endpoint_name=None)
             try:
-                self._points[1].label_position = \
-                    tikz_approx_position(bisector.slope360)
+                midslope = bisector.slope360
             except ZeroVector:
-                self._points[1].label_position = \
-                    tikz_approx_position(
-                        Bipoint(self.vertex,
-                                self._points[0].rotate(self.vertex, -90,
-                                                       rename=None)
-                                ).slope360)
+                midslope = Bipoint(self._points[0].rotate(self.vertex, -90,
+                                                          rename=None),
+                                   self.vertex).slope360
+            self._points[1].label_position = \
+                tikz_approx_position(midslope + 180)
 
             # Endpoints labels positioning
             direction = 1 if self.winding == 'anticlockwise' else -1
@@ -361,6 +385,23 @@ class Angle(Drawable, Oriented, HasThickness, Dimensional, HasArrowTips):
                 tikz_approx_position(arm0.slope360 - direction * 55)
             self.endpoints[1].label_position = \
                 tikz_approx_position(arm1.slope360 + direction * 55)
+
+            if self.callout_text:
+                # (polar angle correction, radial distance,
+                #  callout pointer shorten)
+                pac, rd, s = callout_positioning(self._measure)
+                # callout's polar angle
+                f = -1 if (90 < midslope < 180 or 270 < midslope < 360) else 1
+                pa = Number(round(midslope - f * pac, 0)).standardized()
+                # dec radius
+                dr = autosize_decoration_radius(self._measure)
+                if dr < 1:
+                    offset = 1 - dr
+                    rd = rd - offset
+                    s = s - offset
+                self.callout = Callout(self.callout_text, rd, pa,
+                                       absolute_pointer=self.vertex.name,
+                                       shorten=f'{s}cm', **callout_fmt)
 
     def __repr__(self):
         return 'Angle({}, {}, {})'\
@@ -708,10 +749,14 @@ class Angle(Drawable, Oriented, HasThickness, Dimensional, HasArrowTips):
         decoration = self.tikz_decorations()
         if decoration:
             decoration = f'{decoration}\n'
-        commands.append(r'{}\draw{} ({}) -- ({}) -- ({});'
+        callout = ''
+        if self.callout:
+            callout = f'\n{self.callout.generate_tikz()}'
+        commands.append(r'{}\draw{} ({}) -- ({}) -- ({});{}'
                         .format(decoration,
                                 tikz_options_list('draw', self),
-                                *[p.name for p in self.points])
+                                *[p.name for p in self.points],
+                                callout)
                         )
         if self.draw_vertex:
             commands.append(self._tikz_draw_vertex())
@@ -719,7 +764,6 @@ class Angle(Drawable, Oriented, HasThickness, Dimensional, HasArrowTips):
             commands.append(self._tikz_draw_armspoints())
         if self.draw_endpoints:
             commands.append(self._tikz_draw_endpoints())
-        print(f'{commands = }')
         return commands
 
     def tikz_label(self):

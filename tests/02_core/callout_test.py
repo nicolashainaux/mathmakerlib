@@ -22,7 +22,10 @@
 import pytest
 
 from mathmakerlib import required
+from mathmakerlib.calculus import Number
 from mathmakerlib.core import Callout
+from mathmakerlib.core.callout import _average_triple
+from mathmakerlib.core.callout import callout_positioning
 
 
 def test_callout_instanciation_error():
@@ -81,3 +84,26 @@ def test_callout_generate_tikz():
         r'\node[callout absolute pointer=(B), callout_style1, '\
         r'callout pointer shorten=0.9cm, fill=CornflowerBlue!20] at (60:2.4) '\
         r'{n°2 : \dots\dots\dots \vrule width 0pt height 0.5cm};'
+
+
+def test_average_triple():
+    with pytest.raises(ValueError) as excinfo:
+        _average_triple(5)
+    assert str(excinfo.value) == 'Value expected to be 5 < value < 80; and '\
+        'not to be in [5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 80], '\
+        'but got: 5'
+    assert _average_triple(28) == (Number('1.952'), Number('1.1'),
+                                   Number('0.683'))
+
+
+def test_callout_positioning():
+    # tests only for the default arms_lengths == 6 cm;
+    # values might need to be adjusted for other arms_lengths.
+    assert callout_positioning(5) == (1, Number('7.75'), Number('5.75'))
+    assert callout_positioning(40) == (3, Number('5.2'), Number('2.7'))
+    assert callout_positioning(60) == (7, 4, Number('1.5'))
+    assert callout_positioning(80) == (7, 3, 1)
+    assert callout_positioning(120) == (7, 3, 1)
+    assert callout_positioning(28) == (Number('1.952'), Number('6.6'),
+                                       Number('4.1'))
+    assert callout_positioning(70) == (7, Number('3.5'), Number('1.25'))

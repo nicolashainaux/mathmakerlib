@@ -20,7 +20,64 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 from mathmakerlib import required
+from mathmakerlib.calculus import Number, weighted_average
+from mathmakerlib.core import surrounding_keys
 from .drawable import Colored, Fillable, HasThickness
+
+# This is only meant for 6 cm long arms of the angle. Possibly this doesn't
+# fit well with other lengths. See toolbox/callout_positioning.py and .ods
+# These values are also meant for a decoration radius of 1 cm; if this radius
+# is lower, then decrease the matching radial distance and shorten values of
+# the same amount; if it's higher, then there's no need to change the values
+# because it means the angle is narrow, so the callout will already be far
+# from the decoration.
+# {measure in degrees: (polar angle correction,
+#                       radial distance as % of arms_length,
+#                       callout pointer shorten as % of arms_length)
+CALLOUT_POSITIONING = {5: (1, '1.292', '0.958'),
+                       10: ('1.5', '1.25', '0.917'),
+                       15: ('1.63', '1.208', '0.833'),
+                       20: ('1.75', '1.167', '0.75'),
+                       25: ('1.88', '1.125', '0.708'),
+                       30: (2, '1.083', '0.667'),
+                       35: ('2.5', '0.983', '0.567'),
+                       40: (3, '0.867', '0.45'),
+                       45: ('3.5', '0.778', '0.367'),
+                       50: (4, '0.667', '0.292'),
+                       55: (5, '0.667', '0.267'),
+                       60: (7, '0.667', '0.25'),
+                       80: (7, '0.5', '0.167')}
+
+
+def _average_triple(angle):
+    angle1, angle2 = surrounding_keys(angle, CALLOUT_POSITIONING)
+    w1 = angle2 - angle
+    w2 = angle - angle1
+    values1 = CALLOUT_POSITIONING[angle1]
+    values2 = CALLOUT_POSITIONING[angle2]
+    return (weighted_average(Number(values1[0]), Number(values2[0]), w1, w2),
+            weighted_average(Number(values1[1]), Number(values2[1]), w1, w2),
+            weighted_average(Number(values1[2]), Number(values2[2]), w1, w2))
+
+
+def _convert(triple, arms_length):
+    return (triple[0],
+            Number(round(arms_length * Number(triple[1]), 2)).standardized(),
+            Number(round(arms_length * Number(triple[2]), 2)).standardized())
+
+
+def callout_positioning(angle, arms_length=6):
+    # See comment before CALLOUT_POSITIONING: using another value than 6
+    # for the arms_length might not work as expected. This is yet to test.
+    arms_length = Number(arms_length)
+    if angle <= 5:
+        return _convert(CALLOUT_POSITIONING[5], arms_length)
+    elif angle >= 80:
+        return _convert(CALLOUT_POSITIONING[80], arms_length)
+    elif angle in CALLOUT_POSITIONING:
+        return _convert(CALLOUT_POSITIONING[angle], arms_length)
+    else:
+        return _convert(_average_triple(angle), arms_length)
 
 
 class Callout(Colored, Fillable, HasThickness):
