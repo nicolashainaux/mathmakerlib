@@ -26,7 +26,8 @@ from .dimensional import Dimensional
 from .printable import Printable
 from .signed import Signed
 from .word import Word
-from .callout import Callout
+from .tools import surrounding_keys
+from .callout import Callout, callout_positioning
 
 __all__ = [Drawable, Oriented, Evaluable, Dimensional, Printable, Signed, Word,
-           Callout]
+           Callout, callout_positioning, surrounding_keys]
