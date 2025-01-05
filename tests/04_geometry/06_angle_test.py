@@ -40,18 +40,19 @@ XBY4 = (DATA_PATH / 'XBY4.tex').read_text()
 
 
 def test_autosize_decoration_radius():
-    assert autosize_decoration_radius(4) == 2
-    assert autosize_decoration_radius(5) == 2
-    assert autosize_decoration_radius(100) == Number('0.6')
-    assert autosize_decoration_radius(160) == Number('0.4')
-    assert autosize_decoration_radius(57) == Number('0.9')
-    assert autosize_decoration_radius(45) == 1
+    assert autosize_decoration_radius(4) == Number(2, unit='cm')
+    assert autosize_decoration_radius(5) == Number(2, unit='cm')
+    assert autosize_decoration_radius(100) == Number('0.6', unit='cm')
+    assert autosize_decoration_radius(160) == Number('0.4', unit='cm')
+    assert autosize_decoration_radius(57) == Number('0.9', unit='cm')
+    assert autosize_decoration_radius(45) == Number(1, unit='cm')
 
 
 def test_AngleDecoration():
     assert repr(AngleDecoration()) == 'AngleDecoration(variety=single; '\
         'hatchmark=None; label=default; color=None; thickness=thick; '\
         'radius=0.25 cm; eccentricity=2.6)'
+
     ad = AngleDecoration(radius=Number(1, unit='cm'))
     assert ad.arrow_tips is None
     assert repr(ad) == \
@@ -63,41 +64,76 @@ def test_AngleDecoration():
         'AngleDecoration(variety=single; '\
         'hatchmark=None; label=default; color=None; thickness=thick; '\
         'radius=2 cm; eccentricity=1.2)'
+
     assert AngleDecoration().tikz_attributes() \
         == '[draw, thick, angle radius = 0.25 cm]'
+
     assert AngleDecoration(color='green', thickness='thin').tikz_attributes() \
         == '[draw, thin, green, angle radius = 0.25 cm]'
+
     assert AngleDecoration(radius=Number('0.5', unit=Unit('cm'))) \
         .tikz_attributes() == '[draw, thick, angle radius = 0.5 cm]'
+
+    ad = AngleDecoration(radius='auto')
     with pytest.raises(ValueError) as excinfo:
-        AngleDecoration(radius=Number(2, unit='cm'), gap=None)
-    assert str(excinfo.value) == 'Cannot calculate the eccentricity if gap '\
-        'is None.'
+        ad.radius
+    assert str(excinfo.value) == "radius has been set to 'auto', but cannot "\
+        'be calculated since self._angle_measure = None (is not a number)'
+    ad._angle_measure = Number(8)
+    ad.gap = None
+    assert ad.gap is None
+    with pytest.raises(ValueError) as excinfo:
+        ad.eccentricity
+    assert str(excinfo.value) == "Cannot calculate the eccentricity because "\
+        "gap is None."
+    ad.gap = Number('0.4', unit='cm')
+    ad._angle_measure = None
+    ad.radius = 'auto'
+    with pytest.raises(ValueError) as excinfo:
+        ad.gap
+    assert str(excinfo.value) == "radius has been set to 'auto', but cannot "\
+        'be calculated since self._angle_measure = None (is not a number)'
+    with pytest.raises(ValueError) as excinfo:
+        ad.eccentricity
+    assert str(excinfo.value) == "radius has been set to 'auto', but cannot "\
+        'be calculated since self._angle_measure = None (is not a number)'
+    ad.radius = None
+    with pytest.raises(ValueError) as excinfo:
+        ad.eccentricity
+    assert str(excinfo.value) == "Cannot calculate the eccentricity because "\
+        "radius is None."
+
     with pytest.raises(TypeError) as excinfo:
         AngleDecoration(radius='2 cm')
-    assert str(excinfo.value) == 'Expected a number as radius. Got ' \
-        '<class \'str\'> instead.'
+    assert str(excinfo.value) == "Expected None, 'auto', or a number as "\
+        "radius. Got '2 cm' (<class 'str'>) instead."
+
     with pytest.raises(TypeError) as excinfo:
         AngleDecoration(gap='2 cm')
     assert str(excinfo.value) == 'The gap value must be None or a number. '\
         'Found \'2 cm\' instead (type: <class \'str\'>).'
+
     with pytest.raises(TypeError) as excinfo:
         AngleDecoration().tikz_attributes(radius_coeff='a')
     assert str(excinfo.value) == 'radius_coeff must be a number, '\
         'found <class \'str\'> instead.'
+
     with pytest.raises(TypeError) as excinfo:
         AngleDecoration(hatchmark='unknown')
     assert str(excinfo.value) == 'AngleDecoration\'s hatchmark can be None, '\
         '\'singledash\', \'doubledash\' or \'tripledash\'. ' \
         'Found \'unknown\' instead (type: <class \'str\'>).'
+
     with pytest.raises(TypeError) as excinfo:
         AngleDecoration(eccentricity='a')
-    assert str(excinfo.value) == 'The eccentricity of an AngleDecoration '\
-        'must be None or a Number. Found <class \'str\'> instead.'
+    assert str(excinfo.value) == "The eccentricity of an AngleDecoration "\
+        "must be 'auto', None or a Number. Found 'a' (<class 'str'>) instead."
+
     with pytest.raises(RuntimeError) as excinfo:
         AngleDecoration().generate_tikz('A', 'B')
     assert str(excinfo.value) == 'Three Points\' names must be provided to '\
         'generate the AngleDecoration. Found 2 arguments instead.'
+
     with pytest.raises(TypeError) as excinfo:
         AngleDecoration(do_draw='a')
     assert str(excinfo.value) == 'do_draw must be a boolean; '\
@@ -960,10 +996,10 @@ def test_drawing_decorated_angle_with_callout1():
     α = Angle(X, B, Y, thickness='thick', arrow_tips='round cap-round cap',
               callout_text=r'n°2 : \dots\dots\dots \vrule width 0pt '
               r'height 0.5cm', callout_fmt={'fillcolor': 'CornflowerBlue!20'})
-    r = autosize_decoration_radius(α.measure)
+    # r = autosize_decoration_radius(α.measure)
     α.decoration = AngleDecoration(fillcolor='CornflowerBlue!30',
                                    color='CornflowerBlue',
-                                   radius=Number(r, unit='cm'),
+                                   radius='auto',
                                    thickness='thick')
     assert α.drawn == XBY1
 
@@ -975,10 +1011,9 @@ def test_drawing_decorated_angle_with_callout2():
     α = Angle(X, B, Y, thickness='thick', arrow_tips='round cap-round cap',
               callout_text=r'n°2 : \dots\dots\dots \vrule width 0pt '
               r'height 0.5cm', callout_fmt={'fillcolor': 'CornflowerBlue!20'})
-    r = autosize_decoration_radius(α.measure)
     α.decoration = AngleDecoration(fillcolor='CornflowerBlue!30',
                                    color='CornflowerBlue',
-                                   radius=Number(r, unit='cm'),
+                                   radius='auto',
                                    thickness='thick')
     assert α.drawn == XBY2
 
@@ -990,10 +1025,9 @@ def test_drawing_decorated_angle_with_callout3():
     α = Angle(X, B, Y, thickness='thick', arrow_tips='round cap-round cap',
               callout_text=r'n°2 : \dots\dots\dots \vrule width 0pt '
               r'height 0.5cm', callout_fmt={'fillcolor': 'CornflowerBlue!20'})
-    r = autosize_decoration_radius(α.measure)
     α.decoration = AngleDecoration(fillcolor='CornflowerBlue!30',
                                    color='CornflowerBlue',
-                                   radius=Number(r, unit='cm'),
+                                   radius='auto',
                                    thickness='thick')
     assert α.drawn == XBY3
 
@@ -1005,10 +1039,9 @@ def test_drawing_decorated_angle_with_callout4():
     α = Angle(X, B, Y, thickness='thick', arrow_tips='round cap-round cap',
               callout_text=r'n°2 : \dots\dots\dots \vrule width 0pt '
               r'height 0.5cm', callout_fmt={'fillcolor': 'CornflowerBlue!20'})
-    r = autosize_decoration_radius(α.measure)
     α.decoration = AngleDecoration(fillcolor='CornflowerBlue!30',
                                    color='CornflowerBlue',
-                                   radius=Number(r, unit='cm'),
+                                   radius='auto',
                                    thickness='thick')
     assert α.drawn == XBY4
 

@@ -47,11 +47,11 @@ RADIUS_SIZES = {5: 2, 10: '1.5', 15: '1.3', 20: '1.2', 25: '1.1', 30: 1,
 
 def autosize_decoration_radius(angle):
     if angle <= 5:
-        return Number(RADIUS_SIZES[5])
+        return Number(RADIUS_SIZES[5], unit='cm')
     elif angle >= 140:
-        return Number(RADIUS_SIZES[140])
+        return Number(RADIUS_SIZES[140], unit='cm')
     elif angle in list(RADIUS_SIZES.keys()):
-        return Number(RADIUS_SIZES[angle])
+        return Number(RADIUS_SIZES[angle], unit='cm')
     else:
         angle1, angle2 = surrounding_keys(angle, RADIUS_SIZES)
         w1 = angle2 - angle
@@ -59,7 +59,8 @@ def autosize_decoration_radius(angle):
         radius1 = Number(RADIUS_SIZES[angle1])
         radius2 = Number(RADIUS_SIZES[angle2])
         return Number(weighted_average(radius1, radius2, w1, w2,
-                                       rounding_rank=1)).standardized()
+                                       rounding_rank=1),
+                      unit='cm').standardized()
 
 
 class AngleDecoration(Labeled, Colored, Fillable, HasThickness, HasRadius,
@@ -67,22 +68,21 @@ class AngleDecoration(Labeled, Colored, Fillable, HasThickness, HasRadius,
 
     def __init__(self, color=None, thickness='thick', label='default',
                  radius=Number('0.25', unit='cm'), variety='single',
-                 gap=Number('0.4', unit='cm'), eccentricity='automatic',
+                 gap=Number('0.4', unit='cm'), eccentricity='auto',
                  hatchmark=None, do_draw=True, arrow_tips=None,
-                 fillcolor=None):
+                 fillcolor=None, angle_measure=None):
         self.do_draw = do_draw
         self.arrow_tips = arrow_tips
         self.color = color
         self.fillcolor = fillcolor
         self.thickness = thickness
         self.label = label
+        # angle_measure is only used when radius and/or eccentricity need to
+        # be calculated automatically. It is provided by the Angle object when
+        # drawing.
+        self._angle_measure = angle_measure
         self.radius = radius
-        self.gap = gap
-        if gap is None:
-            self.gap = None
-        else:
-            u = self.radius.unit if isinstance(self.radius, Number) else None
-            self.gap = Number(gap, unit=u)
+        self.gap = gap  # gap will automatically take self.radius's unit
         # Eccentricity must be set *after* radius, in order to be able to
         # calculate a reasonable default eccentricity based on the radius
         self.eccentricity = eccentricity
@@ -109,36 +109,47 @@ class AngleDecoration(Labeled, Colored, Fillable, HasThickness, HasRadius,
 
     @property
     def radius(self):
-        return self._radius
+        if self._radius == 'auto':
+            if not is_number(self._angle_measure):
+                raise ValueError(f"radius has been set to 'auto', but cannot "
+                                 f"be calculated since "
+                                 f"{self._angle_measure = } "
+                                 f"(is not a number)")
+            return autosize_decoration_radius(self._angle_measure)
+        else:
+            return self._radius
 
     @radius.setter
     def radius(self, value):
         if is_number(value):
             self._radius = Number(value)
-        elif value is None:
-            self._radius = None
+        elif value is None or value == 'auto':
+            self._radius = value
         else:
-            raise TypeError('Expected a number as radius. Got {} instead.'
-                            .format(str(type(value))))
+            raise TypeError(f"Expected None, 'auto', or a number as radius. "
+                            f"Got '{value}' ({str(type(value))}) instead.")
         if hasattr(self, '_eccentricity') and hasattr(self, '_gap'):
-            self.eccentricity = 'automatic'
+            self.eccentricity = 'auto'
 
     @property
     def eccentricity(self):
+        if self._eccentricity == 'auto':
+            if self.radius is None:
+                raise ValueError('Cannot calculate the eccentricity because '
+                                 'radius is None.')
+            if self.gap is None:
+                raise ValueError('Cannot calculate the eccentricity because '
+                                 'gap is None.')
+            return (self.gap / self.radius + 1)\
+                .rounded(Number('0.01')).standardized()
         return self._eccentricity
 
     @eccentricity.setter
     def eccentricity(self, value):
-        if value == 'automatic':
-            if self.gap is None:
-                raise ValueError('Cannot calculate the eccentricity if gap '
-                                 'is None.')
-            value = (self.gap / self.radius + 1)\
-                .rounded(Number('0.01')).standardized()
-        if not (value is None or is_number(value)):
-            raise TypeError('The eccentricity of an AngleDecoration must be '
-                            'None or a Number. Found {} instead.'
-                            .format(type(value)))
+        if not (value is None or is_number(value) or value == 'auto'):
+            raise TypeError(f"The eccentricity of an AngleDecoration must be "
+                            f"'auto', None or a Number. "
+                            f"Found '{value}' ({type(value)}) instead.")
         self._eccentricity = value
 
     @property
@@ -156,7 +167,11 @@ class AngleDecoration(Labeled, Colored, Fillable, HasThickness, HasRadius,
 
     @property
     def gap(self):
-        return self._gap
+        if self._gap is not None:
+            u = self.radius.unit if isinstance(self.radius, Number) else None
+            return Number(self._gap, unit=u)
+        else:
+            return None
 
     @gap.setter
     def gap(self, value):
@@ -182,10 +197,12 @@ class AngleDecoration(Labeled, Colored, Fillable, HasThickness, HasRadius,
                             .format(repr(value), type(value)))
         self._hatchmark = value
 
-    def tikz_attributes(self, radius_coeff=1, do_label=True):
+    def tikz_attributes(self, radius_coeff=1, do_label=True,
+                        angle_measure=None):
         if not is_number(radius_coeff):
             raise TypeError('radius_coeff must be a number, found {} instead.'
                             .format(type(radius_coeff)))
+        self._angle_measure = angle_measure
         attributes = []
         if do_label and self.label not in [None, 'default']:
             required.tikz_library['quotes'] = True
@@ -218,14 +235,15 @@ class AngleDecoration(Labeled, Colored, Fillable, HasThickness, HasRadius,
                 attributes.append(self.color)
         return '[{}]'.format(', '.join(attributes))
 
-    def generate_tikz(self, *points_names):
+    def generate_tikz(self, *points_names, angle_measure=None):
         if not len(points_names) == 3:
             raise RuntimeError('Three Points\' names must be provided to '
                                'generate the AngleDecoration. Found {} '
                                'arguments instead.'.format(len(points_names)))
         last_layer = {None: 1, 'single': 1, 'double': 2,
                       'triple': 3}[self.variety]
-        pic_attr = self.tikz_attributes(do_label=last_layer == 1)
+        pic_attr = self.tikz_attributes(do_label=last_layer == 1,
+                                        angle_measure=angle_measure)
         if pic_attr == '[]':
             return ''
         required.tikz_library['angles'] = True
@@ -236,13 +254,15 @@ class AngleDecoration(Labeled, Colored, Fillable, HasThickness, HasRadius,
             deco.append(r'\draw pic {} {{angle = {}--{}--{}}};'
                         .format(self.tikz_attributes(
                                 radius_coeff=1 + space_sep,
-                                do_label=last_layer == 2),
+                                do_label=last_layer == 2,
+                                angle_measure=angle_measure),
                                 *points_names))
             if self.variety == 'triple':
                 deco.append(r'\draw pic {} {{angle = {}--{}--{}}};'
                             .format(self.tikz_attributes(
                                     radius_coeff=1 + 2 * space_sep,
-                                    do_label=last_layer == 3),
+                                    do_label=last_layer == 3,
+                                    angle_measure=angle_measure),
                                     *points_names))
         return deco
 
@@ -396,7 +416,7 @@ class Angle(Drawable, Oriented, HasThickness, Dimensional, HasArrowTips):
                 # dec radius
                 dr = autosize_decoration_radius(self._measure)
                 if dr < 1:
-                    offset = 1 - dr
+                    offset = Number(1, unit=dr.unit) - dr
                     rd = rd - offset
                     s = s - offset
                 self.callout = Callout(self.callout_text, rd, pa,
@@ -657,10 +677,12 @@ class Angle(Drawable, Oriented, HasThickness, Dimensional, HasArrowTips):
         if not (self.decoration is None
                 or (self.mark_right and self.label is None)):
             output_elements = \
-                self.decoration.generate_tikz(p0, self.vertex.name, p2)
+                self.decoration.generate_tikz(p0, self.vertex.name, p2,
+                                              angle_measure=self._measure)
         if self.decoration2 is not None:
             output_elements += \
-                self.decoration2.generate_tikz(p0, self.vertex.name, p2)
+                self.decoration2.generate_tikz(p0, self.vertex.name, p2,
+                                               angle_measure=self._measure)
         return '\n'.join(output_elements)
 
     def tikz_rightangle_mark(self, winding='anticlockwise'):

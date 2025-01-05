@@ -99,11 +99,18 @@ def test_average_triple():
 def test_callout_positioning():
     # tests only for the default arms_lengths == 6 cm;
     # values might need to be adjusted for other arms_lengths.
-    assert callout_positioning(5) == (1, Number('7.75'), Number('5.75'))
-    assert callout_positioning(40) == (3, Number('5.2'), Number('2.7'))
-    assert callout_positioning(60) == (7, 4, Number('1.5'))
-    assert callout_positioning(80) == (7, 3, 1)
-    assert callout_positioning(120) == (7, 3, 1)
-    assert callout_positioning(28) == (Number('1.952'), Number('6.6'),
-                                       Number('4.1'))
-    assert callout_positioning(70) == (7, Number('3.5'), Number('1.25'))
+    assert callout_positioning(5) == (1, Number('7.75', unit='cm'),
+                                      Number('5.75', unit='cm'))
+    assert callout_positioning(40) == (3, Number('5.2', unit='cm'),
+                                       Number('2.7', unit='cm'))
+    assert callout_positioning(60) == (7, Number(4, unit='cm'),
+                                       Number('1.5', unit='cm'))
+    assert callout_positioning(80) == (7, Number(3, unit='cm'),
+                                       Number(1, unit='cm'))
+    assert callout_positioning(120) == (7, Number(3, unit='cm'),
+                                        Number(1, unit='cm'))
+    assert callout_positioning(28) == (Number('1.952'),
+                                       Number('6.6', unit='cm'),
+                                       Number('4.1', unit='cm'))
+    assert callout_positioning(70) == (7, Number('3.5', unit='cm'),
+                                       Number('1.25', unit='cm'))
