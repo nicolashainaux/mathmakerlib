@@ -23,9 +23,9 @@ import pytest
 
 from mathmakerlib import required
 from mathmakerlib.calculus import Number
-from mathmakerlib.core import Callout
-from mathmakerlib.core.callout import _average_triple
-from mathmakerlib.core.callout import callout_positioning
+from mathmakerlib.geometry import Callout
+from mathmakerlib.geometry.callout import _average_triple
+from mathmakerlib.geometry.callout import callout_positioning
 
 
 def test_callout_instanciation_error():
@@ -37,6 +37,12 @@ def test_callout_instanciation_error():
 
 
 def test_callout_generate_tikz_with_relative_pointer():
+    required.package['tikz'] = False
+    required.tikz_library['shapes.geometric'] = False
+    required.tikz_library['shapes.callouts'] = False
+    required.tikz_library['arrows.meta'] = False
+    required.tikz_library['positioning'] = False
+    required.callout_style['callout_style1'] = False
     co = Callout('Some text', 2, 35, style=None, relative_pointer=(-1, -1))
     assert co.generate_tikz() == \
         r'\node[callout relative pointer={(-1,-1)}] at (35:2) {Some text};'

@@ -33,6 +33,7 @@ from .polygons import Quadrilateral, Rectangle, Rhombus, Square
 from .angle import AngleDecoration, Angle, AnglesSet
 from .polyhedra import Polyhedron, RightCuboid
 from .projections import ObliqueProjection
+from .callout import Callout, callout_positioning
 
 __all__ = ['convex_hull',
            'Point', 'Bipoint', 'Vector', 'LineSegment', 'DividedLineSegment',
@@ -43,4 +44,4 @@ __all__ = ['convex_hull',
            'Quadrilateral', 'Rectangle', 'Rhombus', 'Square',
            'AngleDecoration', 'Angle', 'AnglesSet',
            'Polyhedron', 'RightCuboid',
-           'ObliqueProjection']
+           'ObliqueProjection', 'Callout', 'callout_positioning']

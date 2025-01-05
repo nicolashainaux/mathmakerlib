@@ -22,7 +22,7 @@
 from mathmakerlib import required
 from mathmakerlib.calculus import Number, weighted_average
 from mathmakerlib.core import surrounding_keys
-from .drawable import Colored, Fillable, HasThickness
+from mathmakerlib.core.drawable import Colored, Fillable, HasThickness
 
 # This is only meant for 6 cm long arms of the angle. Possibly this doesn't
 # fit well with other lengths. See toolbox/callout_positioning.py and .ods

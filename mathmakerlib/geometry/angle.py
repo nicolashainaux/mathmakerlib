@@ -21,10 +21,10 @@
 
 from math import atan2, degrees
 
+from .callout import Callout, callout_positioning
 from mathmakerlib import required, config
 from mathmakerlib.LaTeX import MATHEMATICAL_NOTATIONS
 from mathmakerlib.exceptions import ZeroVector
-from mathmakerlib.core import Callout, callout_positioning
 from mathmakerlib.core.oriented import Oriented
 from mathmakerlib.core.oriented import check_winding, shoelace_formula
 from mathmakerlib.core.drawable import Colored, HasThickness, HasRadius
