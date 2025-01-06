@@ -253,6 +253,12 @@ def test_instanciation():
     assert α.winding == 'anticlockwise'
     assert α.arms[0] == Bipoint(A, X)
     assert α.arms[1] == Bipoint(A, Y)
+    β = Angle(Y, A, X)
+    assert β.winding == 'clockwise'
+    δ = Angle(X, A, 30)
+    assert δ.winding == 'anticlockwise'
+    ω = Angle(X, A, -30)
+    assert ω.winding == 'clockwise'
 
 
 def test_measures_2D():
