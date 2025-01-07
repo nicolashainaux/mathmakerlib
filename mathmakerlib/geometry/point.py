@@ -260,8 +260,8 @@ class Point(Drawable, Dimensional):
         :type axis: Vector
         :param rename: if set to 'auto', will name the rotated Point after the
         original, adding a ' (like A.rotate(...) creates a Point A'). If set
-        to None, keep the original name. Otherwise, the provided str will be
-        used as the rotated Point's name.
+        to 'keep_name, keep the original name. Otherwise, the provided str will
+        be used as the rotated Point's name.
         :type rename: None or str
         :rtype: Point
         """
