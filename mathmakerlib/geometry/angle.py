@@ -308,6 +308,7 @@ class Angle(Drawable, Oriented, HasThickness, Dimensional, HasArrowTips):
         self.thickness = thickness
         self.arrow_tips = arrow_tips
         self.naming_mode = naming_mode
+        self.midslope = 0
         self.callout_text = callout_text  # auto setup for callout is made
         self.callout_fmt = callout_fmt  # somewhat below, for 2D angles only
         self.callout = None
@@ -382,46 +383,67 @@ class Angle(Drawable, Oriented, HasThickness, Dimensional, HasArrowTips):
         arm0 = Bipoint(self._points[1], self._points[0])
         arm1 = Bipoint(self._points[1], self._points[2])
         self._arms = [arm0, arm1]
+
+        # only to remember the positions that have been set, in case they're
+        # needed when transforming the angle (rotating)
+        self.armspoints_positions = []
+        self.calculate_midslope()
         self.armspoints = armspoints
 
-        # Only 2D: labels positioning
+        self.setup_labels_and_callout()
+
+    def calculate_midslope(self):
+        bisector = Vector(self.vertex, self._points[0])\
+            .bisector(Vector(self.vertex, self._points[2]),
+                      new_endpoint_name=None)
+        try:
+            midslope = bisector.slope360
+        except ZeroVector:
+            midslope = Bipoint(self._points[0].rotate(self.vertex, -90,
+                                                      rename=None),
+                               self.vertex).slope360
+        self.midslope = midslope
+
+    def setup_callout(self):
+        # (polar angle correction, radial distance,
+        #  callout pointer shorten)
+        pac, rd, s = callout_positioning(self._measure)
+        # callout's polar angle
+        f = 1
+        if 90 < self.midslope < 180 or 270 < self.midslope < 360:
+            f = -1
+        pa = Number(round(self.midslope - f * pac, 0)).standardized()
+        # dec radius
+        dr = autosize_decoration_radius(self._measure)
+        if dr < 1:
+            offset = Number(1, unit=dr.unit) - dr
+            rd = rd - offset
+            s = s - offset
+        self.callout = Callout(self.callout_text, rd, pa,
+                               absolute_pointer=self.vertex.name,
+                               shorten=f'{s}cm', **self.callout_fmt)
+
+    def setup_labels_positions(self):
+        # Vertex' label positioning
+        self._points[1].label_position = \
+            tikz_approx_position(self.midslope + 180)
+
+        # Endpoints labels positioning
+        direction = 1 if self.winding == 'anticlockwise' else -1
+        self.endpoints[0].label_position = \
+            tikz_approx_position(self.arms[0].slope360 - direction * 55)
+        self.endpoints[1].label_position = \
+            tikz_approx_position(self.arms[1].slope360 + direction * 55)
+
+        # Armspoints labels positioning happens when setting armpoints only
+
+    def setup_labels_and_callout(self):
+        # Only 2D: labels and callout positioning
         if not self.three_dimensional:
-            # Vertex' label positioning
-            bisector = Vector(self.vertex, self._points[0])\
-                .bisector(Vector(self.vertex, self._points[2]),
-                          new_endpoint_name=None)
-            try:
-                midslope = bisector.slope360
-            except ZeroVector:
-                midslope = Bipoint(self._points[0].rotate(self.vertex, -90,
-                                                          rename=None),
-                                   self.vertex).slope360
-            self._points[1].label_position = \
-                tikz_approx_position(midslope + 180)
-
-            # Endpoints labels positioning
-            direction = 1 if self.winding == 'anticlockwise' else -1
-            self.endpoints[0].label_position = \
-                tikz_approx_position(arm0.slope360 - direction * 55)
-            self.endpoints[1].label_position = \
-                tikz_approx_position(arm1.slope360 + direction * 55)
-
+            self.calculate_midslope()
+            self.setup_labels_positions()
             if self.callout_text:
-                # (polar angle correction, radial distance,
-                #  callout pointer shorten)
-                pac, rd, s = callout_positioning(self._measure)
-                # callout's polar angle
-                f = -1 if (90 < midslope < 180 or 270 < midslope < 360) else 1
-                pa = Number(round(midslope - f * pac, 0)).standardized()
-                # dec radius
-                dr = autosize_decoration_radius(self._measure)
-                if dr < 1:
-                    offset = Number(1, unit=dr.unit) - dr
-                    rd = rd - offset
-                    s = s - offset
-                self.callout = Callout(self.callout_text, rd, pa,
-                                       absolute_pointer=self.vertex.name,
-                                       shorten=f'{s}cm', **callout_fmt)
+                self.setup_callout()
 
     def __repr__(self):
         return 'Angle({}, {}, {})'\
@@ -471,6 +493,7 @@ class Angle(Drawable, Oriented, HasThickness, Dimensional, HasArrowTips):
                 position = p[1]
             except IndexError:
                 position = config.angles.DEFAULT_ARMSPOINTS_POSITION
+            self.armspoints_positions.append(position)
             self._armspoints.append(self.arms[i].point_at(position, name))
         if len(self._armspoints):
             self.label_armspoints = True
