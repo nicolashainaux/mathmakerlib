@@ -43,7 +43,10 @@ def test_Angles_compilations():
     TEST_XBY2 = (DATA_PATH / 'XBY2.tex').read_text()
     TEST_XBY3 = (DATA_PATH / 'XBY3.tex').read_text()
     TEST_XBY4 = (DATA_PATH / 'XBY4.tex').read_text()
-    content = '\n'.join([TEST_XBY1, TEST_XBY2, TEST_XBY3, TEST_XBY4])
+    TEST_XOY1 = (DATA_PATH / 'XOY1.tex').read_text()
+    TEST_XOY2 = (DATA_PATH / 'XOY2.tex').read_text()
+    content = '\n'.join([TEST_XBY1, TEST_XBY2, TEST_XBY3, TEST_XBY4,
+                         TEST_XOY1, TEST_XOY2])
     with CompilationManager('test_Angles_compilations',
                             'article.tex', content) as cmd:
         ret_code = subprocess.run(cmd, shell=True, executable='/bin/bash',

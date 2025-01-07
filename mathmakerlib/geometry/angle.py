@@ -692,6 +692,20 @@ class Angle(Drawable, Oriented, HasThickness, Dimensional, HasArrowTips):
             required.package['scalerel'] = True
         return _name
 
+    def rotate(self, measure):
+        """Rotate angle around its own vertex."""
+        self._points[0] = self._points[0].rotate(self.vertex, measure,
+                                                 rename='keep_name')
+        self._points[2] = self._points[2].rotate(self.vertex, measure,
+                                                 rename='keep_name')
+        # reset armspoints too, if any
+        if self.armspoints:
+            self.armspoints = [(self.armspoints[0].name,
+                                self.armspoints_positions[0]),
+                               (self.armspoints[2].name,
+                                self.armspoints_positions[1])]
+        self.setup_labels_and_callout()
+
     def tikz_decorations(self):
         output_elements = []
         p0, p2 = self.points[0].name, self.points[2].name

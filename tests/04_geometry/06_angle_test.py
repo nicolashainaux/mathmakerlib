@@ -37,6 +37,8 @@ XBY1 = (DATA_PATH / 'XBY1.tex').read_text()
 XBY2 = (DATA_PATH / 'XBY2.tex').read_text()
 XBY3 = (DATA_PATH / 'XBY3.tex').read_text()
 XBY4 = (DATA_PATH / 'XBY4.tex').read_text()
+XOY1 = (DATA_PATH / 'XOY1.tex').read_text()
+XOY2 = (DATA_PATH / 'XOY2.tex').read_text()
 
 
 def test_autosize_decoration_radius():
@@ -1091,6 +1093,50 @@ r"""radius = 1.6 cm] {angle = L--P--E};
 \draw (E) node[below left] {E};
 \end{tikzpicture}
 """
+
+
+def test_rotate_anticlockwise():
+    X = Point(6, 0, 'X')
+    Ω = Point(0, 0, 'O')
+    Y = Point(3, '5.196', 'Y')  # angle is 60°
+    ω = Angle(X, Ω, Y, thickness='thick', arrow_tips='round cap-round cap',
+              callout_text=r'n°1 : \dots\dots\dots \vrule width 0pt '
+              r'height 0.5cm', callout_fmt={'fillcolor': 'CornflowerBlue!20'})
+    ω.decoration = AngleDecoration(fillcolor='CornflowerBlue!30',
+                                   color='CornflowerBlue',
+                                   radius='auto',
+                                   thickness='thick')
+    ω.rotate(120)
+    assert ω.drawn == XOY1
+
+    # same with clockwise angle
+    # X = Point(3, '5.196', 'X')
+    # Ω = Point(0, 0, 'O')
+    # Y = Point(6, 0, 'Y')  # angle is 60°
+    # ω = Angle(X, Ω, Y, thickness='thick', arrow_tips='round cap-round cap',
+    #           callout_text=r'n°1 : \dots\dots\dots \vrule width 0pt '
+    #           r'height 0.5cm', callout_fmt={'fillcolor': 'CornflowerBlue!20'})
+    # ω.decoration = AngleDecoration(fillcolor='CornflowerBlue!30',
+    #                                color='CornflowerBlue',
+    #                                radius='auto',
+    #                                thickness='thick')
+    # ω.rotate(120)
+    # assert ω.drawn == XOY3
+
+
+def test_rotate_clockwise():
+    X = Point(6, 0, 'X')
+    Ω = Point(0, 0, 'O')
+    Y = Point(3, '5.196', 'Y')  # angle is 60°
+    ω = Angle(X, Ω, Y, thickness='thick', arrow_tips='round cap-round cap',
+              callout_text=r'n°1 : \dots\dots\dots \vrule width 0pt '
+              r'height 0.5cm', callout_fmt={'fillcolor': 'CornflowerBlue!20'})
+    ω.decoration = AngleDecoration(fillcolor='CornflowerBlue!30',
+                                   color='CornflowerBlue',
+                                   radius='auto',
+                                   thickness='thick')
+    ω.rotate(-180)
+    assert ω.drawn == XOY2
 
 
 def test_AnglesSet_instanciation_errors():
