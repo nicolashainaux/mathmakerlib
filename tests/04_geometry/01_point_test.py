@@ -107,7 +107,7 @@ def test_equality():
     """Check __eq__, __ne__ and coordinates are correct."""
     p = Point(0, 0, 'A')
     assert p != 'A'
-    assert not(p == 0)
+    assert not (p == 0)
     assert p == Point(0, 0, 'B')
     assert p == Point(0, 0, 'A', shape=r'$\bullet$')
     assert p == Point(0, 0, 'A', label='?')
