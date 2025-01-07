@@ -136,6 +136,16 @@ def test__repr__():
     assert repr(Number(8.6, unit='cm')) == 'Number(\'8.6 cm\')'
 
 
+def test_standardized():
+    assert Number('8.0').standardized().printed == '8'
+    assert Number('0500').standardized().printed == '500'
+    assert Number('-01.0900').standardized().printed == '-1.09'
+    assert Number('1E+1').standardized().printed == '10'
+    assert Number('3.96E+3').standardized().printed == '3960'
+    assert Number('4.890E-2').standardized().printed == '0.0489'
+    assert Number('-0').standardized().printed == '0'
+
+
 def test_sqrt():
     """Check sqrt() is correct."""
     assert Number(2).sqrt().rounded(Decimal('0.0001')) == Number('1.4142')

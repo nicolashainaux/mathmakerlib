@@ -497,9 +497,13 @@ class Number(Decimal, Signed, Printable, Evaluable):
 
     def standardized(self):
         """Turn 8.0 to 8 and 1E+1 to 10"""
-        return Number(self.quantize(Decimal(1)), unit=self.unit) \
-            if self == self.to_integral() \
-            else Number(self.normalize(), unit=self.unit)
+        if self == self.to_integral():
+            result = Number(self.quantize(Decimal(1)), unit=self.unit)
+            if str(result) == '-0':
+                result = Number(0)
+            return result
+        else:
+            return Number(self.normalize(), unit=self.unit)
 
     def converted_to(self, unit):
         if isinstance(unit, str):
