@@ -39,6 +39,8 @@ XBY3 = (DATA_PATH / 'XBY3.tex').read_text()
 XBY4 = (DATA_PATH / 'XBY4.tex').read_text()
 XOY1 = (DATA_PATH / 'XOY1.tex').read_text()
 XOY2 = (DATA_PATH / 'XOY2.tex').read_text()
+XOY3 = (DATA_PATH / 'XOY3.tex').read_text()
+XOY4 = (DATA_PATH / 'XOY4.tex').read_text()
 
 
 def test_autosize_decoration_radius():
@@ -72,6 +74,10 @@ def test_AngleDecoration():
 
     assert AngleDecoration(color='green', thickness='thin').tikz_attributes() \
         == '[draw, thin, green, angle radius = 0.25 cm]'
+
+    assert AngleDecoration(color='green', thickness='thin', variety=None,
+                           label=Number(54, unit=r'\degree'))\
+        .tikz_attributes() == r'["\ang{54}", angle eccentricity=2.6, green]'
 
     assert AngleDecoration(radius=Number('0.5', unit=Unit('cm'))) \
         .tikz_attributes() == '[draw, thick, angle radius = 0.5 cm]'
@@ -230,24 +236,45 @@ def test_instanciation():
     pointI = Point(1, 0, 'I')
     pointJ = Point(0, 1, 'J')
     pointA = Point(1, 1, 'A')
+
     theta = Angle(pointI, pointO, pointJ, mark_right=True)
     assert repr(theta) == 'Angle(I, O, J)'
     assert theta.measure == Number('90')
+    assert theta.winding == 'anticlockwise'
     assert isinstance(theta.decoration, AngleDecoration)
     assert theta.decoration.label is None
     assert theta.decoration.variety is None
     assert theta.mark_right
     assert theta.vertex == pointO
     assert theta.points == [pointI, pointO, pointJ]
+
+    theta = Angle(pointJ, pointO, pointI)
+    assert theta.measure == Number('90')
+    assert theta.winding == 'clockwise'
+
     theta = Angle(pointA, pointO, pointI, decoration=AngleDecoration())
-    assert theta.measure == Number('315')
+    assert theta.measure == Number('45')
+    assert theta.winding == 'clockwise'
     assert Angle(pointI, pointO, pointA).measure == Number('45')
     assert not theta.mark_right
     assert theta.vertex == pointO
     assert theta.points == [pointA, pointO, pointI]
+
+    theta = Angle(pointA, pointO, pointI, decoration=AngleDecoration(),
+                  winding='anticlockwise')
+    assert theta.winding == 'anticlockwise'
+    assert theta.measure == Number('315')
+
+    theta = Angle(pointI, pointO, pointA, decoration=AngleDecoration(),
+                  winding='clockwise')
+    assert theta.winding == 'clockwise'
+    assert theta.measure == Number('315')
+
     theta = Angle(pointI, pointO, 60)
     assert theta.vertex == pointO
     assert theta.points[2] == Point('0.5', '0.866', 'I\'')
+    assert theta.winding == 'anticlockwise'
+
     A = Point(0, 0, 'A')
     X = Point(6, 1, 'X')
     Y = Point(3, 5, 'Y')
@@ -255,10 +282,13 @@ def test_instanciation():
     assert α.winding == 'anticlockwise'
     assert α.arms[0] == Bipoint(A, X)
     assert α.arms[1] == Bipoint(A, Y)
+
     β = Angle(Y, A, X)
     assert β.winding == 'clockwise'
+
     δ = Angle(X, A, 30)
     assert δ.winding == 'anticlockwise'
+
     ω = Angle(X, A, -30)
     assert ω.winding == 'clockwise'
 
@@ -266,15 +296,17 @@ def test_instanciation():
 def test_measures_2D():
     """Check Angle's measure."""
     Ω = Point(0, 0, 'Ω')
-    X = Point(12, 2, 'X')
-    Y = Point(-6, -1, 'Y')
-    α = Angle(X, Ω, Y)
+    # X = Point(12, 2, 'X')
+    # Y = Point(-6, -1, 'Y')
+    # α = Angle(X, Ω, Y)
     X = Point(6, 1, 'X')
     Y = Point(-6, -1, 'Y')
     α = Angle(X, Ω, Y)
     assert α.measure.rounded(Number('0.001')) == 180
+
     β = Angle(X, Ω, Point(1, -6, 'Z'))
-    assert β.measure.rounded(Number('0.001')) == Number(270)
+    assert β.winding == 'clockwise'
+    assert β.measure.rounded(Number('0.001')) == Number(90)
 
 
 def test_measures_3D():
@@ -1106,22 +1138,27 @@ def test_rotate_anticlockwise():
                                    color='CornflowerBlue',
                                    radius='auto',
                                    thickness='thick')
+    assert ω.midslope == 30
     ω.rotate(120)
+    assert ω.midslope == 150
     assert ω.drawn == XOY1
 
     # same with clockwise angle
-    # X = Point(3, '5.196', 'X')
-    # Ω = Point(0, 0, 'O')
-    # Y = Point(6, 0, 'Y')  # angle is 60°
-    # ω = Angle(X, Ω, Y, thickness='thick', arrow_tips='round cap-round cap',
-    #           callout_text=r'n°1 : \dots\dots\dots \vrule width 0pt '
-    #           r'height 0.5cm', callout_fmt={'fillcolor': 'CornflowerBlue!20'})
-    # ω.decoration = AngleDecoration(fillcolor='CornflowerBlue!30',
-    #                                color='CornflowerBlue',
-    #                                radius='auto',
-    #                                thickness='thick')
-    # ω.rotate(120)
-    # assert ω.drawn == XOY3
+    X = Point(3, '5.196', 'X')
+    Ω = Point(0, 0, 'O')
+    Y = Point(6, 0, 'Y')  # angle is 60°
+    ω = Angle(X, Ω, Y, thickness='thick', arrow_tips='round cap-round cap',
+              callout_text=r'n°1 : \dots\dots\dots \vrule width 0pt '
+              r'height 0.5cm', callout_fmt={'fillcolor': 'CornflowerBlue!20'})
+    ω.decoration = AngleDecoration(fillcolor='CornflowerBlue!30',
+                                   color='CornflowerBlue',
+                                   radius='auto',
+                                   thickness='thick')
+    assert ω.midslope == 30
+    ω.rotate(120)
+    assert ω.midslope == 150
+
+    assert ω.drawn == XOY3
 
 
 def test_rotate_clockwise():
@@ -1135,8 +1172,26 @@ def test_rotate_clockwise():
                                    color='CornflowerBlue',
                                    radius='auto',
                                    thickness='thick')
+    assert ω.midslope == 30
     ω.rotate(-180)
+    assert ω.midslope == 210
     assert ω.drawn == XOY2
+
+    # same with clockwise angle
+    X = Point(3, '5.196', 'X')
+    Ω = Point(0, 0, 'O')
+    Y = Point(6, 0, 'Y')  # angle is 60°
+    ω = Angle(X, Ω, Y, thickness='thick', arrow_tips='round cap-round cap',
+              callout_text=r'n°1 : \dots\dots\dots \vrule width 0pt '
+              r'height 0.5cm', callout_fmt={'fillcolor': 'CornflowerBlue!20'})
+    ω.decoration = AngleDecoration(fillcolor='CornflowerBlue!30',
+                                   color='CornflowerBlue',
+                                   radius='auto',
+                                   thickness='thick')
+    assert ω.midslope == 30
+    ω.rotate(-180)
+    assert ω.midslope == 210
+    assert ω.drawn == XOY4
 
 
 def test_AnglesSet_instanciation_errors():

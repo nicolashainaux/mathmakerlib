@@ -272,7 +272,7 @@ class Angle(Drawable, Oriented, HasThickness, Dimensional, HasArrowTips):
     def __init__(self, point, vertex, point_or_measure, decoration=None,
                  mark_right=False, second_point_name='auto', label=None,
                  color=None, thickness='thick', armspoints=None,
-                 label_vertex=False, draw_vertex=False,
+                 label_vertex=False, draw_vertex=False, winding='',
                  label_armspoints=False, draw_armspoints=False,
                  label_endpoints=False, draw_endpoints=False,
                  naming_mode='from_endpoints', decoration2=None,
@@ -354,6 +354,15 @@ class Angle(Drawable, Oriented, HasThickness, Dimensional, HasArrowTips):
         else:
             self._three_dimensional = False
 
+        if winding in ['clockwise', 'anticlockwise']:
+            self.winding = winding
+        else:
+            # This is not like the matching Triangle!
+            if shoelace_formula(*self.points) > 0:
+                self.winding = 'clockwise'
+            else:
+                self.winding = 'anticlockwise'
+
         # Measure of the angle:
         if self._three_dimensional:
             u = Vector(self.points[1], self.points[0])
@@ -367,18 +376,14 @@ class Angle(Drawable, Oriented, HasThickness, Dimensional, HasArrowTips):
             p2 = Point(self._points[2].x - self._points[1].x,
                        self._points[2].y - self._points[1].y,
                        None)
+            if self.winding == 'clockwise':
+                p0, p2 = p2, p0
             α0 = Number(str(degrees(atan2(p0.y, p0.x))))
             α2 = Number(str(degrees(atan2(p2.y, p2.x))))
             self._measure = α2 - α0
 
         if self._measure < 0:
             self._measure += 360
-
-        # This is not like the matching Triangle!
-        if shoelace_formula(*self.points) > 0:
-            self.winding = 'clockwise'
-        else:
-            self.winding = 'anticlockwise'
 
         arm0 = Bipoint(self._points[1], self._points[0])
         arm1 = Bipoint(self._points[1], self._points[2])
@@ -393,14 +398,15 @@ class Angle(Drawable, Oriented, HasThickness, Dimensional, HasArrowTips):
         self.setup_labels_and_callout()
 
     def calculate_midslope(self):
-        bisector = Vector(self.vertex, self._points[0])\
-            .bisector(Vector(self.vertex, self._points[2]),
-                      new_endpoint_name=None)
+        p0, p2 = self._points[0], self._points[2]
+        if self.winding == 'clockwise':
+            p0, p2 = p2, p0
+        bisector = Vector(self.vertex, p0).bisector(Vector(self.vertex, p2),
+                                                    new_endpoint_name=None)
         try:
             midslope = bisector.slope360
         except ZeroVector:
-            midslope = Bipoint(self._points[0].rotate(self.vertex, -90,
-                                                      rename=None),
+            midslope = Bipoint(p0.rotate(self.vertex, -90, rename=None),
                                self.vertex).slope360
         self.midslope = midslope
 
@@ -425,8 +431,9 @@ class Angle(Drawable, Oriented, HasThickness, Dimensional, HasArrowTips):
 
     def setup_labels_positions(self):
         # Vertex' label positioning
+        offset = 180 if self.winding == 'anticlockwise' else 0
         self._points[1].label_position = \
-            tikz_approx_position(self.midslope + 180)
+            tikz_approx_position(self.midslope + offset)
 
         # Endpoints labels positioning
         direction = 1 if self.winding == 'anticlockwise' else -1
