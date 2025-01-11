@@ -385,10 +385,6 @@ class Angle(Drawable, Oriented, HasThickness, Dimensional, HasArrowTips):
         if self._measure < 0:
             self._measure += 360
 
-        arm0 = Bipoint(self._points[1], self._points[0])
-        arm1 = Bipoint(self._points[1], self._points[2])
-        self._arms = [arm0, arm1]
-
         # only to remember the positions that have been set, in case they're
         # needed when transforming the angle (rotating)
         self.armspoints_positions = []
@@ -516,7 +512,9 @@ class Angle(Drawable, Oriented, HasThickness, Dimensional, HasArrowTips):
 
     @property
     def arms(self):
-        return self._arms
+        arm0 = Bipoint(self._points[1], self._points[0])
+        arm1 = Bipoint(self._points[1], self._points[2])
+        return [arm0, arm1]
 
     @property
     def measure(self):
@@ -705,13 +703,13 @@ class Angle(Drawable, Oriented, HasThickness, Dimensional, HasArrowTips):
                                                  rename='keep_name')
         self._points[2] = self._points[2].rotate(self.vertex, measure,
                                                  rename='keep_name')
+        self.setup_labels_and_callout()
         # reset armspoints too, if any
         if self.armspoints:
             self.armspoints = [(self.armspoints[0].name,
                                 self.armspoints_positions[0]),
-                               (self.armspoints[2].name,
+                               (self.armspoints[1].name,
                                 self.armspoints_positions[1])]
-        self.setup_labels_and_callout()
 
     def tikz_decorations(self):
         output_elements = []

@@ -37,10 +37,16 @@ XBY1 = (DATA_PATH / 'XBY1.tex').read_text()
 XBY2 = (DATA_PATH / 'XBY2.tex').read_text()
 XBY3 = (DATA_PATH / 'XBY3.tex').read_text()
 XBY4 = (DATA_PATH / 'XBY4.tex').read_text()
+XOY0 = (DATA_PATH / 'XOY0.tex').read_text()
+XOY0_ap = (DATA_PATH / 'XOY0_ap.tex').read_text()
 XOY1 = (DATA_PATH / 'XOY1.tex').read_text()
+XOY1_ap = (DATA_PATH / 'XOY1_ap.tex').read_text()
 XOY2 = (DATA_PATH / 'XOY2.tex').read_text()
+XOY2_ap = (DATA_PATH / 'XOY2_ap.tex').read_text()
 XOY3 = (DATA_PATH / 'XOY3.tex').read_text()
+XOY3_ap = (DATA_PATH / 'XOY3_ap.tex').read_text()
 XOY4 = (DATA_PATH / 'XOY4.tex').read_text()
+XOY4_ap = (DATA_PATH / 'XOY4_ap.tex').read_text()
 
 
 @pytest.fixture()
@@ -1159,10 +1165,22 @@ r"""radius = 1.6 cm] {angle = L--P--E};
 
 def test_rotate_anticlockwise_angle_anticlockwise(XOY_anticlockwise):
     ω = XOY_anticlockwise
+    assert ω.drawn == XOY0
     assert ω.midslope == 30
     ω.rotate(120)
     assert ω.midslope == 150
     assert ω.drawn == XOY1
+
+
+def test_rotate_anticlockwise_angle_anticlockwise_with_ap(XOY_anticlockwise):
+    # with armspoints
+    ω = XOY_anticlockwise
+    ω.armspoints = [('A', ), ('Z', )]
+    assert ω.drawn == XOY0_ap
+    assert ω.midslope == 30
+    ω.rotate(120)
+    assert ω.midslope == 150
+    assert ω.drawn == XOY1_ap
 
 
 def test_rotate_clockwise_angle_anticlockwise(XOY_clockwise):
@@ -1173,6 +1191,16 @@ def test_rotate_clockwise_angle_anticlockwise(XOY_clockwise):
     assert ω.drawn == XOY3
 
 
+def test_rotate_clockwise_angle_anticlockwise_with_ap(XOY_clockwise):
+    # with armspoints
+    ω = XOY_clockwise
+    ω.armspoints = [('A', ), ('Z', )]
+    assert ω.midslope == 30
+    ω.rotate(120)
+    assert ω.midslope == 150
+    assert ω.drawn == XOY3_ap
+
+
 def test_rotate_anticlockwise_angle_clockwise(XOY_anticlockwise):
     ω = XOY_anticlockwise
     assert ω.midslope == 30
@@ -1181,12 +1209,32 @@ def test_rotate_anticlockwise_angle_clockwise(XOY_anticlockwise):
     assert ω.drawn == XOY2
 
 
+def test_rotate_anticlockwise_angle_clockwise_with_ap(XOY_anticlockwise):
+    # with armspoints
+    ω = XOY_anticlockwise
+    ω.armspoints = [('A', ), ('Z', )]
+    assert ω.midslope == 30
+    ω.rotate(-180)
+    assert ω.midslope == 210
+    assert ω.drawn == XOY2_ap
+
+
 def test_rotate_clockwise_angle_clockwise(XOY_clockwise):
     ω = XOY_clockwise
     assert ω.midslope == 30
     ω.rotate(-180)
     assert ω.midslope == 210
     assert ω.drawn == XOY4
+
+
+def test_rotate_clockwise_angle_clockwise_with_ap(XOY_clockwise):
+    # with armspoints
+    ω = XOY_clockwise
+    ω.armspoints = [('A', ), ('Z', )]
+    assert ω.midslope == 30
+    ω.rotate(-180)
+    assert ω.midslope == 210
+    assert ω.drawn == XOY4_ap
 
 
 def test_AnglesSet_instanciation_errors():
