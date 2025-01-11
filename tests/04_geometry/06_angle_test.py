@@ -43,6 +43,36 @@ XOY3 = (DATA_PATH / 'XOY3.tex').read_text()
 XOY4 = (DATA_PATH / 'XOY4.tex').read_text()
 
 
+@pytest.fixture()
+def XOY_anticlockwise():
+    X = Point(6, 0, 'X')
+    Ω = Point(0, 0, 'O')
+    Y = Point(3, '5.196', 'Y')  # angle is 60°
+    ω = Angle(X, Ω, Y, thickness='thick', arrow_tips='round cap-round cap',
+              callout_text=r'n°1 : \dots\dots\dots \vrule width 0pt '
+              r'height 0.5cm', callout_fmt={'fillcolor': 'CornflowerBlue!20'})
+    ω.decoration = AngleDecoration(fillcolor='CornflowerBlue!30',
+                                   color='CornflowerBlue',
+                                   radius='auto',
+                                   thickness='thick')
+    return ω
+
+
+@pytest.fixture()
+def XOY_clockwise():
+    X = Point(3, '5.196', 'X')
+    Ω = Point(0, 0, 'O')
+    Y = Point(6, 0, 'Y')  # angle is 60°
+    ω = Angle(X, Ω, Y, thickness='thick', arrow_tips='round cap-round cap',
+              callout_text=r'n°1 : \dots\dots\dots \vrule width 0pt '
+              r'height 0.5cm', callout_fmt={'fillcolor': 'CornflowerBlue!20'})
+    ω.decoration = AngleDecoration(fillcolor='CornflowerBlue!30',
+                                   color='CornflowerBlue',
+                                   radius='auto',
+                                   thickness='thick')
+    return ω
+
+
 def test_autosize_decoration_radius():
     assert autosize_decoration_radius(4) == Number(2, unit='cm')
     assert autosize_decoration_radius(5) == Number(2, unit='cm')
@@ -1127,67 +1157,32 @@ r"""radius = 1.6 cm] {angle = L--P--E};
 """
 
 
-def test_rotate_anticlockwise():
-    X = Point(6, 0, 'X')
-    Ω = Point(0, 0, 'O')
-    Y = Point(3, '5.196', 'Y')  # angle is 60°
-    ω = Angle(X, Ω, Y, thickness='thick', arrow_tips='round cap-round cap',
-              callout_text=r'n°1 : \dots\dots\dots \vrule width 0pt '
-              r'height 0.5cm', callout_fmt={'fillcolor': 'CornflowerBlue!20'})
-    ω.decoration = AngleDecoration(fillcolor='CornflowerBlue!30',
-                                   color='CornflowerBlue',
-                                   radius='auto',
-                                   thickness='thick')
+def test_rotate_anticlockwise_angle_anticlockwise(XOY_anticlockwise):
+    ω = XOY_anticlockwise
     assert ω.midslope == 30
     ω.rotate(120)
     assert ω.midslope == 150
     assert ω.drawn == XOY1
 
-    # same with clockwise angle
-    X = Point(3, '5.196', 'X')
-    Ω = Point(0, 0, 'O')
-    Y = Point(6, 0, 'Y')  # angle is 60°
-    ω = Angle(X, Ω, Y, thickness='thick', arrow_tips='round cap-round cap',
-              callout_text=r'n°1 : \dots\dots\dots \vrule width 0pt '
-              r'height 0.5cm', callout_fmt={'fillcolor': 'CornflowerBlue!20'})
-    ω.decoration = AngleDecoration(fillcolor='CornflowerBlue!30',
-                                   color='CornflowerBlue',
-                                   radius='auto',
-                                   thickness='thick')
+
+def test_rotate_clockwise_angle_anticlockwise(XOY_clockwise):
+    ω = XOY_clockwise
     assert ω.midslope == 30
     ω.rotate(120)
     assert ω.midslope == 150
-
     assert ω.drawn == XOY3
 
 
-def test_rotate_clockwise():
-    X = Point(6, 0, 'X')
-    Ω = Point(0, 0, 'O')
-    Y = Point(3, '5.196', 'Y')  # angle is 60°
-    ω = Angle(X, Ω, Y, thickness='thick', arrow_tips='round cap-round cap',
-              callout_text=r'n°1 : \dots\dots\dots \vrule width 0pt '
-              r'height 0.5cm', callout_fmt={'fillcolor': 'CornflowerBlue!20'})
-    ω.decoration = AngleDecoration(fillcolor='CornflowerBlue!30',
-                                   color='CornflowerBlue',
-                                   radius='auto',
-                                   thickness='thick')
+def test_rotate_anticlockwise_angle_clockwise(XOY_anticlockwise):
+    ω = XOY_anticlockwise
     assert ω.midslope == 30
     ω.rotate(-180)
     assert ω.midslope == 210
     assert ω.drawn == XOY2
 
-    # same with clockwise angle
-    X = Point(3, '5.196', 'X')
-    Ω = Point(0, 0, 'O')
-    Y = Point(6, 0, 'Y')  # angle is 60°
-    ω = Angle(X, Ω, Y, thickness='thick', arrow_tips='round cap-round cap',
-              callout_text=r'n°1 : \dots\dots\dots \vrule width 0pt '
-              r'height 0.5cm', callout_fmt={'fillcolor': 'CornflowerBlue!20'})
-    ω.decoration = AngleDecoration(fillcolor='CornflowerBlue!30',
-                                   color='CornflowerBlue',
-                                   radius='auto',
-                                   thickness='thick')
+
+def test_rotate_clockwise_angle_clockwise(XOY_clockwise):
+    ω = XOY_clockwise
     assert ω.midslope == 30
     ω.rotate(-180)
     assert ω.midslope == 210
