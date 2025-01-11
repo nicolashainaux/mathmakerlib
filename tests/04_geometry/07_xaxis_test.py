@@ -26,7 +26,7 @@ from mathmakerlib.geometry import XAxis
 from mathmakerlib.shared import LOCALE_US, LOCALE_FR
 
 
-def test_instanciation():
+def test_instanciation_and_drawing():
     a = XAxis(2, 4, subdivisions=3)
     assert a._sg_abscissae == [Number(0.67), Number(1.33), 2,
                                Number(2.67), Number(3.33), 4,
@@ -106,3 +106,13 @@ def test_instanciation():
 \end{tikzpicture}
 """
     locale.setlocale(locale.LC_ALL, LOCALE_US)
+
+
+def test_disabled_methods():
+    a = XAxis(2, 4, subdivisions=3)
+    assert a._tikz_draw_options() is None
+    assert a.tikz_declarations() is None
+    assert a.tikz_draw() is None
+    assert a.tikz_drawing_comment() is None
+    assert a.tikz_label() == ''
+    assert a.tikz_points_labels() is None
