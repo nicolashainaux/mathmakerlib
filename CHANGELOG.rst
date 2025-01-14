@@ -10,6 +10,14 @@ Unreleased
 ----------
 
 
+Version 0.7.25 (2025-01-14)
+---------------------------
+
+* Handle clockwise Angles correctly
+* AngleDecoration can get 'auto' value for its radius
+* Add Angle.rotate()
+* Bug fixes
+
 Version 0.7.24 (2024-12-26)
 ---------------------------
 
