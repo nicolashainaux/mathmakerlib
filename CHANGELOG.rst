@@ -10,6 +10,11 @@ Unreleased
 ----------
 
 
+Version 0.7.26 (2025-01-16)
+---------------------------
+
+* Remove the problematic newlines at start and end of each drawn geometric figure.
+
 Version 0.7.25 (2025-01-14)
 ---------------------------
 
