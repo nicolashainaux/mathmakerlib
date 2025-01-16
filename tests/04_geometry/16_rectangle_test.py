@@ -86,8 +86,7 @@ def test_sides_labeling():
 def test_simple_drawing():
     """Check drawing the Rectangle."""
     r = Rectangle(name='YOGA')
-    assert r.drawn == r"""
-\begin{tikzpicture}
+    assert r.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (Y) at (0,0);
 \coordinate (O) at (2,0);
@@ -115,11 +114,9 @@ r"""(0.25 cm, 0) -- (0.25 cm, 0.25 cm) -- (0, 0.25 cm);
 \draw (O) node[below right] {O};
 \draw (G) node[above right] {G};
 \draw (A) node[above left] {A};
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
     r = Rectangle(start_vertex=Point(-1, -1), name='YOGA')
-    assert r.drawn == r"""
-\begin{tikzpicture}
+    assert r.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (Y) at (-1,-1);
 \coordinate (O) at (1,-1);
@@ -147,11 +144,9 @@ r"""(0.25 cm, 0) -- (0.25 cm, 0.25 cm) -- (0, 0.25 cm);
 \draw (O) node[below right] {O};
 \draw (G) node[above right] {G};
 \draw (A) node[above left] {A};
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
     r = Rectangle(name='PLUM', rotation_angle=45)
-    assert r.drawn == r"""
-\begin{tikzpicture}
+    assert r.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (P) at (0.646,-0.561);
 \coordinate (L) at (2.061,0.854);
@@ -179,5 +174,4 @@ r"""(0.25 cm, 0) -- (0.25 cm, 0.25 cm) -- (0, 0.25 cm);
 \draw (L) node[right] {L};
 \draw (U) node[above] {U};
 \draw (M) node[left] {M};
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""

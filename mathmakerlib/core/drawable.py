@@ -236,10 +236,10 @@ class Drawable(Colored, Labeled, metaclass=ABCMeta):
                                                             self.fontsize)
                                         if self.fontsize
                                         else ''})
-        return r"""
-\begin{{tikzpicture}}{pic_options}{body}\end{{tikzpicture}}
-""".format(pic_options=self.tikz_picture_options(),
-           body=self.tikz_picture_body().format(**body_format))
+        return r"""\begin{{tikzpicture}}{pic_options}"""\
+            r"""{body}\end{{tikzpicture}}"""\
+            .format(pic_options=self.tikz_picture_options(),
+                    body=self.tikz_picture_body().format(**body_format))
 
     def tikz_picture_options(self):
         # Prepare possible picture's options

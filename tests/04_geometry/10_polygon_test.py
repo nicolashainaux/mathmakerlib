@@ -258,8 +258,7 @@ def test_winding(pointO, pointA, pointB, pointC, pointI, pointJ):
     config.polygons.ENABLE_MISMATCH_WINDING_WARNING = True
     p.setup_labels(['one', 'two', 'three', 'four'])
     p.setup_marks(['|', '||', '|||', '||||'])
-    assert p.drawn == r"""
-\begin{tikzpicture}
+    assert p.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (P) at (1,3);
 \coordinate (L) at (3,2);
@@ -280,15 +279,13 @@ r"""{four} node[midway, sloped, scale=0.5] {||||};
 \draw (L) node[above right] {L};
 \draw (U) node[below right] {U};
 \draw (M) node[below left] {M};
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
 
 
 def test_simple_drawing(pointO, pointA, pointB, pointC):
     """Check drawing the Polygon."""
     p = Polygon(pointO, pointA, pointB, pointC, name='PLUM')
-    assert p.drawn == r"""
-\begin{tikzpicture}
+    assert p.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (P) at (0,0);
 \coordinate (L) at (4,0);
@@ -307,11 +304,9 @@ def test_simple_drawing(pointO, pointA, pointB, pointC):
 \draw (L) node[below right] {L};
 \draw (U) node[above right] {U};
 \draw (M) node[above left] {M};
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
     p = Polygon(pointO, pointA, pointB, pointC)
-    assert p.drawn == r"""
-\begin{tikzpicture}
+    assert p.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (O) at (0,0);
 \coordinate (A) at (4,0);
@@ -330,11 +325,9 @@ def test_simple_drawing(pointO, pointA, pointB, pointC):
 \draw (A) node[below right] {A};
 \draw (B) node[above right] {B};
 \draw (C) node[above left] {C};
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
     p.color = 'red'
-    assert p.drawn == r"""
-\begin{tikzpicture}
+    assert p.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (O) at (0,0);
 \coordinate (A) at (4,0);
@@ -353,12 +346,10 @@ def test_simple_drawing(pointO, pointA, pointB, pointC):
 \draw (A) node[below right] {A};
 \draw (B) node[above right] {B};
 \draw (C) node[above left] {C};
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
     p.color = None
     p.draw_vertices = True
-    assert p.drawn == r"""
-\begin{tikzpicture}
+    assert p.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (O) at (0,0);
 \coordinate (A) at (4,0);
@@ -383,12 +374,10 @@ def test_simple_drawing(pointO, pointA, pointB, pointC):
 \draw (A) node[below right] {A};
 \draw (B) node[above right] {B};
 \draw (C) node[above left] {C};
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
     p.draw_vertices = False
     p.label_vertices = False
-    assert p.drawn == r"""
-\begin{tikzpicture}
+    assert p.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (O) at (0,0);
 \coordinate (A) at (4,0);
@@ -404,8 +393,7 @@ def test_simple_drawing(pointO, pointA, pointB, pointC):
 
 % Label Points
 
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
 
 
 def test_drawing_with_labeled_sides(pointO, pointA, pointB, pointC):
@@ -414,8 +402,7 @@ def test_drawing_with_labeled_sides(pointO, pointA, pointB, pointC):
     p.label_vertices = False
     p.sides[1].unlock_label()
     p.sides[1].label = '3 cm'
-    assert p.drawn == r"""
-\begin{tikzpicture}
+    assert p.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (O) at (0,0);
 \coordinate (A) at (4,0);
@@ -431,12 +418,10 @@ def test_drawing_with_labeled_sides(pointO, pointA, pointB, pointC):
 
 % Label Points
 
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
     p.sides[0].unlock_label()
     p.sides[0].label = '? cm'
-    assert p.drawn == r"""
-\begin{tikzpicture}
+    assert p.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (O) at (0,0);
 \coordinate (A) at (4,0);
@@ -452,12 +437,10 @@ def test_drawing_with_labeled_sides(pointO, pointA, pointB, pointC):
 
 % Label Points
 
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
     p.sides[3].unlock_label()
     p.sides[3].label = '5 cm'
-    assert p.drawn == r"""
-\begin{tikzpicture}
+    assert p.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (O) at (0,0);
 \coordinate (A) at (4,0);
@@ -473,12 +456,10 @@ def test_drawing_with_labeled_sides(pointO, pointA, pointB, pointC):
 
 % Label Points
 
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
     p.setup_labels([Number(7, unit='cm'), Number(5, unit='cm'),
                     Number(6, unit='cm'), Number(4, unit='cm')])
-    assert p.drawn == r"""
-\begin{tikzpicture}
+    assert p.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (O) at (0,0);
 \coordinate (A) at (4,0);
@@ -494,11 +475,9 @@ def test_drawing_with_labeled_sides(pointO, pointA, pointB, pointC):
 
 % Label Points
 
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
     p.setup_labels(masks=[None, None, '?', ' '])
-    assert p.drawn == r"""
-\begin{tikzpicture}
+    assert p.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (O) at (0,0);
 \coordinate (A) at (4,0);
@@ -514,14 +493,12 @@ def test_drawing_with_labeled_sides(pointO, pointA, pointB, pointC):
 
 % Label Points
 
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
     p = Polygon(pointC, pointB, pointA, pointO)
     p.label_vertices = False
     p.setup_labels([Number(7, unit='cm'), Number(5, unit='cm'),
                     Number(6, unit='cm'), Number(4, unit='cm')])
-    assert p.drawn == r"""
-\begin{tikzpicture}
+    assert p.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (C) at (1,3);
 \coordinate (B) at (3,2);
@@ -537,11 +514,9 @@ def test_drawing_with_labeled_sides(pointO, pointA, pointB, pointC):
 
 % Label Points
 
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
     p.setup_labels([Number('7.5', unit='cm'), None, None, None])
-    assert p.drawn == r"""
-\begin{tikzpicture}
+    assert p.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (C) at (1,3);
 \coordinate (B) at (3,2);
@@ -557,12 +532,10 @@ def test_drawing_with_labeled_sides(pointO, pointA, pointB, pointC):
 
 % Label Points
 
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
     locale.setlocale(locale.LC_ALL, LOCALE_FR)
     p.setup_labels([Number('7.5', unit='cm'), None, None, None])
-    assert p.drawn == r"""
-\begin{tikzpicture}
+    assert p.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (C) at (1,3);
 \coordinate (B) at (3,2);
@@ -578,13 +551,11 @@ def test_drawing_with_labeled_sides(pointO, pointA, pointB, pointC):
 
 % Label Points
 
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
     locale.setlocale(locale.LC_ALL, LOCALE_US)
     p.sloped_sides_labels = False
     p.setup_labels([Number('7.5'), None, None, None])
-    assert p.drawn == r"""
-\begin{tikzpicture}
+    assert p.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (C) at (1,3);
 \coordinate (B) at (3,2);
@@ -600,8 +571,7 @@ def test_drawing_with_labeled_sides(pointO, pointA, pointB, pointC):
 
 % Label Points
 
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
 
 
 def test_drawing_with_marked_sides(pointO, pointA, pointB, pointC):
@@ -609,8 +579,7 @@ def test_drawing_with_marked_sides(pointO, pointA, pointB, pointC):
     p = Polygon(pointO, pointA, pointB, pointC)
     p.sides[0].mark = '//'
     p.label_vertices = False
-    assert p.drawn == r"""
-\begin{tikzpicture}
+    assert p.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (O) at (0,0);
 \coordinate (A) at (4,0);
@@ -626,11 +595,9 @@ def test_drawing_with_marked_sides(pointO, pointA, pointB, pointC):
 
 % Label Points
 
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
     p.sides[3].mark = '//'
-    assert p.drawn == r"""
-\begin{tikzpicture}
+    assert p.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (O) at (0,0);
 \coordinate (A) at (4,0);
@@ -646,11 +613,9 @@ def test_drawing_with_marked_sides(pointO, pointA, pointB, pointC):
 
 % Label Points
 
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
     p.setup_marks(['|', '||', 'O', '|||'])
-    assert p.drawn == r"""
-\begin{tikzpicture}
+    assert p.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (O) at (0,0);
 \coordinate (A) at (4,0);
@@ -666,11 +631,9 @@ def test_drawing_with_marked_sides(pointO, pointA, pointB, pointC):
 
 % Label Points
 
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
     p.do_cycle = False
-    assert p.drawn == r"""
-\begin{tikzpicture}
+    assert p.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (O) at (0,0);
 \coordinate (A) at (4,0);
@@ -686,8 +649,7 @@ def test_drawing_with_marked_sides(pointO, pointA, pointB, pointC):
 
 % Label Points
 
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
 
 
 def test_drawing_with_marked_angles(pointO, pointA, pointB, pointC, pointJ):
@@ -695,8 +657,7 @@ def test_drawing_with_marked_angles(pointO, pointA, pointB, pointC, pointJ):
     p = Polygon(pointO, pointA, pointB, pointC)
     p.label_vertices = False
     p.angles[1].decoration = AngleDecoration()
-    assert p.drawn == r"""
-\begin{tikzpicture}
+    assert p.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (O) at (0,0);
 \coordinate (A) at (4,0);
@@ -713,13 +674,11 @@ def test_drawing_with_marked_angles(pointO, pointA, pointB, pointC, pointJ):
 
 % Label Points
 
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
     p.angles[2].decoration = AngleDecoration(color='red', thickness='thin',
                                              radius=Number(8, unit='mm'))
     assert p.drawn == \
-        r"""
-\begin{tikzpicture}
+        r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (O) at (0,0);
 \coordinate (A) at (4,0);
@@ -737,16 +696,14 @@ def test_drawing_with_marked_angles(pointO, pointA, pointB, pointC, pointJ):
 
 % Label Points
 
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
     required.tikz_library['angles'] = False
     p = Polygon(pointO, pointA, pointB, pointJ)
     p.label_vertices = False
     p.angles[0].decoration = AngleDecoration()
     p.angles[0].mark_right = True
     assert p.drawn == \
-        r"""
-\begin{tikzpicture}
+        r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (O) at (0,0);
 \coordinate (A) at (4,0);
@@ -765,6 +722,5 @@ def test_drawing_with_marked_angles(pointO, pointA, pointB, pointC, pointJ):
 
 % Label Points
 
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
     assert not required.tikz_library['angles']

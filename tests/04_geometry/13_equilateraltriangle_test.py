@@ -32,8 +32,7 @@ def test_instanciation():
 def test_simple_drawing():
     """Check drawing the Triangle."""
     t = EquilateralTriangle(name='KEY')
-    assert t.drawn == r"""
-\begin{tikzpicture}
+    assert t.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (K) at (0,0);
 \coordinate (E) at (1,0);
@@ -49,11 +48,9 @@ def test_simple_drawing():
 \draw (K) node[below left] {K};
 \draw (E) node[below right] {E};
 \draw (Y) node[above] {Y};
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
     t = EquilateralTriangle(start_vertex=Point(5, 7), name='KEY')
-    assert t.drawn == r"""
-\begin{tikzpicture}
+    assert t.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (K) at (5,7);
 \coordinate (E) at (6,7);
@@ -69,16 +66,14 @@ def test_simple_drawing():
 \draw (K) node[below left] {K};
 \draw (E) node[below right] {E};
 \draw (Y) node[above] {Y};
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
 
 
 def test_drawing_with_labeled_sides():
     """Check drawing the Triangle."""
     t = EquilateralTriangle(name='WAX')
     t.setup_labels(['7.5 cm'])
-    assert t.drawn == r"""
-\begin{tikzpicture}
+    assert t.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (W) at (0,0);
 \coordinate (A) at (1,0);
@@ -95,5 +90,4 @@ r"""node[midway, sloped, scale=0.5] {||};
 \draw (W) node[below left] {W};
 \draw (A) node[below right] {A};
 \draw (X) node[above] {X};
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""

@@ -43,8 +43,7 @@ def test_lbl_area():
 def test_simple_drawing():
     """Check drawing the Square."""
     r = Square(name='GEMS')
-    assert r.drawn == r"""
-\begin{tikzpicture}
+    assert r.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (G) at (0,0);
 \coordinate (E) at (1,0);
@@ -72,11 +71,9 @@ r"""(0.25 cm, 0) -- (0.25 cm, 0.25 cm) -- (0, 0.25 cm);
 \draw (E) node[below right] {E};
 \draw (M) node[above right] {M};
 \draw (S) node[above left] {S};
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
     r.setup_labels([Number(5, unit='cm')], masks=[None, None, None, None])
-    assert r.drawn == r"""
-\begin{tikzpicture}
+    assert r.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (G) at (0,0);
 \coordinate (E) at (1,0);
@@ -108,14 +105,12 @@ r""" node[midway, sloped, scale=0.5] {||};
 \draw (E) node[below right] {E};
 \draw (M) node[above right] {M};
 \draw (S) node[above left] {S};
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
     config.polygons.ENABLE_MISMATCH_WINDING_WARNING = False
     r = Square(name='GEMS', winding='clockwise')
     config.polygons.ENABLE_MISMATCH_WINDING_WARNING = True
     r.setup_labels([Number(5, unit='cm')], masks=[None, None, None, None])
-    assert r.drawn == r"""
-\begin{tikzpicture}
+    assert r.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (G) at (0,1);
 \coordinate (E) at (1,1);
@@ -147,5 +142,4 @@ r""" node[midway, sloped, scale=0.5] {||};
 \draw (E) node[above right] {E};
 \draw (M) node[below right] {M};
 \draw (S) node[below left] {S};
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""

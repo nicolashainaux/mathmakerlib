@@ -62,8 +62,7 @@ def test_drawing():
     A = Point(0, 0, 'A')
     B = Point(10, 0, 'B')
     ls = DividedLineSegment(A, B, n=5, fill=3, fillcolor='pink')
-    assert ls.drawn == r"""
-\begin{tikzpicture}
+    assert ls.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (A) at (0,0);
 \coordinate (B) at (10,0);
@@ -82,5 +81,4 @@ r"""node[opacity=1, pos=0, sloped] {|} """\
 
 % Label Points
 
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""

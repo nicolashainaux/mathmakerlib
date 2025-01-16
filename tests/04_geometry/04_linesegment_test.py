@@ -284,8 +284,7 @@ def test_dividing_points():
 def test_draw_dashpattern(A, E):
     """Check drawing is correct."""
     ls = LineSegment(A, E, dashpattern='dashed')
-    assert ls.drawn == r"""
-\begin{tikzpicture}
+    assert ls.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (A) at (0,0);
 \coordinate (E) at (1,0);
@@ -300,15 +299,13 @@ def test_draw_dashpattern(A, E):
 % Label Points
 \draw (A) node[left] {A};
 \draw (E) node[right] {E};
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
 
 
 def test_drawing_without_linesegment_labels(A, E):
     """Check drawing is correct."""
     ls = LineSegment(A, E)
-    assert ls.drawn == r"""
-\begin{tikzpicture}
+    assert ls.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (A) at (0,0);
 \coordinate (E) at (1,0);
@@ -323,11 +320,9 @@ def test_drawing_without_linesegment_labels(A, E):
 % Label Points
 \draw (A) node[left] {A};
 \draw (E) node[right] {E};
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
     ls = LineSegment(A, E, color='Apricot')
-    assert ls.drawn == r"""
-\begin{tikzpicture}
+    assert ls.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (A) at (0,0);
 \coordinate (E) at (1,0);
@@ -342,11 +337,9 @@ def test_drawing_without_linesegment_labels(A, E):
 % Label Points
 \draw (A) node[left] {A};
 \draw (E) node[right] {E};
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
     ls = LineSegment(A, E, draw_endpoints=False)
-    assert ls.drawn == r"""
-\begin{tikzpicture}
+    assert ls.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (A) at (0,0);
 \coordinate (E) at (1,0);
@@ -357,11 +350,9 @@ def test_drawing_without_linesegment_labels(A, E):
 % Label Points
 \draw (A) node[left] {A};
 \draw (E) node[right] {E};
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
     ls = LineSegment(A, E, label_endpoints=False)
-    assert ls.drawn == r"""
-\begin{tikzpicture}
+    assert ls.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (A) at (0,0);
 \coordinate (E) at (1,0);
@@ -375,11 +366,9 @@ def test_drawing_without_linesegment_labels(A, E):
 
 % Label Points
 
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
     ls = LineSegment(A, Point(Number(1), Number(1), 'E'))
-    assert ls.drawn == r"""
-\begin{tikzpicture}
+    assert ls.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (A) at (0,0);
 \coordinate (E) at (1,1);
@@ -394,11 +383,9 @@ def test_drawing_without_linesegment_labels(A, E):
 % Label Points
 \draw (A) node[below left] {A};
 \draw (E) node[above right] {E};
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
     ls = LineSegment(A, Point(Number(0), Number(1), 'E'))
-    assert ls.drawn == r"""
-\begin{tikzpicture}
+    assert ls.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (A) at (0,0);
 \coordinate (E) at (0,1);
@@ -413,11 +400,9 @@ def test_drawing_without_linesegment_labels(A, E):
 % Label Points
 \draw (A) node[below] {A};
 \draw (E) node[above] {E};
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
     ls = LineSegment(A, Point(Number(-1), Number(1), 'E'))
-    assert ls.drawn == r"""
-\begin{tikzpicture}
+    assert ls.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (A) at (0,0);
 \coordinate (E) at (-1,1);
@@ -432,11 +417,9 @@ def test_drawing_without_linesegment_labels(A, E):
 % Label Points
 \draw (A) node[below right] {A};
 \draw (E) node[above left] {E};
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
     ls = LineSegment(A, Point(Number(-1), Number(0), 'E'))
-    assert ls.drawn == r"""
-\begin{tikzpicture}
+    assert ls.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (A) at (0,0);
 \coordinate (E) at (-1,0);
@@ -451,11 +434,9 @@ def test_drawing_without_linesegment_labels(A, E):
 % Label Points
 \draw (A) node[right] {A};
 \draw (E) node[left] {E};
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
     ls = LineSegment(A, Point(Number(-1), Number(-1), 'E'))
-    assert ls.drawn == r"""
-\begin{tikzpicture}
+    assert ls.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (A) at (0,0);
 \coordinate (E) at (-1,-1);
@@ -470,11 +451,9 @@ def test_drawing_without_linesegment_labels(A, E):
 % Label Points
 \draw (A) node[above right] {A};
 \draw (E) node[below left] {E};
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
     ls = LineSegment(A, Point(Number(0), Number(-1), 'E'))
-    assert ls.drawn == r"""
-\begin{tikzpicture}
+    assert ls.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (A) at (0,0);
 \coordinate (E) at (0,-1);
@@ -489,11 +468,9 @@ def test_drawing_without_linesegment_labels(A, E):
 % Label Points
 \draw (A) node[above] {A};
 \draw (E) node[below] {E};
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
     ls = LineSegment(A, Point(Number(1), Number(-1), 'E'))
-    assert ls.drawn == r"""
-\begin{tikzpicture}
+    assert ls.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (A) at (0,0);
 \coordinate (E) at (1,-1);
@@ -508,15 +485,13 @@ def test_drawing_without_linesegment_labels(A, E):
 % Label Points
 \draw (A) node[above left] {A};
 \draw (E) node[below right] {E};
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
 
 
 def test_drawing_with_linesegment_labels(A, B, E):
     """Check drawing is correct."""
     ls = LineSegment(A, E, label='4 cm')
-    assert ls.drawn == r"""
-\begin{tikzpicture}
+    assert ls.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (A) at (0,0);
 \coordinate (E) at (1,0);
@@ -531,13 +506,11 @@ def test_drawing_with_linesegment_labels(A, B, E):
 % Label Points
 \draw (A) node[left] {A};
 \draw (E) node[right] {E};
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
     ls.label = Number(6, unit='cm')
     assert ls.label == r'\SI{6}{cm}'
     assert ls.label_value == Number(6, unit='cm')
-    assert ls.drawn == r"""
-\begin{tikzpicture}
+    assert ls.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (A) at (0,0);
 \coordinate (E) at (1,0);
@@ -552,11 +525,9 @@ def test_drawing_with_linesegment_labels(A, B, E):
 % Label Points
 \draw (A) node[left] {A};
 \draw (E) node[right] {E};
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
     ls = LineSegment(A, E, label='4 cm', label_position='above')
-    assert ls.drawn == r"""
-\begin{tikzpicture}
+    assert ls.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (A) at (0,0);
 \coordinate (E) at (1,0);
@@ -571,11 +542,9 @@ def test_drawing_with_linesegment_labels(A, B, E):
 % Label Points
 \draw (A) node[left] {A};
 \draw (E) node[right] {E};
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
     ls = LineSegment(E, A, label='4 cm')
-    assert ls.drawn == r"""
-\begin{tikzpicture}
+    assert ls.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (E) at (1,0);
 \coordinate (A) at (0,0);
@@ -590,11 +559,9 @@ def test_drawing_with_linesegment_labels(A, B, E):
 % Label Points
 \draw (E) node[right] {E};
 \draw (A) node[left] {A};
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
     ls = LineSegment(E, B, label='4 cm')
-    assert ls.drawn == r"""
-\begin{tikzpicture}
+    assert ls.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (E) at (1,0);
 \coordinate (B) at (1,1);
@@ -609,11 +576,9 @@ def test_drawing_with_linesegment_labels(A, B, E):
 % Label Points
 \draw (E) node[below] {E};
 \draw (B) node[above] {B};
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
     ls = LineSegment(A, E, label='4 cm', label_winding='clockwise')
-    assert ls.drawn == r"""
-\begin{tikzpicture}
+    assert ls.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (A) at (0,0);
 \coordinate (E) at (1,0);
@@ -628,11 +593,9 @@ def test_drawing_with_linesegment_labels(A, B, E):
 % Label Points
 \draw (A) node[left] {A};
 \draw (E) node[right] {E};
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
     ls = LineSegment(E, A, label='4 cm', label_winding='clockwise')
-    assert ls.drawn == r"""
-\begin{tikzpicture}
+    assert ls.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (E) at (1,0);
 \coordinate (A) at (0,0);
@@ -647,12 +610,10 @@ def test_drawing_with_linesegment_labels(A, B, E):
 % Label Points
 \draw (E) node[right] {E};
 \draw (A) node[left] {A};
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
     ls = LineSegment(E, A, label='4 cm', thickness=None,
                      label_winding='clockwise')
-    assert ls.drawn == r"""
-\begin{tikzpicture}
+    assert ls.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (E) at (1,0);
 \coordinate (A) at (0,0);
@@ -667,12 +628,10 @@ def test_drawing_with_linesegment_labels(A, B, E):
 % Label Points
 \draw (E) node[right] {E};
 \draw (A) node[left] {A};
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
     ls = LineSegment(E, A, label='4 cm', label_winding='clockwise',
                      label_mask='?')
-    assert ls.drawn == r"""
-\begin{tikzpicture}
+    assert ls.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (E) at (1,0);
 \coordinate (A) at (0,0);
@@ -687,12 +646,10 @@ def test_drawing_with_linesegment_labels(A, B, E):
 % Label Points
 \draw (E) node[right] {E};
 \draw (A) node[left] {A};
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
     ls = LineSegment(E, A, label='4 cm', label_winding='clockwise',
                      label_scale='0.67')
-    assert ls.drawn == r"""
-\begin{tikzpicture}
+    assert ls.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (E) at (1,0);
 \coordinate (A) at (0,0);
@@ -707,8 +664,7 @@ def test_drawing_with_linesegment_labels(A, B, E):
 % Label Points
 \draw (E) node[right] {E};
 \draw (A) node[left] {A};
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
 
 
 def test_drawing_with_linesegment_not_sloped_labels():
@@ -718,8 +674,7 @@ def test_drawing_with_linesegment_not_sloped_labels():
     ls = LineSegment(A, B, label='4 cm')
     ls.sloped_label = False
     ls.label_position = 'automatic'
-    assert ls.drawn == r"""
-\begin{tikzpicture}
+    assert ls.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (A) at (0,0);
 \coordinate (B) at (1,0);
@@ -734,14 +689,12 @@ def test_drawing_with_linesegment_not_sloped_labels():
 % Label Points
 \draw (A) node[left] {A};
 \draw (B) node[right] {B};
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
     B = Point(1, 1, 'B')
     ls = LineSegment(A, B, label='4 cm')
     ls.sloped_label = False
     ls.label_position = 'automatic'
-    assert ls.drawn == r"""
-\begin{tikzpicture}
+    assert ls.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (A) at (0,0);
 \coordinate (B) at (1,1);
@@ -756,11 +709,9 @@ def test_drawing_with_linesegment_not_sloped_labels():
 % Label Points
 \draw (A) node[below left] {A};
 \draw (B) node[above right] {B};
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
     ls.label_position = 'above left'
-    assert ls.drawn == r"""
-\begin{tikzpicture}
+    assert ls.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (A) at (0,0);
 \coordinate (B) at (1,1);
@@ -775,15 +726,13 @@ def test_drawing_with_linesegment_not_sloped_labels():
 % Label Points
 \draw (A) node[below left] {A};
 \draw (B) node[above right] {B};
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
 
 
 def test_drawing_marked_linesegment(A, F):
     """Check drawing is correct."""
     ls = LineSegment(A, F, mark='//')
-    assert ls.drawn == r"""
-\begin{tikzpicture}
+    assert ls.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (A) at (0,0);
 \coordinate (F) at (4,0);
@@ -798,11 +747,9 @@ def test_drawing_marked_linesegment(A, F):
 % Label Points
 \draw (A) node[left] {A};
 \draw (F) node[right] {F};
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
     ls.label = '4 cm'
-    assert ls.drawn == (r"""
-\begin{tikzpicture}
+    assert ls.drawn == (r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (A) at (0,0);
 \coordinate (F) at (4,0);
@@ -818,5 +765,4 @@ def test_drawing_marked_linesegment(A, F):
 % Label Points
 \draw (A) node[left] {A};
 \draw (F) node[right] {F};
-\end{tikzpicture}
-""")
+\end{tikzpicture}""")

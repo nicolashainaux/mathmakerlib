@@ -64,8 +64,7 @@ def test_sides_labeling():
 def test_simple_drawing():
     """Check drawing the Rhombus."""
     r = Rhombus(name='EASY')
-    assert r.drawn == r"""
-\begin{tikzpicture}
+    assert r.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (E) at (0,0);
 \coordinate (A) at (0.866,-0.5);
@@ -84,11 +83,9 @@ def test_simple_drawing():
 \draw (A) node[below] {A};
 \draw (S) node[right] {S};
 \draw (Y) node[above] {Y};
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
     r = Rhombus(start_vertex=Point(2, 2), name='EASY')
-    assert r.drawn == r"""
-\begin{tikzpicture}
+    assert r.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (E) at (2,2);
 \coordinate (A) at (2.866,1.5);
@@ -107,5 +104,4 @@ def test_simple_drawing():
 \draw (A) node[below] {A};
 \draw (S) node[right] {S};
 \draw (Y) node[above] {Y};
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""

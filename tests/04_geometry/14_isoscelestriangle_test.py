@@ -36,8 +36,7 @@ def test_instanciation():
 def test_simple_drawing():
     """Check drawing the Triangle."""
     t = IsoscelesTriangle(name='GUM')
-    assert t.drawn == r"""
-\begin{tikzpicture}
+    assert t.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (G) at (0,0);
 \coordinate (U) at (1.5,0);
@@ -53,8 +52,7 @@ def test_simple_drawing():
 \draw (G) node[left] {G};
 \draw (U) node[right] {U};
 \draw (M) node[above] {M};
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
 
 
 def test_drawing_with_labeled_sides():
@@ -62,8 +60,7 @@ def test_drawing_with_labeled_sides():
     t = IsoscelesTriangle(name='GUM')
     assert t.winding == 'anticlockwise'
     t.setup_labels(['1.5 cm', '1 cm'])
-    assert t.drawn == r"""
-\begin{tikzpicture}
+    assert t.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (G) at (0,0);
 \coordinate (U) at (1.5,0);
@@ -80,13 +77,11 @@ r"""node[midway, sloped, scale=0.5] {||};
 \draw (G) node[left] {G};
 \draw (U) node[right] {U};
 \draw (M) node[above] {M};
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
     t = IsoscelesTriangle(name='GUM', winding='clockwise')
     assert t.winding == 'clockwise'
     t.setup_labels(['1.5 cm', '1 cm'])
-    assert t.drawn == r"""
-\begin{tikzpicture}
+    assert t.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (G) at (1.5,0);
 \coordinate (U) at (0,0);
@@ -103,5 +98,4 @@ r"""node[midway, sloped, scale=0.5] {||};
 \draw (G) node[right] {G};
 \draw (U) node[left] {U};
 \draw (M) node[above] {M};
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""

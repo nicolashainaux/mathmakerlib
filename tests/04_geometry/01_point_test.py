@@ -164,8 +164,7 @@ def test_drawing():
     assert str(excinfo.value) == 'Point at ({}, {}) has no name (None), '\
         'cannot create TikZ picture using it.'
     p = Point(0, 0, 'A')
-    assert p.drawn == r"""
-\begin{tikzpicture}
+    assert p.drawn == r"""\begin{tikzpicture}
 % Declare Point
 \coordinate (A) at (0,0);
 
@@ -174,11 +173,9 @@ def test_drawing():
 
 % Label Point
 \draw (A) node[below] {A};
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
     p = Point(0, 0, 'A', color='pink')
-    assert p.drawn == r"""
-\begin{tikzpicture}
+    assert p.drawn == r"""\begin{tikzpicture}
 % Declare Point
 \coordinate (A) at (0,0);
 
@@ -187,12 +184,10 @@ def test_drawing():
 
 % Label Point
 \draw (A) node[below] {A};
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
     p = Point(0, 0, 'A')
     p.label_position = None
-    assert p.drawn == r"""
-\begin{tikzpicture}
+    assert p.drawn == r"""\begin{tikzpicture}
 % Declare Point
 \coordinate (A) at (0,0);
 
@@ -201,11 +196,9 @@ def test_drawing():
 
 % Label Point
 \draw (A) node {A};
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
     p.label = ''
-    assert p.drawn == r"""
-\begin{tikzpicture}
+    assert p.drawn == r"""\begin{tikzpicture}
 % Declare Point
 \coordinate (A) at (0,0);
 
@@ -214,11 +207,9 @@ def test_drawing():
 
 % Label Point
 
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
     p.label = None
-    assert p.drawn == r"""
-\begin{tikzpicture}
+    assert p.drawn == r"""\begin{tikzpicture}
 % Declare Point
 \coordinate (A) at (0,0);
 
@@ -227,8 +218,7 @@ def test_drawing():
 
 % Label Point
 
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
 
 
 def test_convex_hull():

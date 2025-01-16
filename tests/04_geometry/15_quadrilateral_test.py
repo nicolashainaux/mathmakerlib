@@ -43,8 +43,7 @@ def test_simple_drawing():
     r = Quadrilateral(Point(0, 0), Point(1, 0), Point(2, 2), Point(0, 3),
                       name='PINK')
     r.setup_labels()
-    assert r.drawn == r"""
-\begin{tikzpicture}
+    assert r.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (P) at (0,0);
 \coordinate (I) at (1,0);
@@ -63,8 +62,7 @@ def test_simple_drawing():
 \draw (I) node[below right] {I};
 \draw (N) node[right] {N};
 \draw (K) node[above left] {K};
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
 
 
 def test_drawing_with_labeled_sides():
@@ -80,8 +78,7 @@ def test_drawing_with_labeled_sides():
     assert str(excinfo.value) == 'All four masks must be setup. Found '\
         '2 values instead.'
     r.setup_labels(labels=['one', 'two', 'three', 'four'])
-    assert r.drawn == r"""
-\begin{tikzpicture}
+    assert r.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (P) at (0,0);
 \coordinate (I) at (1,0);
@@ -100,5 +97,4 @@ def test_drawing_with_labeled_sides():
 \draw (I) node[below right] {I};
 \draw (N) node[right] {N};
 \draw (K) node[above left] {K};
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""

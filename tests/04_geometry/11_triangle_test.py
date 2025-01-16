@@ -44,8 +44,7 @@ def test_instanciation():
 def test_simple_drawing():
     """Check drawing the Triangle."""
     r = Triangle(Point(0, 0), Point(1, 0), Point(1, 1), name='BOT')
-    assert r.drawn == r"""
-\begin{tikzpicture}
+    assert r.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (B) at (0,0);
 \coordinate (O) at (1,0);
@@ -61,8 +60,7 @@ def test_simple_drawing():
 \draw (B) node[below left] {B};
 \draw (O) node[below right] {O};
 \draw (T) node[above] {T};
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
 
 
 def test_drawing_with_labeled_sides():
@@ -78,8 +76,7 @@ def test_drawing_with_labeled_sides():
     assert str(excinfo.value) == 'All three masks must be setup. Found '\
         '2 values instead.'
     r.setup_labels(labels=['one', 'two', 'three'])
-    assert r.drawn == r"""
-\begin{tikzpicture}
+    assert r.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (W) at (0,0);
 \coordinate (A) at (1,0);
@@ -95,8 +92,7 @@ def test_drawing_with_labeled_sides():
 \draw (W) node[below left] {W};
 \draw (A) node[right] {A};
 \draw (X) node[above left] {X};
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
     t = Triangle(Point(0, 0), Point(2, 0),
                  Point(Number('0.776'), Number('1.232')),
                  name='BOT', label_vertices=False, thickness='thin')
@@ -105,8 +101,7 @@ def test_drawing_with_labeled_sides():
                            Number(3, unit='cm')])
     for s in t.sides:
         s.label_scale = '0.9'
-    assert t.drawn == r"""
-\begin{tikzpicture}
+    assert t.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (B) at (0,0);
 \coordinate (O) at (2,0);
@@ -120,8 +115,7 @@ def test_drawing_with_labeled_sides():
 
 % Label Points
 
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
     t = Triangle(Point(0, 0), Point(2, 0), Point(2, 1),
                  name='BOT', label_vertices=False, thickness='thin')
     t.setup_labels(labels=[Number(9, unit='dam'),
@@ -129,8 +123,7 @@ def test_drawing_with_labeled_sides():
                            Number(4, unit='dam')])
     for s in t.sides:
         s.label_scale = '0.85'
-    assert t.drawn == r"""
-\begin{tikzpicture}
+    assert t.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (B) at (0,0);
 \coordinate (O) at (2,0);
@@ -144,8 +137,7 @@ def test_drawing_with_labeled_sides():
 
 % Label Points
 
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
     t = Triangle(Point(0, 0), Point('2.236', 0), Point('0.582', '0.98'),
                  name='ABC', label_vertices=False)
     t.setup_labels(labels=[Number(10, unit='hm'),
@@ -156,8 +148,7 @@ def test_drawing_with_labeled_sides():
     t.angles[1].decoration = AngleDecoration()
     t.angles[1].mark_right = True
     locale.setlocale(locale.LC_ALL, LOCALE_FR)
-    assert t.drawn == r"""
-\begin{tikzpicture}
+    assert t.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (A) at (0,0);
 \coordinate (B) at (2.236,0);
@@ -175,8 +166,7 @@ r"""cm={cos(149.35), sin(149.35), -sin(149.35), cos(149.35), (B)}] """\
 
 % Label Points
 
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
     locale.setlocale(locale.LC_ALL, LOCALE_US)
     t = Triangle(Point(0, '-0.4'), Point(0, '0.4'), Point('2', 0),
                  name='MNO', label_vertices=False, thickness='thin')
@@ -188,8 +178,7 @@ r"""cm={cos(149.35), sin(149.35), -sin(149.35), cos(149.35), (B)}] """\
         s.label_scale = '0.85'
         s.mark_scale = Number('0.5')
     t.sides[1].mark = t.sides[2].mark = '||'
-    assert t.drawn == r"""
-\begin{tikzpicture}
+    assert t.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (M) at (0,-0.4);
 \coordinate (N) at (0,0.4);
@@ -204,5 +193,4 @@ r"""node[midway, sloped, scale=0.5] {||};
 
 % Label Points
 
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""

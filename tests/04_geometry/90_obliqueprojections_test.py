@@ -78,8 +78,8 @@ def test_draw_vertices_error(rc):
 
 def test_topright_projection(rc):
     """Check the default projection of a right cuboid is correct."""
-    assert ObliqueProjection(rc, label_vertices=True).drawn == r"""
-\begin{tikzpicture}
+    assert ObliqueProjection(rc, label_vertices=True).drawn \
+        == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (F) at (0,0);
 \coordinate (L) at (4,0);
@@ -114,15 +114,14 @@ def test_topright_projection(rc):
 \draw (R) node[right] {R};
 \draw (E) node[above right] {E};
 \draw (D) node[above left] {D};
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
 
 
 def test_topleft_projection(rc):
     """Check top-left projection of a right cuboid is correct."""
     assert ObliqueProjection(rc, label_vertices=True,
-                             direction='top-left').drawn == r"""
-\begin{tikzpicture}
+                             direction='top-left').drawn \
+        == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (F) at (0,0);
 \coordinate (L) at (4,0);
@@ -157,15 +156,14 @@ def test_topleft_projection(rc):
 \draw (R) node[below] {R};
 \draw (E) node[above] {E};
 \draw (D) node[above left] {D};
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
 
 
 def test_bottomleft_projection(rc):
     """Check bottom-left projection of a right cuboid is correct."""
     assert ObliqueProjection(rc, label_vertices=True,
-                             direction='bottom-left').drawn == r"""
-\begin{tikzpicture}
+                             direction='bottom-left').drawn \
+        == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (F) at (0,0);
 \coordinate (L) at (4,0);
@@ -200,15 +198,14 @@ def test_bottomleft_projection(rc):
 \draw (R) node[below right] {R};
 \draw (E) node[above left] {E};
 \draw (D) node[left] {D};
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
 
 
 def test_bottomright_projection(rc):
     """Check bottom-right projection of a right cuboid is correct."""
     assert ObliqueProjection(rc, label_vertices=True,
-                             direction='bottom-right').drawn == r"""
-\begin{tikzpicture}
+                             direction='bottom-right').drawn \
+        == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (F) at (0,0);
 \coordinate (L) at (4,0);
@@ -243,15 +240,13 @@ def test_bottomright_projection(rc):
 \draw (R) node[below right] {R};
 \draw (E) node[above right] {E};
 \draw (D) node[above] {D};
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
 
 
 def test_topright_edges_labeling(rc):
     """Check edges' labeling for a top-right projection."""
     rc.setup_labels((4, 7, 25))
-    assert ObliqueProjection(rc).drawn == r"""
-\begin{tikzpicture}
+    assert ObliqueProjection(rc).drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (F) at (0,0);
 \coordinate (L) at (4,0);
@@ -279,15 +274,14 @@ def test_topright_edges_labeling(rc):
 
 % Label Points
 
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
 
 
 def test_topleft_edges_labeling(rc):
     """Check edges' labeling for a top-left projection."""
     rc.setup_labels((4, 7, 25))
-    assert ObliqueProjection(rc, direction='top-left').drawn == r"""
-\begin{tikzpicture}
+    assert ObliqueProjection(rc, direction='top-left').drawn \
+        == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (F) at (0,0);
 \coordinate (L) at (4,0);
@@ -315,15 +309,14 @@ def test_topleft_edges_labeling(rc):
 
 % Label Points
 
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
 
 
 def test_bottomleft_edges_labeling(rc):
     """Check edges' labeling for a bottom-left projection."""
     rc.setup_labels((4, 7, 25))
-    assert ObliqueProjection(rc, direction='bottom-left').drawn == r"""
-\begin{tikzpicture}
+    assert ObliqueProjection(rc, direction='bottom-left').drawn \
+        == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (F) at (0,0);
 \coordinate (L) at (4,0);
@@ -351,15 +344,14 @@ def test_bottomleft_edges_labeling(rc):
 
 % Label Points
 
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
 
 
 def test_bottomright_edges_labeling(rc):
     """Check edges' labeling for a bottom-right projection."""
     rc.setup_labels((4, 7, 25))
-    assert ObliqueProjection(rc, direction='bottom-right').drawn == r"""
-\begin{tikzpicture}
+    assert ObliqueProjection(rc, direction='bottom-right').drawn \
+        == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (F) at (0,0);
 \coordinate (L) at (4,0);
@@ -387,14 +379,13 @@ def test_bottomright_edges_labeling(rc):
 
 % Label Points
 
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
 
 
 def test_drawn_vertices(rc):
     """Check the default projection of a right cuboid is correct."""
-    assert ObliqueProjection(rc, draw_vertices=True).drawn == r"""
-\begin{tikzpicture}
+    assert ObliqueProjection(rc, draw_vertices=True).drawn \
+        == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (F) at (0,0);
 \coordinate (L) at (4,0);
@@ -432,15 +423,14 @@ def test_drawn_vertices(rc):
 
 % Label Points
 
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
 
 
 def test_draw_thick_and_blue(rc):
     """Check the default projection of a right cuboid is correct."""
     assert ObliqueProjection(rc, color='RoyalBlue',
-                             thickness='very thick').drawn == r"""
-\begin{tikzpicture}
+                             thickness='very thick').drawn \
+        == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (F) at (0,0);
 \coordinate (L) at (4,0);
@@ -468,5 +458,4 @@ def test_draw_thick_and_blue(rc):
 
 % Label Points
 
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""

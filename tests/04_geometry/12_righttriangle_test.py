@@ -30,8 +30,8 @@ from mathmakerlib.geometry import AngleDecoration
 DATA_PATH = Path(__file__).parent.parent.parent \
     / 'tests_compilations/data/right_triangles'
 
-LAC1 = (DATA_PATH / 'LAC1.tex').read_text()
-ICY1 = (DATA_PATH / 'ICY1.tex').read_text()
+LAC1 = (DATA_PATH / 'LAC1.tex').read_text().rstrip()
+ICY1 = (DATA_PATH / 'ICY1.tex').read_text().rstrip()
 
 
 @pytest.fixture
@@ -57,8 +57,7 @@ def test_simple_drawing():
     """Check drawing the RightTriangle."""
     r = RightTriangle(name='ICY')
     assert r.winding == 'anticlockwise'
-    assert r.drawn == r"""
-\begin{tikzpicture}
+    assert r.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (I) at (0,0);
 \coordinate (C) at (2,0);
@@ -77,12 +76,10 @@ r"""(0.25 cm, 0) -- (0.25 cm, 0.25 cm) -- (0, 0.25 cm);
 \draw (I) node[left] {I};
 \draw (C) node[below right] {C};
 \draw (Y) node[above right] {Y};
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
     r = RightTriangle(start_vertex=Point(-3, 4), name='ICY')
     assert r.winding == 'anticlockwise'
-    assert r.drawn == r"""
-\begin{tikzpicture}
+    assert r.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (I) at (-3,4);
 \coordinate (C) at (-1,4);
@@ -101,8 +98,7 @@ r"""(0.25 cm, 0) -- (0.25 cm, 0.25 cm) -- (0, 0.25 cm);
 \draw (I) node[left] {I};
 \draw (C) node[below right] {C};
 \draw (Y) node[above right] {Y};
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
     r = RightTriangle(start_vertex=Point(-3, 4), name='ICY',
                       winding='clockwise')
     r.setup_labels([Number(3, unit='cm'),
@@ -110,8 +106,7 @@ r"""(0.25 cm, 0) -- (0.25 cm, 0.25 cm) -- (0, 0.25 cm);
                     Number(5, unit='cm')])
     assert r.leg0.label_value == Number(3, unit='cm')
     assert r.winding == 'clockwise'
-    assert r.drawn == r"""
-\begin{tikzpicture}
+    assert r.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (I) at (-1,5);
 \coordinate (C) at (-1,4);
@@ -130,8 +125,7 @@ r"""(0.25 cm, 0) -- (0.25 cm, -0.25 cm) -- (0, -0.25 cm);
 \draw (I) node[above right] {I};
 \draw (C) node[below right] {C};
 \draw (Y) node[left] {Y};
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
 
 
 def test_t6_setup_for_trigonometry_errors(t6):

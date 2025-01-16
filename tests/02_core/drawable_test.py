@@ -96,8 +96,7 @@ def test_scale(A, E):
     assert ls.scale == 1
     ls.scale = 2
     assert ls.scale == 2
-    assert ls.drawn == r"""
-\begin{tikzpicture}[scale=2]
+    assert ls.drawn == r"""\begin{tikzpicture}[scale=2]
 % Declare Points
 \coordinate (A) at (0,0);
 \coordinate (E) at (1,0);
@@ -112,8 +111,7 @@ def test_scale(A, E):
 % Label Points
 \draw (A) node[left] {A};
 \draw (E) node[right] {E};
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
     with pytest.raises(TypeError) as excinfo:
         ls.scale = '2'
     assert str(excinfo.value) == 'The picture\'s scale must be a number.'
@@ -136,8 +134,7 @@ def test_colors():
     p.color = 'Apricot'
     assert required.package['xcolor']
     assert 'dvipsnames' in required.options['xcolor']
-    assert p.drawn == r"""
-\begin{tikzpicture}
+    assert p.drawn == r"""\begin{tikzpicture}
 % Declare Point
 \coordinate (A) at (0,0);
 
@@ -146,8 +143,7 @@ def test_colors():
 
 % Label Point
 \draw (A) node[below] {A};
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
 
 
 def test_baseline(A, E):
@@ -156,8 +152,7 @@ def test_baseline(A, E):
     assert ls.baseline is None
     ls.baseline = '4pt'
     assert ls.baseline == '4pt'
-    assert ls.drawn == r"""
-\begin{tikzpicture}[baseline=4pt]
+    assert ls.drawn == r"""\begin{tikzpicture}[baseline=4pt]
 % Declare Points
 \coordinate (A) at (0,0);
 \coordinate (E) at (1,0);
@@ -172,11 +167,9 @@ def test_baseline(A, E):
 % Label Points
 \draw (A) node[left] {A};
 \draw (E) node[right] {E};
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
     ls.scale = 2
-    assert ls.drawn == r"""
-\begin{tikzpicture}[baseline=4pt, scale=2]
+    assert ls.drawn == r"""\begin{tikzpicture}[baseline=4pt, scale=2]
 % Declare Points
 \coordinate (A) at (0,0);
 \coordinate (E) at (1,0);
@@ -191,8 +184,7 @@ def test_baseline(A, E):
 % Label Points
 \draw (A) node[left] {A};
 \draw (E) node[right] {E};
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
 
 
 def test_fontsize():
@@ -213,8 +205,7 @@ def test_fontsize():
     α.decoration = AngleDecoration(radius=None,
                                    eccentricity=Number('1.8'))
     α.fontsize = r'\scriptsize'
-    assert α.drawn == r"""
-\begin{tikzpicture}
+    assert α.drawn == r"""\begin{tikzpicture}
 % Text font size
 \scriptsize
 % Declare Points
@@ -228,8 +219,7 @@ def test_fontsize():
 
 % Label Points
 \draw (A) node[below left] {A};
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
 
 
 def test_boundingbox(A, E):
@@ -249,8 +239,7 @@ def test_boundingbox(A, E):
         'Found a str instead.'
     ls.boundingbox = (-1, -1, '2', 1)
     assert ls.boundingbox == (-1, -1, 2, 1)
-    assert ls.drawn == r"""
-\begin{tikzpicture}
+    assert ls.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (A) at (0,0);
 \coordinate (E) at (1,0);
@@ -267,5 +256,4 @@ def test_boundingbox(A, E):
 \draw (E) node[right] {E};
 
 \useasboundingbox (-1,-1) rectangle (2,1);
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""

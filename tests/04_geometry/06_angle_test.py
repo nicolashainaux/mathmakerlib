@@ -33,20 +33,20 @@ from mathmakerlib.geometry.angle import autosize_decoration_radius
 DATA_PATH = Path(__file__).parent.parent.parent \
     / 'tests_compilations/data/angles'
 
-XBY1 = (DATA_PATH / 'XBY1.tex').read_text()
-XBY2 = (DATA_PATH / 'XBY2.tex').read_text()
-XBY3 = (DATA_PATH / 'XBY3.tex').read_text()
-XBY4 = (DATA_PATH / 'XBY4.tex').read_text()
-XOY0 = (DATA_PATH / 'XOY0.tex').read_text()
-XOY0_ap = (DATA_PATH / 'XOY0_ap.tex').read_text()
-XOY1 = (DATA_PATH / 'XOY1.tex').read_text()
-XOY1_ap = (DATA_PATH / 'XOY1_ap.tex').read_text()
-XOY2 = (DATA_PATH / 'XOY2.tex').read_text()
-XOY2_ap = (DATA_PATH / 'XOY2_ap.tex').read_text()
-XOY3 = (DATA_PATH / 'XOY3.tex').read_text()
-XOY3_ap = (DATA_PATH / 'XOY3_ap.tex').read_text()
-XOY4 = (DATA_PATH / 'XOY4.tex').read_text()
-XOY4_ap = (DATA_PATH / 'XOY4_ap.tex').read_text()
+XBY1 = (DATA_PATH / 'XBY1.tex').read_text().rstrip()
+XBY2 = (DATA_PATH / 'XBY2.tex').read_text().rstrip()
+XBY3 = (DATA_PATH / 'XBY3.tex').read_text().rstrip()
+XBY4 = (DATA_PATH / 'XBY4.tex').read_text().rstrip()
+XOY0 = (DATA_PATH / 'XOY0.tex').read_text().rstrip()
+XOY0_ap = (DATA_PATH / 'XOY0_ap.tex').read_text().rstrip()
+XOY1 = (DATA_PATH / 'XOY1.tex').read_text().rstrip()
+XOY1_ap = (DATA_PATH / 'XOY1_ap.tex').read_text().rstrip()
+XOY2 = (DATA_PATH / 'XOY2.tex').read_text().rstrip()
+XOY2_ap = (DATA_PATH / 'XOY2_ap.tex').read_text().rstrip()
+XOY3 = (DATA_PATH / 'XOY3.tex').read_text().rstrip()
+XOY3_ap = (DATA_PATH / 'XOY3_ap.tex').read_text().rstrip()
+XOY4 = (DATA_PATH / 'XOY4.tex').read_text().rstrip()
+XOY4_ap = (DATA_PATH / 'XOY4_ap.tex').read_text().rstrip()
 
 
 @pytest.fixture()
@@ -429,8 +429,7 @@ def test_drawing_angles():
     X = Point(6, 1, 'X')
     Y = Point(3, 5, 'Y')
     α = Angle(X, A, Y)
-    assert α.drawn == r"""
-\begin{tikzpicture}
+    assert α.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (X) at (6,1);
 \coordinate (A) at (0,0);
@@ -441,11 +440,9 @@ def test_drawing_angles():
 
 % Label Points
 
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
     α.label_vertex = True
-    assert α.drawn == r"""
-\begin{tikzpicture}
+    assert α.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (X) at (6,1);
 \coordinate (A) at (0,0);
@@ -456,11 +453,9 @@ def test_drawing_angles():
 
 % Label Points
 \draw (A) node[below left] {A};
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
     α.label_endpoints = True
-    assert α.drawn == r"""
-\begin{tikzpicture}
+    assert α.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (X) at (6,1);
 \coordinate (A) at (0,0);
@@ -473,11 +468,9 @@ def test_drawing_angles():
 \draw (A) node[below left] {A};
 \draw (X) node[below right] {X};
 \draw (Y) node[above left] {Y};
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
     α.draw_vertex = True
-    assert α.drawn == r"""
-\begin{tikzpicture}
+    assert α.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (X) at (6,1);
 \coordinate (A) at (0,0);
@@ -492,11 +485,9 @@ def test_drawing_angles():
 \draw (A) node[below left] {A};
 \draw (X) node[below right] {X};
 \draw (Y) node[above left] {Y};
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
     α.draw_endpoints = True
-    assert α.drawn == r"""
-\begin{tikzpicture}
+    assert α.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (X) at (6,1);
 \coordinate (A) at (0,0);
@@ -514,11 +505,9 @@ def test_drawing_angles():
 \draw (A) node[below left] {A};
 \draw (X) node[below right] {X};
 \draw (Y) node[above left] {Y};
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
     α.draw_armspoints = True
-    assert α.drawn == r"""
-\begin{tikzpicture}
+    assert α.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (X) at (6,1);
 \coordinate (A) at (0,0);
@@ -536,8 +525,7 @@ def test_drawing_angles():
 \draw (A) node[below left] {A};
 \draw (X) node[below right] {X};
 \draw (Y) node[above left] {Y};
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
 
 
 def test_drawing_angles_with_labeled_vertex():
@@ -547,8 +535,7 @@ def test_drawing_angles_with_labeled_vertex():
     Y = Point(3, 5, 'Y')
     α = Angle(X, A, Y)
     α.label_vertex = True
-    assert α.drawn == r"""
-\begin{tikzpicture}
+    assert α.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (X) at (6,1);
 \coordinate (A) at (0,0);
@@ -559,13 +546,11 @@ def test_drawing_angles_with_labeled_vertex():
 
 % Label Points
 \draw (A) node[below left] {A};
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
     Z = Point(-6, -3, 'Z')
     α = Angle(X, A, Z)
     α.label_vertex = True
-    assert α.drawn == r"""
-\begin{tikzpicture}
+    assert α.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (X) at (6,1);
 \coordinate (A) at (0,0);
@@ -576,8 +561,7 @@ def test_drawing_angles_with_labeled_vertex():
 
 % Label Points
 \draw (A) node[below] {A};
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
 
 
 def test_drawing_labeled_angles():
@@ -587,8 +571,7 @@ def test_drawing_labeled_angles():
     Y = Point(3, 5, 'Y')
     α = Angle(X, A, Y, label=Number(38, unit=r'\degree'))
     required.tikz_library['quotes'] = False
-    assert α.drawn == r"""
-\begin{tikzpicture}
+    assert α.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (X) at (6,1);
 \coordinate (A) at (0,0);
@@ -600,8 +583,7 @@ def test_drawing_labeled_angles():
 
 % Label Points
 
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
     assert required.tikz_library['quotes']
     assert α.label == r'\ang{38}'
     α.decoration = None
@@ -614,8 +596,7 @@ def test_drawing_labeled_angles():
               decoration=AngleDecoration(label=Number(38, unit=r'\degree'),
                                          variety=None)
               )
-    assert α.drawn == r"""
-\begin{tikzpicture}
+    assert α.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (X) at (6,1);
 \coordinate (A) at (0,0);
@@ -627,12 +608,10 @@ def test_drawing_labeled_angles():
 
 % Label Points
 
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
     α = Angle(X, A, Y, label=Number(38, unit=r'\degree'),
               decoration=AngleDecoration(radius=Number('0.9', unit='cm')))
-    assert α.drawn == r"""
-\begin{tikzpicture}
+    assert α.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (X) at (6,1);
 \coordinate (A) at (0,0);
@@ -645,8 +624,7 @@ r"""angle radius = 0.9 cm] {angle = X--A--Y};
 
 % Label Points
 
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
 
 
 def test_drawing_angles_with_armspoints():
@@ -656,8 +634,7 @@ def test_drawing_angles_with_armspoints():
     Y1 = Point(3, 5, 'Y1')
     α = Angle(X1, A, Y1, armspoints=[('X', ), ('Y', )],
               label_vertex=True, draw_vertex=True)
-    assert α.drawn == r"""
-\begin{tikzpicture}
+    assert α.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (X1) at (6,1);
 \coordinate (A) at (0,0);
@@ -677,8 +654,7 @@ def test_drawing_angles_with_armspoints():
 \draw (A) node[below left] {A};
 \draw (X) node[below right] {X};
 \draw (Y) node[above left] {Y};
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
     Point.reset_names()
     A = Point(0, 0, 'A')
     X1 = Point(6, 1, 'X1')
@@ -686,8 +662,7 @@ def test_drawing_angles_with_armspoints():
     α = Angle(X1, A, Y1, armspoints=[('X', ), ('Y', )],
               label_vertex=True, draw_vertex=True)
     α.armspoints = [('', ), (None, )]
-    assert α.drawn == r"""
-\begin{tikzpicture}
+    assert α.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (X1) at (6,1);
 \coordinate (A) at (0,0);
@@ -707,8 +682,7 @@ def test_drawing_angles_with_armspoints():
 \draw (A) node[below left] {A};
 \draw (B) node[below right] {B};
 \draw (C) node[above left] {C};
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
     Point.reset_names()
     Ω = Point(0, 0, 'O')
     A1 = Point('2.5', 0, 'A1')
@@ -716,8 +690,7 @@ def test_drawing_angles_with_armspoints():
     α = Angle(A1, Ω, D1, armspoints=[('C', ), ('E', )],
               label_vertex=True, draw_vertex=True,
               label_armspoints=True, draw_armspoints=True)
-    assert α.drawn == r"""
-\begin{tikzpicture}
+    assert α.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (A1) at (2.5,0);
 \coordinate (O) at (0,0);
@@ -737,8 +710,7 @@ def test_drawing_angles_with_armspoints():
 \draw (O) node[below] {O};
 \draw (C) node[below right] {C};
 \draw (E) node[below left] {E};
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
 
 
 def test_drawing_marked_angles():
@@ -748,8 +720,7 @@ def test_drawing_marked_angles():
     Y = Point(3, 5, 'Y')
     α = Angle(X, A, Y)
     α.decoration = AngleDecoration(radius=Number('0.5', unit='cm'))
-    assert α.drawn == r"""
-\begin{tikzpicture}
+    assert α.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (X) at (6,1);
 \coordinate (A) at (0,0);
@@ -761,11 +732,9 @@ def test_drawing_marked_angles():
 
 % Label Points
 
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
     α.decoration.variety = 'double'
-    assert α.drawn == r"""
-\begin{tikzpicture}
+    assert α.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (X) at (6,1);
 \coordinate (A) at (0,0);
@@ -778,11 +747,9 @@ def test_drawing_marked_angles():
 
 % Label Points
 
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
     α.decoration.variety = 'triple'
-    assert α.drawn == r"""
-\begin{tikzpicture}
+    assert α.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (X) at (6,1);
 \coordinate (A) at (0,0);
@@ -796,12 +763,10 @@ def test_drawing_marked_angles():
 
 % Label Points
 
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
     α.decoration.variety = 'single'
     α.decoration.hatchmark = 'singledash'
-    assert α.drawn == r"""
-\begin{tikzpicture}
+    assert α.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (X) at (6,1);
 \coordinate (A) at (0,0);
@@ -813,8 +778,7 @@ def test_drawing_marked_angles():
 
 % Label Points
 
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
     assert required.tikz_library['decorations.markings']
     assert required.tikzset['singledash_hatchmark']
     assert not required.tikzset['doubledash_hatchmark']
@@ -822,8 +786,7 @@ def test_drawing_marked_angles():
     required.tikz_library['decorations.markings'] = False
     required.tikzset['singledash_hatchmark'] = False
     α.decoration.hatchmark = 'doubledash'
-    assert α.drawn == r"""
-\begin{tikzpicture}
+    assert α.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (X) at (6,1);
 \coordinate (A) at (0,0);
@@ -835,8 +798,7 @@ def test_drawing_marked_angles():
 
 % Label Points
 
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
     assert required.tikz_library['decorations.markings']
     assert not required.tikzset['singledash_hatchmark']
     assert required.tikzset['doubledash_hatchmark']
@@ -844,8 +806,7 @@ def test_drawing_marked_angles():
     required.tikz_library['decorations.markings'] = False
     required.tikzset['doubledash_hatchmark'] = False
     α.decoration.hatchmark = 'tripledash'
-    assert α.drawn == r"""
-\begin{tikzpicture}
+    assert α.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (X) at (6,1);
 \coordinate (A) at (0,0);
@@ -857,16 +818,14 @@ def test_drawing_marked_angles():
 
 % Label Points
 
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
     assert required.tikz_library['decorations.markings']
     assert not required.tikzset['singledash_hatchmark']
     assert not required.tikzset['doubledash_hatchmark']
     assert required.tikzset['tripledash_hatchmark']
     α.decoration.variety = 'triple'
     α.decoration.hatchmark = 'doubledash'
-    assert α.drawn == r"""
-\begin{tikzpicture}
+    assert α.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (X) at (6,1);
 \coordinate (A) at (0,0);
@@ -880,8 +839,7 @@ def test_drawing_marked_angles():
 
 % Label Points
 
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
 
 
 def test_drawing_angledecoration_with_arrowtips():
@@ -891,8 +849,7 @@ def test_drawing_angledecoration_with_arrowtips():
     Y = Point(3, 5, 'Y')
     α = Angle(X, A, Y)
     α.decoration = AngleDecoration(arrow_tips='<->')
-    assert α.drawn == r"""
-\begin{tikzpicture}
+    assert α.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (X) at (6,1);
 \coordinate (A) at (0,0);
@@ -904,8 +861,7 @@ def test_drawing_angledecoration_with_arrowtips():
 
 % Label Points
 
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
 
 
 def test_drawing_angle_with_roundcaps():
@@ -915,8 +871,7 @@ def test_drawing_angle_with_roundcaps():
     Y = Point(3, 5, 'Y')
     α = Angle(X, A, Y, thickness='ultra thick',
               arrow_tips='round cap-round cap')
-    assert α.drawn == r"""
-\begin{tikzpicture}
+    assert α.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (X) at (6,1);
 \coordinate (A) at (0,0);
@@ -927,8 +882,7 @@ def test_drawing_angle_with_roundcaps():
 
 % Label Points
 
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
     assert required.tikz_library['arrows']
 
 
@@ -942,8 +896,7 @@ def test_drawing_angle_with_colored_and_filled_decoration():
     α.decoration = AngleDecoration(fillcolor='CornflowerBlue!30', color='Plum',
                                    radius=Number('0.5', unit='cm'),
                                    thickness='ultra thick')
-    assert α.drawn == r"""
-\begin{tikzpicture}
+    assert α.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (X) at (6,1);
 \coordinate (A) at (0,0);
@@ -956,8 +909,7 @@ def test_drawing_angle_with_colored_and_filled_decoration():
 
 % Label Points
 
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
 
 
 def test_drawing_marked_rightangles():
@@ -968,8 +920,7 @@ def test_drawing_marked_rightangles():
     α = Angle(X, A, Y)
     α.decoration = AngleDecoration(radius=Number('0.5', unit='cm'))
     α.mark_right = True
-    assert α.drawn == r"""
-\begin{tikzpicture}
+    assert α.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (X) at (6,1);
 \coordinate (A) at (0,0);
@@ -983,8 +934,7 @@ r""" (0.5 cm, 0) -- (0.5 cm, 0.5 cm) -- (0, 0.5 cm);
 
 % Label Points
 
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
 
 
 def test_drawing_marked_labeled_angles():
@@ -994,8 +944,7 @@ def test_drawing_marked_labeled_angles():
     Y = Point(3, 5, 'Y')
     α = Angle(X, A, Y, label=Number(38, unit=r'\degree'))
     α.decoration = AngleDecoration(radius=Number('0.5', unit='cm'))
-    assert α.drawn == r"""
-\begin{tikzpicture}
+    assert α.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (X) at (6,1);
 \coordinate (A) at (0,0);
@@ -1008,11 +957,9 @@ r"""angle radius = 0.5 cm] {angle = X--A--Y};
 
 % Label Points
 
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
     α.decoration.variety = 'double'
-    assert α.drawn == r"""
-\begin{tikzpicture}
+    assert α.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (X) at (6,1);
 \coordinate (A) at (0,0);
@@ -1026,8 +973,7 @@ r"""angle radius = 0.58 cm] {angle = X--A--Y};
 
 % Label Points
 
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
     A = Point(0, 0, 'A')
     X1 = Point(6, 1, 'X1')
     Y1 = Point(3, 5, 'Y1')
@@ -1037,8 +983,7 @@ r"""angle radius = 0.58 cm] {angle = X--A--Y};
     α.decoration = AngleDecoration(radius=Number('0.5', unit='cm'),
                                    variety='double',
                                    hatchmark='singledash')
-    assert α.drawn == r"""
-\begin{tikzpicture}
+    assert α.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (X1) at (6,1);
 \coordinate (A) at (0,0);
@@ -1061,8 +1006,7 @@ r"""angle radius = 0.58 cm, singledash] {angle = X1--A--Y1};
 \draw (A) node[below left] {A};
 \draw (X) node[below right] {X};
 \draw (Y) node[above left] {Y};
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
 
 
 def test_drawing_decorated_angle_with_callout1():
@@ -1136,8 +1080,7 @@ def test_drawing_double_decorated_angles():
                                     label=Number(42, unit=r'\degree'),
                                     color='NavyBlue', do_draw=False,
                                     thickness=None)
-    assert α.drawn == r"""
-\begin{tikzpicture}
+    assert α.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (L) at (0,2);
 \coordinate (P) at (0,0);
@@ -1159,8 +1102,7 @@ r"""radius = 1.6 cm] {angle = L--P--E};
 \draw (P) node[below right] {P};
 \draw (L) node[above right] {L};
 \draw (E) node[below left] {E};
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
 
 
 def test_rotate_anticlockwise_angle_anticlockwise(XOY_anticlockwise):
@@ -1282,8 +1224,7 @@ def test_drawing_AnglesSets_of_same_vertex():
     α = Angle(X1, A, Y1)
     β = Angle(Y1, A, Z1)
     S = AnglesSet(α, β)
-    assert S.drawn == r"""
-\begin{tikzpicture}
+    assert S.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (A) at (0,0);
 \coordinate (X1) at (6,1);
@@ -1296,14 +1237,12 @@ def test_drawing_AnglesSets_of_same_vertex():
 
 % Label Points
 
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
     α.armspoints = [('X', ), ('Y', )]
     α.label_vertex = True
     α.draw_vertex = True
     β.armspoints = [('Y', ), ('Z', )]
-    assert S.drawn == r"""
-\begin{tikzpicture}
+    assert S.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (A) at (0,0);
 \coordinate (X1) at (6,1);
@@ -1328,8 +1267,7 @@ def test_drawing_AnglesSets_of_same_vertex():
 \draw (X) node[below right] {X};
 \draw (Y) node[above left] {Y};
 \draw (Z) node[above left] {Z};
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
     A = Point(0, 0, 'A')
     X1 = Point(6, 1, 'X1')
     Y1 = Point(3, 5, 'Y1')
@@ -1348,8 +1286,7 @@ def test_drawing_AnglesSets_of_same_vertex():
                                          radius=Number('2', unit='cm'),
                                          eccentricity=Number('1.15')))
     S = AnglesSet(α, β, γ)
-    assert S.drawn == r"""
-\begin{tikzpicture}
+    assert S.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (A) at (0,0);
 \coordinate (X1) at (6,1);
@@ -1383,8 +1320,7 @@ r"""angle radius = 2 cm] {angle = X1--A--Z1};
 \draw (X) node[below right] {X};
 \draw (Y) node[above left] {Y};
 \draw (Z) node[above left] {Z};
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
 
 
 def test_drawing_AngleSet_same_vertex_and_markright():
@@ -1397,8 +1333,7 @@ def test_drawing_AngleSet_same_vertex_and_markright():
     α.mark_right = True
     β = Angle(Y1, A, Z1)
     S = AnglesSet(α, β)
-    assert S.drawn == r"""
-\begin{tikzpicture}
+    assert S.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (A) at (0,0);
 \coordinate (X1) at (6,1);
@@ -1414,8 +1349,7 @@ r""" (0.25 cm, 0) -- (0.25 cm, 0.25 cm) -- (0, 0.25 cm);
 
 % Label Points
 
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
 
 
 def test_drawing_scattered_AnglesSets():
@@ -1431,8 +1365,7 @@ def test_drawing_scattered_AnglesSets():
     β = Angle(W1, U, Z1, draw_vertex=True, draw_endpoints=True,
               label_endpoints=True)
     S = AnglesSet(α, β)
-    assert S.drawn == r"""
-\begin{tikzpicture}
+    assert S.drawn == r"""\begin{tikzpicture}
 % Declare Points
 \coordinate (A) at (0,0);
 \coordinate (X1) at (6,1);
@@ -1458,5 +1391,4 @@ def test_drawing_scattered_AnglesSets():
 \draw (Y1) node[above left] {Y1};
 \draw (W1) node[left] {W1};
 \draw (Z1) node[right] {Z1};
-\end{tikzpicture}
-"""
+\end{tikzpicture}"""
