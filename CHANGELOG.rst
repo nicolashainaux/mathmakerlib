@@ -10,6 +10,12 @@ Unreleased
 ----------
 
 
+Version 0.7.27 (2025-01-29)
+---------------------------
+
+* Do not depend on pyproject.toml to fetch one's version and name;
+* Remove dependency to toml
+
 Version 0.7.26 (2025-01-16)
 ---------------------------
 
