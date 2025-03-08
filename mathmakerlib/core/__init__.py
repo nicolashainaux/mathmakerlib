@@ -26,7 +26,7 @@ from .dimensional import Dimensional
 from .printable import Printable
 from .signed import Signed
 from .word import Word
-from .tools import surrounding_keys
+from .tools import surrounding_keys, parse_layout_descriptor
 
 __all__ = [Drawable, Oriented, Evaluable, Dimensional, Printable, Signed, Word,
-           surrounding_keys]
+           surrounding_keys, parse_layout_descriptor]

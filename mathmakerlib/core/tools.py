@@ -44,3 +44,52 @@ def surrounding_keys(keyval, d):
     for k in ref_keys:
         if k < keyval < ref_keys[ref_keys.index(k) + 1]:
             return (k, ref_keys[ref_keys.index(k) + 1])
+
+
+def parse_layout_descriptor(ld, sep='×', special_row_chars=None,
+                            min_row=0, min_col=0):
+    """
+    Parse a "layout" string, e.g. '3×4'. Return number of rows, number of cols.
+
+    :param d: the "layout" string
+    :type d: str
+    :param sep: the separator. Defaults to '×'
+    :type sep: str
+    :param special_row_chars: a list of special characters allowed instead of
+                              natural numbers. Defaults to []
+    :type special_row_chars: None or list
+    :param min_row: a minimal value that the number of rows must respect. It is
+                    not checked if nrow is a special char
+    :type min_row: positive int
+    :param min_col: a minimal value that the number of columns must respect
+    :type min_col: positive int
+    :rtype: tuple
+    """
+    ld, sep = str(ld), str(sep)
+    if sep not in ld:
+        raise ValueError(
+            f'Cannot find the separator "{sep}" in string "{ld}".')
+    if special_row_chars is None:
+        special_row_chars = []
+    if not hasattr(special_row_chars, '__contains__'):
+        special_row_chars = str(special_row_chars)
+    special_row_chars = [str(c) for c in special_row_chars]
+    min_row, min_col = int(min_row), int(min_col)
+
+    nrow_ncol = ld.split(sep=sep)
+
+    nrow_ncol = [value for value in nrow_ncol if value]
+    if not len(nrow_ncol) == 2:
+        raise ValueError(f'The layout descriptor is expected to '
+                         f'contain two values separated by "{sep}"')
+
+    nrow, ncol = nrow_ncol
+    if nrow not in special_row_chars:
+        nrow = int(nrow)
+        if nrow < min_row:
+            raise ValueError('nrow must be greater than ' + str(min_row))
+    if ncol not in special_row_chars:
+        ncol = int(ncol)
+        if ncol < min_col:
+            raise ValueError('ncol must be greater than ' + str(min_col))
+    return nrow, ncol

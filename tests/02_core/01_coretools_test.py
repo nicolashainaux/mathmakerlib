@@ -21,7 +21,7 @@
 
 import pytest
 
-from mathmakerlib.core import surrounding_keys
+from mathmakerlib.core import surrounding_keys, parse_layout_descriptor
 
 
 def test_surrounding_keys_errors():
@@ -61,3 +61,68 @@ def test_surrounding_keys_errors():
 def test_surrounding_keys():
     d = {1: 'a', 5: 'b', 10: 'c'}
     assert surrounding_keys(2, d) == (1, 5)
+
+
+def test_parse_layout_descriptor():
+    """Test parse_layout_descriptor() in several cases."""
+    with pytest.raises(ValueError) as excinfo:
+        parse_layout_descriptor(4)
+    assert str(excinfo.value) == 'Cannot find the separator "×" in '\
+        'string "4".'
+    with pytest.raises(ValueError) as excinfo:
+        parse_layout_descriptor('2×3', sep=[1])
+    assert str(excinfo.value) == 'Cannot find the separator "[1]" in '\
+        'string "2×3".'
+    with pytest.raises(ValueError) as excinfo:
+        parse_layout_descriptor('2×3', sep=1)
+    assert str(excinfo.value) == 'Cannot find the separator "1" in '\
+        'string "2×3".'
+    with pytest.raises(ValueError) as excinfo:
+        parse_layout_descriptor('2×3', min_row='a')
+    assert 'invalid literal' in str(excinfo.value)
+    with pytest.raises(ValueError) as excinfo:
+        parse_layout_descriptor('2×3', min_col='a')
+    assert 'invalid literal' in str(excinfo.value)
+    with pytest.raises(ValueError) as excinfo:
+        parse_layout_descriptor('2×')
+    assert str(excinfo.value) == 'The layout descriptor is expected to '\
+        'contain two values separated by "×"'
+    with pytest.raises(ValueError) as excinfo:
+        parse_layout_descriptor('2x3')
+    assert str(excinfo.value) == 'Cannot find the separator "×" in '\
+        'string "2x3".'
+    with pytest.raises(ValueError) as excinfo:
+        parse_layout_descriptor('2;')
+    assert str(excinfo.value) == 'Cannot find the separator "×" in '\
+        'string "2;".'
+    with pytest.raises(ValueError) as excinfo:
+        parse_layout_descriptor('2×3', sep=['x'])
+    assert str(excinfo.value) == 'Cannot find the separator "[\'x\']" in '\
+        'string "2×3".'
+    with pytest.raises(ValueError) as excinfo:
+        parse_layout_descriptor('2×3', sep=['x', '×'])
+    assert str(excinfo.value) == 'Cannot find the separator "[\'x\', \'×\']" '\
+        'in string "2×3".'
+    with pytest.raises(ValueError) as excinfo:
+        parse_layout_descriptor('a×3')
+    assert 'invalid literal' in str(excinfo.value)
+    with pytest.raises(ValueError) as excinfo:
+        parse_layout_descriptor('3×a')
+    assert 'invalid literal' in str(excinfo.value)
+    with pytest.raises(ValueError) as excinfo:
+        parse_layout_descriptor('?×3')
+    assert 'invalid literal' in str(excinfo.value)
+    with pytest.raises(ValueError) as excinfo:
+        parse_layout_descriptor('0×3', min_row=1)
+    assert 'nrow must be greater than 1' in str(excinfo.value)
+    with pytest.raises(ValueError) as excinfo:
+        parse_layout_descriptor('4×0', min_col=1)
+    assert 'ncol must be greater than 1' in str(excinfo.value)
+
+    assert parse_layout_descriptor('2×3', special_row_chars=4) == (2, 3)
+    assert parse_layout_descriptor('?×0', special_row_chars=['?'],
+                                   min_row=1) == ('?', 0)
+    assert parse_layout_descriptor('4×5') == (4, 5)
+    assert parse_layout_descriptor('6×7', special_row_chars=['?']) == (6, 7)
+    assert parse_layout_descriptor('2×3', min_row=-2) == (2, 3)
+    assert parse_layout_descriptor('2×3', min_col=-2) == (2, 3)
