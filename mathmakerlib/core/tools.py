@@ -46,18 +46,18 @@ def surrounding_keys(keyval, d):
             return (k, ref_keys[ref_keys.index(k) + 1])
 
 
-def parse_layout_descriptor(ld, sep='×', special_row_chars=None,
+def parse_layout_descriptor(ld, sep='×x', special_row_chars='',
                             min_row=0, min_col=0):
     """
     Parse a "layout" string, e.g. '3×4'. Return number of rows, number of cols.
 
     :param d: the "layout" string
     :type d: str
-    :param sep: the separator. Defaults to '×'
-    :type sep: str
+    :param sep: a list of accepted characters as separators. Defaults to '×x'
+    :type sep: any iterable
     :param special_row_chars: a list of special characters allowed instead of
-                              natural numbers. Defaults to []
-    :type special_row_chars: None or list
+                              natural numbers. Defaults to ''
+    :type special_row_chars: any iterable
     :param min_row: a minimal value that the number of rows must respect. It is
                     not checked if nrow is a special char
     :type min_row: positive int
@@ -65,15 +65,19 @@ def parse_layout_descriptor(ld, sep='×', special_row_chars=None,
     :type min_col: positive int
     :rtype: tuple
     """
-    ld, sep = str(ld), str(sep)
-    if sep not in ld:
-        raise ValueError(
-            f'Cannot find the separator "{sep}" in string "{ld}".')
-    if special_row_chars is None:
-        special_row_chars = []
-    if not hasattr(special_row_chars, '__contains__'):
-        special_row_chars = str(special_row_chars)
+    ld = str(ld)
+    seplist = [str(c) for c in sep]
     special_row_chars = [str(c) for c in special_row_chars]
+
+    for s in seplist:
+        if s in ld:
+            sep = str(s)
+            break
+    else:  # no break
+        raise ValueError(
+            f'The string "{ld}" does not contain any of the expected '
+            f'separators: {seplist}')
+
     min_row, min_col = int(min_row), int(min_col)
 
     nrow_ncol = ld.split(sep=sep)
