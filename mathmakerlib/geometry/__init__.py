@@ -34,10 +34,11 @@ from .angle import AngleDecoration, Angle, AnglesSet
 from .polyhedra import Polyhedron, RightCuboid
 from .projections import ObliqueProjection
 from .callout import Callout, callout_positioning
+from .rectangle_grid import RectangleGrid
 
 __all__ = ['convex_hull',
            'Point', 'Bipoint', 'Vector', 'LineSegment', 'DividedLineSegment',
-           'XAxis',
+           'XAxis', 'RectangleGrid',
            'Polygon', 'shoelace_formula',
            'Triangle', 'RightTriangle', 'EquilateralTriangle',
            'IsoscelesTriangle',
