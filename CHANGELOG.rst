@@ -7,6 +7,10 @@ Unpublished
 Unreleased
 ----------
 
+
+Version 0.7.28 (2025-03-23)
+---------------------------
+
 * Add RectangleGrid
 
 Version 0.7.27 (2025-01-29)
