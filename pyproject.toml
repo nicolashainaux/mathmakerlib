@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "mathmakerlib"
-version = "0.7.28"
+version = "0.7.29"
 description = "Collection of lualatex-printable mathematical objects, including geometric shapes."
 authors = ["Nicolas Hainaux <nh.techn@posteo.net>"]
 license = "GPL-3.0-or-later"
