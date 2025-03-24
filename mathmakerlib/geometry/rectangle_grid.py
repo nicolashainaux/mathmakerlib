@@ -30,7 +30,7 @@ from mathmakerlib.core import parse_layout_descriptor
 class RectangleGrid(Drawable, Fillable):
 
     def __init__(self, layout='2×2', fill='0×0',
-                 fillcolor='lightgray', startvertex=None):
+                 fillcolor='lightgray', startvertex='random'):
         """
         Initialize a RectangleGrid object.
 
