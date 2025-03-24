@@ -8,6 +8,11 @@ Unreleased
 ----------
 
 
+Version 0.7.30 (2025-03-24)
+---------------------------
+
+* Adapt RectangleGrid and Drawable so RectangleGrid can use the features of other Drawables
+
 Version 0.7.29 (2025-03-24)
 ---------------------------
 
