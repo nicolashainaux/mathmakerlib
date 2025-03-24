@@ -208,6 +208,7 @@ def test_fontsize():
     assert α.drawn == r"""\begin{tikzpicture}
 % Text font size
 \scriptsize
+
 % Declare Points
 \coordinate (X) at (2,0.33);
 \coordinate (A) at (0,0);

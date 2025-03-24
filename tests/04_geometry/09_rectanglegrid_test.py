@@ -180,8 +180,18 @@ def test_swapped_dimensions():
 def test_disabled_methods():
     r = RectangleGrid(layout='6×4', fill='3×2', startvertex='topleft')
     assert r._tikz_draw_options() is None
-    assert r.tikz_declarations() is None
-    assert r.tikz_draw() is None
-    assert r.tikz_drawing_comment() is None
+    assert r.tikz_declarations() == ''
+    assert r.tikz_declaring_comment() == ''
+    assert r.tikz_drawing_comment() == ''
     assert r.tikz_label() == ''
-    assert r.tikz_points_labels() is None
+    assert r.tikz_points_labels() == ''
+
+
+def test_scaled():
+    r = RectangleGrid(layout='3×8', fill='4×2', startvertex='bottomleft')
+    r.scale = 0.4
+    expected = r"""\begin{tikzpicture}[scale=0.4]
+  \draw[fill=lightgray] (0, 0) rectangle (4, 2);
+  \draw[step=1cm] (0, 0) grid (8, 3);
+\end{tikzpicture}"""
+    assert r.draw() == expected

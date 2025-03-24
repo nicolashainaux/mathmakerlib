@@ -232,8 +232,8 @@ class Drawable(Colored, Labeled, metaclass=ABCMeta):
             body_format.update({s[len(section_attr_prefix):] + '_section':
                                 getattr(self, s)()})
         fontsizecomment = 'Text font size'
-        body_format.update({'fontsize': '% {}\n{}\n'.format(fontsizecomment,
-                                                            self.fontsize)
+        body_format.update({'fontsize': '\n% {}\n{}\n'.format(fontsizecomment,
+                                                              self.fontsize)
                                         if self.fontsize
                                         else ''})
         return r"""\begin{{tikzpicture}}{pic_options}"""\
@@ -258,41 +258,61 @@ class Drawable(Colored, Labeled, metaclass=ABCMeta):
         return pic_options
 
     def tikz_picture_body(self):
-        return r"""
-{fontsize}{declarations_section}
-
-{drawing_section}
-{labeling_section}{boundingbox_section}
-"""
+        return r"""{fontsize}{declarations_section}{drawing_section}"""\
+            r"""{labeling_section}{boundingbox_section}"""
 
     def tikzsection_declarations(self):
-        return '''{declaring_comment}
-{declarations}'''.format(declaring_comment=self.tikz_declaring_comment(),
-                         declarations=self.tikz_declarations())
+        output = ''
+        declaring_comment = self.tikz_declaring_comment()
+        if declaring_comment:
+            output = f'\n{declaring_comment}'
+        declarations = self.tikz_declarations()
+        if declarations:
+            output += f'\n{declarations}\n'
+        return output
 
     def tikzsection_drawing(self):
-        drawing_section = ''
-        comments = [f'{comment}\n' for comment in self.tikz_drawing_comment()]
+        drawing_section = []
+        comments = [f'{cmt}' for cmt in self.tikz_drawing_comment()]
+        if comments:
+            comments[0] = '\n' + comments[0]
         for (i, (c, d)) in enumerate(zip_longest(comments,
                                                  self.tikz_draw(),
                                                  fillvalue='')):
-            drawing_section += ('{{drawing_comment{}}}{{drawing{}}}\n'
-                                .format(i, i))\
-                .format(**{'drawing_comment{}'.format(i): c,
-                           'drawing{}'.format(i): d})
-        return drawing_section
+            comment_string = ''
+            if c:
+                comment_string = '{{drawing_comment{}}}\n'.format(i)
+                comment_string = comment_string.format(
+                    **{'drawing_comment{}'.format(i): c})
+            drawing_section.append('{}{{drawing{}}}'
+                                   .format(comment_string, i)
+                                   .format(**{'drawing{}'.format(i): d}))
+        if drawing_section:
+            drawing_section.append('')
+        import sys
+        sys.stderr.write(f'{drawing_section = }')
+        return '\n'.join(drawing_section)
 
     def tikzsection_labeling(self):
-        return '''{labeling_comment}
-{labels}'''.format(labeling_comment=self.tikz_labeling_comment(),
-                   labels=self.tikz_points_labels())
+        output = ''
+        labeling_comment = self.tikz_labeling_comment()
+        if labeling_comment:
+            output += f'\n{labeling_comment}'
+        labels = self.tikz_points_labels()
+        if labels:
+            output += f'\n{labels}'
+        if labeling_comment or labels:
+            output += '\n'
+        if labeling_comment and not labels:
+            output += '\n'
+        return output
 
     def tikzsection_boundingbox(self):
         boundingbox_section = ''
-        if self.boundingbox is not None:
-            boundingbox_section = '\n\n' \
+        if self.boundingbox:
+            boundingbox_section = '\n' \
                 + (r'\useasboundingbox ({},{}) rectangle ({},{});'
-                   .format(*self.boundingbox))
+                   .format(*self.boundingbox) + '\n')
         return boundingbox_section
 
     def tikz_declaring_comment(self):

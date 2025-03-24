@@ -200,18 +200,18 @@ class RectangleGrid(Drawable, Fillable):
             return (0, self.rows, self.complement_cols,
                     self.rows - self.complement_rows)
 
-    def draw(self) -> str:
+    def tikz_draw(self) -> str:
         """
         Generate TikZ code for the grid with the colored area.
         """
         required.package['tikz'] = True
-        tikz_code = [r"\begin{tikzpicture}"]
+        tikz_code = []
 
         # Add colored rectangle if needed
         if self.fill_strategy != "none":
             x1, y1, x2, y2 = self._get_filled_rectangle_coordinates()
             if not (x1 == 0 and y1 == 0 and x2 == 0 and y2 == 0):
-                pattern = r"  \draw[fill={fillcolor}] "\
+                pattern = "\n" + r"  \draw[fill={fillcolor}] "\
                     r"({x1}, {y1}) rectangle ({x2}, {y2});"
                 tikz_code.append(pattern.format(fillcolor=self.fillcolor,
                                                 x1=x1, y1=y1, x2=x2, y2=y2))
@@ -221,31 +221,35 @@ class RectangleGrid(Drawable, Fillable):
             x1, y1, x2, y2 = self._get_complement_rectangle_coordinates()
             pattern = r"  \draw[fill=white] "\
                 r"({x1}, {y1}) rectangle ({x2}, {y2});"
+            if not tikz_code:
+                pattern = "\n" + pattern
             tikz_code.append(pattern.format(x1=x1, y1=y1, x2=x2, y2=y2))
 
         # Add the grid
         pattern = r"  \draw[step=1cm] (0, 0) grid ({cols}, {rows});"
+        if not tikz_code:
+            pattern = "\n" + pattern
         tikz_code.append(pattern.format(cols=self.cols, rows=self.rows))
 
-        # Close tikzpicture environment
-        tikz_code.append(r"\end{tikzpicture}")
-
-        return "\n".join(tikz_code)
+        return tikz_code
 
     def _tikz_draw_options(self):
         pass
 
     def tikz_declarations(self):
-        pass
+        return ''
 
-    def tikz_draw(self):
-        pass
+    def tikz_declaring_comment(self):
+        return ''
 
     def tikz_drawing_comment(self):
-        pass
+        return ''
 
     def tikz_label(self):
         return ''
 
+    def tikz_labeling_comment(self):
+        return ''
+
     def tikz_points_labels(self):
-        pass
+        return ''
