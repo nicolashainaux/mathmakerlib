@@ -1,0 +1,14 @@
+\begin{tikzpicture}
+% Declare Points
+\coordinate (X) at (6,0);
+\coordinate (B) at (0,0);
+\coordinate (Y) at (4.243,-4.243);
+
+% Draw Angle
+\draw pic [draw, thick, CornflowerBlue, fill=CornflowerBlue!30, angle radius = 1 cm] {angle = Y--B--X};
+\draw[thick, round cap-round cap] (X) -- (B) -- (Y);
+\node[callout absolute pointer=(B), callout_style1, callout pointer shorten=2.2cm, fill=CornflowerBlue!20] at (341:4.67) {n°2 : \dots\dots\dots \vrule width 0pt height 0.5cm};
+
+% Label Points
+
+\end{tikzpicture}

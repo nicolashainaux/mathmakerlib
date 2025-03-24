@@ -61,7 +61,7 @@ def _average_triple(angle):
 
 
 def _convert(triple, arms_length):
-    return (triple[0],
+    return (Number(triple[0]),
             Number(round(arms_length * Number(triple[1]), 2), unit='cm')
             .standardized(),
             Number(round(arms_length * Number(triple[2]), 2), unit='cm')

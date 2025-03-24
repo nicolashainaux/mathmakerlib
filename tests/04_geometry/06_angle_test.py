@@ -37,6 +37,7 @@ XBY1 = (DATA_PATH / 'XBY1.tex').read_text().rstrip()
 XBY2 = (DATA_PATH / 'XBY2.tex').read_text().rstrip()
 XBY3 = (DATA_PATH / 'XBY3.tex').read_text().rstrip()
 XBY4 = (DATA_PATH / 'XBY4.tex').read_text().rstrip()
+XBY5 = (DATA_PATH / 'XBY5.tex').read_text().rstrip()
 XOY0 = (DATA_PATH / 'XOY0.tex').read_text().rstrip()
 XOY0_ap = (DATA_PATH / 'XOY0_ap.tex').read_text().rstrip()
 XOY1 = (DATA_PATH / 'XOY1.tex').read_text().rstrip()
@@ -1064,6 +1065,22 @@ def test_drawing_decorated_angle_with_callout4():
                                    radius='auto',
                                    thickness='thick')
     assert α.drawn == XBY4
+
+
+def test_drawing_decorated_angle_with_callout5():
+    X = Point(6, 0, 'X')
+    B = Point(0, 0, 'B')
+    α = Angle(X, B, -45, second_point_name='Y', winding='clockwise',
+              arrow_tips='round cap-round cap', thickness='thick',
+              callout_text=r'n°2 : \dots\dots\dots \vrule width 0pt '
+              r'height 0.5cm', callout_fmt={'fillcolor': 'CornflowerBlue!20'})
+    # r = autosize_decoration_radius(α.measure)
+    α.decoration = AngleDecoration(fillcolor='CornflowerBlue!30',
+                                   color='CornflowerBlue',
+                                   radius='auto',
+                                   thickness='thick')
+    assert α.measure == 45
+    assert α.drawn == XBY5
 
 
 def test_drawing_double_decorated_angles():
