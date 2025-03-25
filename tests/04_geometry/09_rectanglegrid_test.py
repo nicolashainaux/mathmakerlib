@@ -23,9 +23,6 @@ import random
 
 from mathmakerlib.geometry import RectangleGrid
 
-# To ensure reproducible tests when startvertex='random'
-random.seed(42)
-
 
 def test_example_1():
     r = RectangleGrid(layout='6×4', fill='3×2', startvertex='topleft')
@@ -151,9 +148,13 @@ def test_no_fill():
 
 def test_random_startvertex():
     # With the seed set, ‘random’ should give a predictable choice
+    random.seed(42)
     r = RectangleGrid(layout='5×5', fill='2×2', startvertex='random')
-    # Just check that it doesn't raise any errors
-    r.draw()
+    expected = r"""\begin{tikzpicture}
+  \draw[fill=lightgray] (0, 5) rectangle (2, 3);
+  \draw[step=1cm] (0, 0) grid (5, 5);
+\end{tikzpicture}"""
+    assert r.draw() == expected
 
 
 def test_different_fillcolor():
